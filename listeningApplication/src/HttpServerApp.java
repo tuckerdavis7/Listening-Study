@@ -15,6 +15,8 @@ public class HttpServerApp {
         // Sets up route to "/" and will serve those files
         server.createContext("/", new StaticFileHandler("src/static"));
 
+        server.createContext("/api", new ApiHandler());
+
         // Use the default thread pool
         server.setExecutor(null);
         

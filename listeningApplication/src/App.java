@@ -1,5 +1,10 @@
 public class App {
     public static void main(String[] args) throws Exception {
-        System.out.println("Hello, World!");
+        try {
+            HttpServerApp.main(args);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

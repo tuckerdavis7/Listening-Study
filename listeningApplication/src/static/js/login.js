@@ -4,7 +4,7 @@ function handleLoginAttempt() {
     type: 'GET',
     dataType: 'text',
     success: function(data) {
-        bootstrapAlert('info', JSON.stringify(data));
+        bootstrapAlert('info', data);
     },
     error: function(xhr, status, error) {
         bootstrapAlert('danger', error);

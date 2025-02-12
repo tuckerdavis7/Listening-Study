@@ -6,7 +6,7 @@ public class App {
         catch (Exception e) {
             e.printStackTrace();
         }
-
+        
         try {
             DatabaseConnectionApp.main(args);
         }

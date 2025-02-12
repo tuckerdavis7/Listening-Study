@@ -10,7 +10,7 @@ public class HttpServerApp {
         final int PORT = 8080;
         HttpServer server = HttpServer.create(new InetSocketAddress(PORT), 0);
 
-        server.createContext("/", new StaticFileHandler("src/static"));
+        server.createContext("/", new StaticFileHandler("listeningApplication/src/static"));
         server.createContext("/api/login", new LoginHandler());
         server.setExecutor(null);
         server.start();

@@ -6,15 +6,14 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class DatabaseConnectionApp {
-    private Connection con;
+    private static Connection con;
     public static void main(String[] args) throws IOException {
-        DatabaseConnectionApp dbca = new DatabaseConnectionApp();
-        dbca.createConnection();
-        dbca.selectUsers();
-
+        createConnection();
+        selectUsers();
+        
     }
 
-    private void createConnection() {
+    private static void createConnection() {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/listeningapp", "root", "root");
@@ -30,7 +29,7 @@ public class DatabaseConnectionApp {
         
     }
 
-    private void selectUsers() {
+    private static void selectUsers() {
         try {
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery("select * from users;");

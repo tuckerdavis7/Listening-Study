@@ -48,6 +48,3 @@ Thumbs.db
 .env
 *.yml
 *.yaml
-
-# add this after first commit
-# *.properties

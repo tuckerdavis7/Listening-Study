@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+//once we get another SQL query running, we can probably get rid of the select users, and just have the main method be the logic of createConncection
 public class DatabaseConnectionApp {
     private static Connection con;
     public static void main(String[] args) throws IOException {

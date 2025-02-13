@@ -10,10 +10,15 @@ public class HttpServerApp {
         final int PORT = 8080;
         HttpServer server = HttpServer.create(new InetSocketAddress(PORT), 0);
 
-        server.createContext("/", new StaticFileHandler());
-        server.createContext("/api/login", new LoginHandler());
+        createAPIEndpoints(server);
         server.setExecutor(null);
         server.start();
         System.out.println("Server started at http://localhost:" + PORT);
+    }
+
+    //create all contexts for API here
+    private static void createAPIEndpoints(HttpServer server) {
+        server.createContext("/", new StaticFileHandler());
+        server.createContext("/api/login", new LoginHandler());
     }
 }

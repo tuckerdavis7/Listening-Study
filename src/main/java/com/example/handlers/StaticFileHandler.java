@@ -13,13 +13,12 @@ public class StaticFileHandler implements HttpHandler {
     public void handle(HttpExchange exchange) throws IOException {
         String path = exchange.getRequestURI().getPath();
         if (path.equals("/")) {
-            path = "/index.html"; // Default file
+            path = "/index.html"; //default file
         }
 
-        // Ensure the path does not start with a slash when loading from resources
         String resourcePath = "static" + path;
 
-        // Load file from JAR resources
+        // Load file from JAR
         InputStream inputStream = getClass().getClassLoader().getResourceAsStream(resourcePath);
 
         if (inputStream != null) {

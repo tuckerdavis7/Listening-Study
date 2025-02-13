@@ -1,3 +1,5 @@
+package com.example;
+
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -15,7 +17,7 @@ public class DatabaseConnectionApp {
 
     private static void createConnection() {
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/listeningapp", "root", "root");
             
             System.out.println("Database connection is successful.");

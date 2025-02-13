@@ -1,5 +1,7 @@
-public class App {
-    public static void main(String[] args) throws Exception {
+package com.example;
+
+public class Main {
+    public static void main(String[] args) {
         try {
             HttpServerApp.main(args);
         }

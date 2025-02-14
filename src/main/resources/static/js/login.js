@@ -1,4 +1,7 @@
 function handleLoginAttempt() {
+
+    event.preventDefault();
+
     $.ajax({
       url: 'http://localhost:8080/api/login',
       type: 'GET',

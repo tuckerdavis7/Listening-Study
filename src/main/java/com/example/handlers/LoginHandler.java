@@ -3,7 +3,6 @@ package com.example.handlers;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpExchange;
 import com.example.services.LoginService;
-
 import java.io.IOException;
 
 public class LoginHandler extends BaseHandler implements HttpHandler {

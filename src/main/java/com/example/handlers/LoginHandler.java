@@ -16,7 +16,7 @@ public class LoginHandler extends BaseHandler implements HttpHandler {
     public void handle(HttpExchange exchange) throws IOException {
         String response = "";
         
-        if ("GET".equals(exchange.getRequestMethod())) {
+        if ("POST".equals(exchange.getRequestMethod())) {
             response = loginService.authenticateLogin(exchange);
         }
         

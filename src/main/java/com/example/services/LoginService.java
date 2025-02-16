@@ -13,6 +13,12 @@ public class LoginService extends BaseService{
         System.out.println(email);
         System.out.println(password);
 
+        //Do SQL query here (like in DatabaseConnectionApp.Java selectuUsers())
+        //return the count of the query (should be 0 or 1)
+        //now go to front end
         return "authenticated";
+
     }
+        //write a function to handle de-hashing the password
+
 }

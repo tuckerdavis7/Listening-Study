@@ -1,6 +1,5 @@
 $(document).ready(function() {
     $('#loginButton').click(function(event) {
-        event.preventDefault();
         let valid = validateFormData();
 
         if (valid) {
@@ -17,15 +16,18 @@ $(document).ready(function() {
             }
         
             $.ajax({
-                data: loginForm,
+                data: JSON.stringify(loginForm),
                 url: 'http://localhost:8080/api/login',
-                type: 'GET',
-                dataType: 'text',
+                type: 'POST',
+                contentType: 'application/json',
                 success: function(data) {
-                    bootstrapAlert('success', data);
+                    //if count is 1, then do this alert
+                    bootstrapAlert('success', 'Login successful!');
+                    //otherwise, do this
+                    //bootstrapAlert('danger', 'Credentials did not match, please try again.')
                 },
                 error: function(xhr, status, error) {
-                    bootstrapAlert('danger', 'Unsuccessful login. Error: ' + error);
+                    bootstrapAlert('danger', 'Error while logging in: ' + error);
                 }
             });
         }

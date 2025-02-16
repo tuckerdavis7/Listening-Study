@@ -1,6 +1,7 @@
 package com.example.services;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.InputStream;
@@ -20,6 +21,6 @@ public class BaseService {
             body.append(line);
         }
 
-        return gson.fromJson(body.toString(), Map.class);
-    }
+        return gson.fromJson(body.toString(), new TypeToken<Map<String, String>>(){}.getType());
+        }
 }

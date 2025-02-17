@@ -1,5 +1,6 @@
 $(document).ready(function() {
     $('#loginButton').click(function(event) {
+        event.preventDefault();
         let valid = validateFormData();
 
         if (valid) {
@@ -21,10 +22,8 @@ $(document).ready(function() {
                 type: 'POST',
                 contentType: 'application/json',
                 success: function(data) {
-                    //if count is 1, then do this alert
+                    console.log(data);
                     bootstrapAlert('success', 'Login successful!');
-                    //otherwise, do this
-                    //bootstrapAlert('danger', 'Credentials did not match, please try again.')
                 },
                 error: function(xhr, status, error) {
                     bootstrapAlert('danger', 'Error while logging in: ' + error);

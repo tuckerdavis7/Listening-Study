@@ -20,7 +20,7 @@ public class LoginService extends BaseService{
             if (result.next()) {
                 String hashPassword = result.getString("password");
                 String first = result.getString("first_name");
-                String last = result.getString("lsat_name");
+                String last = result.getString("last_name");
                 boolean isMatching = BCrypt.checkpw(formPassword, hashPassword);
                 
                 //if username and password are correct

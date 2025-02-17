@@ -23,8 +23,12 @@ $(document).ready(function() {
                 contentType: 'application/json',
                 success: function(data) {
                     console.log(data);
+                    let isValidLogin = data.includes("Hello");
                     let color = (data.includes("Hello")) ? 'success' : 'danger'; //if valid login, green box.  Otherwise, red
                     bootstrapAlert(color, data);
+                    if (isValidLogin) {
+                        window.location.href = 'dashboard.html';                        
+                }
                 },
                 error: function(xhr, status, error) {
                     bootstrapAlert('danger', 'Error while logging in: ' + error);

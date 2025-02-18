@@ -1,0 +1,21 @@
+#player {
+    height: 0;
+    width: 0;
+    position: absolute;
+    border: none;
+}
+#playButton {
+    margin: 10px;
+    height: 50px;
+    width: 50px;
+}
+#volume {
+    margin: 10px;
+}
+.form-range::-webkit-slider-runnable-track {
+    background-color: #cccccc;
+}
+  
+.form-range::-webkit-slider-thumb {
+    background-color: #333333;
+}

@@ -3,14 +3,14 @@ package com.example;
 public class Main {
     public static void main(String[] args) {
         try {
-            HttpServerApp.main(args);
+            HttpServerApp.startServer();
         }
         catch (Exception e) {
             e.printStackTrace();
         }
         
         try {
-            DatabaseConnectionApp.main(args);
+            DatabaseConnectionApp.connect();
         }
         catch (Exception e) {
             e.printStackTrace();

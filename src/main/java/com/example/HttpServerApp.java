@@ -6,7 +6,7 @@ import java.net.InetSocketAddress;
 import com.example.handlers.*;
 
 public class HttpServerApp {
-    public static void main(String[] args) throws IOException {
+    public static void startServer() throws IOException {
         final int PORT = 8080;
         HttpServer server = HttpServer.create(new InetSocketAddress(PORT), 0);
 

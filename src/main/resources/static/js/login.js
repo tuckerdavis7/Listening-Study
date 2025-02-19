@@ -1,14 +1,13 @@
 $(document).ready(function() {
     $.ajax({
-        data: null,
-        url: 'http://localhost:8080/api/users',
+        url: 'http://localhost:8080/api/metadata',
         type: 'GET',
         contentType: 'application/json',
         success: function(data) {
-            $('#names').html(data);
+            setMetadataOnPage(JSON.parse(data));
         },
         error: function(xhr, status, error) {
-            console.log(error);
+            bootstrapAlert('danger', error);
         }
     });
     
@@ -35,15 +34,16 @@ $(document).ready(function() {
                 type: 'POST',
                 contentType: 'application/json',
                 success: function(data) {
-                    console.log(data);
-                    let isValidLogin = data.includes("Hello");
-                    let color = (data.includes("Hello")) ? 'success' : 'danger'; //if valid login, green box.  Otherwise, red
-                    bootstrapAlert(color, data);
-                    localStorage.setItem('loginMessage', JSON.stringify({ color: color, message: data })); //temporary example
-                    //load dashboard after successful login with 1 second delay
-                    if (isValidLogin) {
-                        setTimeout(function(){window.location.href = 'dashboard.html';}, 1000);                                               
+                    let color;
+                    if (data.includes("Hello")) { //if successful login
+                        color = 'success';
+                        window.location.href = 'dashboard.html';
                     }
+                    else { //unsuccessful login
+                        color = 'danger';
+                    }
+                    localStorage.setItem('loginMessage', JSON.stringify({ color: color, message: data }));
+                    bootstrapAlert(color, data);                                            
                 },
                 error: function(xhr, status, error) {
                     bootstrapAlert('danger', 'Error while logging in: ' + error);
@@ -52,6 +52,13 @@ $(document).ready(function() {
         }
     })
 })
+
+function setMetadataOnPage(data) {
+    $('#appName').html(data.appName + ' Login');
+    $('#version').html('Version: ' + data.version);
+    $('#userCount').html('User Count: ' + data.userCount);
+    $('#lastUpdate').html('Last updated: ' + data.lastUpdate);
+}
 
 function validateFormData() {
     let allAreFilled = true;

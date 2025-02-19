@@ -1,5 +1,21 @@
 let player;
 let playing = false;
+
+$(document).ready(function() {
+    $('#playButton').click(function(event) {
+        if (!playing)
+            player.playVideo()
+        else
+            player.pauseVideo()
+    })
+
+    $('#volumeRange').change(function(event) {
+        let rangeValue = $(this).val();
+        player.setVolume(rangeValue);
+        $('#volumeLabel').html(`&#128266; ${rangeValue}`);
+    })
+});
+
 function onYouTubeIframeAPIReady() {
     player = new YT.Player('player', {
         height: 0,
@@ -31,16 +47,3 @@ function onPlayerStateChange(event) {
         $('#playButton').html('&#9654;'); // play symbol
     }
 }
-
-$('#playButton').click(function(event) {
-    if (!playing)
-        player.playVideo()
-    else
-        player.pauseVideo()
-})
-
-$('#volumeRange').change(function(event) {
-    let rangeValue = $(this).val();
-    player.setVolume(rangeValue);
-    $('#volumeLabel').html(`&#128266; ${rangeValue}`);
-})

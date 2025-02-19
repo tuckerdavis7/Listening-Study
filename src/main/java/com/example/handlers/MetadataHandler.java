@@ -2,14 +2,15 @@ package com.example.handlers;
 
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpExchange;
-import com.example.services.LoginService;
+import com.example.services.MetadataService;
+
 import java.io.IOException;
 
-public class LoginHandler extends BaseHandler implements HttpHandler {
-    private LoginService loginService;
+public class MetadataHandler extends BaseHandler implements HttpHandler {
+    private MetadataService metadataService;
 
-    public LoginHandler() {
-        this.loginService = new LoginService();
+    public MetadataHandler() {
+        this.metadataService = new MetadataService();
     }
 
     @Override
@@ -18,8 +19,8 @@ public class LoginHandler extends BaseHandler implements HttpHandler {
         String method = exchange.getRequestMethod();
 
         switch (method) {
-            case "POST":
-                response = loginService.authenticateLogin(exchange);
+            case "GET":
+                response = metadataService.getMetadata(exchange);
                 sendResponse(exchange, response);
                 break;
             

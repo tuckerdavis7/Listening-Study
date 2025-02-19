@@ -5,7 +5,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
 import org.mindrot.jbcrypt.BCrypt;
-import com.example.models.LoginModel;
+
+import com.example.repositories.LoginRepository;
 import com.sun.net.httpserver.HttpExchange;
 
 public class LoginService extends BaseService{
@@ -14,34 +15,33 @@ public class LoginService extends BaseService{
         String email = parameters.get("email");
         String formPassword = parameters.get("password");
 
-        String returnString = "";
+        String responseString = "";
         try {
-            ResultSet result = LoginModel.verifyUser(email);
+            ResultSet result = LoginRepository.getUserByEmail(email);
             if (result.next()) {
                 String hashPassword = result.getString("password");
                 String first = result.getString("first_name");
                 String last = result.getString("last_name");
                 boolean isMatching = BCrypt.checkpw(formPassword, hashPassword);
-                
-                //if username and password are correct
-                if (isMatching) {
-                    returnString = "Hello " + first + " " + last;
+
+                if (isMatching) { //if username and password are correct
+                    responseString = "Hello " + first + " " + last;
                 }
-                //correct email, wrong password
-                else{
-                    returnString = "Incorrect password";
+                
+                else{ //correct email, wrong password
+                    responseString = "Incorrect password";
                 }
             }
-            //incorrect email
-            else {
-                returnString = "Invalid email";
+            
+            else { //incorrect email
+                responseString = "Invalid email";
             }
         }
         catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return returnString;
+        return responseString;
     }
         
 }

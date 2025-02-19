@@ -1,5 +1,6 @@
 package com.example.services;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.io.BufferedReader;
@@ -22,5 +23,18 @@ public class BaseService {
         }
 
         return gson.fromJson(body.toString(), new TypeToken<Map<String, String>>(){}.getType());
+    }
+
+    protected String formatJSON(Map<String, Object> map, String status) throws IOException {
+        String responseString = "";
+        map.put("status", status);
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            responseString = objectMapper.writeValueAsString(map);
+        } 
+        catch (Exception e) {
+            e.printStackTrace();
         }
+        return responseString;
+    }
 }

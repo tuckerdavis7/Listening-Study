@@ -10,9 +10,21 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.js"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>  
     <script src="../js/custom.js"></script>
 
+    <script>
+        //Example to show data retrieved from the database
+        window.onload = function() {
+            let storedMessage = localStorage.getItem('loginMessage');
+            if (storedMessage) {
+                let { color, message } = JSON.parse(storedMessage);
+                bootstrapAlert(color, message);
+                                
+                localStorage.removeItem('loginMessage'); //Clear the message after displaying it
+            }
+        };
+    </script>
 </head>
 <body>
     <div class="container mt-5">

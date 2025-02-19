@@ -26,9 +26,11 @@ $(document).ready(function() {
                     let isValidLogin = data.includes("Hello");
                     let color = (data.includes("Hello")) ? 'success' : 'danger'; //if valid login, green box.  Otherwise, red
                     bootstrapAlert(color, data);
+                    localStorage.setItem('loginMessage', JSON.stringify({ color: color, message: data })); //temporary example
+                    //load dashboard after successful login with 1 second delay
                     if (isValidLogin) {
-                        window.location.href = 'dashboard.html';                        
-                }
+                        setTimeout(function(){window.location.href = 'dashboard.html';}, 1000);                                               
+                    }
                 },
                 error: function(xhr, status, error) {
                     bootstrapAlert('danger', 'Error while logging in: ' + error);

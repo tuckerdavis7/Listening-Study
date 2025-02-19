@@ -20,5 +20,6 @@ public class HttpServerApp {
     private static void createAPIEndpoints(HttpServer server) {
         server.createContext("/", new StaticFileHandler());
         server.createContext("/api/login", new LoginHandler());
+        server.createContext("/api/users", new UserHandler());
     }
 }

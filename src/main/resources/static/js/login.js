@@ -1,4 +1,17 @@
 $(document).ready(function() {
+    $.ajax({
+        data: null,
+        url: 'http://localhost:8080/api/users',
+        type: 'GET',
+        contentType: 'application/json',
+        success: function(data) {
+            $('#names').html(data);
+        },
+        error: function(xhr, status, error) {
+            console.log(error);
+        }
+    });
+    
     $('#loginButton').click(function(event) {
         event.preventDefault();
         let valid = validateFormData();

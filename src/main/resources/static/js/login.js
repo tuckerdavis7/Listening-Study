@@ -4,7 +4,12 @@ $(document).ready(function() {
         type: 'GET',
         contentType: 'application/json',
         success: function(data) {
-            setMetadataOnPage(JSON.parse(data));
+            //set metadata on page
+            let responseData = JSON.parse(data);
+            $('#appName').html(responseData.appName + ' Login');
+            $('#version').html('Version: ' + responseData.version);
+            $('#userCount').html('User Count: ' + responseData.userCount);
+            $('#lastUpdate').html('Last updated: ' + responseData.lastUpdate);
         },
         error: function(xhr, status, error) {
             bootstrapAlert('danger', error);
@@ -16,12 +21,13 @@ $(document).ready(function() {
         let valid = validateFormData();
 
         if (valid) {
+            //gather form data
             let loginForm = $('#loginForm').serializeArray().reduce(function (acc, item) {
                 acc[item.name] = item.value;
                 return acc;
             })
         
-            //checking if serializeArray reduction maps incorrect key value pairs
+            //check if serialization maps incorrect key value pairs
             if (loginForm.name && loginForm.value) {
                 loginForm[loginForm.name] = loginForm.value;
                 delete loginForm.name;
@@ -34,16 +40,13 @@ $(document).ready(function() {
                 type: 'POST',
                 contentType: 'application/json',
                 success: function(data) {
-                    let color;
-                    if (data.includes("Hello")) { //if successful login
-                        color = 'success';
+                    let responseData = JSON.parse(data);
+                    if (responseData.status === "success") {
                         window.location.href = 'dashboard.html';
                     }
-                    else { //unsuccessful login
-                        color = 'danger';
-                    }
-                    localStorage.setItem('loginMessage', JSON.stringify({ color: color, message: data }));
-                    bootstrapAlert(color, data);                                            
+                    else {
+                        bootstrapAlert('danger', 'Invalid login credentials.');
+                    }                                         
                 },
                 error: function(xhr, status, error) {
                     bootstrapAlert('danger', 'Error while logging in: ' + error);
@@ -52,13 +55,6 @@ $(document).ready(function() {
         }
     })
 })
-
-function setMetadataOnPage(data) {
-    $('#appName').html(data.appName + ' Login');
-    $('#version').html('Version: ' + data.version);
-    $('#userCount').html('User Count: ' + data.userCount);
-    $('#lastUpdate').html('Last updated: ' + data.lastUpdate);
-}
 
 function validateFormData() {
     let allAreFilled = true;

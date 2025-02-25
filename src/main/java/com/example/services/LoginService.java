@@ -3,6 +3,7 @@ package com.example.services;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Map;
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -18,23 +19,17 @@ public class LoginService extends BaseService{
         String responseString = "";
         try {
             ResultSet result = LoginRepository.getUserByEmail(email);
-            if (result.next()) {
+            Map<String, Object> loginMap = new HashMap<>();
+            while (result.next()) {
                 String hashPassword = result.getString("password");
-                String first = result.getString("first_name");
-                String last = result.getString("last_name");
                 boolean isMatching = BCrypt.checkpw(formPassword, hashPassword);
 
-                if (isMatching) { //if username and password are correct
-                    responseString = "Hello " + first + " " + last;
+                if (isMatching) {
+                    responseString = formatJSON(loginMap, "success"); //correct login
                 }
-                
-                else{ //correct email, wrong password
-                    responseString = "Incorrect password";
+                else{
+                    responseString = formatJSON(loginMap, "failure"); //incorrect login
                 }
-            }
-            
-            else { //incorrect email
-                responseString = "Invalid email";
             }
         }
         catch (SQLException e) {

@@ -21,5 +21,6 @@ public class HttpServerApp {
         server.createContext("/", new StaticFileHandler());
         server.createContext("/api/login", new LoginHandler());
         server.createContext("/api/metadata", new MetadataHandler());
+        server.createContext("/api/users", new UserHandler());
     }
 }

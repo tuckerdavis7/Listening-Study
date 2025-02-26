@@ -3,6 +3,7 @@ let playing = false;
 
 $(document).ready(function() {
     $('#playButton').click(function(event) {
+        event.preventDefault();
         if (!playing)
             player.playVideo()
         else

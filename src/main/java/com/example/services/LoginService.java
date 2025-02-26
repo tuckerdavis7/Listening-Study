@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 import org.mindrot.jbcrypt.BCrypt;
 
-import com.example.repositories.LoginRepository;
+import com.example.repositories.UserRepository;
 import com.sun.net.httpserver.HttpExchange;
 
 public class LoginService extends BaseService{
@@ -18,7 +18,7 @@ public class LoginService extends BaseService{
 
         String responseString = "";
         try {
-            ResultSet result = LoginRepository.getUserByEmail(email);
+            ResultSet result = UserRepository.getUserByEmail(email);
             Map<String, Object> loginMap = new HashMap<>();
             while (result.next()) {
                 String hashPassword = result.getString("password");

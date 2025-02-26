@@ -1,21 +1,4 @@
 $(document).ready(function() {
-    $.ajax({
-        url: 'http://localhost:8080/api/metadata',
-        type: 'GET',
-        contentType: 'application/json',
-        success: function(data) {
-            //set metadata on page
-            let responseData = JSON.parse(data);
-            $('#appName').html(responseData.appName + ' Login');
-            $('#version').html('Version: ' + responseData.version);
-            $('#userCount').html('User Count: ' + responseData.userCount);
-            $('#lastUpdate').html('Last updated: ' + responseData.lastUpdate);
-        },
-        error: function(xhr, status, error) {
-            bootstrapAlert('danger', error);
-        }
-    });
-    
     $('#loginButton').click(function(event) {
         event.preventDefault();
         let valid = validateFormData();
@@ -42,7 +25,7 @@ $(document).ready(function() {
                 success: function(data) {
                     let responseData = JSON.parse(data);
                     if (responseData.status === "success") {
-                        window.location.href = 'dashboard.html';
+                        window.location.href = '/dashboard';
                     }
                     else {
                         bootstrapAlert('danger', 'Invalid login credentials.');

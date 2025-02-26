@@ -18,7 +18,8 @@ public class HttpServerApp {
 
     //create all contexts for API here
     private static void createAPIEndpoints(HttpServer server) {
-        server.createContext("/", new StaticFileHandler());
+        server.createContext("/", new ThymeleafHandler());
+        server.createContext("/static", new StaticFileHandler());
         server.createContext("/api/login", new LoginHandler());
         server.createContext("/api/metadata", new MetadataHandler());
         server.createContext("/api/users", new UserHandler());

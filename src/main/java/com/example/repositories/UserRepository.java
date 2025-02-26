@@ -22,4 +22,13 @@ public class UserRepository {
 
         return rs;
     }
+
+    public static ResultSet getUserByEmail(String email) throws SQLException {
+        String query = "SELECT * FROM users WHERE email =?";
+        PreparedStatement pstmt = DatabaseConnectionApp.getConnection().prepareStatement(query);
+        pstmt.setString(1, email);
+        ResultSet rs = pstmt.executeQuery();
+
+       return rs;
+    }
 }

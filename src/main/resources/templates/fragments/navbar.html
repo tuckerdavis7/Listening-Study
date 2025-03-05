@@ -1,13 +1,32 @@
 <div th:fragment="navbar">
-    <div class="fixed-bottom bg-dark text-white py-3" id="navbar-container">
-        <div class="d-flex justify-content-between">
-            <span id="userCount" class="px-3"></span>
+    <nav class="navbar navbar-expand-lg bg-dark">
+        <div class="container-fluid">
+            <span class="navbar-brand mb-0 h1 text-white">Listening Study</span>
             
-            <div class="d-flex">
-                <span id="version" class="px-3"></span>
-                <span class="px-3"> | </span>
-                <span id="lastUpdate" class="px-3"></span>
-            </div>
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link text-white active" aria-current="page" href="./">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white active" aria-current="page" href="./">Playlists</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white active" aria-current="page" href="./">Quizzes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white active" aria-current="page" href="./">Results</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white active" aria-current="page" href="./">Class</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="./about">About</a>
+                    </li>
+                    <!-- <li class="nav-item">
+                        <button class="btn btn-danger navbar-btn">Log Out</button>
+                    </li> -->
+                </ul>
+
+                <button class="btn btn-danger navbar-btn">Log Out</button>
         </div>
-    </div>
-</div>
+    </nav>

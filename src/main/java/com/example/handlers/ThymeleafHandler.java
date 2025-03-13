@@ -29,19 +29,16 @@ public class ThymeleafHandler implements HttpHandler {
 
         switch (path) {
             case "/":
-                System.out.println("Processing request for index.html");
                 String indexRenderedContent = renderIndexPage();
                 sendThymeleafResponse(exchange, indexRenderedContent);
                 break;
 
             case "/dashboard":
-                System.out.println("Processing request for dashboard.html");
                 String dashboardRenderedContent = renderDashboardPage();
                 sendThymeleafResponse(exchange, dashboardRenderedContent);
                 break;
 
             case "/player":
-            System.out.println("Processing request for youtubePlayer.html");
             String playerRenderedContent = renderPlayerPage();
             sendThymeleafResponse(exchange, playerRenderedContent);
             break;

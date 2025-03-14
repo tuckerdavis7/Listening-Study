@@ -33,9 +33,24 @@ public class ThymeleafHandler implements HttpHandler {
                 sendThymeleafResponse(exchange, indexRenderedContent);
                 break;
 
-            case "/dashboard":
-                String dashboardRenderedContent = renderDashboardPage();
-                sendThymeleafResponse(exchange, dashboardRenderedContent);
+            case "/dashboard/administrator":
+                String administratorDashboardRenderedContent = renderAdministratorDashboardPage();
+                sendThymeleafResponse(exchange, administratorDashboardRenderedContent);
+                break;
+
+            // case "/dashboard/moderator":
+            //     String moderatorDashboardRenderedContent = renderModeratorDashboardPage();
+            //     sendThymeleafResponse(exchange, moderatorDashboardRenderedContent);
+            //     break;
+
+            case "/dashboard/teacher":
+                String teacherDashboardRenderedContent = renderTeacherDashboardPage();
+                sendThymeleafResponse(exchange, teacherDashboardRenderedContent);
+                break;
+
+            case "/dashboard/student":
+                String studentDashboardRenderedContent = renderStudentDashboardPage();
+                sendThymeleafResponse(exchange, studentDashboardRenderedContent);
                 break;
 
             case "/player":
@@ -61,7 +76,21 @@ public class ThymeleafHandler implements HttpHandler {
         return render("index", context);
     }
 
-    private String renderDashboardPage() {
+    private String renderAdministratorDashboardPage() {
+        Context context = new Context();
+        context.setVariable("message", "Welcome to the Dashboard!");
+
+        return render("administratorDashboard", context);
+    }
+
+    private String renderTeacherDashboardPage() {
+        Context context = new Context();
+        context.setVariable("message", "Welcome to the Dashboard!");
+
+        return render("teacherDashboard", context);
+    }
+
+    private String renderStudentDashboardPage() {
         Context context = new Context();
         context.setVariable("message", "Welcome to the Dashboard!");
 

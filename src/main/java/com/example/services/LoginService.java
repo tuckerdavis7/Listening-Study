@@ -25,6 +25,7 @@ public class LoginService extends BaseService{
                 boolean isMatching = BCrypt.checkpw(formPassword, hashPassword);
 
                 if (isMatching) {
+                    loginMap.put("role", result.getString("role"));
                     responseString = formatJSON(loginMap, "success"); //correct login
                 }
                 else{

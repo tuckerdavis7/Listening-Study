@@ -72,3 +72,8 @@ function repositionAlerts() {
         totalHeight += $(this).outerHeight(true) + 10;
     });
 }
+
+//Universal logout button handling.  Built in case if more is required for API
+function handleLogOut() {
+    window.location.href = '/';
+}

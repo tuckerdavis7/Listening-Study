@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+
+    <div th:replace="~{fragments/styles :: styles}"></div>
+
+    <div th:replace="~{fragments/scripts :: scripts}"></div>
+    <script src="../static/js/administratorDashboard.js"></script>
+
+</head>
+<body>
+    <div th:replace="~{fragments/administratorNavbar :: navbar}"></div>
+
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <h2 class="text-center">Manage Bug Reports</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mx-auto col-md-11 border-0">
+        <div class="col mt-2">
+            <table id="reportTable" class="datatable-simple display responive table table-striped table-sm w-100 dataTable no-footer dtr-inline">
+                <caption class="d-none">Report Table</caption>
+                <thead>
+                    <tr>
+                        <th scope="col"> </th>
+                        <th title="Date" scope="col">Report Date</th>
+                        <th title="Rfn" scope="col">First Name</th>
+                        <th title="Rln" scope="col">Last Name</th>
+                        <th title="Sts" scope="col">Status</th>
+                    </tr>
+                </thead>
+                <tbody class="table-bordered p-0"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

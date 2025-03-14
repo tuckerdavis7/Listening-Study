@@ -24,9 +24,28 @@ $(document).ready(function() {
                 contentType: 'application/json',
                 success: function(data) {
                     let responseData = JSON.parse(data);
+
                     if (responseData.status === "success") {
-                        window.location.href = '/dashboard';
+                        console.log(responseData.role);
+                        switch(responseData.role) {
+                            case "administrator":
+                                window.location.href = '/dashboard/administrator';
+                                break;
+                            
+                            case "moderator":
+                                //windw.location.href='/dashboard/moderator'
+                                break;
+
+                            case "teacher":
+                                //windw.location.href='/dashboard/teacher'
+                                break;
+                            
+                            case "student":
+                            windw.location.href='/dashboard/student'
+                            break;
+                        }
                     }
+
                     else {
                         bootstrapAlert('danger', 'Invalid login credentials.');
                     }                                         
@@ -56,6 +75,6 @@ function validateFormData() {
         bootstrapAlert('danger', 'Fill all fields.');
         return false;
     }
-    
+
     return true;
 }

@@ -43,6 +43,11 @@ public class ThymeleafHandler implements HttpHandler {
             sendThymeleafResponse(exchange, playerRenderedContent);
             break;
 
+            case "/register":
+            String registerRenderedContent = renderRegistrationPage();
+            sendThymeleafResponse(exchange, registerRenderedContent);
+            break;
+
             default:
                 send404(exchange);
                 break;
@@ -59,18 +64,24 @@ public class ThymeleafHandler implements HttpHandler {
     private String renderDashboardPage() {
         Context context = new Context();
         context.setVariable("message", "Welcome to the Dashboard!");
-        // context.setVariable("user", "John Doe");
 
-        return render("dashboard", context);
+        return render("studentDashboard", context);
     }
 
     private String renderPlayerPage() {
         Context context = new Context();
         context.setVariable("message", "Welcome to the Youtube Player!");
-        // context.setVariable("user", "John Doe");
 
         return render("youtubePlayer", context);
     }
+
+    private String renderRegistrationPage() {
+        Context context = new Context();
+        context.setVariable("message", "Welcome to the Registration Page!");
+
+        return render("registration", context);
+    }
+
 
     //base rendering function for all pages
     private String render(String template, Context context) {

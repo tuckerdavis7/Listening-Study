@@ -1,4 +1,4 @@
-let reportData = [
+var reportData = [
     {
         "initialDate": "03/14/2025 13:35:37",
         "first": "Jane",
@@ -18,179 +18,7 @@ let reportData = [
         "status": "Open",
         "modifiedDate": "03/14/2025 13:35:37",
         "modifiedUser": "reiner_13"
-    },
-    {
-        "initialDate": "03/14/2025 13:35:37",
-        "first": "Jane",
-        "last": "Doe",
-        "email": "doe@sru.edu",
-        "description": "A long text-field explaining the issue at hand",
-        "status": "Open",
-        "modifiedDate": "03/14/2025 13:35:37",
-        "modifiedUser": "jdoe" 
-    },{
-        "initialDate": "03/14/2025 13:35:37",
-        "first": "Jane",
-        "last": "Doe",
-        "email": "doe@sru.edu",
-        "description": "A long text-field explaining the issue at hand",
-        "status": "Open",
-        "modifiedDate": "03/14/2025 13:35:37",
-        "modifiedUser": "jdoe" 
-    },{
-        "initialDate": "03/14/2025 13:35:37",
-        "first": "Jane",
-        "last": "Doe",
-        "email": "doe@sru.edu",
-        "description": "A long text-field explaining the issue at hand",
-        "status": "Open",
-        "modifiedDate": "03/14/2025 13:35:37",
-        "modifiedUser": "jdoe" 
-    },{
-        "initialDate": "03/14/2025 13:35:37",
-        "first": "Jane",
-        "last": "Doe",
-        "email": "doe@sru.edu",
-        "description": "A long text-field explaining the issue at hand",
-        "status": "Open",
-        "modifiedDate": "03/14/2025 13:35:37",
-        "modifiedUser": "jdoe" 
-    },{
-        "initialDate": "03/14/2025 13:35:37",
-        "first": "Jane",
-        "last": "Doe",
-        "email": "doe@sru.edu",
-        "description": "A long text-field explaining the issue at hand",
-        "status": "Open",
-        "modifiedDate": "03/14/2025 13:35:37",
-        "modifiedUser": "jdoe" 
-    },{
-        "initialDate": "03/14/2025 13:35:37",
-        "first": "Jane",
-        "last": "Doe",
-        "email": "doe@sru.edu",
-        "description": "A long text-field explaining the issue at hand",
-        "status": "Open",
-        "modifiedDate": "03/14/2025 13:35:37",
-        "modifiedUser": "jdoe" 
-    },{
-        "initialDate": "03/14/2025 13:35:37",
-        "first": "Jane",
-        "last": "Doe",
-        "email": "doe@sru.edu",
-        "description": "A long text-field explaining the issue at hand",
-        "status": "Open",
-        "modifiedDate": "03/14/2025 13:35:37",
-        "modifiedUser": "jdoe" 
-    },{
-        "initialDate": "03/14/2025 13:35:37",
-        "first": "Jane",
-        "last": "Doe",
-        "email": "doe@sru.edu",
-        "description": "A long text-field explaining the issue at hand",
-        "status": "Open",
-        "modifiedDate": "03/14/2025 13:35:37",
-        "modifiedUser": "jdoe" 
-    },{
-        "initialDate": "03/14/2025 13:35:37",
-        "first": "Jane",
-        "last": "Doe",
-        "email": "doe@sru.edu",
-        "description": "A long text-field explaining the issue at hand",
-        "status": "Open",
-        "modifiedDate": "03/14/2025 13:35:37",
-        "modifiedUser": "jdoe" 
-    },{
-        "initialDate": "03/14/2025 13:35:37",
-        "first": "Jane",
-        "last": "Doe",
-        "email": "doe@sru.edu",
-        "description": "A long text-field explaining the issue at hand",
-        "status": "Open",
-        "modifiedDate": "03/14/2025 13:35:37",
-        "modifiedUser": "jdoe" 
-    },{
-        "initialDate": "03/14/2025 13:35:37",
-        "first": "Jane",
-        "last": "Doe",
-        "email": "doe@sru.edu",
-        "description": "A long text-field explaining the issue at hand",
-        "status": "Open",
-        "modifiedDate": "03/14/2025 13:35:37",
-        "modifiedUser": "jdoe" 
-    },{
-        "initialDate": "03/14/2025 13:35:37",
-        "first": "Jane",
-        "last": "Doe",
-        "email": "doe@sru.edu",
-        "description": "A long text-field explaining the issue at hand",
-        "status": "Open",
-        "modifiedDate": "03/14/2025 13:35:37",
-        "modifiedUser": "jdoe" 
-    },{
-        "initialDate": "03/14/2025 13:35:37",
-        "first": "Jane",
-        "last": "Doe",
-        "email": "doe@sru.edu",
-        "description": "A long text-field explaining the issue at hand",
-        "status": "Open",
-        "modifiedDate": "03/14/2025 13:35:37",
-        "modifiedUser": "jdoe" 
-    },{
-        "initialDate": "03/14/2025 13:35:37",
-        "first": "Jane",
-        "last": "Doe",
-        "email": "doe@sru.edu",
-        "description": "A long text-field explaining the issue at hand",
-        "status": "Open",
-        "modifiedDate": "03/14/2025 13:35:37",
-        "modifiedUser": "jdoe" 
-    },{
-        "initialDate": "03/14/2025 13:35:37",
-        "first": "Jane",
-        "last": "Doe",
-        "email": "doe@sru.edu",
-        "description": "A long text-field explaining the issue at hand",
-        "status": "Open",
-        "modifiedDate": "03/14/2025 13:35:37",
-        "modifiedUser": "jdoe" 
-    },{
-        "initialDate": "03/14/2025 13:35:37",
-        "first": "Jane",
-        "last": "Doe",
-        "email": "doe@sru.edu",
-        "description": "A long text-field explaining the issue at hand",
-        "status": "Open",
-        "modifiedDate": "03/14/2025 13:35:37",
-        "modifiedUser": "jdoe" 
-    },{
-        "initialDate": "03/14/2025 13:35:37",
-        "first": "Jane",
-        "last": "Doe",
-        "email": "doe@sru.edu",
-        "description": "A long text-field explaining the issue at hand",
-        "status": "Open",
-        "modifiedDate": "03/14/2025 13:35:37",
-        "modifiedUser": "jdoe" 
-    },{
-        "initialDate": "03/14/2025 13:35:37",
-        "first": "Jane",
-        "last": "Doe",
-        "email": "doe@sru.edu",
-        "description": "A long text-field explaining the issue at hand",
-        "status": "Open",
-        "modifiedDate": "03/14/2025 13:35:37",
-        "modifiedUser": "jdoe" 
-    },{
-        "initialDate": "03/14/2025 13:35:37",
-        "first": "Jane",
-        "last": "Doe",
-        "email": "doe@sru.edu",
-        "description": "A long text-field explaining the issue at hand",
-        "status": "Open",
-        "modifiedDate": "03/14/2025 13:35:37",
-        "modifiedUser": "jdoe" 
-    },
+    }
 ];
 
 $(document).ready(function () {
@@ -208,7 +36,7 @@ $(document).ready(function () {
             "<'row'<'col-sm-12'tr>>" +
             "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>><'#bottomLink'>",
         scrollCollapse: false,
-        scrollY: '50vh', // Use viewport percentage for responsive height
+        scrollY: '50vh',
         responsive: true,
         filter: true,
         info: false,
@@ -225,19 +53,18 @@ $(document).ready(function () {
                     var dropdown = '<div class="dropdown show">' +
                         '<a class="btn-sm btn btn-info" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fa fa-wrench" aria-hidden="true"></span></a>' +
                         '<div class="dropdown-menu aria-labelledby="dropdownMenuLink">' +
-                        '<a class="dropdown-item" href="#" data-rowindex ="' + meta.row + '" data-bs-toggle="modal" data-bs-target="reportModal">View Report Details</a>' + 
-                        '<a class="dropdown-item" href="#" data-rowindex ="' + meta.row + '" data-bs-toggle="modal" data-bs-target="reportEditModal">Edit Report</a>' + 
-                        '<a class="dropdown-item" href="#" data-rowindex ="' + meta.row + '" data-bs-toggle="modal" data-bs-target="reportResolveModal">Resolve Report</a>' + 
+                        '<a class="dropdown-item" href="#" data-rowindex ="' + meta.row + '" data-bs-toggle="modal" data-bs-target="reportModal">View/Edit Report Details</a>' + 
+                        '<a class="dropdown-item" href="#" data-rowindex ="' + meta.row + '" data-bs-toggle="modal" data-bs-target="resolveModal">Resolve Report</a>' + 
                         '</div></div>';
                     return dropdown;
                 },
                 orderable: false,
                 width: "1 em"
             },
-            { data: "initialDate", class: "charcolumn", width: "2 rem"},
-            { data: "first", class: "charcolumn", width: "3 rem"},
-            { data: "last", class: "charcolumn", width: "3 rem"},
-            { data: "status", class: "charcolumn", width: "1 rem"},
+            { data: "initialDate", class: "charcolumn", width: "2 rem" },
+            { data: "first", class: "charcolumn", width: "3 rem" },
+            { data: "last", class: "charcolumn", width: "3 rem" },
+            { data: "status", class: "charcolumn", width: "1 rem" },
         ],
         drawCallback: function() {
             $('.dt-paging-button.current').attr('style', 'color: white !important'); //inline css styling used as last resort for highest priority selector
@@ -251,7 +78,7 @@ $(document).ready(function () {
             $(this.header()).closest('thead').children('.searchRow').append('<th></th>');
         }
         else {
-            var that = this;
+            let that = this;
             let title = $(this.header()).text();
             $(this.header()).closest('thead').children('.searchRow').append('<th><input class="form-control form-control-sm m-1 w-100 sorting_disabled" type="search" placeholder="Filter ' + title + '" /></th>');
             $('input', $('#reportTable thead tr.searchRow th').eq(i)).on('keyup change clear search', function() {

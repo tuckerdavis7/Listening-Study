@@ -28,13 +28,41 @@
                     <tr>
                         <th scope="col"> </th>
                         <th title="Date" scope="col">Report Date</th>
-                        <th title="Rfn" scope="col">First Name</th>
-                        <th title="Rln" scope="col">Last Name</th>
+                        <th title="Rfn" scope="col">Name</th>
+                        <th title="Led" scope="col">Last Edited</th>
                         <th title="Sts" scope="col">Status</th>
                     </tr>
                 </thead>
                 <tbody class="table-bordered p-0"></tbody>
             </table>
+        </div>
+    </div>
+
+    <div class="modal fade" id="reportModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Report</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h5>Report Details</h5>
+                    <table>
+                        <tr>
+                            <th scope="row" class="p-0">Report Date:</th>
+                            <td id="initialDate"></td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="p-0">Name:</th>
+                            <td id="name"></td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="p-0">Name:</th>
+                            <td id="name"></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 

@@ -78,3 +78,7 @@
   display: flex !important;
   align-items: center !important;
 }
+
+.pillColumn{
+  text-align: center;
+}

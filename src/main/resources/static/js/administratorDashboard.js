@@ -15,8 +15,18 @@ var reportData = [
         "last": "Cena",
         "email": "cena@sru.edu",
         "description": "A long text-field explaining the issue at hand",
-        "status": "Open",
+        "status": "Closed",
         "modifiedDate": "03/15/2025 13:50:55",
+        "modifiedUser": "reiner_13" 
+    },
+    {
+        "initialDate": "03/10/2025 07:36:24",
+        "first": "Tucker",
+        "last": "Davis",
+        "email": "davis@sru.edu",
+        "description": "A long text-field explaining the issue at hand",
+        "status": "Resolved",
+        "modifiedDate": "03/15/2025 13:47:56",
         "modifiedUser": "reiner_13" 
     }
 ]
@@ -46,7 +56,7 @@ $(document).ready(function () {
                     var dropdown = '<div class="dropdown show">' +
                         '<a class="btn-sm btn btn-info" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fa fa-wrench" aria-hidden="true"></span></a>' +
                         '<div class="dropdown-menu aria-labelledby="dropdownMenuLink">' +
-                        '<a class="dropdown-item" href="#" data-rowindex ="' + meta.row + '" data-bs-toggle="modal" data-bs-target="#reportModal">View/Edit Report Details</a>' + 
+                        '<a class="dropdown-item" href="#" data-rowindex ="' + meta.row + '" data-bs-toggle="modal" data-bs-target="#reportModal">View Report Details</a>' + 
                         '<a class="dropdown-item" href="#" data-rowindex ="' + meta.row + '" data-bs-toggle="modal" data-bs-target="#resolveModal">Resolve Report</a>' + 
                         '</div></div>';
                     return dropdown;
@@ -74,8 +84,18 @@ $(document).ready(function () {
                 data: "status",
                 width: "6 rem",
                 render: function(data, type, row, meta) {
-                    let pillClass = (data === "Open") ? "bg-warning" : "bg-success";
-                     return '<span class="badge rounded-pill ' + pillClass + ' text-center d-inline-block">' + data + '</span>';
+                    let pillClass;
+                    if (data === "Open") {
+                        pillClass = "bg-danger";
+                    }
+                    else if (data === "Closed") {
+                        pillClass = "bg-warning";
+                    }
+                    else {
+                        pillClass = "bg-success";
+                    }
+
+                    return '<span class="badge rounded-pill ' + pillClass + ' text-center d-inline-block">' + data + '</span>';
                 }
             },
            
@@ -114,10 +134,43 @@ $(document).ready(function () {
         }
     });
 
-    //order table by status column
-    reportTable.order([[4, 'asc']]).draw();
+    //order table by date column
+    reportTable.order([[1, 'asc']]).draw();
 
     $('#reportModal').on('show.bs.modal', function (event) {
-        console.log('hello');
+        let button = $(event.relatedTarget);
+        let row = reportTable.row(button.data('rowindex')).data();
+
+        $('#date').html(row.initialDate);
+        $('#name').html(row.first + ' ' + row.last);
+        $('#email').html(row.email);
+        $('#date').html(row.initialDate);
+        $('#description').html(row.description);
+        $('#modified').html(row.modifiedDate + ' ' + row.modifiedUser);
+        $('#status').html(row.status);
+
+        if (row.status == 'Closed') {
+            $('#closeReportButton').hide();
+            $('#commentReportButton').show();
+        }
+
+        else if (row.status == 'Open'){
+            $('#commentReportButton').hide();
+            $('#closeReportButton').show();
+        }
+
+        else {
+            $('#closeReportButton, #commentReportButton').hide();
+        }
+    });
+
+    $('#closeReportButton').on('click', function() {
+        bootstrapAlert('success', 'Report closed successfully');
+        $('#reportModal').modal('hide');
+    });
+
+    $('#resolveReportButton').on('click', function() {
+        bootstrapAlert('success', 'Report resolved successfully');
+        $('#reportModal, #reportSubModal').modal('hide');
     });
 })

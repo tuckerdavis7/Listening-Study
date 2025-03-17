@@ -57,8 +57,12 @@ public class ThymeleafHandler implements HttpHandler {
                 sendThymeleafResponse(exchange, content);
             }
             else {
-                content = renderStudentViewPlaylistPage();
+                String playlistId = routeStrings[3];
+                // Check if valid playlist ID
+
+                content = renderStudentPlaylistsPage(playlistId);
                 sendThymeleafResponse(exchange, content);
+
             }
             
         }
@@ -148,9 +152,10 @@ public class ThymeleafHandler implements HttpHandler {
         return render("teacherLibrary", context);
     }
 
-    private String renderStudentViewPlaylistPage() {
+    private String renderStudentPlaylistsPage(String playlistId) {
         Context context = new Context();
         context.setVariable("message", "Welcome to the View Playlist Page!");
+        // Return playlist data from our backend using the playlistId
 
         return render("studentPlaylist", context);
     }

@@ -2,12 +2,12 @@ var playlistData = [
     {
         "name": "Classical 1",
         "class": "MUSIC 101",
-        "id": "0001"
+        "playlistId": "0001"
     },
     {
         "name": "Jazz 1",
         "class": "MUSIC 102",
-        "id": "0002"
+        "playlistId": "0002"
     }
 ];
 
@@ -44,10 +44,10 @@ $(document).ready(function () {
                 data: null,
                 render: function(data, type, row, meta) {
                     var dropdown = '<div class="dropdown show">' +
-                        '<a class="btn-sm btn btn-info" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fa fa-wrench" aria-hidden="true"></span></a>' +
+                        '<a class="btn-sm btn btn-info" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fa fa-wrench" aria-hidden="true"></span></a>' +
                         '<div class="dropdown-menu aria-labelledby="dropdownMenuLink">' +
-                        '<a class="dropdown-item" href="#" data-rowindex ="' + meta.row + '" data-bs-toggle="modal" data-bs-target="editModal">Edit Playlist</a>' + 
-                        '<a class="dropdown-item" href="#" data-rowindex ="' + meta.row + '" data-bs-toggle="modal" data-bs-target="deleteModal">Delete Playlist</a>' + 
+                        '<a class="dropdown-item" href="#" data-rowindex ="' + meta.row + '">Edit Playlist</a>' + 
+                        '<a class="dropdown-item" href="#" data-rowindex ="' + meta.row + '">Delete Playlist</a>' + 
                         '</div></div>';
                     return dropdown;
                 },
@@ -58,7 +58,8 @@ $(document).ready(function () {
                 class: "viewColumn",
                 data: null,
                 render: function(data, type, row, meta) {
-                    var viewButton = '<a class="btn-sm btn btn-info" href="./playlists/0001" role="button"><span class="fa fa-eye" aria-hidden="true"></span></a>';
+                    var playlistId = row.playlistId;
+                    var viewButton = '<a class="btn-sm btn btn-info" href="./playlists/' + playlistId + '" role="button"><span class="fa fa-eye" aria-hidden="true"></span></a>';
                     return viewButton;
                 },
                 orderable: false,
@@ -71,7 +72,8 @@ $(document).ready(function () {
                 class: "viewColumn",
                 data: null,
                 render: function(data, type, row, meta) {
-                    var viewButton = '<a class="btn-sm btn btn-info" href="./playlists/0001" role="button"><span class="fa fa-eye" aria-hidden="true"></span></a>';
+                    var playlistId = row.playlistId;
+                    var viewButton = '<a class="btn-sm btn btn-info" href="./playlists/' + playlistId + '" role="button"><span class="fa fa-eye" aria-hidden="true"></span></a>';
                     return viewButton;
                 },
                 orderable: false,

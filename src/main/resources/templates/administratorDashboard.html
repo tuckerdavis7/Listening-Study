@@ -20,21 +20,23 @@
         </div>
     </div>
 
-    <div class="card mx-auto col-md-11 border-0">
-        <div class="col mt-2">
-            <table id="reportTable" class="datatable-simple display responive table table-striped table-sm w-100 dataTable no-footer dtr-inline">
-                <caption class="d-none">Report Table</caption>
-                <thead>
-                    <tr>
-                        <th scope="col"> </th>
-                        <th title="Date" scope="col">Report Date</th>
-                        <th title="Rfn" scope="col">Name</th>
-                        <th title="Led" scope="col">Last Edited</th>
-                        <th title="Sts" scope="col">Status</th>
-                    </tr>
-                </thead>
-                <tbody class="table-bordered p-0"></tbody>
-            </table>
+    <div id="bugReports" class="tab-content">
+        <div class="card mx-auto col-md-11 border-0">
+            <div class="col mt-2">
+                <table id="reportTable" class="datatable-simple display responive table table-striped table-sm w-100 dataTable no-footer dtr-inline">
+                    <caption class="d-none">Report Table</caption>
+                    <thead>
+                        <tr>
+                            <th scope="col"> </th>
+                            <th title="Date" scope="col">Report Date</th>
+                            <th title="Rfn" scope="col">Name</th>
+                            <th title="Led" scope="col">Last Edited</th>
+                            <th title="Sts" scope="col">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-bordered p-0"></tbody>
+                </table>
+            </div>
         </div>
     </div>
 
@@ -103,6 +105,14 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <div id="designateModerators" class="tab-content">
+        <p>This is where you manage moderators.</p>
+    </div>
+    
+    <div id="manageUsers" class="tab-content">
+        <p>This is where you manage users.</p>
     </div>
 
     <div th:replace="~{fragments/footer :: footer}"></div>

@@ -29,7 +29,6 @@ public class ThymeleafHandler implements HttpHandler {
         String path = exchange.getRequestURI().getPath();
         String content = "";
 
-        System.out.println(path);
         if (path.equals("/")) {
             content = renderIndexPage();
             sendThymeleafResponse(exchange, content);
@@ -62,6 +61,10 @@ public class ThymeleafHandler implements HttpHandler {
                 sendThymeleafResponse(exchange, content);
             }
             
+        }
+        else if (path.equals("/student/performance")) {
+            content = renderStudentPerformancePage();
+            sendThymeleafResponse(exchange, content);
         }
         else if (path.startsWith("/teacher/playlists")) {
             String[] routeStrings = path.split("/");
@@ -129,6 +132,13 @@ public class ThymeleafHandler implements HttpHandler {
         context.setVariable("message", "Welcome to the Playlists Page!");
 
         return render("studentLibrary", context);
+    }
+
+    private String renderStudentPerformancePage() {
+        Context context = new Context();
+        context.setVariable("message", "Welcome to Performance Page!");
+
+        return render("studentPerformance", context);
     }
 
     private String renderTeacherPlaylistsPage() {

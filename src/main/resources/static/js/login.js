@@ -33,11 +33,11 @@ $(document).ready(function() {
                                 break;
                             
                             case "moderator":
-                                //windw.location.href='/dashboard/moderator'
+                                windw.location.href='/dashboard/moderator'
                                 break;
 
                             case "teacher":
-                                //windw.location.href='/dashboard/teacher'
+                                windw.location.href='/dashboard/teacher'
                                 break;
                             
                             case "student":

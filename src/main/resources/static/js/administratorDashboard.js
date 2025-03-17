@@ -57,7 +57,6 @@ $(document).ready(function () {
                         '<a class="btn-sm btn btn-info" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fa fa-wrench" aria-hidden="true"></span></a>' +
                         '<div class="dropdown-menu aria-labelledby="dropdownMenuLink">' +
                         '<a class="dropdown-item" href="#" data-rowindex ="' + meta.row + '" data-bs-toggle="modal" data-bs-target="#reportModal">View Report Details</a>' + 
-                        '<a class="dropdown-item" href="#" data-rowindex ="' + meta.row + '" data-bs-toggle="modal" data-bs-target="#resolveModal">Resolve Report</a>' + 
                         '</div></div>';
                     return dropdown;
                 },
@@ -148,6 +147,9 @@ $(document).ready(function () {
         $('#description').html(row.description);
         $('#modified').html(row.modifiedDate + ' ' + row.modifiedUser);
         $('#status').html(row.status);
+
+        //clearing comment field in submodal
+        $('#resolution').val('');
 
         if (row.status == 'Closed') {
             $('#closeReportButton').hide();

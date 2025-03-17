@@ -34,7 +34,7 @@ public class ThymeleafHandler implements HttpHandler {
                 sendThymeleafResponse(exchange, indexRenderedContent);
                 break;
 
-            case "/dashboard/administrator":
+            case "/administrator/dashboard":
                 String administratorDashboardRenderedContent = renderAdministratorDashboardPage();
                 sendThymeleafResponse(exchange, administratorDashboardRenderedContent);
                 break;
@@ -44,12 +44,12 @@ public class ThymeleafHandler implements HttpHandler {
             //     sendThymeleafResponse(exchange, moderatorDashboardRenderedContent);
             //     break;
 
-            case "/dashboard/teacher":
+            case "/teacher/dashboard":
                 String teacherDashboardRenderedContent = renderTeacherDashboardPage();
                 sendThymeleafResponse(exchange, teacherDashboardRenderedContent);
                 break;
 
-            case "/dashboard/student":
+            case "/student/dashboard":
                 String studentDashboardRenderedContent = renderStudentDashboardPage();
                 sendThymeleafResponse(exchange, studentDashboardRenderedContent);
                 break;
@@ -73,6 +73,11 @@ public class ThymeleafHandler implements HttpHandler {
                 String teacherViewPlaylistRenderedContent = renderTeacherViewPlaylistPage();
                 sendThymeleafResponse(exchange, teacherViewPlaylistRenderedContent);
                 break;
+            
+            case "/student/quiz":
+                String quizRenderedContent = renderQuizPage();
+                sendThymeleafResponse(exchange, quizRenderedContent);
+                break;
 
             case "/player":
                 String playerRenderedContent = renderPlayerPage();
@@ -82,6 +87,11 @@ public class ThymeleafHandler implements HttpHandler {
             case "/register":
                 String registerRenderedContent = renderRegistrationPage();
                 sendThymeleafResponse(exchange, registerRenderedContent);
+                break;
+            
+            case "/teacher/classlist":
+                String teacherClasslistRenderedContent = renderteacherClasslistPage();
+                sendThymeleafResponse(exchange, teacherClasslistRenderedContent);
                 break;
 
             case "/login":
@@ -151,6 +161,13 @@ public class ThymeleafHandler implements HttpHandler {
         return render("teacherPlaylist", context);
     }
 
+    private String renderQuizPage() {
+        Context context = new Context();
+        context.setVariable("message", "Welcome to the Quiz Page!");
+
+        return render("quiz", context);
+    }
+
     private String renderPlayerPage() {
         Context context = new Context();
         context.setVariable("message", "Welcome to the Youtube Player!");
@@ -198,5 +215,12 @@ public class ThymeleafHandler implements HttpHandler {
         try (OutputStream os = exchange.getResponseBody()) {
             os.write(response.getBytes());
         }
+    }
+
+    private String renderteacherClasslistPage() {
+        Context context = new Context();
+        context.setVariable("message", "Welcome to the teacher classlist Page!");
+
+        return render("teacherClasslist", context);
     }
 }

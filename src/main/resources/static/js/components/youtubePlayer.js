@@ -41,10 +41,12 @@ function onPlayerReady(event) {
 function onPlayerStateChange(event) {
     if (event.data == YT.PlayerState.PLAYING) {
         playing = true;
-        $('#playButton').html('&#9208;'); // pause symbol
+        $('#playSymbol').removeClass("fa-play");
+        $('#playSymbol').addClass("fa-pause");
     }
     else {
         playing = false;
-        $('#playButton').html('&#9654;'); // play symbol
+        $('#playSymbol').removeClass("fa-pause");
+        $('#playSymbol').addClass("fa-play");
     }
 }

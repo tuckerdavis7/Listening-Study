@@ -19,3 +19,12 @@
 .form-range::-webkit-slider-thumb {
     background-color: #333333;
 }
+.btn-info {
+    background-color: #070b8a;
+    border-color: #070b8a;
+}
+    
+.fa-play, .fa-pause {
+    color: white;
+    display: inline;
+}

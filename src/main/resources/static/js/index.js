@@ -8,12 +8,15 @@ $(document).ready(function() {
         event.preventDefault();
         window.location.href = "/register";
     });
+
+    $('#mainLogin').click(function(event) {
+        event.preventDefault();
+        window.location.href = "/login";
+    });
+
+    $('#mainRegister').click(function(event) {
+        event.preventDefault();
+        window.location.href = "/register";
+    });
+
 })
-
-/*function loginRedirect(){
-    window.location.href = "/login";
-}
-
-function registerRedirect(){
-    window.location.href = "/register";
-}*/

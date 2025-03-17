@@ -13,6 +13,7 @@ h2 {
     padding: 50px;
 }
 
-#teacherCard {
+.teacherCard {
     border: solid black;
+    padding: 10px;
 }

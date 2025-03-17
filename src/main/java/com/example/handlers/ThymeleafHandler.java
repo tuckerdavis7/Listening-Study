@@ -73,6 +73,11 @@ public class ThymeleafHandler implements HttpHandler {
                 String teacherViewPlaylistRenderedContent = renderTeacherViewPlaylistPage();
                 sendThymeleafResponse(exchange, teacherViewPlaylistRenderedContent);
                 break;
+            
+            case "/student/quiz":
+                String quizRenderedContent = renderQuizPage();
+                sendThymeleafResponse(exchange, quizRenderedContent);
+                break;
 
             case "/player":
                 String playerRenderedContent = renderPlayerPage();
@@ -154,6 +159,13 @@ public class ThymeleafHandler implements HttpHandler {
         context.setVariable("message", "Welcome to the View Playlist Page!");
 
         return render("teacherPlaylist", context);
+    }
+
+    private String renderQuizPage() {
+        Context context = new Context();
+        context.setVariable("message", "Welcome to the Quiz Page!");
+
+        return render("quiz", context);
     }
 
     private String renderPlayerPage() {

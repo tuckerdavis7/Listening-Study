@@ -23,7 +23,7 @@ transition: all 0.2s ease-in-out !important;
 
 .dt-paging-button.current {
 background-color: #070b8a !important;
-color: white !important;
+/* color: white !important; */
 border-color: #070b8a !important;
 font-weight: 500 !important;
 }
@@ -48,9 +48,6 @@ justify-content: flex-end !important;
 margin-top: 0.75rem !important;
 }
 
-.dt-paging-button.current:hover {
-color: white !important;
-}
 
 .dt-paging nav {
 display: flex !important;

@@ -7,7 +7,6 @@
 
     <div th:replace="~{fragments/scripts :: scripts}"></div>
     <link rel="stylesheet" href="../static/css/teacherDashboard.css">
-    <script src="../static/js/dashboard.js"></script>
 
 </head>
 <body>
@@ -26,11 +25,11 @@
         <div class="container mt-5 card-container" id="cardContainer">
             <div class="row justify-content-between">
                 <div class="col-md-3">
-                    <div class="teacherCard" style="width: 100%;"> 
+                    <div class="teacherCard" style="width: 100%;" id="playlistsCard"> 
                         <div class="card-body">
                             <h5 class="card-title">Playlists</h5>
                             <p class="card-text">View playlists and preview songs.</p>
-                            <a href="#" class="btn btn-primary">Open</a>
+                            <a href="/teacher/playlists" class="btn btn-primary">Open</a>
                         </div>
                     </div>
                 </div>

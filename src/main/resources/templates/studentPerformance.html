@@ -6,8 +6,7 @@
     <div th:replace="~{fragments/styles :: styles}"></div>
 
     <div th:replace="~{fragments/scripts :: scripts}"></div>
-    <link rel="stylesheet" href="../static/css/studentDashboard.css">
-    <script src="../static/js/viewPlaylist.js"></script>
+    <script src="../static/js/studentPerformance.js"></script>
 
 </head>
 <body>
@@ -22,14 +21,16 @@
            <div class="card mx-auto col-md-11 border-0">
             <div class="col mt-2">
                 <table id="songTable" class="datatable-simple display responive table table-striped table-sm w-100 dataTable no-footer dtr-inline">
-                    <caption class="d-none">Song Table</caption>
+                    <caption class="d-none">Song Performance Table</caption>
                     <thead>
                         <tr>
                             <th scope="col"> </th>
-                            <th title="name" scope="col">Name</th>
-                            <th title="class" scope="col">Composer</th>
-                            <th title="year" scope="col">Year</th>
-                            <th title="year" scope="col">URL</th>
+                            <th title="name" scope="col">Song Name</th>
+                            <th title="playlistName" scope="col">Playlist Name</th>
+                            <th title="class" scope="col">Class</th>
+                            <th title="timesCorrect" scope="col">Times Correct</th>
+                            <th title="timesCorrect" scope="col">Times Quizzed</th>
+                            <th title="averageScore" scope="col">Average Score</th>
                         </tr>
                     </thead>
                     <tbody class="table-bordered p-0"></tbody>
@@ -41,7 +42,7 @@
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Preview Song</h5>
+                        <h5 class="modal-title">Song Details</h5>
                         <button type="button" class="btn-close modal-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -59,15 +60,11 @@
                                     <th scope="row" class="p-0 py-2">Year:</th>
                                     <td class="py-2" id="year"></td>
                                 </tr>
-                                <tr class="mb-3">
-                                    <th scope="row" class="p-0 py-2">URL:</th>
-                                    <td class="py-2" id="url"></td>
-                                </tr>
                             </tbody>
                         </table>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary mr-auto" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-outline-secondary mr-auto" data-bs-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>

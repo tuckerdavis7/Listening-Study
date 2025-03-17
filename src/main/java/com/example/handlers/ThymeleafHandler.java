@@ -29,7 +29,6 @@ public class ThymeleafHandler implements HttpHandler {
         String path = exchange.getRequestURI().getPath();
         String content = "";
 
-        System.out.println(path);
         if (path.equals("/")) {
             content = renderIndexPage();
             sendThymeleafResponse(exchange, content);
@@ -58,10 +57,18 @@ public class ThymeleafHandler implements HttpHandler {
                 sendThymeleafResponse(exchange, content);
             }
             else {
-                content = renderStudentViewPlaylistPage();
+                String playlistId = routeStrings[3];
+                // Check if valid playlist ID
+
+                content = renderStudentPlaylistsPage(playlistId);
                 sendThymeleafResponse(exchange, content);
+
             }
             
+        }
+        else if (path.equals("/student/performance")) {
+            content = renderStudentPerformancePage();
+            sendThymeleafResponse(exchange, content);
         }
         else if (path.startsWith("/teacher/playlists")) {
             String[] routeStrings = path.split("/");
@@ -139,6 +146,13 @@ public class ThymeleafHandler implements HttpHandler {
         return render("studentLibrary", context);
     }
 
+    private String renderStudentPerformancePage() {
+        Context context = new Context();
+        context.setVariable("message", "Welcome to Performance Page!");
+
+        return render("studentPerformance", context);
+    }
+
     private String renderTeacherPlaylistsPage() {
         Context context = new Context();
         context.setVariable("message", "Welcome to the Playlists Page!");
@@ -146,9 +160,10 @@ public class ThymeleafHandler implements HttpHandler {
         return render("teacherLibrary", context);
     }   
 
-    private String renderStudentViewPlaylistPage() {
+    private String renderStudentPlaylistsPage(String playlistId) {
         Context context = new Context();
         context.setVariable("message", "Welcome to the View Playlist Page!");
+        // Return playlist data from our backend using the playlistId
 
         return render("studentPlaylist", context);
     }

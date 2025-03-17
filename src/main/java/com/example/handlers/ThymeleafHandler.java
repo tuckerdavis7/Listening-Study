@@ -27,81 +27,72 @@ public class ThymeleafHandler implements HttpHandler {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         String path = exchange.getRequestURI().getPath();
+        String content = "";
 
-        switch (path) {
-            case "/":
-                String indexRenderedContent = renderIndexPage();
-                sendThymeleafResponse(exchange, indexRenderedContent);
-                break;
-
-            case "/administrator/dashboard":
-                String administratorDashboardRenderedContent = renderAdministratorDashboardPage();
-                sendThymeleafResponse(exchange, administratorDashboardRenderedContent);
-                break;
-
-            // case "/dashboard/moderator":
-            //     String moderatorDashboardRenderedContent = renderModeratorDashboardPage();
-            //     sendThymeleafResponse(exchange, moderatorDashboardRenderedContent);
-            //     break;
-
-            case "/teacher/dashboard":
-                String teacherDashboardRenderedContent = renderTeacherDashboardPage();
-                sendThymeleafResponse(exchange, teacherDashboardRenderedContent);
-                break;
-
-            case "/student/dashboard":
-                String studentDashboardRenderedContent = renderStudentDashboardPage();
-                sendThymeleafResponse(exchange, studentDashboardRenderedContent);
-                break;
+        System.out.println(path);
+        if (path.equals("/")) {
+            content = renderIndexPage();
+            sendThymeleafResponse(exchange, content);
+        }
+        else if (path.equals("/administrator/dashboard")) {
+            content = renderAdministratorDashboardPage();
+            sendThymeleafResponse(exchange, content);
+        }
+        else if (path.equals("/dashboard/moderator")) {
+            //content = renderModeratorDashboardPage();
+            //sendThymeleafResponse(exchange, content);
+        }
+        else if (path.equals("/teacher/dashboard")) {
+            content = renderTeacherDashboardPage();
+            sendThymeleafResponse(exchange, content);
+        }
+        else if (path.equals("/student/dashboard")) {
+            content = renderStudentDashboardPage();
+            sendThymeleafResponse(exchange, content);
+        }
+        else if (path.startsWith("/student/playlists")) {
+            String[] routeStrings = path.split("/");
             
-            case "/student/playlists":
-                String studentPlaylistsRenderedContent = renderStudentPlaylistsPage();
-                sendThymeleafResponse(exchange, studentPlaylistsRenderedContent);
-                break;
-
-            case "/teacher/playlists":
-                String teacherPlaylistsRenderedContent = renderTeacherPlaylistsPage();
-                sendThymeleafResponse(exchange, teacherPlaylistsRenderedContent);
-                break;
+            if (routeStrings.length == 3) {
+                content = renderStudentPlaylistsPage();
+                sendThymeleafResponse(exchange, content);
+            }
+            else {
+                content = renderStudentViewPlaylistPage();
+                sendThymeleafResponse(exchange, content);
+            }
             
-            case "/student/playlists/0001":
-                String studentViewPlaylistRenderedContent = renderStudentViewPlaylistPage();
-                sendThymeleafResponse(exchange, studentViewPlaylistRenderedContent);
-                break;
-
-            case "/teacher/playlists/0001":
-                String teacherViewPlaylistRenderedContent = renderTeacherViewPlaylistPage();
-                sendThymeleafResponse(exchange, teacherViewPlaylistRenderedContent);
-                break;
+        }
+        else if (path.startsWith("/teacher/playlists")) {
+            String[] routeStrings = path.split("/");
             
-            case "/student/quiz":
-                String quizRenderedContent = renderQuizPage();
-                sendThymeleafResponse(exchange, quizRenderedContent);
-                break;
-
-            case "/player":
-                String playerRenderedContent = renderPlayerPage();
-                sendThymeleafResponse(exchange, playerRenderedContent);
-                break;
-
-            case "/register":
-                String registerRenderedContent = renderRegistrationPage();
-                sendThymeleafResponse(exchange, registerRenderedContent);
-                break;
-            
-            case "/teacher/classlist":
-                String teacherClasslistRenderedContent = renderteacherClasslistPage();
-                sendThymeleafResponse(exchange, teacherClasslistRenderedContent);
-                break;
-
-            case "/login":
-            String loginRenderedContent = renderLoginPage();
-            sendThymeleafResponse(exchange, loginRenderedContent);
-            break;
-
-            default:
-                send404(exchange);
-                break;
+            if (routeStrings.length == 3) {
+                content = renderTeacherPlaylistsPage();
+                sendThymeleafResponse(exchange, content);
+            }
+            else {
+                content = renderTeacherViewPlaylistPage();
+                sendThymeleafResponse(exchange, content);
+            }
+        }
+        else if (path.equals("/student/quiz")) {
+            content = renderQuizPage();
+            sendThymeleafResponse(exchange, content);
+        }
+        else if (path.equals("/register")) {
+            content = renderRegistrationPage();
+            sendThymeleafResponse(exchange, content);
+        }
+        else if (path.equals("/teacher/classlist")) {
+            content = renderteacherClasslistPage();
+            sendThymeleafResponse(exchange, content);
+        }
+        else if (path.equals("/login")) {
+            content = renderLoginPage();
+            sendThymeleafResponse(exchange, content);
+        }
+        else {
+            send404(exchange);
         }
     }
 
@@ -166,13 +157,6 @@ public class ThymeleafHandler implements HttpHandler {
         context.setVariable("message", "Welcome to the Quiz Page!");
 
         return render("quiz", context);
-    }
-
-    private String renderPlayerPage() {
-        Context context = new Context();
-        context.setVariable("message", "Welcome to the Youtube Player!");
-
-        return render("youtubePlayer", context);
     }
 
     private String renderRegistrationPage() {

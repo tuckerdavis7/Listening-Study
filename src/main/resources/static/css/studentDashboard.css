@@ -1,0 +1,18 @@
+h1 {
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    border: solid aqua;
+    margin-bottom: 100px;
+}
+
+h2 {
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+#cardContainer {
+    border: solid aqua;
+    padding: 50px;
+}
+
+#studentCard {
+    border: solid black;
+}

@@ -1,13 +1,14 @@
 package com.example.handlers;
 
-import com.sun.net.httpserver.HttpHandler;
-import com.sun.net.httpserver.HttpExchange;
+import java.io.IOException;
+import java.io.OutputStream;
+
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
-import java.io.IOException;
-import java.io.OutputStream;
+import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpHandler;
 
 public class ThymeleafHandler implements HttpHandler {
     private TemplateEngine templateEngine;
@@ -52,15 +53,40 @@ public class ThymeleafHandler implements HttpHandler {
                 String studentDashboardRenderedContent = renderStudentDashboardPage();
                 sendThymeleafResponse(exchange, studentDashboardRenderedContent);
                 break;
+            
+            case "/student/playlists":
+                String studentPlaylistsRenderedContent = renderStudentPlaylistsPage();
+                sendThymeleafResponse(exchange, studentPlaylistsRenderedContent);
+                break;
+
+            case "/teacher/playlists":
+                String teacherPlaylistsRenderedContent = renderTeacherPlaylistsPage();
+                sendThymeleafResponse(exchange, teacherPlaylistsRenderedContent);
+                break;
+            
+            case "/student/playlists/0001":
+                String studentViewPlaylistRenderedContent = renderStudentViewPlaylistPage();
+                sendThymeleafResponse(exchange, studentViewPlaylistRenderedContent);
+                break;
+
+            case "/teacher/playlists/0001":
+                String teacherViewPlaylistRenderedContent = renderTeacherViewPlaylistPage();
+                sendThymeleafResponse(exchange, teacherViewPlaylistRenderedContent);
+                break;
 
             case "/player":
-            String playerRenderedContent = renderPlayerPage();
-            sendThymeleafResponse(exchange, playerRenderedContent);
-            break;
+                String playerRenderedContent = renderPlayerPage();
+                sendThymeleafResponse(exchange, playerRenderedContent);
+                break;
 
             case "/register":
-            String registerRenderedContent = renderRegistrationPage();
-            sendThymeleafResponse(exchange, registerRenderedContent);
+                String registerRenderedContent = renderRegistrationPage();
+                sendThymeleafResponse(exchange, registerRenderedContent);
+                break;
+
+            case "/login":
+            String loginRenderedContent = renderLoginPage();
+            sendThymeleafResponse(exchange, loginRenderedContent);
             break;
 
             default:
@@ -97,6 +123,34 @@ public class ThymeleafHandler implements HttpHandler {
         return render("studentDashboard", context);
     }
 
+    private String renderStudentPlaylistsPage() {
+        Context context = new Context();
+        context.setVariable("message", "Welcome to the Playlists Page!");
+
+        return render("studentLibrary", context);
+    }
+
+    private String renderTeacherPlaylistsPage() {
+        Context context = new Context();
+        context.setVariable("message", "Welcome to the Playlists Page!");
+
+        return render("teacherLibrary", context);
+    }
+
+    private String renderStudentViewPlaylistPage() {
+        Context context = new Context();
+        context.setVariable("message", "Welcome to the View Playlist Page!");
+
+        return render("studentPlaylist", context);
+    }
+
+    private String renderTeacherViewPlaylistPage() {
+        Context context = new Context();
+        context.setVariable("message", "Welcome to the View Playlist Page!");
+
+        return render("teacherPlaylist", context);
+    }
+
     private String renderPlayerPage() {
         Context context = new Context();
         context.setVariable("message", "Welcome to the Youtube Player!");
@@ -109,6 +163,13 @@ public class ThymeleafHandler implements HttpHandler {
         context.setVariable("message", "Welcome to the Registration Page!");
 
         return render("registration", context);
+    }
+
+    private String renderLoginPage() {
+        Context context = new Context();
+        context.setVariable("message", "Welcome to the Login Page!");
+
+        return render("login", context);
     }
 
 

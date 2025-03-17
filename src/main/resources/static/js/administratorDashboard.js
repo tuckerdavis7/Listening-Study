@@ -31,7 +31,7 @@ var reportData = [
     }
 ]
 
-var moderatorData = [
+var userData = [
     {
         "first": "Joe",
         "last": "Reiner",
@@ -57,60 +57,12 @@ var moderatorData = [
         "first": "Brenden",
         "last": "Stilwell",
         "role": "moderator",
-        "email": "luzier@sru.edu",
-        "classes": "N/A"
-    },
+        "email": "stilwell@sru.edu",
+        "classes": ""
+    }
 ]
 
 $(document).ready(function () {
-    renderReportTable();
-    renderModeratorTable();
-    renderUserTable();
-
-    showTab('bugReports'); //show bug reports tab first
-
-    $('#reportModal').on('show.bs.modal', function (event) {
-        let button = $(event.relatedTarget);
-        let row = reportTable.row(button.data('rowindex')).data();
-
-        $('#date').html(row.initialDate);
-        $('#name').html(row.first + ' ' + row.last);
-        $('#email').html(row.email);
-        $('#date').html(row.initialDate);
-        $('#description').html(row.description);
-        $('#modified').html(row.modifiedDate + ' ' + row.modifiedUser);
-        $('#status').html(row.status);
-
-        //clearing comment field in submodal
-        $('#resolution').val('');
-
-        if (row.status == 'Closed') {
-            $('#closeReportButton').hide();
-            $('#commentReportButton').show();
-        }
-
-        else if (row.status == 'Open'){
-            $('#commentReportButton').hide();
-            $('#closeReportButton').show();
-        }
-
-        else {
-            $('#closeReportButton, #commentReportButton').hide();
-        }
-    });
-
-    $('#closeReportButton').on('click', function() {
-        bootstrapAlert('success', 'Report closed successfully');
-        $('#reportModal').modal('hide');
-    });
-
-    $('#resolveReportButton').on('click', function() {
-        bootstrapAlert('success', 'Report resolved successfully');
-        $('#reportModal, #reportSubModal').modal('hide');
-    });
-})
-
-function renderReportTable() {
     reportTable = $('#reportTable').DataTable({
         data: reportData,
         dom: "<'row'<'col-sm-12 col-md-12 text-end'B>>" +
@@ -132,7 +84,7 @@ function renderReportTable() {
                 orderable: false,
                 width: "1 em",
                 render: function(data, type, row, meta) {
-                    var dropdown = '<div class="dropdown show">' +
+                    let dropdown = '<div class="dropdown show">' +
                         '<a class="btn-sm btn btn-info" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fa fa-wrench" aria-hidden="true"></span></a>' +
                         '<div class="dropdown-menu aria-labelledby="dropdownMenuLink">' +
                         '<a class="dropdown-item" href="#" data-rowindex ="' + meta.row + '" data-bs-toggle="modal" data-bs-target="#reportModal">View Report Details</a>' + 
@@ -208,11 +160,9 @@ function renderReportTable() {
 
     //order table by date column
     reportTable.order([[1, 'asc']]).draw();
-}
 
-function renderModeratorTable() {
-    moderatorTable = $('#moderatorTable').DataTable({
-        data: moderatorData,
+    userTable = $('#userTable').DataTable({
+        data: userData,
         dom: "<'row'<'col-sm-12 col-md-12 text-end'B>>" +
             "<'row'<'col-sm-12'tr>>" +
             "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>><'#bottomLink'>",
@@ -228,19 +178,28 @@ function renderModeratorTable() {
         columns: [
             {
                 class: "wrenchColumn",
-                data: null,
+                data: "role",
                 orderable: false,
                 width: "1 em",
                 render: function(data, type, row, meta) {
-                    var dropdown = '<div class="dropdown show">' +
+                    let dropdown;
+                    if (data === 'teacher') {
+                        dropdown = '<div class="dropdown show">' +
                         '<a class="btn-sm btn btn-info" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fa fa-wrench" aria-hidden="true"></span></a>' +
                         '<div class="dropdown-menu aria-labelledby="dropdownMenuLink">' +
-                        '<a class="dropdown-item" href="#" data-rowindex ="' + meta.row + '" data-bs-toggle="modal" data-bs-target="#reportModal">View Report Details</a>' + 
+                        '<a class="dropdown-item" href="#" data-rowindex ="' + meta.row + '" data-bs-toggle="modal" data-bs-target="#moderatorModal" data-type="teacher">Designate Moderator</a>' + 
                         '</div></div>';
+                    }
+                    else {
+                        dropdown = '<div class="dropdown show">' +
+                        '<a class="btn-sm btn btn-info" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fa fa-wrench" aria-hidden="true"></span></a>' +
+                        '<div class="dropdown-menu aria-labelledby="dropdownMenuLink">' +
+                        '<a class="dropdown-item" href="#" data-rowindex ="' + meta.row + '" data-bs-toggle="modal" data-bs-target="#moderatorModal" data-type="moderator">Remove Moderator Designation</a>' + 
+                        '</div></div>';
+                    }
                     return dropdown;
                 },
             },
-            { data: "initialDate", class: "charcolumn", width: "2 rem" },
             {
                 class: "charColumn",
                 data: null,
@@ -249,34 +208,8 @@ function renderModeratorTable() {
                     return row.first + ' ' + row.last;
                 }
             },
-            {
-                class: "charColumn",
-                data: null,
-                width: "6 rem",
-                render: function(data, type, row, meta) {
-                    return row.modifiedDate + ' by ' + row.modifiedUser; 
-                }
-            },
-            {
-                class: "charColumn pillColumn",
-                data: "status",
-                width: "6 rem",
-                render: function(data, type, row, meta) {
-                    let pillClass;
-                    if (data === "Open") {
-                        pillClass = "bg-danger";
-                    }
-                    else if (data === "Closed") {
-                        pillClass = "bg-warning";
-                    }
-                    else {
-                        pillClass = "bg-success";
-                    }
-
-                    return '<span class="badge rounded-pill ' + pillClass + ' text-center d-inline-block">' + data + '</span>';
-                }
-            },
-           
+            { data: "role", class: "charcolumn", width: "2 rem" },
+            { data: "email", class: "charcolumn", width: "2 rem" }
         ],
         initComplete: function() {
             //create the search rows
@@ -284,15 +217,15 @@ function renderModeratorTable() {
                 let column = this;
                 let title = $(column.header()).text().trim();
                 
-                if ($('#moderatorTable thead tr.filters').length === 0) {
-                    $('#moderatorTable thead').append('<tr class="filters"></tr>');
+                if ($('#userTable thead tr.filters').length === 0) {
+                    $('#userTable thead').append('<tr class="filters"></tr>');
                 }
                 if (index === 0) {
-                    $('#moderatorTable thead tr.filters').append('<th></th>');
+                    $('#userTable thead tr.filters').append('<th></th>');
                 } 
                 else {
                     let filterCell = $('<th><input type="text" class="form-control form-control-sm" placeholder="Filter ' + title + '" /></th>');
-                    $('#moderatorTable thead tr.filters').append(filterCell);
+                    $('#userTable thead tr.filters').append(filterCell);
                     $('input', filterCell).on('keyup change', function() {
                         if (column.search() !== this.value) {
                             column.search(this.value).draw();
@@ -302,17 +235,67 @@ function renderModeratorTable() {
             });
             
             //disable sorting for search row
-            $('#moderatorTable thead tr.filters th').addClass('sorting_disabled');
+            $('#userTable thead tr.filters th').addClass('sorting_disabled');
         }
     });
 
     //order table by date column
-    moderatorTable.order([[1, 'asc']]).draw();
-}
+    userTable.order([[1, 'asc']]).draw();
 
+    showTab('bugReports'); //show bug reports tab first
+
+    $('#reportModal').on('show.bs.modal', function (event) {
+        let button = $(event.relatedTarget);
+        let row = reportTable.row(button.data('rowindex')).data();
+
+        $('#date').html(row.initialDate);
+        $('#name').html(row.first + ' ' + row.last);
+        $('#email').html(row.email);
+        $('#date').html(row.initialDate);
+        $('#description').html(row.description);
+        $('#modified').html(row.modifiedDate + ' ' + row.modifiedUser);
+        $('#status').html(row.status);
+
+        //clearing comment field in submodal
+        $('#resolution').val('');
+
+        if (row.status == 'Closed') {
+            $('#closeReportButton').hide();
+            $('#commentReportButton').show();
+        }
+
+        else if (row.status == 'Open'){
+            $('#commentReportButton').hide();
+            $('#closeReportButton').show();
+        }
+
+        else {
+            $('#closeReportButton, #commentReportButton').hide();
+        }
+    });
+
+    $('#closeReportButton').on('click', function() {
+        bootstrapAlert('success', 'Report closed successfully');
+        $('#reportModal').modal('hide');
+    });
+
+    $('#resolveReportButton').on('click', function() {
+        bootstrapAlert('success', 'Report resolved successfully');
+        $('#reportModal, #reportSubModal').modal('hide');
+    });
+})
+
+//Function to toggle back and forth between tabs for tables
 function showTab(tabName) {
     $('.tab-content').hide();
     $('.navbar-nav .nav-link').removeClass('active');
     $('#' + tabName).show();
     $('a[data-tab="' + tabName + '"]').addClass('active');
+
+    if (tabName === 'bugReports' && typeof reportTable !== 'undefined') {
+        reportTable.columns.adjust().draw();
+    } 
+    else if (tabName === 'manageUsers' && typeof userTable !== 'undefined') {
+        userTable.columns.adjust().draw();
+    }
 }

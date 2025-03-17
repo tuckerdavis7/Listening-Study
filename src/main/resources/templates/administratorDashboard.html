@@ -12,15 +12,12 @@
 <body>
     <div th:replace="~{fragments/administratorNavbar :: navbar}"></div>
 
-    <div class="container mt-5">
+    <div id="bugReports" class="tab-content">
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <h2 class="text-center">Manage Bug Reports</h2>
             </div>
         </div>
-    </div>
-
-    <div id="bugReports" class="tab-content">
         <div class="card mx-auto col-md-11 border-0">
             <div class="col mt-2">
                 <table id="reportTable" class="datatable-simple display responive table table-striped table-sm w-100 dataTable no-footer dtr-inline">
@@ -107,12 +104,28 @@
         </div>
     </div>
 
-    <div id="designateModerators" class="tab-content">
-        <p>This is where you manage moderators.</p>
-    </div>
-    
     <div id="manageUsers" class="tab-content">
-        <p>This is where you manage users.</p>
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <h2 class="text-center">Manage Users</h2>
+            </div>
+        </div>
+        <div class="card mx-auto col-md-11 border-0">
+            <div class="col mt-2">
+                <table id="userTable" class="datatable-simple display responive table table-striped table-sm w-100 dataTable no-footer dtr-inline">
+                    <caption class="d-none">Users Table</caption>
+                    <thead>
+                        <tr>
+                            <th scope="col"> </th>
+                            <th title="Rfn" scope="col">Name</th>
+                            <th title="Rle" scope="col">Role</th>
+                            <th title="Eml" scope="col">Email</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-bordered p-0"></tbody>
+                </table>
+            </div>
+        </div>
     </div>
 
     <div th:replace="~{fragments/footer :: footer}"></div>

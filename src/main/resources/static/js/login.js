@@ -29,19 +29,19 @@ $(document).ready(function() {
                         console.log(responseData.role);
                         switch(responseData.role) {
                             case "administrator":
-                                window.location.href = '/dashboard/administrator';
+                                window.location.href = '/administrator/dashboard';
                                 break;
                             
                             case "moderator":
-                                windoww.location.href='/dashboard/moderator'
+                                windoww.location.href='/moderator/dashboard'
                                 break;
 
                             case "teacher":
-                                window.location.href='/dashboard/teacher'
+                                window.location.href='/teacher/dashboard'
                                 break;
                             
                             case "student":
-                            window.location.href='/dashboard/student'
+                            window.location.href='/student/dashboard'
                             break;
                         }
                     }

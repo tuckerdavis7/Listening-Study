@@ -34,7 +34,7 @@ public class ThymeleafHandler implements HttpHandler {
                 sendThymeleafResponse(exchange, indexRenderedContent);
                 break;
 
-            case "/dashboard/administrator":
+            case "/administrator/dashboard":
                 String administratorDashboardRenderedContent = renderAdministratorDashboardPage();
                 sendThymeleafResponse(exchange, administratorDashboardRenderedContent);
                 break;
@@ -44,12 +44,12 @@ public class ThymeleafHandler implements HttpHandler {
             //     sendThymeleafResponse(exchange, moderatorDashboardRenderedContent);
             //     break;
 
-            case "/dashboard/teacher":
+            case "/teacher/dashboard":
                 String teacherDashboardRenderedContent = renderTeacherDashboardPage();
                 sendThymeleafResponse(exchange, teacherDashboardRenderedContent);
                 break;
 
-            case "/dashboard/student":
+            case "/student/dashboard":
                 String studentDashboardRenderedContent = renderStudentDashboardPage();
                 sendThymeleafResponse(exchange, studentDashboardRenderedContent);
                 break;

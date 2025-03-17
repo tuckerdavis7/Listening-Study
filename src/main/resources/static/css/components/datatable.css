@@ -1,0 +1,62 @@
+.wrenchColumn, .viewColumn, .previewColumn {
+    width: 0!important;
+}
+  
+.wrenchColumn .btn-info, .viewColumn .btn-info, .previewColumn .btn-info {
+background-color: #070b8a;
+border-color: #070b8a;
+}
+
+.wrenchColumn .fa-wrench, .viewColumn .fa-eye, .previewColumn .fa-play {
+color: white;
+display: inline;
+}
+
+.dt-paging-button {
+padding: 0.25rem 0.5rem !important;
+margin: 0 0.2rem !important;
+border-radius: 0.25rem !important;
+border: 1px solid #dee2e6 !important;
+background-color: transparent !important;
+transition: all 0.2s ease-in-out !important;
+}
+
+.dt-paging-button.current {
+background-color: #070b8a !important;
+color: white !important;
+border-color: #070b8a !important;
+font-weight: 500 !important;
+}
+
+.dt-paging-button:not(.disabled):not(.current):hover {
+background-color: #6c757d !important;
+color: white !important;
+border-color: #6c757d !important;
+cursor: pointer !important;
+}
+
+.dt-paging-button.disabled {
+color: #6c757d !important;
+background-color: transparent !important;
+cursor: not-allowed !important;
+opacity: 0.65 !important;
+}
+
+.dt-paging {
+display: flex !important;
+justify-content: flex-end !important;
+margin-top: 0.75rem !important;
+}
+
+.dt-paging-button.current:hover {
+color: white !important;
+}
+
+.dt-paging nav {
+display: flex !important;
+align-items: center !important;
+}
+
+.pillColumn {
+text-align: center;
+  }

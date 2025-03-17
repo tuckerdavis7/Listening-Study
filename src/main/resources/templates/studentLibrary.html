@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <title>Playlists</title>
+
+    <div th:replace="~{fragments/styles :: styles}"></div>
+
+    <div th:replace="~{fragments/scripts :: scripts}"></div>
+    <script src="../static/js/viewLibrary.js"></script>
+
+</head>
+<body>
+    <div th:replace="~{fragments/studentNavbar :: navbar}"></div>
+
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <h2 class="text-center">Your Playlists</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mx-auto col-md-11 border-0">
+        <div class="col mt-2">
+            <table id="playlistTable" class="datatable-simple display responive table table-striped table-sm w-100 dataTable no-footer dtr-inline">
+                <caption class="d-none">Playlist Table</caption>
+                <thead>
+                    <tr>
+                        <th scope="col"> </th>
+                        <th title="name" scope="col">Name</th>
+                        <th title="class" scope="col">Class</th>
+                    </tr>
+                </thead>
+                <tbody class="table-bordered p-0"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

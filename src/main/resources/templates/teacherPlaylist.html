@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <title>Classical 1</title>
+
+    <div th:replace="~{fragments/styles :: styles}"></div>
+
+    <div th:replace="~{fragments/scripts :: scripts}"></div>
+    <script src="../../static/js/viewPlaylist.js"></script>
+
+</head>
+<body>
+    <div th:replace="~{fragments/studentNavbar :: navbar}"></div>
+
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <h2 class="text-center">Classical 1</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mx-auto col-md-11 border-0">
+        <div class="col mt-2">
+            <table id="songTable" class="datatable-simple display responive table table-striped table-sm w-100 dataTable no-footer dtr-inline">
+                <caption class="d-none">Song Table</caption>
+                <thead>
+                    <tr>
+                        <th scope="col"> </th>
+                        <th scope="col"> </th>
+                        <th title="name" scope="col">Name</th>
+                        <th title="class" scope="col">Composer</th>
+                        <th title="year" scope="col">Year</th>
+                        <th title="year" scope="col">URL</th>
+                    </tr>
+                </thead>
+                <tbody class="table-bordered p-0"></tbody>
+                <button class="btn btn-primary navbar-btn" onclick="addSong()">Add Song</button>
+            </table>
+        </div>
+    </div>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

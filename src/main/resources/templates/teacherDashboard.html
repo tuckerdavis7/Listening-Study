@@ -6,21 +6,55 @@
     <div th:replace="~{fragments/styles :: styles}"></div>
 
     <div th:replace="~{fragments/scripts :: scripts}"></div>
+    <link rel="stylesheet" href="../static/css/teacherDashboard.css">
     <script src="../static/js/dashboard.js"></script>
 
 </head>
 <body>
-    <div th:replace="~{fragments/studentNavbar:: navbar}"></div>
+    <div th:replace="~{fragments/studentNavbar :: navbar}"></div>
         <div class="container mt-5">
             <div class="row justify-content-center">
                 <div class="col-md-6">
-                    <h2 class="text-center">Welcome to the Teacher Dashboard</h2>
-                    <a href="/player">
-                        <button type="button" class="btn btn-primary w-100" id="youtubePlayerButton">YouTube Player Example</button>
-                    </a>
+                    <h1 class="text-center">Welcome to the Dashboard</h1>
+                </div>
+           </div>
+           <div>
+                <h2>Main Links:</h2>
+           </div>
+        </div>   
+        
+        <div class="container mt-5 card-container" id="cardContainer">
+            <div class="row justify-content-between">
+                <div class="col-md-3">
+                    <div class="card" style="width: 100%;" id="teacherCard"> 
+                        <div class="card-body">
+                            <h5 class="card-title">Playlists</h5>
+                            <p class="card-text">View playlists and preview songs.</p>
+                            <a href="#" class="btn btn-primary">Open</a>
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="col-md-3">
+                    <div class="card" style="width: 100%;" id="teacherCard"> 
+                        <div class="card-body">
+                            <h5 class="card-title">Not Quizzes</h5>
+                            <p class="card-text">Design and take quizzes.</p>
+                            <a href="#" class="btn btn-primary">Open</a>
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="col-md-3">
+                    <div class="card" style="width: 100%;" id="teacherCard"> 
+                        <div class="card-body">
+                            <h5 class="card-title">Not Performance</h5>
+                            <p class="card-text">View your performance.</p>
+                            <a href="#" class="btn btn-primary">Open</a>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div> 
 
     <div th:replace="~{fragments/footer :: footer}"></div>
 </body>

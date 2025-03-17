@@ -1,0 +1,17 @@
+body {
+    background-image: url("../landingPageBackground.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-size: 80px;
+    font-weight: bolder;
+    text-align: center;
+    text-shadow: 2px 2px 0 aqua;
+}

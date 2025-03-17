@@ -1,13 +1,14 @@
 package com.example.handlers;
 
-import com.sun.net.httpserver.HttpHandler;
-import com.sun.net.httpserver.HttpExchange;
+import java.io.IOException;
+import java.io.OutputStream;
+
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
-import java.io.IOException;
-import java.io.OutputStream;
+import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpHandler;
 
 public class ThymeleafHandler implements HttpHandler {
     private TemplateEngine templateEngine;
@@ -63,6 +64,11 @@ public class ThymeleafHandler implements HttpHandler {
             sendThymeleafResponse(exchange, registerRenderedContent);
             break;
 
+            case "/login":
+            String loginRenderedContent = renderLoginPage();
+            sendThymeleafResponse(exchange, loginRenderedContent);
+            break;
+
             default:
                 send404(exchange);
                 break;
@@ -109,6 +115,13 @@ public class ThymeleafHandler implements HttpHandler {
         context.setVariable("message", "Welcome to the Registration Page!");
 
         return render("registration", context);
+    }
+
+    private String renderLoginPage() {
+        Context context = new Context();
+        context.setVariable("message", "Welcome to the Login Page!");
+
+        return render("login", context);
     }
 
 

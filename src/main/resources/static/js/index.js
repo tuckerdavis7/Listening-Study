@@ -1,80 +1,19 @@
 $(document).ready(function() {
-    $('#loginButton').click(function(event) {
+    $('#loginRedirect').click(function(event) {
         event.preventDefault();
-        let valid = validateFormData();
+        window.location.href = "/login";
+    });
 
-        if (valid) {
-            //gather form data
-            let loginForm = $('#loginForm').serializeArray().reduce(function (acc, item) {
-                acc[item.name] = item.value;
-                return acc;
-            })
-        
-            //check if serialization maps incorrect key value pairs
-            if (loginForm.name && loginForm.value) {
-                loginForm[loginForm.name] = loginForm.value;
-                delete loginForm.name;
-                delete loginForm.value;
-            }
-        
-            $.ajax({
-                data: JSON.stringify(loginForm),
-                url: 'http://localhost:8080/api/login',
-                type: 'POST',
-                contentType: 'application/json',
-                success: function(data) {
-                    let responseData = JSON.parse(data);
-
-                    if (responseData.status === "success") {
-                        console.log(responseData.role);
-                        switch(responseData.role) {
-                            case "administrator":
-                                window.location.href = '/dashboard/administrator';
-                                break;
-                            
-                            case "moderator":
-                                //windw.location.href='/dashboard/moderator'
-                                break;
-
-                            case "teacher":
-                                //windw.location.href='/dashboard/teacher'
-                                break;
-                            
-                            case "student":
-                            windw.location.href='/dashboard/student'
-                            break;
-                        }
-                    }
-
-                    else {
-                        bootstrapAlert('danger', 'Invalid login credentials.');
-                    }                                         
-                },
-                error: function(xhr, status, error) {
-                    bootstrapAlert('danger', 'Error while logging in: ' + error);
-                }
-            });
-        }
-    })
+    $('#registerRedirect').click(function(event) {
+        event.preventDefault();
+        window.location.href = "/register";
+    });
 })
 
-function validateFormData() {
-    let allAreFilled = true;
-    document.getElementById('loginForm').querySelectorAll("[required]").forEach(function (i) {
-        if (!allAreFilled) {
-            return;
-        }
-
-        if (!i.value) {
-            allAreFilled = false;
-            return;
-        }
-
-    })
-    if (!allAreFilled) {
-        bootstrapAlert('danger', 'Fill all fields.');
-        return false;
-    }
-
-    return true;
+/*function loginRedirect(){
+    window.location.href = "/login";
 }
+
+function registerRedirect(){
+    window.location.href = "/register";
+}*/

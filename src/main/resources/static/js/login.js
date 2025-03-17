@@ -33,15 +33,15 @@ $(document).ready(function() {
                                 break;
                             
                             case "moderator":
-                                windw.location.href='/dashboard/moderator'
+                                windoww.location.href='/dashboard/moderator'
                                 break;
 
                             case "teacher":
-                                windw.location.href='/dashboard/teacher'
+                                window.location.href='/dashboard/teacher'
                                 break;
                             
                             case "student":
-                            windw.location.href='/dashboard/student'
+                            window.location.href='/dashboard/student'
                             break;
                         }
                     }

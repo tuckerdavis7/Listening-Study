@@ -83,6 +83,11 @@ public class ThymeleafHandler implements HttpHandler {
                 String registerRenderedContent = renderRegistrationPage();
                 sendThymeleafResponse(exchange, registerRenderedContent);
                 break;
+            
+            case "/teacher/classlist":
+                String teacherClasslistRenderedContent = renderteacherClasslistPage();
+                sendThymeleafResponse(exchange, teacherClasslistRenderedContent);
+                break;
 
             case "/login":
             String loginRenderedContent = renderLoginPage();
@@ -198,5 +203,12 @@ public class ThymeleafHandler implements HttpHandler {
         try (OutputStream os = exchange.getResponseBody()) {
             os.write(response.getBytes());
         }
+    }
+
+    private String renderteacherClasslistPage() {
+        Context context = new Context();
+        context.setVariable("message", "Welcome to the teacher classlist Page!");
+
+        return render("teacherClasslist", context);
     }
 }

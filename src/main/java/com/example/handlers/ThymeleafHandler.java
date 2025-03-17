@@ -75,6 +75,18 @@ public class ThymeleafHandler implements HttpHandler {
                 sendThymeleafResponse(exchange, content);
             }
         }
+        else if (path.startsWith("/teacher/classlist")) {
+            String[] routeStrings = path.split("/");
+            
+            if (routeStrings.length == 3) {
+                content = renderteacherClasslistPageView();
+                sendThymeleafResponse(exchange, content);
+            }
+            else {
+                content = renderteacherClasslistPage();
+                sendThymeleafResponse(exchange, content);
+            }
+        }
         else if (path.equals("/student/quiz")) {
             content = renderQuizPage();
             sendThymeleafResponse(exchange, content);
@@ -82,11 +94,7 @@ public class ThymeleafHandler implements HttpHandler {
         else if (path.equals("/register")) {
             content = renderRegistrationPage();
             sendThymeleafResponse(exchange, content);
-        }
-        else if (path.equals("/teacher/classlist")) {
-            content = renderteacherClasslistPage();
-            sendThymeleafResponse(exchange, content);
-        }
+        }        
         else if (path.equals("/login")) {
             content = renderLoginPage();
             sendThymeleafResponse(exchange, content);
@@ -136,7 +144,7 @@ public class ThymeleafHandler implements HttpHandler {
         context.setVariable("message", "Welcome to the Playlists Page!");
 
         return render("teacherLibrary", context);
-    }
+    }   
 
     private String renderStudentViewPlaylistPage() {
         Context context = new Context();
@@ -205,6 +213,13 @@ public class ThymeleafHandler implements HttpHandler {
         Context context = new Context();
         context.setVariable("message", "Welcome to the teacher classlist Page!");
 
-        return render("teacherClasslist", context);
+        return render("teacherClasslistView", context);
     }
+
+    private String renderteacherClasslistPageView() {
+        Context context = new Context();
+        context.setVariable("message", "Welcome to the classlist roster page!");
+
+        return render("teacherClasslist", context);
+    }   
 }

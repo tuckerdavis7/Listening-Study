@@ -1,14 +1,15 @@
-.wrenchColumn {
+.wrenchColumn, .viewColumn, .previewColumn {
     width: 0!important;
 }
   
-.wrenchColumn .btn-info {
+.wrenchColumn .btn-info, .viewColumn .btn-info, .previewColumn .btn-info {
 background-color: #070b8a;
 border-color: #070b8a;
 }
 
-.wrenchColumn .fa-wrench {
+.wrenchColumn .fa-wrench, .viewColumn .fa-eye, .previewColumn .fa-play {
 color: white;
+display: inline;
 }
 
 .dt-paging-button {

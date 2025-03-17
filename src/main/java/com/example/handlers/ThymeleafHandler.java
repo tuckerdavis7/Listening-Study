@@ -52,16 +52,36 @@ public class ThymeleafHandler implements HttpHandler {
                 String studentDashboardRenderedContent = renderStudentDashboardPage();
                 sendThymeleafResponse(exchange, studentDashboardRenderedContent);
                 break;
+            
+            case "/student/playlists":
+                String studentPlaylistsRenderedContent = renderStudentPlaylistsPage();
+                sendThymeleafResponse(exchange, studentPlaylistsRenderedContent);
+                break;
+
+            case "/teacher/playlists":
+                String teacherPlaylistsRenderedContent = renderTeacherPlaylistsPage();
+                sendThymeleafResponse(exchange, teacherPlaylistsRenderedContent);
+                break;
+            
+            case "/student/playlists/0001":
+                String studentViewPlaylistRenderedContent = renderStudentViewPlaylistPage();
+                sendThymeleafResponse(exchange, studentViewPlaylistRenderedContent);
+                break;
+
+            case "/teacher/playlists/0001":
+                String teacherViewPlaylistRenderedContent = renderTeacherViewPlaylistPage();
+                sendThymeleafResponse(exchange, teacherViewPlaylistRenderedContent);
+                break;
 
             case "/player":
-            String playerRenderedContent = renderPlayerPage();
-            sendThymeleafResponse(exchange, playerRenderedContent);
-            break;
+                String playerRenderedContent = renderPlayerPage();
+                sendThymeleafResponse(exchange, playerRenderedContent);
+                break;
 
             case "/register":
-            String registerRenderedContent = renderRegistrationPage();
-            sendThymeleafResponse(exchange, registerRenderedContent);
-            break;
+                String registerRenderedContent = renderRegistrationPage();
+                sendThymeleafResponse(exchange, registerRenderedContent);
+                break;
 
             default:
                 send404(exchange);
@@ -95,6 +115,34 @@ public class ThymeleafHandler implements HttpHandler {
         context.setVariable("message", "Welcome to the Dashboard!");
 
         return render("studentDashboard", context);
+    }
+
+    private String renderStudentPlaylistsPage() {
+        Context context = new Context();
+        context.setVariable("message", "Welcome to the Playlists Page!");
+
+        return render("studentLibrary", context);
+    }
+
+    private String renderTeacherPlaylistsPage() {
+        Context context = new Context();
+        context.setVariable("message", "Welcome to the Playlists Page!");
+
+        return render("teacherLibrary", context);
+    }
+
+    private String renderStudentViewPlaylistPage() {
+        Context context = new Context();
+        context.setVariable("message", "Welcome to the View Playlist Page!");
+
+        return render("studentPlaylist", context);
+    }
+
+    private String renderTeacherViewPlaylistPage() {
+        Context context = new Context();
+        context.setVariable("message", "Welcome to the View Playlist Page!");
+
+        return render("teacherPlaylist", context);
     }
 
     private String renderPlayerPage() {

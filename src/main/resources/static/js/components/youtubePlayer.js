@@ -1,9 +1,10 @@
-var player;
+let player;
+let playerLock = false;
 
 $(document).ready(function () {
     $('#playButton').click(function (event) {
         event.preventDefault();
-        if (player.getPlayerState() !== YT.PlayerState.PLAYING) {
+        if (player.getPlayerState() !== YT.PlayerState.PLAYING && !playerLock) {
             player.playVideo();
         }
         else {
@@ -17,9 +18,23 @@ $(document).ready(function () {
         $('#volumeLabel').html(`&#128266; ${rangeValue}`);
     });
 
-    document.addEventListener('setNewURL', function (e) {
-        player.cueVideoById(e.detail.url, e.detail.timestamp);
+    document.addEventListener('setNewSong', function (e) {
+        playerLock = false;
+        if (e.detail.songLength == 0) {
+            player.cueVideoById(e.detail.url, e.detail.timestamp);
+        }
+        else {
+            player.cueVideoById({
+                videoId: e.detail.url,
+                startSeconds: e.detail.timestamp,
+                endSeconds: e.detail.timestamp + e.detail.songLength
+            });
+        }
     });
+
+    document.addEventListener('attemptLimit', function() {
+        playerLock = true;
+    })
 
     loadYouTubeAPI();
     waitForYouTubeAPI();
@@ -69,6 +84,10 @@ function onPlayerStateChange(event) {
     }
     else {
         $('#playSymbol').removeClass("fa-pause").addClass("fa-play");
+    }
+
+    if (event.data == YT.PlayerState.ENDED) {
+        document.dispatchEvent(new Event('endSong'));
     }
 }
 

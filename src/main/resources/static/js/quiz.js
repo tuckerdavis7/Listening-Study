@@ -5,7 +5,7 @@ let playlistData = [
         "composer": "Ludwig van Beethoven",
         "year": "1810",
         "url": "https://youtu.be/q9bU12gXUyM?si=gMz2qDgpwy6ZtolG",
-        "timestamp": 20,
+        "timestamp": 160,
         "class": "MUSIC 101",
         "id": "0001"
     },
@@ -25,11 +25,27 @@ let userAnswers = [];
 let questionNumber = 0;
 let numberCorrect = 0;
 let playerReady = false;
+let songLength = 60;
+let secondsTimer = 0;
+let songListens = 0;
 
 $(document).ready(function() {
     document.addEventListener('playerReady', function() {
         playerReady = true;
         startQuiz();
+    });
+
+    document.addEventListener('endSong', function() {
+        songListens++;
+        $('#songListens').html(3 - songListens);
+
+        if (songListens < 3) {
+            loadCurrentSong();
+        }
+        else {
+            document.dispatchEvent(new Event('attemptLimit'));
+        }
+
     });
 
     $("#quizForm").submit(function(event) {
@@ -64,6 +80,8 @@ function checkAnswers(formData) {
 
 function nextQuestion() {
     questionNumber++;
+    songListens = 0;
+    $('#questionAttempts').html(3);
 
     if (questionNumber < playlistData.length) {
         $('#questionNumber').text(questionNumber + 1);
@@ -81,14 +99,15 @@ function loadCurrentSong() {
     let videoId = getVideoId(playlistData[questionNumber]['url']);
     let timestamp = playlistData[questionNumber]['timestamp'];
 
-    const event = new CustomEvent('setNewURL', {
+    const setNewSong = new CustomEvent('setNewSong', {
         detail: {
             "url": videoId,
-            "timestamp": timestamp
+            "timestamp": timestamp,
+            "songLength": songLength
         }
     });
 
-    document.dispatchEvent(event);
+    document.dispatchEvent(setNewSong);
 }
 
 function getVideoId(url) {

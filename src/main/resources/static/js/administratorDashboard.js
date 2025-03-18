@@ -14,7 +14,7 @@ var reportData = [
         "first": "John",
         "last": "Cena",
         "email": "cena@sru.edu",
-        "description": "A long text-field explaining the issue at hand",
+        "description": "You can't see me?  No, I can't see the login page.  HELP!",
         "status": "Acknowledged",
         "modifiedDate": "03/15/2025 13:50:55",
         "modifiedUser": "reiner_13" 
@@ -24,7 +24,7 @@ var reportData = [
         "first": "Tucker",
         "last": "Davis",
         "email": "davis@sru.edu",
-        "description": "A long text-field explaining the issue at hand",
+        "description": "Ben fried the RAM on my laptop.  Who is surpised?",
         "status": "Resolved",
         "modifiedDate": "03/15/2025 13:47:56",
         "modifiedUser": "reiner_13" 
@@ -49,7 +49,7 @@ var userData = [
     {
         "first": "Ben",
         "last": "Luzier",
-        "role": "teacher",
+        "role": "administrator",
         "email": "luzier@sru.edu",
         "classes": ""
     },
@@ -189,21 +189,31 @@ $(document).ready(function () {
                 orderable: false,
                 width: "1 em",
                 render: function(data, type, row, meta) {
-                    let dropdown;
-                    if (data === 'teacher') {
+                    let dropdown = "";
+                    if (data === 'moderator'){
                         dropdown = '<div class="dropdown show">' +
                         '<a class="btn-sm btn btn-info" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fa fa-wrench" aria-hidden="true"></span></a>' +
                         '<div class="dropdown-menu aria-labelledby="dropdownMenuLink">' +
-                        '<a class="dropdown-item" href="#" data-rowindex ="' + meta.row + '" data-bs-toggle="modal" data-bs-target="#moderatorModal" data-type="teacher">Designate Moderator</a>' + 
+                        '<a class="dropdown-item" href="#" data-rowindex ="' + meta.row + '" data-bs-toggle="modal" data-bs-target="#userModal" data-type="moderator">Remove Moderator Designation</a>' + 
+                        '<a class="dropdown-item text-danger fw-bold" href="#" data-rowindex ="' + meta.row + '" data-bs-toggle="modal" data-bs-target="#userModal" data-type="delete">Delete User</a>' + 
                         '</div></div>';
                     }
-                    else {
+                    else if (data === 'teacher') {
                         dropdown = '<div class="dropdown show">' +
                         '<a class="btn-sm btn btn-info" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fa fa-wrench" aria-hidden="true"></span></a>' +
                         '<div class="dropdown-menu aria-labelledby="dropdownMenuLink">' +
-                        '<a class="dropdown-item" href="#" data-rowindex ="' + meta.row + '" data-bs-toggle="modal" data-bs-target="#moderatorModal" data-type="moderator">Remove Moderator Designation</a>' + 
+                        '<a class="dropdown-item" href="#" data-rowindex ="' + meta.row + '" data-bs-toggle="modal" data-bs-target="#userModal" data-type="teacher">Designate Moderator</a>' + 
+                        '<a class="dropdown-item text-danger fw-bold" href="#" data-rowindex ="' + meta.row + '" data-bs-toggle="modal" data-bs-target="#userModal" data-type="delete">Delete User</a>' + 
                         '</div></div>';
                     }
+                    else if (data === 'student') {
+                        dropdown = '<div class="dropdown show">' +
+                        '<a class="btn-sm btn btn-info" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fa fa-wrench" aria-hidden="true"></span></a>' +
+                        '<div class="dropdown-menu aria-labelledby="dropdownMenuLink">' +
+                        '<a class="dropdown-item text-danger fw-bold" href="#" data-rowindex ="' + meta.row + '" data-bs-toggle="modal" data-bs-target="#userModal" data-type="delete">Delete User</a>' + 
+                        '</div></div>';
+                    }
+                    
                     return dropdown;
                 },
             },
@@ -215,7 +225,14 @@ $(document).ready(function () {
                     return row.first + ' ' + row.last;
                 }
             },
-            { data: "role", class: "charcolumn", width: "2 rem" },
+            {
+                class: "charColumn",
+                data: "role",
+                width: "6 rem",
+                render: function(data, type, row, meta) {
+                    return data.charAt(0).toUpperCase() + data.slice(1);
+                }
+            },
             { data: "email", class: "charcolumn", width: "2 rem" }
         ],
         initComplete: function() {
@@ -255,13 +272,13 @@ $(document).ready(function () {
         let button = $(event.relatedTarget);
         let row = reportTable.row(button.data('rowindex')).data();
 
-        $('#date').html(row.initialDate);
-        $('#name').html(row.first + ' ' + row.last);
-        $('#email').html(row.email);
-        $('#date').html(row.initialDate);
-        $('#description').html(row.description);
-        $('#modified').html(row.modifiedDate + ' ' + row.modifiedUser);
-        $('#status').html(row.status);
+        $('#reportDate').html(row.initialDate);
+        $('#reportName').html(row.first + ' ' + row.last);
+        $('#reportEmail').html(row.email);
+        $('#reportDate').html(row.initialDate);
+        $('#reportDescription').html(row.description);
+        $('#reportModified').html(row.modifiedDate + ' ' + row.modifiedUser);
+        $('#reportStatus').html(row.status);
 
         //clearing comment field in submodal
         $('#resolution').val('');
@@ -286,9 +303,53 @@ $(document).ready(function () {
         $('#reportModal').modal('hide');
     });
 
-    $('#finishReportButton').on('click', function() {
-        bootstrapAlert('success', 'Report resolved successfully.');
-        $('#reportModal, #reportSubModal').modal('hide');
+    $('#saveReportButton').on('click', function() {
+        let valid = validateFormData();
+        if (valid) {
+            bootstrapAlert('success', 'Report resolved successfully.');
+            $('#reportModal, #reportSubModal').modal('hide');
+        }
+    });
+
+    $('#userModal').on('show.bs.modal', function (event) {
+        let button = $(event.relatedTarget);
+        let row = userTable.row(button.data('rowindex')).data();
+        let type = button.data('type');
+
+        if (type === 'moderator') {
+            $('#userModalHeader').text('Remove Moderator Designation');
+            $('#addDesignationButton, #deleteUserButton').hide();
+            $('#removeDesignationButton').show();
+        }
+        else if (type === 'teacher'){
+            $('#userModalHeader').text('Designate Moderator');
+            $('#addDesignationButton').show();
+            $('#removeDesignationButton, #deleteUserButton').hide();
+        }
+
+        else{
+            $('#userModalHeader').text('Delete User');
+            $('#removeDesignationButton, #addDesignationButton').hide();
+            $('#deleteUserButton').show();
+        }
+
+        $('#userName').html(row.first + ' ' + row.last);
+        $('#userEmail').html(row.email);
+    });
+
+    $('#addDesignationButton').on('click', function() {
+        bootstrapAlert('success', 'Moderator designated successfully.');
+        $('#userModal').modal('hide');
+    });
+
+    $('#removeDesignationButton').on('click', function() {
+        bootstrapAlert('success', 'Removed moderator designation successfully.');
+        $('#userModal').modal('hide');
+    });
+
+    $('#deleteUserButton').on('click', function() {
+        bootstrapAlert('success', 'Deleted user successfully.');
+        $('#userModal').modal('hide');
     });
 })
 

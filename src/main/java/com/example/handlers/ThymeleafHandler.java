@@ -65,6 +65,10 @@ public class ThymeleafHandler implements HttpHandler {
             content = renderStudentDashboardPage();
             sendThymeleafResponse(exchange, content);
         }
+        else if (path.equals("/student/setQuiz")) {
+            content = renderStudentsetQuizPage();
+            sendThymeleafResponse(exchange, content);
+        }
         else if (path.startsWith("/student/playlists")) {
             String[] routeStrings = path.split("/");
             
@@ -267,6 +271,13 @@ public class ThymeleafHandler implements HttpHandler {
 
         return render("teacherClasslistview", context);
     }
+
+    private String renderStudentsetQuizPage() {
+        Context context = new Context();
+        context.setVariable("message", "Welcome to the student set Quiz Page!");
+
+        return render("setQuiz", context);
+    }    
 
     private String renderteacherClasslistPageView() {
         Context context = new Context();

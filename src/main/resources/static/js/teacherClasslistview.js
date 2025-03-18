@@ -55,18 +55,7 @@ let students = [
             orderable: false,
             targets: 0,
         }],
-        columns: [
-            {
-                class: "viewColumn",
-                data: null,
-                render: function(data, type, row, meta) {
-                    return `<button class="btn btn-info btn-sm view-student" data-id="${row.studentId}">
-                                <span class="fa fa-eye" aria-hidden="true"></span>
-                            </button>`;
-                },
-                orderable: false,
-                width: "1rem"
-            },
+        columns: [            
             { data: "studentId", class: "charcolumn", width: "2 rem"},
             { data: "firstName", class: "charcolumn", width: "3 rem"},
             { data: "lastName", class: "charcolumn", width: "3 rem"},

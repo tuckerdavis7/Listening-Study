@@ -37,9 +37,9 @@ public class ThymeleafHandler implements HttpHandler {
             content = renderAdministratorDashboardPage();
             sendThymeleafResponse(exchange, content);
         }
-        else if (path.equals("/dashboard/moderator")) {
-            //content = renderModeratorDashboardPage();
-            //sendThymeleafResponse(exchange, content);
+        else if (path.equals("/moderator/dashboard")) {
+            content = renderModeratorDashboardPage();
+            sendThymeleafResponse(exchange, content);
         }
         else if (path.equals("/teacher/dashboard")) {
             content = renderTeacherDashboardPage();
@@ -127,6 +127,13 @@ public class ThymeleafHandler implements HttpHandler {
         context.setVariable("message", "Welcome to the Dashboard!");
 
         return render("administratorDashboard", context);
+    }
+
+    private String renderModeratorDashboardPage() {
+        Context context = new Context();
+        context.setVariable("message", "Welcome to the Dashboard!");
+
+        return render("moderatorDashboard", context);
     }
 
     private String renderTeacherDashboardPage() {

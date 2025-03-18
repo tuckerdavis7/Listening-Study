@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+
+    <div th:replace="~{fragments/styles :: styles}"></div>
+
+    <div th:replace="~{fragments/scripts :: scripts}"></div>
+    <script src="../static/js/moderatorDashboard.js"></script>
+
+</head>
+<body>
+    <div th:replace="~{fragments/moderatorNavbar :: navbar}"></div>
+
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <h2 class="text-center">Classes</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mx-auto col-md-11 border-0">
+        <div class="col mt-2">
+            <table id="classTable" class="datatable-simple display responive table table-striped table-sm w-100 dataTable no-footer dtr-inline">
+                <caption class="d-none">Classes</caption>
+                <thead>
+                    <tr>
+                        <th scope="col"> </th>
+                        <th scope="col"> </th>
+                        <th title="Cid" scope="col">Class ID</th>
+                        <th title="Cln" scope="col">Classname</th>
+                        <th title="Sct" scope="col">Students Count</th>
+                        <th title="Pct" scope="col">Playlist Count</th>
+                    </tr>
+                </thead>
+                <tbody class="table-bordered p-0"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="modal fade" id="previewModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Song Details</h5>
+                    <button type="button" class="btn-close modal-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <table class="table">
+                        <tbody>
+                            <tr class="mb-3">
+                                <th scope="row" class="p-0 py-2">Name:</th>
+                                <td class="py-2" id="name"></td>
+                            </tr>
+                            <tr class="mb-3">
+                                <th scope="row" class="p-0 py-2">Composer:</th>
+                                <td class="py-2" id="composer"></td>
+                            </tr>
+                            <tr class="mb-3">
+                                <th scope="row" class="p-0 py-2">Year:</th>
+                                <td class="py-2" id="year"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary mr-auto" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

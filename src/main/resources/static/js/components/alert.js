@@ -7,7 +7,7 @@ function createAlertContainer() {
             'position': 'fixed',
             'top': '10px',
             'right': '10px',
-            'z-index': '1050'
+            'z-index': '1060'
         });
         document.body.appendChild(container);
     }
@@ -29,7 +29,7 @@ function bootstrapAlert(type, message) {
     let alert = document.createElement('div');
     $(alert).addClass('alert alert-' + type + ' alert-dismissible fade show'); //follows bootstrap classes
     alert.setAttribute('role', 'alert');
-    alert.innerHTML = message + `<button type="button" class="btn-close" aria-label="Close"></button>`;
+    alert.innerHTML = message + `<button type="button" class="btn btn-close" aria-label="Close"></button>`;
   
     let closeButton = alert.querySelector('.btn-close');
     closeButton.addEventListener('click', function () {

@@ -150,6 +150,10 @@ $(document).ready(function () {
             { data: "className", class: "charcolumn", width: "3 rem"},
             { data: "studentCount", class: "charcolumn", width: "3 rem"},
             { data: "playlistCount", class: "charcolumn", width: "1 rem"},
+            { data: "null", class: "text-center", defaultContent: `
+                <button class="btn btn-warning disable-btn">Disable</button>
+                <button class ="btn btn-danger remove-btn">Remove</button>
+            `},
         ],
         drawCallback: function() {
             $('.dt-paging-button.current').attr('style', 'color: white !important'); //inline css styling used as last resort for highest priority selector
@@ -174,7 +178,43 @@ $(document).ready(function () {
         }
     });
 
+        //event listener for disable button
+        $('#classTable tbody').on('click', '.disable-btn', function() {
+            const button = $(this);
+    
+            if(button.hasClass('btn-warning')) {
+                button.text('Enable');
+                button.removeClass('btn-warning').addClass('btn-secondary');
+            }
+            else {
+                button.text('Disable');
+                button.removeClass('btn-secondary').addClass('btn-warning');
+            }
+        });
+    
+        //event listener for remove button
+        let rowRemove;
+    
+        $('#classTable tbody').on('click', '.remove-btn', function() {
+            const row = $(this).closest('tr');
+            rowRemove = row;
+    
+            $('#removeConfirmation').modal('show');
+        });
+    
+        $('#removeConfirmationButton').on('click', function() {
+            if(rowRemove) {
+                classTable.row(rowRemove).remove().draw();
+                $('#removeConfirmation').modal('hide');
+            }
+        });
+
     //order table by status column
     classTable.order([[4, 'asc']]).draw();
+
+    $('#confirmClassBtn').on('click', function () {
+        // Close the modal
+        $('#addClassModal').modal('hide');
+    });
 })
 

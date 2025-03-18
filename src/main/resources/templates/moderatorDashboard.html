@@ -18,6 +18,9 @@
                 <h2 class="text-center">Classes</h2>
             </div>
         </div>
+        <div class="col-md-6 text-start">
+            <button id="addClassBtn" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addClassModal">Add Class</button>
+        </div>
     </div>
 
     <div class="card mx-auto col-md-11 border-0">
@@ -31,6 +34,7 @@
                         <th title="Cln" scope="col">Classname</th>
                         <th title="Sct" scope="col">Students Count</th>
                         <th title="Pct" scope="col">Playlist Count</th>
+                        <th title="Actions" scope="col">Actions</th>
                     </tr>
                 </thead>
                 <tbody class="table-bordered p-0"></tbody>
@@ -38,7 +42,54 @@
         </div>
     </div>
 
+<!--Add Class-->
+<div class="modal fade" id="addClassModal" tabindex="-1" aria-labelledby="addClassModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addClassModalLabel">Add Class</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!--Add Class Name-->
+                <label for="className" class="form-label">Class Name</label>
+                <input type="text" id="className" class="form-control mb-3" placeholder="Enter class name">
 
+                <!--Teacher Search-->
+                <label for="findTeacher" class="form-label">Add Teacher</label>
+                <input type="text" id="findTeacher" class="form-control mb-3" placeholder="Search teacher by email">
+                
+                <!--Results-->
+                <ul id="searchResults" class="list-group">
+                    <!--Eventually dynamic-->
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="confirmClassBtn">Confirm</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Remove Button-->
+<div class="modal fade" id="removeConfirmation" tableindex="-1" aria-labelledby="removeConfirmationLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="removeConfirmationLabel">Confirm Removal</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to remove this class?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" id="removeConfirmationButton">Remove</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
 
     <div th:replace="~{fragments/footer :: footer}"></div>
 </body>

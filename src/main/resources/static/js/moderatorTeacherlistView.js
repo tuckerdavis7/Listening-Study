@@ -121,4 +121,10 @@ let teachers = [
 
     //order table by status column
     teacherTable.order([[4, 'asc']]).draw();
+
+    //Add Teacher confirm button sample
+    $('#confirmTeacherBtn').on('click', function () {
+        // Close the modal
+        $('#addTeacherModal').modal('hide');
+    });
 })

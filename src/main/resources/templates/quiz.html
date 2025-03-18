@@ -19,23 +19,28 @@
                 <h2 class="text-center">Playlist1 Quiz</h2>
             </div>
         </div>
-        <div class="row">
+        <div class="row justify-content-center">
+            <hr>
+            <h4 class="mt-1">Question <span id="questionNumber">1</span>:</h4>
+            <hr>
+        </div>
+        <div class="row justify-content-center">
             <div class="col-md-6">
                 <div th:replace="~{fragments/youtubePlayer :: youtubePlayer}"></div>
             </div>
-            <div class="col-md-6"
-                <form>
+            <div class="col-md-6">
+                <form id="quizForm">
                     <div class="form-group">
                         <label for="songName"><b>Song Name</b></label>
-                        <input type="text" class="form-control" id="songName">
+                        <input type="text" class="form-control" id="songName" name="songName">
                     </div>
                     <div class="form-group">
                         <label for="composer"><b>Composer</b></label>
-                        <input type="text" class="form-control" id="composer">
+                        <input type="text" class="form-control" id="composer" name="composer">
                     </div>
                     <div class="form-group">
                         <label for="year"><b>Year</b></label>
-                        <input type="text" class="form-control" id="year">
+                        <input type="number" min="0" max="2050" class="form-control" id="year" name="year">
                     </div>
                     <button type="submit" class="btn btn-primary mt-2">Submit Answer</button>
                 </form>

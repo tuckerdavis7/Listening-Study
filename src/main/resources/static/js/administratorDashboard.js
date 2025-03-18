@@ -15,7 +15,7 @@ var reportData = [
         "last": "Cena",
         "email": "cena@sru.edu",
         "description": "A long text-field explaining the issue at hand",
-        "status": "Closed",
+        "status": "Acknowledged",
         "modifiedDate": "03/15/2025 13:50:55",
         "modifiedUser": "reiner_13" 
     },
@@ -58,6 +58,13 @@ var userData = [
         "last": "Stilwell",
         "role": "moderator",
         "email": "stilwell@sru.edu",
+        "classes": ""
+    },
+    {
+        "first": "Tucker",
+        "last": "Davis",
+        "role": "student",
+        "email": "davis@sru.edu",
         "classes": ""
     }
 ]
@@ -118,7 +125,7 @@ $(document).ready(function () {
                     if (data === "Open") {
                         pillClass = "bg-danger";
                     }
-                    else if (data === "Closed") {
+                    else if (data === "Acknowledged") {
                         pillClass = "bg-warning";
                     }
                     else {
@@ -259,28 +266,28 @@ $(document).ready(function () {
         //clearing comment field in submodal
         $('#resolution').val('');
 
-        if (row.status == 'Closed') {
-            $('#closeReportButton').hide();
-            $('#commentReportButton').show();
+        if (row.status == 'Open') {
+            $('#resolveReportButton').hide();
+            $('#acknowledgeReportButton').show();
         }
 
-        else if (row.status == 'Open'){
-            $('#commentReportButton').hide();
-            $('#closeReportButton').show();
+        else if (row.status == 'Acknowledged'){
+            $('#acknowledgeReportButton').hide();
+            $('#resolveReportButton').show();
         }
 
         else {
-            $('#closeReportButton, #commentReportButton').hide();
+            $('#resolveReportButton, #acknowledgeReportButton').hide();
         }
     });
 
-    $('#closeReportButton').on('click', function() {
-        bootstrapAlert('success', 'Report closed successfully');
+    $('#acknowledgeReportButton').on('click', function() {
+        bootstrapAlert('info', 'Report acknowledged.');
         $('#reportModal').modal('hide');
     });
 
-    $('#resolveReportButton').on('click', function() {
-        bootstrapAlert('success', 'Report resolved successfully');
+    $('#finishReportButton').on('click', function() {
+        bootstrapAlert('success', 'Report resolved successfully.');
         $('#reportModal, #reportSubModal').modal('hide');
     });
 })
@@ -298,4 +305,25 @@ function showTab(tabName) {
     else if (tabName === 'manageUsers' && typeof userTable !== 'undefined') {
         userTable.columns.adjust().draw();
     }
+}
+
+function validateFormData() {
+    let allAreFilled = true;
+    document.getElementById('resolutionForm').querySelectorAll("[required]").forEach(function (i) {
+        if (!allAreFilled) {
+            return;
+        }
+
+        if (!i.value) {
+            allAreFilled = false;
+            return;
+        }
+
+    })
+    if (!allAreFilled) {
+        bootstrapAlert('danger', 'Resolution required.');
+        return false;
+    }
+
+    return true;
 }

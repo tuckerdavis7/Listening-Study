@@ -228,7 +228,7 @@ public class ThymeleafHandler implements HttpHandler {
         Context context = new Context();
         context.setVariable("message", "Welcome to the teacher classlist Page!");
 
-        return render("teacherClasslistView", context);
+        return render("teacherClasslistview", context);
     }
 
     private String renderteacherClasslistPageView() {

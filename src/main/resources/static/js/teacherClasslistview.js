@@ -33,7 +33,7 @@ let students = [
 
   $(document).ready(function () {
     let studentTable = $('#studentTable').DataTable({
-        data: studentData,
+        data: students,
         // ajax:{
         //     // url: http::/localhost:8080/api/
         //     // type: 'GET',
@@ -60,12 +60,14 @@ let students = [
                 class: "viewColumn",
                 data: null,
                 render: function(data, type, row, meta) {
-                    var classID = row.classID;                   
+                    return `<button class="btn btn-info btn-sm view-student" data-id="${row.studentId}">
+                                <span class="fa fa-eye" aria-hidden="true"></span>
+                            </button>`;
                 },
                 orderable: false,
-                width: "1 em"
+                width: "1rem"
             },
-            { data: "studentID", class: "charcolumn", width: "2 rem"},
+            { data: "studentId", class: "charcolumn", width: "2 rem"},
             { data: "firstName", class: "charcolumn", width: "3 rem"},
             { data: "lastName", class: "charcolumn", width: "3 rem"},
             { data: "email", class: "charcolumn", width: "1 rem"},

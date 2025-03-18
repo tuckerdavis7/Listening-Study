@@ -33,7 +33,7 @@ $(document).ready(function() {
                                 break;
                             
                             case "moderator":
-                                windoww.location.href='/moderator/dashboard'
+                                window.location.href='/moderator/dashboard'
                                 break;
 
                             case "teacher":

@@ -41,6 +41,22 @@ public class ThymeleafHandler implements HttpHandler {
             content = renderModeratorDashboardPage();
             sendThymeleafResponse(exchange, content);
         }
+        else if (path.startsWith("/moderator/classlist")) {
+            String[] routeStrings = path.split("/");
+            
+            if (routeStrings.length == 4) {
+                content = renderModeratorClasslistViewPage();
+                sendThymeleafResponse(exchange, content);
+            }
+        }
+        else if (path.startsWith("/moderator/teacherlist")) {
+            String[] routeStrings = path.split("/");
+            
+            if (routeStrings.length == 4) {
+                content = renderModeratorTeacherlistViewPage();
+                sendThymeleafResponse(exchange, content);
+            }
+        }
         else if (path.equals("/teacher/dashboard")) {
             content = renderTeacherDashboardPage();
             sendThymeleafResponse(exchange, content);
@@ -130,6 +146,20 @@ public class ThymeleafHandler implements HttpHandler {
         context.setVariable("message", "Welcome to the Dashboard!");
 
         return render("moderatorDashboard", context);
+    }
+
+    private String renderModeratorClasslistViewPage() {
+        Context context = new Context();
+        context.setVariable("message", "Viewing a Class Roster!");
+
+        return render("moderatorClasslistView", context);
+    }
+
+    private String renderModeratorTeacherlistViewPage() {
+        Context context = new Context();
+        context.setVariable("message", "Viewing a Teacher List!");
+
+        return render("moderatorTeacherlistView", context);
     }
 
     private String renderTeacherDashboardPage() {

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+
+    <div th:replace="~{fragments/styles :: styles}"></div>
+
+    <div th:replace="~{fragments/scripts :: scripts}"></div>
+    <script src="../../static/js/moderatorTeacherlistView.js"></script>
+
+</head>
+<body>
+    <div th:replace="~{fragments/moderatorNavbar :: navbar}"></div>
+
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <h2 class="text-center">Teacher List</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mx-auto col-md-11 border-0">
+        <div class="col mt-2">
+            <table id="teacherTable" class="datatable-simple display responive table table-striped table-sm w-100 dataTable no-footer dtr-inline">
+                <caption class="d-none">Class Roster Details</caption>
+                <thead>
+                    <tr>
+                        <th title="Cid" scope="col">Teacher ID</th>
+                        <th title="Cln" scope="col">First Name</th>
+                        <th title="Sct" scope="col">Last Name</th>
+                        <th title="Eml" scope="col">Email Address</th>
+                        <th title="Actions" scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="table-bordered p-0"></tbody>
+            </table>
+        </div>
+    </div>    
+
+    <div class="modal fade" id="removeConfirmation" tableindex="-1" aria-labelledby="removeConfirmationLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="removeConfirmationLabel">Confirm Removal</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to remove this teacher?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" id="removeConfirmationButton">Remove</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

@@ -3,65 +3,49 @@ let classData = [
         "classID": "01",
         "className": "Music Theory Basics",
         "studentCount": "12",
-        "playlistCount": "3",
-        "teacher": "John Johnson",
-        "teacherEmail": "john.johnson@sru.edu"
+        "playlistCount": "3"
     },
     {
         "classID": "02",
         "className": "Jazz Improvisation",
         "studentCount": "18",
-        "playlistCount": "5",
-        "teacher": "John Johnson",
-        "teacherEmail": "john.johnson@sru.edu"
+        "playlistCount": "5"
     },
     {
         "classID": "03",
         "className": "Classical Compositions",
         "studentCount": "20",
-        "playlistCount": "4",
-        "teacher": "John Johnson",
-        "teacherEmail": "john.johnson@sru.edu"
+        "playlistCount": "4"
     },
     {
         "classID": "04",
         "className": "Rock History 101",
         "studentCount": "25",
-        "playlistCount": "6",
-        "teacher": "John Johnson",
-        "teacherEmail": "john.johnson@sru.edu"
+        "playlistCount": "6"
     },
     {
         "classID": "05",
         "className": "Electronic Music Production",
         "studentCount": "15",
-        "playlistCount": "8",
-        "teacher": "John Johnson",
-        "teacherEmail": "john.johnson@sru.edu"
+        "playlistCount": "8"
     },
     {
         "classID": "06",
         "className": "Hip-Hop & Rap Culture",
         "studentCount": "22",
-        "playlistCount": "7",
-        "teacher": "John Johnson",
-        "teacherEmail": "john.johnson@sru.edu"
+        "playlistCount": "7"
     },
     {
         "classID": "07",
         "className": "Orchestration Techniques",
         "studentCount": "14",
-        "playlistCount": "3",
-        "teacher": "John Johnson",
-        "teacherEmail": "john.johnson@sru.edu"
+        "playlistCount": "3"
     },
     {
         "classID": "08",
         "className": "Film Score Analysis",
         "studentCount": "19",
-        "playlistCount": "5",
-        "teacher": "John Johnson",
-        "teacherEmail": "john.johnson@sru.edu"
+        "playlistCount": "5"
     },
     {
         "classID": "09",
@@ -147,29 +131,15 @@ $(document).ready(function () {
         }],
         columns: [
             {
-                class: "wrenchColumn",
-                data: null,
-                render: function(data, type, row, meta) {
-                    var dropdown = '<div class="dropdown show">' +
-                        '<a class="btn-sm btn btn-info" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fa fa-wrench" aria-hidden="true"></span></a>' +
-                        '<div class="dropdown-menu aria-labelledby="dropdownMenuLink">' +
-                        '<a class="dropdown-item" href="#" data-rowindex ="' + meta.row + '">Add Students/Teachers</a>' + 
-                        '<a class="dropdown-item" href="#" data-rowindex ="' + meta.row + '">Remove Students/Teachers</a>' + 
-                        '</div></div>';
-                    return dropdown;
-                },
-                orderable: false,
-                width: "1 em"
-            },
-            {
                 class: "viewColumn",
                 data: null,
                 render: function(data, type, row, meta) {
+                    var classID = row.classID;
                     var dropdown = '<div class="dropdown show">' +
                         '<a class="btn-sm btn btn-info" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fa fa-eye" aria-hidden="true"></span></a>' +
                         '<div class="dropdown-menu aria-labelledby="dropdownMenuLink">' +
-                        '<a class="dropdown-item" href="#" data-rowindex ="' + meta.row + '" data-bs-toggle="modal" data-bs-target="#classStudentsModal">View Students</a>' + 
-                        '<a class="dropdown-item" href="#" data-rowindex ="' + meta.row + '" data-bs-toggle="modal" data-bs-target="#classTeahcerModal">View Teacher</a>' + 
+                        `<a class="dropdown-item" href="./classlist/${classID}" data-rowindex ="' + meta.row + '">View Students</a>` + 
+                        `<a class="dropdown-item" href="./teacherlist/${classID}" data-rowindex ="' + meta.row + '">View Teacher</a>` + 
                         '</div></div>';
                     return dropdown;
                 },

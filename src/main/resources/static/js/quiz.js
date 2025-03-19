@@ -25,7 +25,7 @@ let userAnswers = [];
 let questionNumber = 0;
 let numberCorrect = 0;
 let playerReady = false;
-let songLength = 60;
+let songLength = 5;
 let secondsTimer = 0;
 let songListens = 0;
 
@@ -51,6 +51,19 @@ $(document).ready(function() {
     $("#quizForm").submit(function(event) {
         event.preventDefault();
         let formData = $(this).serializeArray();
+        let isFormValid = true;
+
+        formData.forEach(field => {
+            if (!field.value.trim()) {
+                isFormValid = false;
+            }
+        });
+
+        if (!isFormValid) {
+            bootstrapAlert('danger', 'Please fill out all fields before submitting.')
+            return;
+        }
+
         userAnswers.push(formData);
         checkAnswers(formData);
         nextQuestion();
@@ -81,7 +94,8 @@ function checkAnswers(formData) {
 function nextQuestion() {
     questionNumber++;
     songListens = 0;
-    $('#questionAttempts').html(3);
+    $('#songListens').html(3);
+    $('#elapsedTime').html('0:00');
 
     if (questionNumber < playlistData.length) {
         $('#questionNumber').text(questionNumber + 1);
@@ -89,8 +103,9 @@ function nextQuestion() {
         loadCurrentSong();
     }
     else {
-        console.log("QUIZ COMPLETE!");
-        alert(`Quiz complete! You got ${numberCorrect} out of ${playlistData.length} correct.`);
+        //console.log("QUIZ COMPLETE!");
+        //alert(`Quiz complete! You got ${numberCorrect} out of ${playlistData.length} correct.`);
+        window.location.href = "./quiz/results";
     }
 }
 

@@ -16,4 +16,5 @@ h2 {
 .teacherCard {
     border: solid black;
     padding: 10px;
+    width: 100%;
 }

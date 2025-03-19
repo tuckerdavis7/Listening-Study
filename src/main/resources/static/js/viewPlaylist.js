@@ -12,7 +12,7 @@ var songData = [
     {
         "playlist": "Classical 1",
         "name": "Symphony No. 40",
-        "composer": "Wolgang Amadeus Mozart",
+        "composer": "Wolfgang Amadeus Mozart",
         "year": "1788",
         "url": "https://youtu.be/JTc1mDieQI8?si=1ggnfrLLopftYWt7",
         "timestamp": "0:44",
@@ -55,8 +55,8 @@ $(document).ready(function () {
                     var dropdown = '<div class="dropdown show">' +
                         '<a class="btn-sm btn btn-info" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fa fa-wrench" aria-hidden="true"></span></a>' +
                         '<div class="dropdown-menu aria-labelledby="dropdownMenuLink">' +
-                        '<a class="dropdown-item" href="#" data-rowindex ="' + meta.row + '" data-bs-toggle="modal" data-bs-target="editModal">Edit Song</a>' + 
-                        '<a class="dropdown-item" href="#" data-rowindex ="' + meta.row + '" data-bs-toggle="modal" data-bs-target="deleteModal">Delete Song</a>' + 
+                        '<a class="dropdown-item" href="#" data-rowindex ="' + meta.row + '" data-bs-toggle="modal" data-bs-target="#editSongModal">Edit Song</a>' + 
+                        '<a class="dropdown-item" href="#" data-rowindex ="' + meta.row + '" data-bs-toggle="modal" data-bs-target="#removeConfirmation">Delete Song</a>' + 
                         '</div></div>';
                     return dropdown;
                 },
@@ -121,8 +121,40 @@ $(document).ready(function () {
         }
     });
 
+    let rowRemove;
+    
+    $('#deleteSong').click(function() {
+        const row = $(this).closest('tr');
+        rowRemove = row;
+
+        $('#removeConfirmation').modal('show');
+    });
+
+    $('#removeConfirmationButton').on('click', function() {
+        if(rowRemove) {
+            songTable.row(rowRemove).remove().draw();
+            $('#removeConfirmation').modal('hide');
+        }
+    });
+
+    let rowEdit;
+    
+    $('#editSong').click(function() {
+        const row = $(this).closest('tr');
+        rowEdit = row;
+
+        $('#editSongModal').modal('show');
+    });
+
+    $('#removeConfirmationButton').on('click', function() {
+        if(rowEdit) {
+            songTable.row(rowEdit).remove().draw();
+            $('#editSongModal').modal('hide');
+        }
+    });
+
     //order table by name column
-    songTable.order([[1, 'asc']]).draw();
+    songTable.order([[2, 'asc']]).draw();
 
     $('#previewModal').on('show.bs.modal', function (event) {
         let button = $(event.relatedTarget);
@@ -132,5 +164,31 @@ $(document).ready(function () {
         $('#composer').html(row.composer);
         $('#year').html(row.year);
         $('#url').html(row.url);
+    });
+
+    $('#confirmSongBtn').on('click', function () {
+        let songName = $('#songName').val().trim();
+        let songURL = $('#songURL').val().trim();
+        let composer = $('#composer').val().trim();
+        let year = $('#year').val().trim();
+
+        if(!songName && !songURL && !composer && !year) {
+            alert("Please fill in all fields.");
+            return;
+        }
+
+        let newSong = {
+            name: songName,
+            composer: composer,
+            year: year,
+            url: songURL
+        };
+
+        songData.push(newSong);
+        songTable.row.add(newSong).draw();
+        $('#songName, #composer, #year, #songURL').val('');
+
+        // Close the modal
+        $('#addSongModal').modal('hide');
     });
 });

@@ -11,7 +11,7 @@
 
 </head>
 <body>
-    <div th:replace="~{fragments/studentNavbar :: navbar}"></div>
+    <div th:replace="~{fragments/teacherNavbar :: navbar}"></div>
 
     <div class="container mt-5">
         <div class="row justify-content-center">
@@ -30,13 +30,13 @@
                         <th scope="col"> </th>
                         <th scope="col"> </th>
                         <th title="name" scope="col">Name</th>
-                        <th title="class" scope="col">Composer</th>
+                        <th title="composer" scope="col">Composer</th>
                         <th title="year" scope="col">Year</th>
-                        <th title="year" scope="col">URL</th>
+                        <th title="url" scope="col">URL</th>
                     </tr>
                 </thead>
                 <tbody class="table-bordered p-0"></tbody>
-                <button class="btn btn-primary navbar-btn" onclick="addSong()">Add Song</button>
+                <button id="addSongBtn" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addSongModal">Add Song</button>
             </table>
         </div>
     </div>
@@ -78,6 +78,26 @@
         </div>
     </div>
 
+    
+
+    <div class="modal fade" id="removeConfirmation" tableindex="-1" aria-labelledby="removeConfirmationLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="removeConfirmationLabel">Confirm Removal</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to remove this song?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" id="removeConfirmationButton">Remove</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="modal fade" id="editSongModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -112,6 +132,35 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="addSongModal" tabindex="-1" aria-labelledby="addSongModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addSongModalLabel">Add Class</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <label for="songName" class="form-label">Song Name</label>
+                    <input type="text" id="songName" class="form-control mb-3" placeholder="Enter song name" required>
+
+                    <label for="songURL" class="form-label">Song URL</label>
+                    <input type="text" id="songURL" class="form-control mb-3" placeholder="Enter song url" required>
+
+                    <label for="composer" class="form-label">Composer</label>
+                    <input type="text" id="composer" class="form-control mb-3" placeholder="Enter composer" required>
+
+                    <label for="year" class="form-label">Year</label>
+                    <input type="text" id="year" class="form-control mb-3" placeholder="Enter year" required>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="confirmSongBtn">Confirm</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <div th:replace="~{fragments/footer :: footer}"></div>
 </body>

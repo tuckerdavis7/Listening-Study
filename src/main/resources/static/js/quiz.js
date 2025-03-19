@@ -105,7 +105,7 @@ function nextQuestion() {
     else {
         //console.log("QUIZ COMPLETE!");
         //alert(`Quiz complete! You got ${numberCorrect} out of ${playlistData.length} correct.`);
-        window.location.href = "./quiz/results";
+        window.location.href = "./quizResults";
     }
 }
 

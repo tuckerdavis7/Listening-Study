@@ -169,7 +169,7 @@ $(document).ready(function () {
         });
 
     $('#confirmClassBtn').on('click', function () {
-        // Close the modal
+        bootstrapAlert('success', "Class Added");
         $('#addClassModal').modal('hide');
     });
 })

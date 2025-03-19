@@ -119,28 +119,7 @@ $(document).ready(function () {
     });
 
     $('#confirmSongBtn').on('click', function () {
-        let songName = $('#songName').val().trim();
-        let songURL = $('#songURL').val().trim();
-        let composer = $('#composer').val().trim();
-        let year = $('#year').val().trim();
-
-        if(!songName && !songURL && !composer && !year) {
-            alert("Please fill in all fields.");
-            return;
-        }
-
-        let newSong = {
-            name: songName,
-            composer: composer,
-            year: year,
-            url: songURL
-        };
-
-        songData.push(newSong);
-        songTable.row.add(newSong).draw();
-        $('#songName, #composer, #year, #songURL').val('');
-
-        // Close the modal
+        bootstrapAlert('success', "Song Added");
         $('#addSongModal').modal('hide');
     });
 });

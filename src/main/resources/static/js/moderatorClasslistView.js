@@ -80,7 +80,7 @@ let students = [
 
     //Add Student confirm button sample
     $('#confirmStudentBtn').on('click', function () {
-        // Close the modal
+        bootstrapAlert('success', "Student Added");
         $('#addStudentModal').modal('hide');
     });
 })

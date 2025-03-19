@@ -96,4 +96,8 @@ $(document).ready(function () {
             $('#editPlaylistModal').modal('hide');
         }
     });
-})
+
+    $('#createPlaylistButton').click(function() {
+        window.location.href = "/teacher/createPlaylist";
+    });
+});

@@ -12,7 +12,7 @@ var songData = [
     {
         "playlist": "Classical 1",
         "name": "Symphony No. 40",
-        "composer": "Wolgang Amadeus Mozart",
+        "composer": "Wolfgang Amadeus Mozart",
         "year": "1788",
         "url": "https://youtu.be/JTc1mDieQI8?si=1ggnfrLLopftYWt7",
         "timestamp": "0:44",
@@ -128,5 +128,31 @@ $(document).ready(function () {
         $('#composer').html(row.composer);
         $('#year').html(row.year);
         $('#url').html(row.url);
+    });
+
+    $('#confirmSongBtn').on('click', function () {
+        let songName = $('#songName').val().trim();
+        let songURL = $('#songURL').val().trim();
+        let composer = $('#composer').val().trim();
+        let year = $('#year').val().trim();
+
+        if(!songName && !songURL && !composer && !year) {
+            alert("Please fill in all fields.");
+            return;
+        }
+
+        let newSong = {
+            name: songName,
+            composer: composer,
+            year: year,
+            url: songURL
+        };
+
+        songData.push(newSong);
+        songTable.row.add(newSong).draw();
+        $('#songName, #composer, #year, #songURL').val('');
+
+        // Close the modal
+        $('#addSongModal').modal('hide');
     });
 });

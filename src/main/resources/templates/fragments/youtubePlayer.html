@@ -1,9 +1,10 @@
 <div th:fragment="youtubePlayer">
     <div class="h-100 d-flex justify-content-center align-items-center" id="playerContainer">
         <div id="player"></div>
+        <p class="mt-3"><span id="elapsedTime">0:00</span></p>
         <a class="btn-sm btn btn-info h-100 d-flex justify-content-center align-items-center" role="button" id="playButton"><span class="fa fa-play" id="playSymbol"></span></a>
         <div class="h-100 d-flex justify-content-center align-items-center" id="volume">
-            <label for="volumeRange" class="form-label" id="volumeLabel">&#128266; 50</label>
+            <label for="volumeRange" class="form-label mt-2" id="volumeLabel">&#128266; 50</label>
             <input type="range" class="form-range w-100" id="volumeRange" min="0" max="100">
         </div>
     </div>

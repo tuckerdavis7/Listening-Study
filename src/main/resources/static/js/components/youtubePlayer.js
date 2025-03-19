@@ -1,5 +1,7 @@
 let player;
 let playerLock = false;
+let playerStartTimestamp = 0;
+let songEndedFlag = false;
 
 $(document).ready(function () {
     $('#playButton').click(function (event) {
@@ -20,6 +22,7 @@ $(document).ready(function () {
 
     document.addEventListener('setNewSong', function (e) {
         playerLock = false;
+        playerStartTimestamp = e.detail.timestamp;
         if (e.detail.songLength == 0) {
             player.cueVideoById(e.detail.url, e.detail.timestamp);
         }
@@ -35,6 +38,8 @@ $(document).ready(function () {
     document.addEventListener('attemptLimit', function() {
         playerLock = true;
     })
+
+    setInterval(updateElapsedTime, 1000);
 
     loadYouTubeAPI();
     waitForYouTubeAPI();
@@ -81,12 +86,14 @@ function onPlayerReady(event) {
 function onPlayerStateChange(event) {
     if (event.data == YT.PlayerState.PLAYING) {
         $('#playSymbol').removeClass("fa-play").addClass("fa-pause");
+        songEndedFlag = false;
     }
     else {
         $('#playSymbol').removeClass("fa-pause").addClass("fa-play");
     }
 
-    if (event.data == YT.PlayerState.ENDED) {
+    if (event.data == YT.PlayerState.ENDED && !songEndedFlag) {
+        songEndedFlag = true;
         document.dispatchEvent(new Event('endSong'));
     }
 }
@@ -99,4 +106,17 @@ function waitForYouTubeAPI() {
         console.log("Waiting for YouTube API...");
         setTimeout(waitForYouTubeAPI, 500);
     }
+}
+
+function updateElapsedTime() {
+    if (player && player.getPlayerState() == 1) {
+        let currentTime = Math.floor(player.getCurrentTime() - playerStartTimestamp + 1);
+        $('#elapsedTime').html(formatTime(currentTime));
+    }
+}
+
+function formatTime(seconds) {
+    let minutes = Math.floor(seconds / 60);
+    let secs = seconds % 60;
+    return minutes + ":" + (secs < 10 ? "0" : "") + secs;
 }

@@ -33,6 +33,10 @@ public class ThymeleafHandler implements HttpHandler {
             content = renderIndexPage();
             sendThymeleafResponse(exchange, content);
         }
+        else if (path.equals("/bugreports")) {
+            content = renderBugPage();
+            sendThymeleafResponse(exchange, content);
+        }
         else if (path.equals("/administrator/dashboard")) {
             content = renderAdministratorDashboardPage();
             sendThymeleafResponse(exchange, content);
@@ -122,6 +126,10 @@ public class ThymeleafHandler implements HttpHandler {
             content = renderQuizPage();
             sendThymeleafResponse(exchange, content);
         }
+        else if (path.equals("/student/quizResults")) {
+            content = renderQuizResultsPage();
+            sendThymeleafResponse(exchange, content);
+        }
         else if (path.equals("/register")) {
             content = renderRegistrationPage();
             sendThymeleafResponse(exchange, content);
@@ -140,6 +148,13 @@ public class ThymeleafHandler implements HttpHandler {
         context.setVariable("message", "Welcome to the Listening App!");
 
         return render("index", context);
+    }
+
+    private String renderBugPage() {
+        Context context = new Context();
+        context.setVariable("message", "Welcome to the Bug Report page!");
+
+        return render("bugReports", context);
     }
 
     private String renderAdministratorDashboardPage() {
@@ -225,6 +240,13 @@ public class ThymeleafHandler implements HttpHandler {
         context.setVariable("message", "Welcome to the Quiz Page!");
 
         return render("quiz", context);
+    }
+
+    private String renderQuizResultsPage() {
+        Context context = new Context();
+        context.setVariable("message", "Welcome to the Quiz Results Page!");
+
+        return render("quizResults", context);
     }
 
     private String renderRegistrationPage() {

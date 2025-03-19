@@ -5,10 +5,10 @@ $(document).ready(function() {
         tracks: []
     };
 
-    // Dummy class options JSON
+    //dummy class options JSON
     let classOptions = ["Class A", "Class B", "Class C"];
 
-    // Function to populate the class dropdown
+    //function to populate the class dropdown
     function loadClassOptions() {
         let classSelect = $("#classSelect");
         classSelect.empty(); // Clear existing options
@@ -19,10 +19,10 @@ $(document).ready(function() {
         });
     }
 
-    // Call function to load class options on page load
+    //call function to load class options on page load
     loadClassOptions();
 
-    // Function to validate the last track card before adding a new one
+    //validate the last track card before adding a new one
     function validateLastTrack() {
         let lastTrack = $('#cardContainer .track-card:last');
         let isValid = true;
@@ -30,9 +30,9 @@ $(document).ready(function() {
         lastTrack.find('input').each(function() {
             if (!$(this).val().trim()) {
                 isValid = false;
-                $(this).addClass("is-invalid"); // Add red border if empty
+                $(this).addClass("is-invalid");
             } else {
-                $(this).removeClass("is-invalid"); // Remove red border if filled
+                $(this).removeClass("is-invalid");
             }
         });
 
@@ -43,7 +43,7 @@ $(document).ready(function() {
         return isValid;
     }
 
-    // Function to validate all track cards before saving
+    //function to validate all track cards before saving
     function validateAllTracks() {
         let isValid = true;
 
@@ -51,9 +51,9 @@ $(document).ready(function() {
             $(this).find('input').each(function() {
                 if (!$(this).val().trim()) {
                     isValid = false;
-                    $(this).addClass("is-invalid"); // Add red border if empty
+                    $(this).addClass("is-invalid");
                 } else {
-                    $(this).removeClass("is-invalid"); // Remove red border if filled
+                    $(this).removeClass("is-invalid");
                 }
             });
         });
@@ -65,10 +65,10 @@ $(document).ready(function() {
         return isValid;
     }
 
-    // Function to add a new track card (only if last card is valid)
+    //function to add a new track card (only if last card is valid)
     function addTrackCard() {
         if (!validateLastTrack()) {
-            return; // Stop adding if the last track is not valid
+            return;
         }
 
         let newCard = `
@@ -99,17 +99,16 @@ $(document).ready(function() {
         updateAddButton();
     }
 
-    // Function to update "Add Track" button position
+    //function to update "Add Track" button position
     function updateAddButton() {
         $('#cardContainer .add-card').remove(); // Remove existing add buttons
 
-        // Add button to only the last card
+        //add button to only the last card
         $('#cardContainer .track-card:last .card-body').append(`
             <button class="btn btn-primary mt-2 add-card">Add Track</button>
         `);
     }
 
-    // Event listener for dynamically added "Add Track" button
     $(document).on('click', '.add-card', function() {
         addTrackCard();
     });
@@ -124,7 +123,7 @@ $(document).ready(function() {
         }
     });
 
-    // Function to save playlist data as JSON
+    //function to save playlist data as JSON
     $('#savePlaylist').click(function() {
         // Ensure all track fields are filled before saving
         if (!validateAllTracks()) {
@@ -144,28 +143,28 @@ $(document).ready(function() {
             tracks.push(track);
         });
 
-        // Store playlist name and class
+        //store playlist name and class
         playlistData.playlistName = $('#playlistName').val().trim();
         playlistData.class = $('#classSelect').val();
         playlistData.tracks = tracks;
 
-        // Check if playlist is valid
+        //check if playlist is valid
         if (!playlistData.playlistName || !playlistData.class) {
             bootstrapAlert('danger', 'Please enter a playlist name and select a class.');
             return;
         }
 
-        // Convert to JSON and log
+        //convert to JSON and log
         let playlistJSON = JSON.stringify(playlistData, null, 4);
         console.log("Saved Playlist:", playlistJSON);
 
-        // Store JSON in local storage (or send via AJAX later)
+        //store JSON in local storage (or send via AJAX later)
         localStorage.setItem("savedPlaylist", playlistJSON);
 
         bootstrapAlert('success', 'Playlist saved successfully!');
         window.location.href = '/teacher/Playlists';
     });
 
-    // Ensure the first card has the Add button on page load
+    //ensure the first card has the Add button on page load
     updateAddButton();
 });

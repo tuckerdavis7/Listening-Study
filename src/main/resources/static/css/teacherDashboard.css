@@ -1,7 +1,9 @@
 h1 {
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-    border: solid orange;
+    border: 5px solid #e9ca75;
+    border-radius: 12px;
     margin-bottom: 100px;
+    background-color: #bfd9da;
 }
 
 h2 {
@@ -9,12 +11,15 @@ h2 {
 }
 
 #cardContainer {
-    border: solid orange;
+    border: 5px solid #e9ca75;
+    border-radius: 12px;
     padding: 50px;
+    background-color: #bfd9da;
 }
 
-.teacherCard {
+.card {
     border: solid black;
     padding: 10px;
     width: 100%;
+    background-color: #e9ca75;
 }

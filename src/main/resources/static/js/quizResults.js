@@ -56,7 +56,7 @@ $(document).ready(function() {
     let container = $('#wrongAnswersContainer');
 
     for (let i = 0; i < wrongAnswerIndices.length; i++) {
-        let subcontainer = $('<div class="card m-4 answerCard"></div>');
+        let subcontainer = $('<div class="card m-4 shadow answerCard"></div>');
         container.append(subcontainer);
         
         subcontainer.append(`<h4 class="card-title">Question ${wrongAnswerIndices[i]+1}:`);

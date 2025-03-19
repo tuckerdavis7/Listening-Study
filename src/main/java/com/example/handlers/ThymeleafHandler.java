@@ -122,6 +122,10 @@ public class ThymeleafHandler implements HttpHandler {
             content = renderQuizPage();
             sendThymeleafResponse(exchange, content);
         }
+        else if (path.equals("/student/quizResults")) {
+            content = renderQuizResultsPage();
+            sendThymeleafResponse(exchange, content);
+        }
         else if (path.equals("/register")) {
             content = renderRegistrationPage();
             sendThymeleafResponse(exchange, content);
@@ -232,6 +236,13 @@ public class ThymeleafHandler implements HttpHandler {
         context.setVariable("message", "Welcome to the Quiz Page!");
 
         return render("quiz", context);
+    }
+
+    private String renderQuizResultsPage() {
+        Context context = new Context();
+        context.setVariable("message", "Welcome to the Quiz Results Page!");
+
+        return render("quizResults", context);
     }
 
     private String renderRegistrationPage() {

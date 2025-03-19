@@ -41,54 +41,6 @@ let classData = [
         "className": "Orchestration Techniques",
         "studentCount": "14",
         "playlistCount": "3"
-    },
-    {
-        "classID": "08",
-        "className": "Film Score Analysis",
-        "studentCount": "19",
-        "playlistCount": "5"
-    },
-    {
-        "classID": "09",
-        "className": "Choir & Vocal Harmony",
-        "studentCount": "30",
-        "playlistCount": "6"
-    },
-    {
-        "classID": "10",
-        "className": "Blues Guitar Essentials",
-        "studentCount": "17",
-        "playlistCount": "4"
-    },
-    {
-        "classID": "11",
-        "className": "Music Business & Marketing",
-        "studentCount": "21",
-        "playlistCount": "9"
-    },
-    {
-        "classID": "12",
-        "className": "Pop Songwriting",
-        "studentCount": "16",
-        "playlistCount": "5"
-    },
-    {
-        "classID": "13",
-        "className": "Sound Engineering 101",
-        "studentCount": "23",
-        "playlistCount": "8"
-    },
-    {
-        "classID": "14",
-        "className": "Folk & Acoustic Styles",
-        "studentCount": "13",
-        "playlistCount": "4"
-    },
-    {
-        "classID": "15",
-        "className": "Reggae Rhythms & Culture",
-        "studentCount": "20",
-        "playlistCount": "5"
     }
 ];
 

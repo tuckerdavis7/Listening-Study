@@ -58,6 +58,14 @@ align-items: center !important;
 text-align: center;
 }
 
+.charColumn, .dt-type-numeric  {
+  text-align: left !important;
+}
+
+.dataTables_scrollHead { 
+  overflow: visible !important; 
+}
+
 /* Specific selector to ensure paging button text is always white */
 div.dt-container .dt-paging .dt-paging-button.current, div.dt-container .dt-paging .dt-paging-button.current:hover {
   color: white !important;

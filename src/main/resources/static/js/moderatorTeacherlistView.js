@@ -80,7 +80,7 @@ let teachers = [
 
     //Add Teacher confirm button sample
     $('#confirmTeacherBtn').on('click', function () {
-        // Close the modal
+        bootstrapAlert('success', "Teacher Added");
         $('#addTeacherModal').modal('hide');
     });
 })

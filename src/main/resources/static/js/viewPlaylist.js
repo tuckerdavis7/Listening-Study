@@ -39,7 +39,6 @@ $(document).ready(function () {
             "<'row'<'col-sm-12'tr>>" +
             "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>><'#bottomLink'>",
         scrollCollapse: false,
-        scrollY: '50vh',
         responsive: true,
         filter: true,
         info: false,
@@ -94,31 +93,36 @@ $(document).ready(function () {
             { data: "year", class: "charcolumn", width: "3 rem" },
             { data: "url", class: "charcolumn", width: "3 rem" }
         ],
-        drawCallback: function() {
-            $('.dt-paging-button.current').attr('style', 'color: white !important'); //inline css styling used as last resort for highest priority selector
-        }
-    });
-
-    //add a text input to each header cell
-    $('#songTable thead').append('<tr class="searchRow"></tr>');
-    $('#songTable').DataTable().columns().every(function (i) {
-        if (i === 0) {
-            $(this.header()).closest('thead').children('.searchRow').append('<th></th>');
-        }
-        else {
-            let that = this;
-            let title = $(this.header()).text();
-            $(this.header()).closest('thead').children('.searchRow').append('<th><input class="form-control form-control-sm m-1 w-100 sorting_disabled" type="search" placeholder="Filter ' + title + '" /></th>');
-            $('input', $('#songTable thead tr.searchRow th').eq(i)).on('keyup change clear search', function() {
-                if (that.search() !== this.value) {
-                    that.search(this.value).draw();
+        initComplete: function() {
+            //create the search rows
+            this.api().columns().every(function(index) {
+                let column = this;
+                let title = $(column.header()).text().trim();
+                
+                if ($('#songTable thead tr.filters').length === 0) {
+                    $('#songTable thead').append('<tr class="filters"></tr>');
+                }
+                if (index === 0) {
+                    $('#songTable thead tr.filters').append('<th></th>');
+                } 
+                else {
+                    let filterCell = $('<th><input type="text" class="form-control form-control-sm" placeholder="Filter ' + title + '" /></th>');
+                    $('#songTable thead tr.filters').append(filterCell);
+                    $('input', filterCell).on('keyup change', function() {
+                        if (column.search() !== this.value) {
+                            column.search(this.value).draw();
+                        }
+                    });
                 }
             });
+            
+            //disable sorting for search row
+            $('#songTable thead tr.filters th').addClass('sorting_disabled');
         }
     });
 
-    //order table by status column
-    songTable.order([[4, 'asc']]).draw();
+    //order table by name column
+    songTable.order([[1, 'asc']]).draw();
 
     $('#previewModal').on('show.bs.modal', function (event) {
         let button = $(event.relatedTarget);

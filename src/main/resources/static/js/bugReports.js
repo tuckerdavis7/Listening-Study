@@ -38,98 +38,57 @@ var userData = [
     
 ]
 
+var bugTable;
+
 $(document).ready(function () {
-    bugsTable = $('#bugsTable').DataTable({
-        data: reportData,
-        dom: "<'row'<'col-sm-12 col-md-12 text-end'B>>" +
-            "<'row'<'col-sm-12'tr>>" +
-            "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>><'#bottomLink'>",
-        scrollCollapse: false,
-        responsive: true,
-        filter: true,
-        info: false,
-        lengthChange: false,
-        columnDefs: [{
+    let bugColumns = [
+        {
+            class: "wrenchColumn",
+            data: null,
             orderable: false,
-            targets: 0,
-        }],
-        columns: [
-            {
-                class: "wrenchColumn",
-                data: null,
-                orderable: false,
-                width: "1 em",
-                render: function(data, type, row, meta) {
-                    let dropdown = '<div class="dropdown show">' +
-                        '<a class="btn-sm btn btn-info" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fa fa-wrench" aria-hidden="true"></span></a>' +
-                        '<div class="dropdown-menu aria-labelledby="dropdownMenuLink">' +
-                        '<a class="dropdown-item" href="#" data-rowindex ="' + meta.row + '" data-bs-toggle="modal" data-bs-target="#resolveModal">Resolve Bug Report</a>' + 
-                        '</div></div>';
-                    return dropdown;
-                },
+            width: "1 em",
+            render: function(data, type, row, meta) {
+                let dropdown = '<div class="dropdown show">' +
+                    '<a class="btn-sm btn btn-info" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fa fa-wrench" aria-hidden="true"></span></a>' +
+                    '<div class="dropdown-menu aria-labelledby="dropdownMenuLink">' +
+                    '<a class="dropdown-item" href="#" data-rowindex ="' + meta.row + '" data-bs-toggle="modal" data-bs-target="#resolveModal">Resolve Bug Report</a>' + 
+                    '</div></div>';
+                return dropdown;
             },
-            { data: "initialDate", class: "charcolumn", width: "2 rem" },
-            { data: "description", class: "charcolumn", width: "8 rem" },
-            {
-                class: "charColumn",
-                data: null,
-                width: "5 rem",
-                render: function(data, type, row, meta) {
-                    return row.modifiedDate + ' by ' + row.modifiedUser; 
+        },
+        { data: "initialDate", class: "charcolumn", width: "2 rem" },
+        { data: "description", class: "charcolumn", width: "8 rem" },
+        {
+            class: "charColumn",
+            data: null,
+            width: "5 rem",
+            render: function(data, type, row, meta) {
+                return row.modifiedDate + ' by ' + row.modifiedUser; 
+            }
+        },
+        {
+            class: "charColumn pillColumn",
+            data: "status",
+            width: "4 rem",
+            render: function(data, type, row, meta) {
+                let pillClass;
+                if (data === "Open") {
+                    pillClass = "bg-danger";
                 }
-            },
-            {
-                class: "charColumn pillColumn",
-                data: "status",
-                width: "4 rem",
-                render: function(data, type, row, meta) {
-                    let pillClass;
-                    if (data === "Open") {
-                        pillClass = "bg-danger";
-                    }
-                    else if (data === "Acknowledged") {
-                        pillClass = "bg-warning";
-                    }
-                    else {
-                        pillClass = "bg-success";
-                    }
-
-                    return '<span class="badge rounded-pill ' + pillClass + ' text-center d-inline-block">' + data + '</span>';
+                else if (data === "Acknowledged") {
+                    pillClass = "bg-warning";
                 }
-            },
-           
-        ],
-        initComplete: function() {
-            //create the search rows
-            this.api().columns().every(function(index) {
-                let column = this;
-                let title = $(column.header()).text().trim();
-                
-                if ($('#bugsTable thead tr.filters').length === 0) {
-                    $('#bugsTable thead').append('<tr class="filters"></tr>');
-                }
-                if (index === 0) {
-                    $('#bugsTable thead tr.filters').append('<th></th>');
-                } 
                 else {
-                    let filterCell = $('<th><input type="text" class="form-control form-control-sm" placeholder="Filter ' + title + '" /></th>');
-                    $('#bugsTable thead tr.filters').append(filterCell);
-                    $('input', filterCell).on('keyup change', function() {
-                        if (column.search() !== this.value) {
-                            column.search(this.value).draw();
-                        }
-                    });
+                    pillClass = "bg-success";
                 }
-            });
-            
-            //disable sorting for search row
-            $('#bugsTable thead tr.filters th').addClass('sorting_disabled');
-        }
-    });
 
-    //order table by date column
-    bugsTable.order([[1, 'asc']]).draw();
+                return '<span class="badge rounded-pill ' + pillClass + ' text-center d-inline-block">' + data + '</span>';
+            }
+        },
+       
+    ];
 
+    bugTable = initializeDataTableWithFilters('#bugTable', reportData, bugColumns, [4, 'asc']);
 
     $('#bugModal').on('show.bs.modal', function (event) {
         $('#description').val('');
@@ -145,7 +104,7 @@ $(document).ready(function () {
 
     $('#resolveModal').on('show.bs.modal', function (event) {
         let button = $(event.relatedTarget);
-        let row = bugsTable.row(button.data('rowindex')).data();
+        let row = bugTable.row(button.data('rowindex')).data();
 
         $('#resolveDate').html(row.initialDate);
         $('#resolveName').html(row.first + ' ' + row.last);

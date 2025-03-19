@@ -1,4 +1,4 @@
-function initializeDataTableWithFilters(tableSelector, data, columns, orderColumn) {
+function initializeDataTableWithFilters(tableSelector, data, columns, orderColumn, ignoreFirstColumn = true) {
     let $table = $(tableSelector);
     let $thead = $table.find('thead');
     
@@ -8,7 +8,7 @@ function initializeDataTableWithFilters(tableSelector, data, columns, orderColum
         $thead.find('tr:first-child th').each(function(index) {
             let title = $(this).text().trim();
             
-            if ($(this).hasClass('no-filter') || index === 0 || index === columns.length - 1) {
+            if (($(this).hasClass('no-filter') || index === 0 || index === columns.length - 1) && ignoreFirstColumn) {
                 filterRow.append('<th></th>');
             }
             else {

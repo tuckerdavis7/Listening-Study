@@ -15,14 +15,17 @@
     <div class="container mt-5">
         <div class="row justify-content-center">
             <div class="col-md-6">
-                <h2 class="text-center">Teacher List</h2>
+                <h2 class="text-center">Teacher List</h2><br>
             </div>
-        </div>
-        <div class="col-md-6 text-start">
-            <button id="addTeacherBtn" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addTeacherModal">Add Teacher</button>
         </div>
     </div>
 
+    <div class="row mx-auto col-md-11 mb-3">
+        <div class="col-12 text-start">
+            <button id="addTeacherBtn" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addTeacherModal">Add Teacher</button>
+        </div>
+    </div>
+    
     <div class="card mx-auto col-md-11 border-0">
         <div class="col mt-2">
             <table id="teacherTable" class="datatable-simple display responive table table-striped table-sm w-100 dataTable no-footer dtr-inline">
@@ -47,7 +50,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="addTeacherModalLabel">Add Teacher</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close modal-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <!--Search-->

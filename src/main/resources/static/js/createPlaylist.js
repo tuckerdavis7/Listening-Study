@@ -99,13 +99,13 @@ $(document).ready(function() {
         updateAddButton();
     }
 
-    //function to update "Add Track" button position
+    //function to update "Add Song" button position
     function updateAddButton() {
         $('#cardContainer .add-card').remove(); // Remove existing add buttons
 
         //add button to only the last card
         $('#cardContainer .track-card:last .card-body').append(`
-            <button class="btn btn-primary mt-2 add-card">Add Track</button>
+            <button class="btn btn-primary mt-2 add-card">Add Song</button>
         `);
     }
 

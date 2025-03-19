@@ -108,20 +108,25 @@
                 <form id="editSongForm">
                     <div class="modal-body">
                         <div class="mb-3">
-                            <label for="songName" class="form-label">Name:</label>
-                            <input type="text" class="form-control" id="songName" name="name">
+                            <label for="editSongName" class="form-label">Name:</label>
+                            <input type="text" class="form-control" id="editSongName" name="name">
                         </div>
                         <div class="mb-3">
-                            <label for="composer" class="form-label">Composer:</label>
-                            <input type="text" class="form-control" id="composer" name="composer">
+                            <label for="editComposer" class="form-label">Composer:</label>
+                            <input type="text" class="form-control" id="editComposer" name="composer">
                         </div>
                         <div class="mb-3">
-                            <label for="year" class="form-label">Year:</label>
-                            <input type="number" class="form-control" id="year" name="year">
+                            <label for="editYear" class="form-label">Year:</label>
+                            <input type="number" class="form-control" id="editYear" name="year">
                         </div>
                         <div class="mb-3">
-                            <label for="url" class="form-label">URL:</label>
-                            <input type="url" class="form-control" id="url" name="url">
+                            <label for="editURL" class="form-label">URL:</label>
+                            <input type="url" class="form-control" id="editURL" name="url">
+                        </div>
+                        <div class="mb-3">
+                            <label for="editTimestamp" class="form-label">Timestamp</label>
+                            <input type="text" id="editTimestamp" class="form-control mb-3" placeholder="Enter timestamp">
+                            <small class="form-text text-muted">Optional. Please use the following timestamp format: X:XX</small>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -152,6 +157,10 @@
 
                     <label for="year" class="form-label">Year</label>
                     <input type="text" id="year" class="form-control mb-3" placeholder="Enter year" required>
+
+                    <label for="timestamp" class="form-label">Timestamp</label>
+                    <input type="text" id="timestamp" class="form-control mb-3" placeholder="Enter timestamp">
+                    <small class="form-text text-muted">Optional. Please use the following timestamp format: X:XX</small>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" id="confirmSongBtn">Confirm</button>

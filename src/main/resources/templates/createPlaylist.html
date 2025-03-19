@@ -37,7 +37,7 @@
             <!-- Default Card (One Required) -->
             <div class="card shadow p-3 mb-3 track-card">
                 <div class="card-body">
-                    <h5 class="card-title">Track Details</h5>
+                    <h5 class="card-title">Song Details</h5>
                     <div class="mb-2">
                         <label class="form-label">Name</label>
                         <input type="text" class="form-control track-name" placeholder="Enter track name">
@@ -53,6 +53,11 @@
                     <div class="mb-2">
                         <label class="form-label">Year</label>
                         <input type="number" class="form-control track-year" min="1900" max="2099" placeholder="Enter year">
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">Timestamp</label>
+                        <input type="text" class="form-control track-timestamp" placeholder="Enter timestamp">
+                        <small class="form-text text-muted">Optional. Please use the following timestamp format: X:XX</small>
                     </div>
                     <button class="btn btn-danger remove-card mt-2">Remove</button>               
                 </div>

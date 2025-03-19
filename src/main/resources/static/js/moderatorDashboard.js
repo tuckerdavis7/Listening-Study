@@ -105,41 +105,32 @@ let classData = [
     }
 ];
 
-// Reusable DataTable with Dynamic Filters
-
 $(document).ready(function () {
-    // Create a reusable function to initialize DataTables with filters
     function initializeDataTableWithFilters(tableSelector, data, columns, orderColumn) {
-        // Dynamically create the filter row before DataTable initialization
-        const $table = $(tableSelector);
-        const $thead = $table.find('thead');
+        let $table = $(tableSelector);
+        let $thead = $table.find('thead');
         
-        // Only create filter row if it doesn't exist yet
         if ($thead.find('tr.filters').length === 0) {
-            const filterRow = $('<tr class="filters"></tr>');
+            let filterRow = $('<tr class="filters"></tr>');
             
-            // Loop through each header in the existing header row to create matching filter cells
             $thead.find('tr:first-child th').each(function(index) {
-                const title = $(this).text().trim();
+                let title = $(this).text().trim();
                 
                 if ($(this).hasClass('no-filter') || index === 0 || index === columns.length - 1) {
-                    // Skip first (view) column and last (actions) column
                     filterRow.append('<th></th>');
-                } else {
-                    // Add filter input for this column
+                }
+                else {
                     filterRow.append(`<th><input type="text" class="form-control form-control-sm" placeholder="Filter ${title}" /></th>`);
                 }
             });
             
-            // Add filter row to thead
             $thead.append(filterRow);
             
-            // Make sure filter row cells can't be sorted
             $thead.find('tr.filters th').addClass('sorting_disabled');
         }
         
         // Initialize DataTable with appropriate settings
-        const dataTable = $table.DataTable({
+        let dataTable = $table.DataTable({
             data: data,
             dom: "<'row'<'col-sm-12 col-md-12 text-end'B>>" +
                 "<'row'<'col-sm-12'tr>>" +
@@ -150,19 +141,18 @@ $(document).ready(function () {
             filter: true,
             info: false,
             lengthChange: false,
-            orderCellsTop: true, // Important for header ordering with complex headers
+            orderCellsTop: true,
             fixedHeader: {
                 header: true,
                 headerOffset: $('.navbar').outerHeight() || 0
             },
             columns: columns,
             initComplete: function() {
-                // Set up column searching functionality
-                const api = this.api();
+                let api = this.api();
                 
-                // Apply search functionality to each column with filter
+                //add column with filter
                 $thead.find('tr.filters th').each(function(i) {
-                    const $input = $(this).find('input');
+                    let $input = $(this).find('input');
                     if ($input.length) {
                         $input.on('keyup change', function() {
                             api.column(i).search(this.value).draw();
@@ -170,14 +160,13 @@ $(document).ready(function () {
                     }
                 });
                 
-                // Force redraw after a delay to ensure everything is properly sized
+                //force redraw after a delay to ensure everything is properly sized
                 setTimeout(function() {
                     api.columns.adjust().draw();
                 }, 100);
             }
         });
         
-        // Set initial ordering
         if (orderColumn) {
             dataTable.order([orderColumn]).draw();
         }
@@ -185,36 +174,7 @@ $(document).ready(function () {
         return dataTable;
     }
     
-    // Add necessary styles for DataTable filters to work with scrollY
-    $('<style>')
-        .prop('type', 'text/css')
-        .html(`
-            /* Fix for filter visibility */
-            .dataTables_scrollHead {
-                overflow: visible !important;
-            }
-            
-            /* Position filters properly */
-            .filters input {
-                width: 100%;
-                box-sizing: border-box;
-            }
-            
-            /* Ensure filters appear in correct position */
-            .filters {
-                position: relative;
-                z-index: 100;
-            }
-            
-            /* Make sure filter rows are properly displayed in DOM */
-            .dt-scroll-head .filters {
-                display: table-row !important;
-            }
-        `)
-        .appendTo('head');
-    
-    // Example: Initialize the class table
-    const classColumns = [
+    let classColumns = [
         {
             class: "viewColumn",
             data: null,
@@ -241,7 +201,6 @@ $(document).ready(function () {
         `},
     ];
     
-    // Initialize the class table
     let classTable = initializeDataTableWithFilters('#classTable', classData, classColumns, [4, 'asc']);
 
         //event listener for disable button

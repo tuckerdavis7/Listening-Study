@@ -26,8 +26,8 @@ function initializeDataTableWithFilters(tableSelector, data, columns, orderColum
         dom: "<'row'<'col-sm-12 col-md-12 text-end'B>>" +
             "<'row'<'col-sm-12'tr>>" +
             "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>><'#bottomLink'>",
-        scrollCollapse: true,
-        scrollY: '400px',
+        // scrollCollapse: true,
+        // scrollY: '400px',
         responsive: true,
         filter: true,
         info: false,

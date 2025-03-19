@@ -79,6 +79,25 @@
     </div>
 
     
+
+    <div class="modal fade" id="removeConfirmation" tableindex="-1" aria-labelledby="removeConfirmationLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="removeConfirmationLabel">Confirm Removal</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to remove this song?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" id="removeConfirmationButton">Remove</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="modal fade" id="editSongModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -114,7 +133,6 @@
         </div>
     </div>
 
-    <!--Add Song-->
     <div class="modal fade" id="addSongModal" tabindex="-1" aria-labelledby="addSongModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -123,19 +141,15 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <!--Add Song Name-->
                     <label for="songName" class="form-label">Song Name</label>
                     <input type="text" id="songName" class="form-control mb-3" placeholder="Enter song name" required>
 
-                    <!--Add Song URL-->
                     <label for="songURL" class="form-label">Song URL</label>
                     <input type="text" id="songURL" class="form-control mb-3" placeholder="Enter song url" required>
 
-                    <!--Add Composer-->
                     <label for="composer" class="form-label">Composer</label>
                     <input type="text" id="composer" class="form-control mb-3" placeholder="Enter composer" required>
 
-                    <!--Add Year-->
                     <label for="year" class="form-label">Year</label>
                     <input type="text" id="year" class="form-control mb-3" placeholder="Enter year" required>
                 </div>

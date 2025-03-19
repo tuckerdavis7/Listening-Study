@@ -5,8 +5,8 @@
 
     <div th:replace="~{fragments/styles :: styles}"></div>
 
-    <script src="../../static/js/components/youtubePlayer.js"></script>
     <div th:replace="~{fragments/scripts :: scripts}"></div>
+    <script src="../../static/js/components/youtubePlayer.js"></script>
     <script src="../../static/js/viewPlaylist.js"></script>
 
 </head>
@@ -39,7 +39,43 @@
                 <button class="btn btn-primary navbar-btn" onclick="addSong()">Add Song</button>
             </table>
         </div>
-        <div th:replace="~{fragments/youtubePlayer :: youtubePlayer}"></div>
+    </div>
+
+    <div class="modal fade" id="previewModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Preview Song</h5>
+                    <button type="button" class="btn-close modal-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <table class="table">
+                        <tbody>
+                            <tr class="mb-3">
+                                <th scope="row" class="p-0 py-2">Name:</th>
+                                <td class="py-2" id="name"></td>
+                            </tr>
+                            <tr class="mb-3">
+                                <th scope="row" class="p-0 py-2">Composer:</th>
+                                <td class="py-2" id="composer"></td>
+                            </tr>
+                            <tr class="mb-3">
+                                <th scope="row" class="p-0 py-2">Year:</th>
+                                <td class="py-2" id="year"></td>
+                            </tr>
+                            <tr class="mb-3">
+                                <th scope="row" class="p-0 py-2">URL:</th>
+                                <td class="py-2" id="url"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div th:replace="~{fragments/youtubePlayer :: youtubePlayer}"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary mr-auto" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div th:replace="~{fragments/footer :: footer}"></div>

@@ -28,6 +28,9 @@ $(document).ready(function() {
         let isValid = true;
 
         lastTrack.find('input').each(function() {
+            if ($(this).hasClass('track-timestamp')) {
+                return;
+            }
             if (!$(this).val().trim()) {
                 isValid = false;
                 $(this).addClass("is-invalid");

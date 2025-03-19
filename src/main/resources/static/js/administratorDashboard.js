@@ -69,202 +69,119 @@ var userData = [
     }
 ]
 
+var reportTable;
+var userTable;
+
 $(document).ready(function () {
-    reportTable = $('#reportTable').DataTable({
-        data: reportData,
-        dom: "<'row'<'col-sm-12 col-md-12 text-end'B>>" +
-            "<'row'<'col-sm-12'tr>>" +
-            "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>><'#bottomLink'>",
-        scrollCollapse: false,
-        responsive: true,
-        filter: true,
-        info: false,
-        lengthChange: false,
-        columnDefs: [{
+   let reportColumns = [
+        {
+            class: "wrenchColumn",
+            data: null,
             orderable: false,
-            targets: 0,
-        }],
-        columns: [
-            {
-                class: "wrenchColumn",
-                data: null,
-                orderable: false,
-                width: "1 em",
-                render: function(data, type, row, meta) {
-                    let dropdown = '<div class="dropdown show">' +
-                        '<a class="btn-sm btn btn-info" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fa fa-wrench" aria-hidden="true"></span></a>' +
-                        '<div class="dropdown-menu aria-labelledby="dropdownMenuLink">' +
-                        '<a class="dropdown-item" href="#" data-rowindex ="' + meta.row + '" data-bs-toggle="modal" data-bs-target="#reportModal">View Report Details</a>' + 
-                        '</div></div>';
-                    return dropdown;
-                },
+            width: "1 em",
+            render: function(data, type, row, meta) {
+                let dropdown = '<div class="dropdown show">' +
+                    '<a class="btn-sm btn btn-info" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fa fa-wrench" aria-hidden="true"></span></a>' +
+                    '<div class="dropdown-menu aria-labelledby="dropdownMenuLink">' +
+                    '<a class="dropdown-item" href="#" data-rowindex ="' + meta.row + '" data-bs-toggle="modal" data-bs-target="#reportModal">View Report Details</a>' + 
+                    '</div></div>';
+                return dropdown;
             },
-            { data: "initialDate", class: "charcolumn", width: "2 rem" },
-            {
-                class: "charColumn",
-                data: null,
-                width: "6 rem",
-                render: function(data, type, row, meta) {
-                    return row.first + ' ' + row.last;
+        },
+        { data: "initialDate", class: "charcolumn", width: "2 rem" },
+        {
+            class: "charColumn",
+            data: null,
+            width: "6 rem",
+            render: function(data, type, row, meta) {
+                return row.first + ' ' + row.last;
+            }
+        },
+        {
+            class: "charColumn",
+            data: null,
+            width: "6 rem",
+            render: function(data, type, row, meta) {
+                return row.modifiedDate + ' by ' + row.modifiedUser; 
+            }
+        },
+        {
+            class: "charColumn pillColumn",
+            data: "status",
+            width: "6 rem",
+            render: function(data, type, row, meta) {
+                let pillClass;
+                if (data === "Open") {
+                    pillClass = "bg-danger";
                 }
-            },
-            {
-                class: "charColumn",
-                data: null,
-                width: "6 rem",
-                render: function(data, type, row, meta) {
-                    return row.modifiedDate + ' by ' + row.modifiedUser; 
+                else if (data === "Acknowledged") {
+                    pillClass = "bg-warning";
                 }
-            },
-            {
-                class: "charColumn pillColumn",
-                data: "status",
-                width: "6 rem",
-                render: function(data, type, row, meta) {
-                    let pillClass;
-                    if (data === "Open") {
-                        pillClass = "bg-danger";
-                    }
-                    else if (data === "Acknowledged") {
-                        pillClass = "bg-warning";
-                    }
-                    else {
-                        pillClass = "bg-success";
-                    }
-
-                    return '<span class="badge rounded-pill ' + pillClass + ' text-center d-inline-block">' + data + '</span>';
-                }
-            },
-           
-        ],
-        initComplete: function() {
-            //create the search rows
-            this.api().columns().every(function(index) {
-                let column = this;
-                let title = $(column.header()).text().trim();
-                
-                if ($('#reportTable thead tr.filters').length === 0) {
-                    $('#reportTable thead').append('<tr class="filters"></tr>');
-                }
-                if (index === 0) {
-                    $('#reportTable thead tr.filters').append('<th></th>');
-                } 
                 else {
-                    let filterCell = $('<th><input type="text" class="form-control form-control-sm" placeholder="Filter ' + title + '" /></th>');
-                    $('#reportTable thead tr.filters').append(filterCell);
-                    $('input', filterCell).on('keyup change', function() {
-                        if (column.search() !== this.value) {
-                            column.search(this.value).draw();
-                        }
-                    });
+                    pillClass = "bg-success";
                 }
-            });
-            
-            //disable sorting for search row
-            $('#reportTable thead tr.filters th').addClass('sorting_disabled');
-        }
-    });
 
-    //order table by date column
-    reportTable.order([[1, 'asc']]).draw();
+                return '<span class="badge rounded-pill ' + pillClass + ' text-center d-inline-block">' + data + '</span>';
+            }
+        },
+    ];
 
-    userTable = $('#userTable').DataTable({
-        data: userData,
-        dom: "<'row'<'col-sm-12 col-md-12 text-end'B>>" +
-            "<'row'<'col-sm-12'tr>>" +
-            "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>><'#bottomLink'>",
-        scrollCollapse: false,
-        responsive: true,
-        filter: true,
-        info: false,
-        lengthChange: false,
-        columnDefs: [{
+    let userColumns = [
+        {
+            class: "wrenchColumn",
+            data: "role",
             orderable: false,
-            targets: 0,
-        }],
-        columns: [
-            {
-                class: "wrenchColumn",
-                data: "role",
-                orderable: false,
-                width: "1 em",
-                render: function(data, type, row, meta) {
-                    let dropdown = "";
-                    if (data === 'moderator'){
-                        dropdown = '<div class="dropdown show">' +
-                        '<a class="btn-sm btn btn-info" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fa fa-wrench" aria-hidden="true"></span></a>' +
-                        '<div class="dropdown-menu aria-labelledby="dropdownMenuLink">' +
-                        '<a class="dropdown-item" href="#" data-rowindex ="' + meta.row + '" data-bs-toggle="modal" data-bs-target="#userModal" data-type="moderator">Remove Moderator Designation</a>' + 
-                        '<a class="dropdown-item text-danger fw-bold" href="#" data-rowindex ="' + meta.row + '" data-bs-toggle="modal" data-bs-target="#userModal" data-type="delete">Delete User</a>' + 
-                        '</div></div>';
-                    }
-                    else if (data === 'teacher') {
-                        dropdown = '<div class="dropdown show">' +
-                        '<a class="btn-sm btn btn-info" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fa fa-wrench" aria-hidden="true"></span></a>' +
-                        '<div class="dropdown-menu aria-labelledby="dropdownMenuLink">' +
-                        '<a class="dropdown-item" href="#" data-rowindex ="' + meta.row + '" data-bs-toggle="modal" data-bs-target="#userModal" data-type="teacher">Designate Moderator</a>' + 
-                        '<a class="dropdown-item text-danger fw-bold" href="#" data-rowindex ="' + meta.row + '" data-bs-toggle="modal" data-bs-target="#userModal" data-type="delete">Delete User</a>' + 
-                        '</div></div>';
-                    }
-                    else if (data === 'student') {
-                        dropdown = '<div class="dropdown show">' +
-                        '<a class="btn-sm btn btn-info" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fa fa-wrench" aria-hidden="true"></span></a>' +
-                        '<div class="dropdown-menu aria-labelledby="dropdownMenuLink">' +
-                        '<a class="dropdown-item text-danger fw-bold" href="#" data-rowindex ="' + meta.row + '" data-bs-toggle="modal" data-bs-target="#userModal" data-type="delete">Delete User</a>' + 
-                        '</div></div>';
-                    }
-                    
-                    return dropdown;
-                },
-            },
-            {
-                class: "charColumn",
-                data: null,
-                width: "6 rem",
-                render: function(data, type, row, meta) {
-                    return row.first + ' ' + row.last;
+            width: "1 em",
+            render: function(data, type, row, meta) {
+                let dropdown = "";
+                if (data === 'moderator'){
+                    dropdown = '<div class="dropdown show">' +
+                    '<a class="btn-sm btn btn-info" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fa fa-wrench" aria-hidden="true"></span></a>' +
+                    '<div class="dropdown-menu aria-labelledby="dropdownMenuLink">' +
+                    '<a class="dropdown-item" href="#" data-rowindex ="' + meta.row + '" data-bs-toggle="modal" data-bs-target="#userModal" data-type="moderator">Remove Moderator Designation</a>' + 
+                    '<a class="dropdown-item text-danger fw-bold" href="#" data-rowindex ="' + meta.row + '" data-bs-toggle="modal" data-bs-target="#userModal" data-type="delete">Delete User</a>' + 
+                    '</div></div>';
                 }
-            },
-            {
-                class: "charColumn",
-                data: "role",
-                width: "6 rem",
-                render: function(data, type, row, meta) {
-                    return data.charAt(0).toUpperCase() + data.slice(1);
+                else if (data === 'teacher') {
+                    dropdown = '<div class="dropdown show">' +
+                    '<a class="btn-sm btn btn-info" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fa fa-wrench" aria-hidden="true"></span></a>' +
+                    '<div class="dropdown-menu aria-labelledby="dropdownMenuLink">' +
+                    '<a class="dropdown-item" href="#" data-rowindex ="' + meta.row + '" data-bs-toggle="modal" data-bs-target="#userModal" data-type="teacher">Designate Moderator</a>' + 
+                    '<a class="dropdown-item text-danger fw-bold" href="#" data-rowindex ="' + meta.row + '" data-bs-toggle="modal" data-bs-target="#userModal" data-type="delete">Delete User</a>' + 
+                    '</div></div>';
                 }
-            },
-            { data: "email", class: "charcolumn", width: "2 rem" }
-        ],
-        initComplete: function() {
-            //create the search rows
-            this.api().columns().every(function(index) {
-                let column = this;
-                let title = $(column.header()).text().trim();
+                else if (data === 'student') {
+                    dropdown = '<div class="dropdown show">' +
+                    '<a class="btn-sm btn btn-info" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fa fa-wrench" aria-hidden="true"></span></a>' +
+                    '<div class="dropdown-menu aria-labelledby="dropdownMenuLink">' +
+                    '<a class="dropdown-item text-danger fw-bold" href="#" data-rowindex ="' + meta.row + '" data-bs-toggle="modal" data-bs-target="#userModal" data-type="delete">Delete User</a>' + 
+                    '</div></div>';
+                }
                 
-                if ($('#userTable thead tr.filters').length === 0) {
-                    $('#userTable thead').append('<tr class="filters"></tr>');
-                }
-                if (index === 0) {
-                    $('#userTable thead tr.filters').append('<th></th>');
-                } 
-                else {
-                    let filterCell = $('<th><input type="text" class="form-control form-control-sm" placeholder="Filter ' + title + '" /></th>');
-                    $('#userTable thead tr.filters').append(filterCell);
-                    $('input', filterCell).on('keyup change', function() {
-                        if (column.search() !== this.value) {
-                            column.search(this.value).draw();
-                        }
-                    });
-                }
-            });
-            
-            //disable sorting for search row
-            $('#userTable thead tr.filters th').addClass('sorting_disabled');
-        }
-    });
+                return dropdown;
+            },
+        },
+        {
+            class: "charColumn",
+            data: null,
+            width: "6 rem",
+            render: function(data, type, row, meta) {
+                return row.first + ' ' + row.last;
+            }
+        },
+        {
+            class: "charColumn",
+            data: "role",
+            width: "6 rem",
+            render: function(data, type, row, meta) {
+                return data.charAt(0).toUpperCase() + data.slice(1);
+            }
+        },
+        { data: "email", class: "charcolumn", width: "2 rem" }
+    ]
 
-    //order table by date column
-    userTable.order([[1, 'asc']]).draw();
+    reportTable = initializeDataTableWithFilters('#reportTable', reportData, reportColumns, [1, 'asc']);
+    userTable = initializeDataTableWithFilters('#userTable', userData, userColumns, [1, 'asc']);
 
     showTab('bugReports'); //show bug reports tab first
 

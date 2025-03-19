@@ -47,7 +47,7 @@ $(document).ready(function () {
             class: "previewColumn",
             data: null,
             render: function(data, type, row, meta) {
-                var previewButton = '<a class="btn-sm btn btn-info" href="#" role="button"><span class="fa fa-play" aria-hidden="true" data-bs-toggle="modal" data-bs-target="#previewModal"></span></a>';
+                var previewButton = '<a class="btn-sm btn btn-info" href="#" role="button"><span class="fa fa-play" aria-hidden="true" data-bs-toggle="modal" data-bs-target="#previewModal" data-rowindex="' + meta.row + '"></span></a>';
                 return previewButton;
             },
             orderable: false,

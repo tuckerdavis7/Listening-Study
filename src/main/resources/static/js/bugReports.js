@@ -88,7 +88,7 @@ $(document).ready(function () {
        
     ];
 
-    bugTable = initializeDataTableWithFilters('#bugTable', reportData, bugColumns, [4, 'asc']);
+    bugTable = initializeDataTableWithFilters('#bugTable', reportData, bugColumns, [1, 'asc']);
 
     $('#bugModal').on('show.bs.modal', function (event) {
         $('#description').val('');

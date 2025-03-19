@@ -38,24 +38,61 @@
         </div>
     </div>
 
-    <div class="card mx-auto col-md-11 border-0">
-        <div class="col mt-2">
-            <table id="editPlaylistTable" class="datatable-simple display responive table table-striped table-sm w-100 dataTable no-footer dtr-inline">
-                <caption class="d-none">Song Table</caption>
-                <thead>
-                    <tr>
-                        <th scope="col"> </th>
-                        <th scope="col"> </th>
-                        <th title="name" scope="col">Name</th>
-                        <th title="class" scope="col">Composer</th>
-                        <th title="year" scope="col">Year</th>
-                        <th title="year" scope="col">URL</th>
-                    </tr>
-                </thead>
-                <tbody class="table-bordered p-0"></tbody>
-            </table>
+    <div class="modal fade" id="removeConfirmation" tableindex="-1" aria-labelledby="removeConfirmationLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="removeConfirmationLabel">Confirm Removal</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to remove this playlist?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" id="removeConfirmationButton">Remove</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
         </div>
     </div>
+
+    <div class="modal fade" id="editPlaylistModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Song</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="editPlaylistForm">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="songName" class="form-label">Name:</label>
+                            <input type="text" class="form-control" id="songName" name="name">
+                        </div>
+                        <div class="mb-3">
+                            <label for="musicClass" class="form-label">Music Class:</label>
+                            <select class="form-select" id="musicClass" name="musicClass">
+                                <option value="" selected disabled>Select a class</option>
+                                <option value="Classical 101">Classical 101</option>
+                                <option value="Jazz 101">Jazz 101</option>
+                                <option value="Rock 101">Rock 101</option>
+                                <option value="Pop 101">Pop 101</option>
+                                <option value="Electronic 101">Electronic 101</option>
+                                <option value="Hip-Hop 101">Hip-Hop 101</option>
+                                <option value="Folk 101">Folk 101</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    
 
     <div th:replace="~{fragments/footer :: footer}"></div>
 </body>

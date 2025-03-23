@@ -27,7 +27,7 @@ $(document).ready(function () {
                     '<a class="btn-sm btn btn-info" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fa fa-wrench" aria-hidden="true"></span></a>' +
                     '<div class="dropdown-menu aria-labelledby="dropdownMenuLink">' +
                     '<a class="dropdown-item" id="editPlaylist" data-rowindex ="' + meta.row + '" data-bs-toggle="modal" data-bs-target="#editPlaylistModal">Edit Playlist</a>' + 
-                    '<a class="dropdown-item" id="deletePlaylist" data-rowindex ="' + meta.row + '" data-bs-toggle="modal" data-bs-target="#removeConfirmation">Delete Playlist</a>' + 
+                    '<a class="dropdown-item text-danger fw-bold" id="deletePlaylist" data-rowindex ="' + meta.row + '" data-bs-toggle="modal" data-bs-target="#removeConfirmation">Delete Playlist</a>' + 
                     '</div></div>';
                 return dropdown;
             },
@@ -100,5 +100,14 @@ $(document).ready(function () {
 
     $('#createPlaylistButton').click(function() {
         window.location.href = "/teacher/createPlaylist";
+    });
+
+    $('#editPlaylistModal').on('show.bs.modal', function (event) {
+        let button = $(event.relatedTarget);
+        let row = playlistTable.row(button.data('rowindex')).data();
+
+        console.log(row);
+
+        $('#songName').val(row.name);
     });
 });

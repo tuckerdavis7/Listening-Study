@@ -67,7 +67,7 @@ $(document).ready(function () {
         `},
     ];
     
-    classTable = initializeDataTableWithFilters('#classTable', classData, classColumns, [1, 'asc'], [0,5]);
+    classTable = initializeDataTableWithFilters('#classTable', classData, classColumns, [1, 'asc'], 5, [0,5]);
 
         //event listener for disable button
         $('#classTable tbody').on('click', '.disable-btn', function() {

@@ -41,5 +41,5 @@ $(document).ready(function () {
     { data: "email", class: "charcolumn", width: "1 rem"},
 ]
 
-  studentTable = initializeDataTableWithFilters('#studentTable', students, studentColumns, [0, 'asc'], []);
+  studentTable = initializeDataTableWithFilters('#studentTable', students, studentColumns, [0, 'asc'], 10, []);
 })

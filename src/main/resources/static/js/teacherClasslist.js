@@ -70,5 +70,5 @@ $(document).ready(function () {
         { data: "playlistCount", class: "charcolumn", width: "1 rem"},
     ]
 
-    classTable = initializeDataTableWithFilters('#classTable', classData, classColumns, [1, 'asc']);
+    classTable = initializeDataTableWithFilters('#classTable', classData, classColumns, [1, 'asc'], 10);
 })

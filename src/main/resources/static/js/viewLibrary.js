@@ -63,7 +63,7 @@ $(document).ready(function () {
         { data: "class", class: "charcolumn", width: "3 rem" }
     ];
 
-    playlistTable = initializeDataTableWithFilters('#playlistTable', playlistData, playlistColumns, [2, 'asc'], [0,1]);
+    playlistTable = initializeDataTableWithFilters('#playlistTable', playlistData, playlistColumns, [2, 'asc'], 10, [0,1]);
 
     let rowRemove;
     

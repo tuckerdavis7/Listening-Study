@@ -1,4 +1,4 @@
-function initializeDataTableWithFilters(tableSelector, data, columns, orderColumn, ignoredColumns=[0]) {
+function initializeDataTableWithFilters(tableSelector, data, columns, orderColumn, pageLength, ignoredColumns=[0]) {
     let $table = $(tableSelector);
     let $thead = $table.find('thead');
     
@@ -26,18 +26,12 @@ function initializeDataTableWithFilters(tableSelector, data, columns, orderColum
         dom: "<'row'<'col-sm-12 col-md-12 text-end'B>>" +
             "<'row'<'col-sm-12'tr>>" +
             "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>><'#bottomLink'>",
-        // scrollCollapse: true,
-        // scrollY: '400px',
-        responsive: true,
         filter: true,
         info: false,
         lengthChange: false,
         orderCellsTop: true,
-        fixedHeader: {
-            header: true,
-            headerOffset: $('.navbar').outerHeight() || 0
-        },
         columns: columns,
+        pageLength: pageLength,
         initComplete: function() {
             let api = this.api();
             

@@ -28,6 +28,96 @@ var reportData = [
         "status": "Resolved",
         "modifiedDate": "03/15/2025 13:47:56",
         "modifiedUser": "reiner_13" 
+    },
+    {
+        "initialDate": "03/15/2025 09:45:00",
+        "first": "John",
+        "last": "Cena",
+        "email": "cena@sru.edu",
+        "description": "You can't see me?  No, I can't see the login page.  HELP!",
+        "status": "Acknowledged",
+        "modifiedDate": "03/15/2025 13:50:55",
+        "modifiedUser": "reiner_13" 
+    },
+    {
+        "initialDate": "03/15/2025 09:45:00",
+        "first": "John",
+        "last": "Cena",
+        "email": "cena@sru.edu",
+        "description": "You can't see me?  No, I can't see the login page.  HELP!",
+        "status": "Acknowledged",
+        "modifiedDate": "03/15/2025 13:50:55",
+        "modifiedUser": "reiner_13" 
+    },
+    {
+        "initialDate": "03/15/2025 09:45:00",
+        "first": "John",
+        "last": "Cena",
+        "email": "cena@sru.edu",
+        "description": "You can't see me?  No, I can't see the login page.  HELP!",
+        "status": "Acknowledged",
+        "modifiedDate": "03/15/2025 13:50:55",
+        "modifiedUser": "reiner_13" 
+    },
+    {
+        "initialDate": "03/15/2025 09:45:00",
+        "first": "John",
+        "last": "Cena",
+        "email": "cena@sru.edu",
+        "description": "You can't see me?  No, I can't see the login page.  HELP!",
+        "status": "Acknowledged",
+        "modifiedDate": "03/15/2025 13:50:55",
+        "modifiedUser": "reiner_13" 
+    },
+    {
+        "initialDate": "03/15/2025 09:45:00",
+        "first": "John",
+        "last": "Cena",
+        "email": "cena@sru.edu",
+        "description": "You can't see me?  No, I can't see the login page.  HELP!",
+        "status": "Acknowledged",
+        "modifiedDate": "03/15/2025 13:50:55",
+        "modifiedUser": "reiner_13" 
+    },
+    {
+        "initialDate": "03/15/2025 09:45:00",
+        "first": "John",
+        "last": "Cena",
+        "email": "cena@sru.edu",
+        "description": "You can't see me?  No, I can't see the login page.  HELP!",
+        "status": "Acknowledged",
+        "modifiedDate": "03/15/2025 13:50:55",
+        "modifiedUser": "reiner_13" 
+    },
+    {
+        "initialDate": "03/15/2025 09:45:00",
+        "first": "John",
+        "last": "Cena",
+        "email": "cena@sru.edu",
+        "description": "You can't see me?  No, I can't see the login page.  HELP!",
+        "status": "Acknowledged",
+        "modifiedDate": "03/15/2025 13:50:55",
+        "modifiedUser": "reiner_13" 
+    },
+    {
+        "initialDate": "03/15/2025 09:45:00",
+        "first": "John",
+        "last": "Cena",
+        "email": "cena@sru.edu",
+        "description": "You can't see me?  No, I can't see the login page.  HELP!",
+        "status": "Acknowledged",
+        "modifiedDate": "03/15/2025 13:50:55",
+        "modifiedUser": "reiner_13" 
+    },
+    {
+        "initialDate": "03/15/2025 09:45:00",
+        "first": "John",
+        "last": "Cena",
+        "email": "cena@sru.edu",
+        "description": "You can't see me?  No, I can't see the login page.  HELP!",
+        "status": "Acknowledged",
+        "modifiedDate": "03/15/2025 13:50:55",
+        "modifiedUser": "reiner_13" 
     }
 ]
 
@@ -180,8 +270,8 @@ $(document).ready(function () {
         { data: "email", class: "charcolumn", width: "2 rem" }
     ]
 
-    reportTable = initializeDataTableWithFilters('#reportTable', reportData, reportColumns, [1, 'asc']);
-    userTable = initializeDataTableWithFilters('#userTable', userData, userColumns, [1, 'asc']);
+    reportTable = initializeDataTableWithFilters('#reportTable', reportData, reportColumns, [1, 'asc'], 10);
+    userTable = initializeDataTableWithFilters('#userTable', userData, userColumns, [1, 'asc'], 10);
 
     showTab('bugReports'); //show bug reports tab first
 

@@ -52,7 +52,7 @@ $(document).ready(function () {
         { data: "averageScore", class: "charcolumn", width: "3 rem" }
     ]
 
-    songTable = initializeDataTableWithFilters('#songTable', songData, songColumns, [6, 'asc']);
+    songTable = initializeDataTableWithFilters('#songTable', songData, songColumns, [6, 'asc'], 10);
 
     $('#previewModal').on('show.bs.modal', function (event) {
         let button = $(event.relatedTarget);

@@ -74,7 +74,7 @@ $(document).ready(function () {
         { data: "url", class: "charcolumn", width: "3 rem" }
     ]
     
-    songTable = initializeDataTableWithFilters('#songTable', songData, songColumns, [2, 'asc'], [0,1]);
+    songTable = initializeDataTableWithFilters('#songTable', songData, songColumns, [2, 'asc'], 10, [0,1]);
 
     let rowRemove;
     

@@ -45,7 +45,7 @@ let students = [
         `},
     ]
     
-    studentTable = initializeDataTableWithFilters('#studentTable', students, studentColumns, [0, 'asc'], [4]);
+    studentTable = initializeDataTableWithFilters('#studentTable', students, studentColumns, [0, 'asc'], 5, [4]);
 
     //event listener for disable button
     $('#studentTable tbody').on('click', '.disable-btn', function() {

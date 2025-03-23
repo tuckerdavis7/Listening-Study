@@ -108,7 +108,7 @@ $(document).ready(function() {
 
         //add button to only the last card
         $('#cardContainer .track-card:last .card-body').append(`
-            <button class="btn btn-primary mt-2 add-card">Add Song</button>
+            <button class="btn btn-secondary mt-2 add-card">Add Song</button>
         `);
     }
 

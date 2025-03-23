@@ -36,7 +36,7 @@ $(document).ready(function () {
                     '<a class="btn-sm btn btn-info" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fa fa-wrench" aria-hidden="true"></span></a>' +
                     '<div class="dropdown-menu aria-labelledby="dropdownMenuLink">' +
                     '<a class="dropdown-item" href="#" data-rowindex ="' + meta.row + '" data-bs-toggle="modal" data-bs-target="#editSongModal">Edit Song</a>' + 
-                    '<a class="dropdown-item" href="#" data-rowindex ="' + meta.row + '" data-bs-toggle="modal" data-bs-target="#removeConfirmation">Delete Song</a>' + 
+                    '<a class="dropdown-item text-danger fw-bold" href="#" data-rowindex ="' + meta.row + '" data-bs-toggle="modal" data-bs-target="#removeConfirmation">Delete Song</a>' + 
                     '</div></div>';
                 return dropdown;
             },
@@ -121,5 +121,19 @@ $(document).ready(function () {
     $('#confirmSongBtn').on('click', function () {
         bootstrapAlert('success', "Song Added");
         $('#addSongModal').modal('hide');
+    });
+
+    $('#editSongModal').on('show.bs.modal', function (event) {
+        let button = $(event.relatedTarget);
+        let row = songTable.row(button.data('rowindex')).data();
+
+        console.log(row);
+
+        $('#editSongName').val(row.name);
+        $('#editComposer').val(row.composer);
+        $('#editYear').val(row.year);
+        $('#editURL').val(row.url);
+        $('#editTimestamp').val(row.timestamp);
+
     });
 });

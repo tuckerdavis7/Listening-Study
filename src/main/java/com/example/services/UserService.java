@@ -9,6 +9,7 @@ import java.util.Map;
 
 import com.example.repositories.UserRepository;
 public class UserService extends BaseService {
+    //NOT CURRENTLY USED, KEPT FOR FUTURE IMPLEMENTATION
     UserRepository userRepository = new UserRepository();
 
     public String getUserInfo(int userId) throws IOException {

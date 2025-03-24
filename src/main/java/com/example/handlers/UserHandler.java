@@ -7,6 +7,7 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
 public class UserHandler extends BaseHandler implements HttpHandler  {
+    //NOT CURRENTLY USED, KEPT FOR FUTURE IMPLEMENTATION
     private UserService userService;
 
     public UserHandler() {

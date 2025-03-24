@@ -2,6 +2,8 @@ package com.example.handlers;
 
 import java.io.IOException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
@@ -10,6 +12,7 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
 public class ThymeleafHandler extends BaseHandler implements HttpHandler {
+    private static final Logger logger = LoggerFactory.getLogger(ThymeleafHandler.class);
     private TemplateEngine templateEngine;
 
     public ThymeleafHandler() {
@@ -108,6 +111,7 @@ public class ThymeleafHandler extends BaseHandler implements HttpHandler {
             Context context = new Context();
             context.setVariable("message", welcomeMessage);
             String content = render(template, context);
+            
             super.sendResponse(exchange, content, "Thymeleaf");
         } else {
             super.sendResponse(exchange, "Method Not Allowed", "Regular");
@@ -119,8 +123,7 @@ public class ThymeleafHandler extends BaseHandler implements HttpHandler {
         try {
             return templateEngine.process(template, context);
         } catch (Exception e) {
-            System.err.println("Error processing Thymeleaf template: " + e.getMessage());
-            e.printStackTrace();
+            logger.error("Error processing Thymeleaf template: " + e.getMessage());
             return "<h1>Template rendering failed</h1>";
         }
     }

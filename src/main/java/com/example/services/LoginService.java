@@ -2,16 +2,19 @@ package com.example.services;
 
 import java.io.IOException;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.mindrot.jbcrypt.BCrypt;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.example.repositories.UserRepository;
 import com.sun.net.httpserver.HttpExchange;
+
 public class LoginService extends BaseService {
+    private static final Logger logger = LoggerFactory.getLogger(LoginService.class);
     UserRepository userRepository = new UserRepository();
 
     public String authenticateLogin(HttpExchange exchange) throws IOException {
@@ -37,8 +40,9 @@ public class LoginService extends BaseService {
                 }
             }
         }
-        catch (SQLException e) {
-            e.printStackTrace();
+        catch (Exception e) {
+            responseString = "Internal Server Error";
+            logger.error("Error in authenticateLogin of LoginService: " + e.getMessage());
         }
         return responseString;
     }

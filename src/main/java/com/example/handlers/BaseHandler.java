@@ -10,6 +10,10 @@ public class BaseHandler {
     protected void sendResponse(HttpExchange exchange, String responseContent, String responseType) throws IOException {
         int responseCode;
         switch (responseContent) {
+            case "Not Found":
+                responseCode = 404;
+                break;
+
             case "Method Not Allowed":
                 responseCode = 405;
                 break;

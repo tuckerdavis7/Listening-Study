@@ -2,18 +2,21 @@ package com.example.handlers;
 
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpExchange;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class StaticFileHandler extends BaseHandler implements HttpHandler {
-    
+    private static final Logger logger = LoggerFactory.getLogger(StaticFileHandler.class);
     private final Map<String, String> contentTypeMap;
     
     public StaticFileHandler() {
-        // Initialize content type mappings
         contentTypeMap = new HashMap<>();
         contentTypeMap.put("ico", "image/x-icon");
         contentTypeMap.put("html", "text/html");
@@ -35,27 +38,29 @@ public class StaticFileHandler extends BaseHandler implements HttpHandler {
         
         if (path.startsWith("/static")) {
             String resourcePath = "static" + path.substring("/static".length());
-            InputStream inputStream = getClass().getClassLoader().getResourceAsStream(resourcePath);
-            
-            if (inputStream != null) {
-                try {
-                    setContentType(exchange, path);
-                    byte[] fileBytes = inputStream.readAllBytes();
-                    
-                    // Send success response with content
-                    exchange.sendResponseHeaders(200, fileBytes.length);
-                    try (OutputStream os = exchange.getResponseBody()) {
-                        os.write(fileBytes);
+            try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(resourcePath)) {
+                if (inputStream != null) {
+                    try {
+                        setContentType(exchange, path);
+                        exchange.sendResponseHeaders(200, 0); // Use chunked transfer
+                        try (OutputStream os = exchange.getResponseBody()) {
+                            byte[] buffer = new byte[4096];
+                            int bytesRead;
+                            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                                os.write(buffer, 0, bytesRead);
+                            }
+                        }
+                        return;
+                    } catch (IOException e) {
+                        logger.error("Error sending static file: {}", e.getMessage());
                     }
-                } finally {
-                    inputStream.close();
                 }
-            } else {
-                send404(exchange);
+            } catch (IOException e) {
+                logger.error("Error opening static file: {}", e.getMessage());
             }
-        } else {
-            send404(exchange);
         }
+        
+        super.sendResponse(exchange, "Not Found", "Regular");
     }
     
     private void setContentType(HttpExchange exchange, String path) {
@@ -72,14 +77,5 @@ public class StaticFileHandler extends BaseHandler implements HttpHandler {
             return path.substring(lastDotIndex + 1).toLowerCase();
         }
         return "";
-    }
-    
-    private void send404(HttpExchange exchange) throws IOException {
-        String response = "404 Not Found";
-        exchange.getResponseHeaders().set("Content-Type", "text/plain");
-        exchange.sendResponseHeaders(404, response.length());
-        try (OutputStream os = exchange.getResponseBody()) {
-            os.write(response.getBytes());
-        }
     }
 }

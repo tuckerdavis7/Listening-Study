@@ -8,7 +8,7 @@ import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-public class StaticFileHandler implements HttpHandler {
+public class StaticFileHandler extends BaseHandler implements HttpHandler {
     
     private final Map<String, String> contentTypeMap;
     
@@ -34,18 +34,12 @@ public class StaticFileHandler implements HttpHandler {
         String path = exchange.getRequestURI().getPath();
         
         if (path.startsWith("/static")) {
-            // Extract the resource path relative to the classpath
             String resourcePath = "static" + path.substring("/static".length());
-            
-            // Try to get the resource
             InputStream inputStream = getClass().getClassLoader().getResourceAsStream(resourcePath);
             
             if (inputStream != null) {
                 try {
-                    // Set appropriate content type based on file extension
                     setContentType(exchange, path);
-                    
-                    // Read file bytes
                     byte[] fileBytes = inputStream.readAllBytes();
                     
                     // Send success response with content
@@ -54,21 +48,17 @@ public class StaticFileHandler implements HttpHandler {
                         os.write(fileBytes);
                     }
                 } finally {
-                    // Always close the input stream
                     inputStream.close();
                 }
             } else {
-                // Resource not found
                 send404(exchange);
             }
         } else {
-            // Path doesn't start with /static
             send404(exchange);
         }
     }
     
     private void setContentType(HttpExchange exchange, String path) {
-        // Get file extension
         String extension = getFileExtension(path);
         
         // Set the content type header based on the file extension

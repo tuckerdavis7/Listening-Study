@@ -26,17 +26,17 @@ public class UserHandler extends BaseHandler implements HttpHandler  {
                 userId = Integer.parseInt(splitPath[3]);
             }
             catch (NumberFormatException e) {
-                sendResponse(exchange, "Invalid user ID.");
+                sendResponse(exchange, "Invalid user ID.", "Regular");
                 return;
             }
             switch (method) {
                 case "GET":
                     response = userService.getUserInfo(userId);
-                    sendResponse(exchange, response);
+                    sendResponse(exchange, response, "Regular");
                     break;
                 
                 default:
-                    sendResponse(exchange, "Method Not Allowed");
+                    sendResponse(exchange, "Method Not Allowed", "Regular");
                     break;
             }
         }
@@ -44,7 +44,7 @@ public class UserHandler extends BaseHandler implements HttpHandler  {
             switch (method) {
                 case "GET":
                     response = userService.getAllUsers();
-                    sendResponse(exchange, response);
+                    sendResponse(exchange, response, "Regular");
             }
         }
     }

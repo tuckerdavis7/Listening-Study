@@ -3,6 +3,7 @@ package com.example.handlers;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpExchange;
 import com.example.services.LoginService;
+
 import java.io.IOException;
 
 public class LoginHandler extends BaseHandler implements HttpHandler {
@@ -20,11 +21,11 @@ public class LoginHandler extends BaseHandler implements HttpHandler {
         switch (method) {
             case "POST":
                 response = loginService.authenticateLogin(exchange);
-                sendResponse(exchange, response);
+                super.sendResponse(exchange, response, "Regular");
                 break;
             
             default:
-                sendResponse(exchange, "Method Not Allowed");
+                super.sendResponse(exchange, "Method Not Allowed", "Regular");
                 break;
         }        
     }

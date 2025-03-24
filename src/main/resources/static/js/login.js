@@ -8,7 +8,7 @@ $(document).ready(function() {
             let loginForm = $('#loginForm').serializeArray().reduce(function (acc, item) {
                 acc[item.name] = item.value;
                 return acc;
-            })
+            }, {})
         
             //check if serialization maps incorrect key value pairs
             if (loginForm.name && loginForm.value) {
@@ -18,16 +18,16 @@ $(document).ready(function() {
             }
         
             $.ajax({
-                data: JSON.stringify(loginForm),
+                data: JSON.stringify([loginForm]),
                 url: 'http://localhost:8080/api/login',
                 type: 'POST',
                 contentType: 'application/json',
                 success: function(data) {
                     let responseData = JSON.parse(data);
+                    console.log(responseData);
 
-                    if (responseData.status === "success") {
-                        console.log(responseData.role);
-                        switch(responseData.role) {
+                    if (responseData?.status === "success") {
+                        switch(responseData.data.role) {
                             case "administrator":
                                 window.location.href = '/administrator/dashboard';
                                 break;

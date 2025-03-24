@@ -6,9 +6,9 @@ $(document).ready(function() {
         contentType: 'application/json',
         success: function(data) {
             let responseData = JSON.parse(data);
-            $('#version').html('Version: ' + responseData.version);
-            $('#userCount').html('User Count: ' + responseData.userCount);
-            $('#lastUpdate').html('Last updated: ' + responseData.lastUpdate);
+            $('#version').html('Version: ' + responseData?.data?.version);
+            $('#userCount').html('User Count: ' + responseData?.data?.userCount);
+            $('#lastUpdate').html('Last updated: ' + responseData?.data?.lastUpdate);
         },
         error: function(xhr, status, error) {
             bootstrapAlert('danger', error);

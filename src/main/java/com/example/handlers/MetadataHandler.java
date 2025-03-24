@@ -21,11 +21,11 @@ public class MetadataHandler extends BaseHandler implements HttpHandler {
         switch (method) {
             case "GET":
                 response = metadataService.getMetadata(exchange);
-                sendResponse(exchange, response);
+                super.sendResponse(exchange, response, "Regular");
                 break;
             
             default:
-                sendResponse(exchange, "Method Not Allowed");
+                super.sendResponse(exchange, "Method Not Allowed", "Regular");
                 break;
         }        
     }

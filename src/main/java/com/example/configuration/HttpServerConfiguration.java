@@ -1,13 +1,14 @@
-package com.example;
+package com.example.configuration;
 
 import com.sun.net.httpserver.HttpServer;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import com.example.handlers.*;
 
-public class HttpServerApp {
+public class HttpServerConfiguration {
     public static void startServer() throws IOException {
-        final int PORT = 8080;
+        ApplicationConfiguration applicationConfiguration = ApplicationConfiguration.getInstance();
+        final int PORT = applicationConfiguration.getServerPort();
         HttpServer server = HttpServer.create(new InetSocketAddress(PORT), 0);
 
         createAPIEndpoints(server);

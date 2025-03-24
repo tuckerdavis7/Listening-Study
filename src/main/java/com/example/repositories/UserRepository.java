@@ -3,29 +3,30 @@ package com.example.repositories;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import com.example.DatabaseConnectionApp;
+
+import com.example.configuration.DatabaseConfiguration;
 
 public class UserRepository {
-    public static ResultSet getAllUsers() throws SQLException {
+    public ResultSet getAllUsers() throws SQLException {
         String query = "SELECT * FROM users";
-        PreparedStatement pstmt = DatabaseConnectionApp.getConnection().prepareStatement(query);
+        PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
         ResultSet rs = pstmt.executeQuery();
 
         return rs;
     }
     
-    public static ResultSet getUserInfo(int userId) throws SQLException {
+    public ResultSet getUserInfo(int userId) throws SQLException {
         String query = "SELECT * FROM users WHERE user_id =?";
-        PreparedStatement pstmt = DatabaseConnectionApp.getConnection().prepareStatement(query);
+        PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
         pstmt.setInt(1, userId);
         ResultSet rs = pstmt.executeQuery();
 
         return rs;
     }
 
-    public static ResultSet getUserByEmail(String email) throws SQLException {
+    public ResultSet getUserByEmail(String email) throws SQLException {
         String query = "SELECT * FROM users WHERE email =?";
-        PreparedStatement pstmt = DatabaseConnectionApp.getConnection().prepareStatement(query);
+        PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
         pstmt.setString(1, email);
         ResultSet rs = pstmt.executeQuery();
 

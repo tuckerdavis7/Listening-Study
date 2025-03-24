@@ -9,10 +9,12 @@ import java.util.Map;
 import com.example.repositories.MetadataRepository;
 import com.sun.net.httpserver.HttpExchange;
 public class MetadataService extends BaseService {
+    MetadataRepository metadataRepository = new MetadataRepository();
+
     public String getMetadata(HttpExchange exchange) throws IOException {
         String responseString = "";
         try {
-            ResultSet result = MetadataRepository.getApplicationMetadata();
+            ResultSet result = metadataRepository.getApplicationMetadata();
             while (result.next()) {
                 Map<String, Object> appDetailsMap = new HashMap<>();
                 appDetailsMap.put("appName", result.getString("appName"));

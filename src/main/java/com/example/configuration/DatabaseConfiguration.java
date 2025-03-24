@@ -1,0 +1,39 @@
+package com.example.configuration;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class DatabaseConfiguration {
+    private static final Logger logger = LoggerFactory.getLogger(DatabaseConfiguration.class);
+    private static Connection con;
+    static ApplicationConfiguration applicationConfiguration = ApplicationConfiguration.getInstance();
+
+    public static void connect() throws Exception{
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            String username = applicationConfiguration.getDbUsername();
+            String password = applicationConfiguration.getDbPassword();
+            String url = applicationConfiguration.getDbURL();
+
+            con = DriverManager.getConnection(url, username, password);
+            logger.info("Database connection is successful");            
+        }
+        catch (ClassNotFoundException e) {
+            logger.error("Database driver class not found:" + e.getMessage());
+            throw e;
+        }
+        catch (SQLException e) {
+            logger.error("Cannot connect to database:" + e.getMessage());
+            throw e;
+        }       
+    }
+
+    //allows for connection access from repository classes
+    public static Connection getConnection() {
+        return con;
+    }
+}

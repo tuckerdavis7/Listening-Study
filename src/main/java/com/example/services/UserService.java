@@ -9,10 +9,12 @@ import java.util.Map;
 
 import com.example.repositories.UserRepository;
 public class UserService extends BaseService {
+    UserRepository userRepository = new UserRepository();
+
     public String getUserInfo(int userId) throws IOException {
         String responseString = "";
         try {
-            ResultSet result = UserRepository.getUserInfo(userId);
+            ResultSet result = userRepository.getUserInfo(userId);
             while (result.next()) {
                 Map<String, Object> userMap = new HashMap<>();
                 userMap.put("user_id", result.getInt("user_id"));
@@ -33,7 +35,7 @@ public class UserService extends BaseService {
     public String getAllUsers() throws IOException {
         String responseString = "";
         try {
-            ResultSet result = UserRepository.getAllUsers();
+            ResultSet result = userRepository.getAllUsers();
             ArrayList<Map<String, Object>> userList = new ArrayList<>();
             while (result.next()) {
                 Map<String, Object> userMap = new HashMap<>();

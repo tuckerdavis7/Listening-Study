@@ -47,6 +47,10 @@
   text-align: left !important;
 }
 
+body {
+  overflow-x: hidden !important;
+}
+
 /* Specific selector to ensure paging button text is always white */
 div.dt-container .dt-paging .dt-paging-button.current, div.dt-container .dt-paging .dt-paging-button.current:hover {
   color: white !important;

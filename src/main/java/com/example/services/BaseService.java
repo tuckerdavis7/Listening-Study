@@ -24,7 +24,7 @@ public class BaseService {
     }
     
     // Get a single JSON object as parameter
-    protected Map<String, Object> getParameter(HttpExchange exchange) throws IOException {
+    protected Map<String, Object> getParameters(HttpExchange exchange) throws IOException {
         String requestBody = readRequestBody(exchange);
         return gson.fromJson(requestBody, new TypeToken<Map<String, Object>>(){}.getType());
     }
@@ -51,13 +51,25 @@ public class BaseService {
         return responseString;
     }
     
-    //return JSON-formatted string (POST, UPDATE, DELETE)
+    //return JSON-formatted string (POST, UPDATE, DELETE) on success
     protected String formatJSON(String status) throws IOException {
         String responseString = "";
         Map<String, Object> map = new HashMap<>();
         ObjectMapper objectMapper = new ObjectMapper();
         map.put("status", status);
         responseString = objectMapper.writeValueAsString(status);
+       
+        return responseString;
+    }
+
+    //return JSON-formatted string (POST, UPDATE, DELETE) on failure
+    protected String formatJSON(String status, String message) throws IOException {
+        String responseString = "";
+        Map<String, Object> map = new HashMap<>();
+        ObjectMapper objectMapper = new ObjectMapper();
+        map.put("status", status);
+        map.put("message", message);
+        responseString = objectMapper.writeValueAsString(map);
        
         return responseString;
     }

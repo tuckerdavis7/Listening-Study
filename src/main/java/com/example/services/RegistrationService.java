@@ -2,8 +2,6 @@ package com.example.services;
 
 import java.io.IOException;
 import java.sql.ResultSet;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.mindrot.jbcrypt.BCrypt;
@@ -17,32 +15,58 @@ public class RegistrationService extends BaseService {
     private static final Logger logger = LoggerFactory.getLogger(LoginService.class);
     UserRepository userRepository = new UserRepository();
 
-    public String authenticateLogin(HttpExchange exchange) throws IOException {
-        // List<Map<String, Object>> parameters = super.getParameters(exchange);
-        // Map<String, Object> loginParams = parameters.get(0);
-        
-        // String email = (String) loginParams.get("email");
-        // String formPassword = (String) loginParams.get("password");
-        // String responseString = "";
-        
-        // try {
-        //     ResultSet result = userRepository.getUserByEmail(email);
-        //     Map<String, Object> loginMap = new HashMap<>();
-        //     responseString = super.formatJSON(loginMap, "failure"); // incorrect login
+    public String registerUser(HttpExchange exchange) throws IOException {
+        String responseString = "";
+        Map<String, Object> registrationParams = super.getParameters(exchange);
 
-        //     while (result.next()) {
-        //         String hashPassword = result.getString("password");
-        //         boolean isMatching = BCrypt.checkpw(formPassword, hashPassword);
-        //         if (isMatching) {
-        //             loginMap.put("role", result.getString("role"));
-        //             responseString = super.formatJSON(loginMap, "success"); // correct login
-        //         }
-        //     }
-        // }
-        // catch (Exception e) {
-        //     responseString = "Internal Server Error";
-        //     logger.error("Error in authenticateLogin of LoginService: " + e.getMessage());
-        // }
-        return "responseString";
+        //check if email already exists
+        String email = (String) registrationParams.get("email");
+        try {
+            ResultSet emailResult = userRepository.getUserCountByEmail(email);
+            if  (emailResult.next()) {
+                int count = emailResult.getInt(1);
+                if (count > 0) {
+                    responseString = super.formatJSON("failure", "Account with username already exists");
+                    return responseString;
+                }
+            }
+        }
+        catch (Exception e) {
+            responseString = "Internal Server Error";
+            logger.error("Error in registerUser (1) of RegistrationService: " + e.getMessage());
+        }
+
+        //check if username already exists
+        String username = (String) registrationParams.get("username");
+        try {
+            ResultSet usernameResult = userRepository.getUserCountByUsername(username);
+            if  (usernameResult.next()) {
+                int count = usernameResult.getInt(1);
+                if (count > 0) {
+                    responseString = super.formatJSON("failure", "Account with username already exists");
+                    return responseString;
+                }
+            }
+        }
+        catch (Exception e) {
+            responseString = "Internal Server Error";
+            logger.error("Error in registerUser (2) of RegistrationService: " + e.getMessage());
+        }
+        
+        //add user
+        String password = (String) registrationParams.get("password");
+        String encryptedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
+        registrationParams.put("password", encryptedPassword);
+
+        try {
+            userRepository.addUser(registrationParams);
+            responseString = super.formatJSON("success"); // correct login
+        }
+        catch (Exception e) {
+            responseString = "Internal Server Error";
+            logger.error("Error in registerUser (3) of RegistrationService: " + e.getMessage());
+        }
+
+        return responseString;
     }
 }

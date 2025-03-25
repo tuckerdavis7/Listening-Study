@@ -15,7 +15,7 @@ public class LoginService extends BaseService {
     private static final Logger logger = LoggerFactory.getLogger(LoginService.class);
     UserRepository userRepository = new UserRepository();
     public String authenticateLogin(HttpExchange exchange) throws IOException {
-        Map<String, Object> loginParams = super.getParameter(exchange);
+        Map<String, Object> loginParams = super.getParameters(exchange);
        
         String email = (String) loginParams.get("email");
         String formPassword = (String) loginParams.get("password");

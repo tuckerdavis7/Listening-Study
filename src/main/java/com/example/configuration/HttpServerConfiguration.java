@@ -28,6 +28,7 @@ public class HttpServerConfiguration {
         server.createContext("/", new ThymeleafHandler());
         server.createContext("/static", new StaticFileHandler());
         server.createContext("/api/login", new LoginHandler());
+        server.createContext("/api/register", new RegistrationHandler());
         server.createContext("/api/metadata", new MetadataHandler());
     }
 }

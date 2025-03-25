@@ -18,7 +18,7 @@ $(document).ready(function() {
             }
         
             $.ajax({
-                data: JSON.stringify([loginForm]),
+                data: JSON.stringify(loginForm),
                 url: 'http://localhost:8080/api/login',
                 type: 'POST',
                 contentType: 'application/json',

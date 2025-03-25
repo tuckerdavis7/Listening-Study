@@ -20,7 +20,7 @@ public class RegistrationHandler extends BaseHandler implements HttpHandler {
 
         switch (method) {
             case "POST":
-                response = registrationService.authenticateLogin(exchange);
+                response = registrationService.registerUser(exchange);
                 super.sendResponse(exchange, response, "Regular");
                 break;
             

@@ -1,4 +1,7 @@
 $(document).ready(function() {
+    $('#registrationForm input').val('');
+    $('#registrationForm select').find('option').prop('selected', false);
+
     $('#registrationButton').click(function(event) {
         event.preventDefault();
         let valid = validateFormData();
@@ -17,16 +20,27 @@ $(document).ready(function() {
                 delete registrationForm.value;
             }
 
+            //remove duplicated password
+            if (registrationForm.confirmPassword) {
+                delete registrationForm.confirmPassword;
+            }
+
             $.ajax({
-                data: JSON.stringify([registrationForm]),
+                data: JSON.stringify(registrationForm),
                 url: 'http://localhost:8080/api/register',
                 type: 'POST',
                 contentType: 'application/json',
                 success: function(data) {
-                    bootstrapAlert('success', 'Registration successful!');
-                    $('#registrationForm').hide();
-                    $('#signInText').hide();
-                    $('#navigationButton').show();                    
+                    let responseData = JSON.parse(data);
+                    if (responseData.status === 'failure') {
+                        bootstrapAlert('danger', responseData.message);
+                    }
+                    else{
+                        bootstrapAlert('success', 'Registration successful!');
+                        $('#registrationForm').hide();
+                        $('#signInText').hide();
+                        $('#navigationButton').show();
+                    }     
                 },
                 error: function(xhr, status, error) {
                     bootstrapAlert('danger', 'Error while registering: ' + error);
@@ -37,7 +51,7 @@ $(document).ready(function() {
 
     $('#navigationButton').click(function(event) {
         event.preventDefault();
-        window.location.href = '/'; // will need changed to /login
+        window.location.href = '/login';
     });
 })
 

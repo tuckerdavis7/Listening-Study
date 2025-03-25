@@ -17,11 +17,21 @@ $(document).ready(function() {
                 delete registrationForm.value;
             }
 
-            //ajax call here once implemented for API
-            bootstrapAlert('success', 'Registration successful!');
-            $('#registrationForm').hide();
-            $('#signInText').hide();
-            $('#navigationButton').show();
+            $.ajax({
+                data: JSON.stringify([registrationForm]),
+                url: 'http://localhost:8080/api/register',
+                type: 'POST',
+                contentType: 'application/json',
+                success: function(data) {
+                    bootstrapAlert('success', 'Registration successful!');
+                    $('#registrationForm').hide();
+                    $('#signInText').hide();
+                    $('#navigationButton').show();                    
+                },
+                error: function(xhr, status, error) {
+                    bootstrapAlert('danger', 'Error while registering: ' + error);
+                }
+            });
         }
     });
 

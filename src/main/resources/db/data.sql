@@ -33,30 +33,30 @@ INSERT INTO class (className) VALUES
 ('Music Appreciation');
 
 INSERT INTO users (username, email, first_name, last_name, deleted, role, password) VALUES
-('admin1', 'admin1@example.com', 'John', 'Smith', 0, 'administrator', '$2a$12$69rOPERjWxQ5fnzy4CbRZ.i.0w0MARpuH5hUf37.007eWx44i5bAK'),
-('admin2', 'admin2@example.com', 'Emma', 'Johnson', 0, 'administrator', '$2a$12$69rOPERjWxQ5fnzy4CbRZ.i.0w0MARpuH5hUf37.007eWx44i5bAK'),
-('admin3', 'admin3@example.com', 'Michael', 'Williams', 0, 'administrator', '$2a$12$69rOPERjWxQ5fnzy4CbRZ.i.0w0MARpuH5hUf37.007eWx44i5bAK'),
-('admin4', 'admin4@example.com', 'Olivia', 'Brown', 0, 'administrator', '$2a$12$69rOPERjWxQ5fnzy4CbRZ.i.0w0MARpuH5hUf37.007eWx44i5bAK'),
-('admin5', 'admin5@example.com', 'William', 'Jones', 0, 'administrator', '$2a$12$69rOPERjWxQ5fnzy4CbRZ.i.0w0MARpuH5hUf37.007eWx44i5bAK'),
-('admin6', 'admin6@example.com', 'Sophia', 'Miller', 0, 'administrator', '$2a$12$69rOPERjWxQ5fnzy4CbRZ.i.0w0MARpuH5hUf37.007eWx44i5bAK'),
-('admin7', 'admin7@example.com', 'James', 'Davis', 0, 'administrator', '$2a$12$69rOPERjWxQ5fnzy4CbRZ.i.0w0MARpuH5hUf37.007eWx44i5bAK'),
-('admin8', 'admin8@example.com', 'Charlotte', 'Garcia', 0, 'administrator', '$2a$12$69rOPERjWxQ5fnzy4CbRZ.i.0w0MARpuH5hUf37.007eWx44i5bAK'),
-('admin9', 'admin9@example.com', 'Benjamin', 'Rodriguez', 0, 'administrator', '$2a$12$69rOPERjWxQ5fnzy4CbRZ.i.0w0MARpuH5hUf37.007eWx44i5bAK'),
-('admin10', 'admin10@example.com', 'Amelia', 'Wilson', 0, 'administrator', '$2a$12$69rOPERjWxQ5fnzy4CbRZ.i.0w0MARpuH5hUf37.007eWx44i5bAK'),
-('admin11', 'admin11@example.com', 'Lucas', 'Martinez', 0, 'administrator', '$2a$12$69rOPERjWxQ5fnzy4CbRZ.i.0w0MARpuH5hUf37.007eWx44i5bAK');
+('administrator1', 'administrator1@example.com', 'John', 'Smith', 0, 'administrator', '$2a$12$69rOPERjWxQ5fnzy4CbRZ.i.0w0MARpuH5hUf37.007eWx44i5bAK'),
+('administrator2', 'administrator2@example.com', 'Emma', 'Johnson', 0, 'administrator', '$2a$12$69rOPERjWxQ5fnzy4CbRZ.i.0w0MARpuH5hUf37.007eWx44i5bAK'),
+('administrator3', 'administrator3@example.com', 'Michael', 'Williams', 0, 'administrator', '$2a$12$69rOPERjWxQ5fnzy4CbRZ.i.0w0MARpuH5hUf37.007eWx44i5bAK'),
+('administrator4', 'administrator4@example.com', 'Olivia', 'Brown', 0, 'administrator', '$2a$12$69rOPERjWxQ5fnzy4CbRZ.i.0w0MARpuH5hUf37.007eWx44i5bAK'),
+('administrator5', 'administrator5@example.com', 'William', 'Jones', 0, 'administrator', '$2a$12$69rOPERjWxQ5fnzy4CbRZ.i.0w0MARpuH5hUf37.007eWx44i5bAK'),
+('administrator6', 'administrator6@example.com', 'Sophia', 'Miller', 0, 'administrator', '$2a$12$69rOPERjWxQ5fnzy4CbRZ.i.0w0MARpuH5hUf37.007eWx44i5bAK'),
+('administrator7', 'administrator7@example.com', 'James', 'Davis', 0, 'administrator', '$2a$12$69rOPERjWxQ5fnzy4CbRZ.i.0w0MARpuH5hUf37.007eWx44i5bAK'),
+('administrator8', 'administrator8@example.com', 'Charlotte', 'Garcia', 0, 'administrator', '$2a$12$69rOPERjWxQ5fnzy4CbRZ.i.0w0MARpuH5hUf37.007eWx44i5bAK'),
+('administrator9', 'administrator9@example.com', 'Benjamin', 'Rodriguez', 0, 'administrator', '$2a$12$69rOPERjWxQ5fnzy4CbRZ.i.0w0MARpuH5hUf37.007eWx44i5bAK'),
+('administrator10', 'administrator10@example.com', 'Amelia', 'Wilson', 0, 'administrator', '$2a$12$69rOPERjWxQ5fnzy4CbRZ.i.0w0MARpuH5hUf37.007eWx44i5bAK'),
+('administrator11', 'administrator11@example.com', 'Lucas', 'Martinez', 0, 'administrator', '$2a$12$69rOPERjWxQ5fnzy4CbRZ.i.0w0MARpuH5hUf37.007eWx44i5bAK');
 
 INSERT INTO users (username, email, first_name, last_name, deleted, role, password) VALUES
-('mod1', 'mod1@example.com', 'Harper', 'Anderson', 0, 'moderator', '$2a$12$69rOPERjWxQ5fnzy4CbRZ.i.0w0MARpuH5hUf37.007eWx44i5bAK'),
-('mod2', 'mod2@example.com', 'Ethan', 'Thomas', 0, 'moderator', '$2a$12$69rOPERjWxQ5fnzy4CbRZ.i.0w0MARpuH5hUf37.007eWx44i5bAK'),
-('mod3', 'mod3@example.com', 'Ava', 'Jackson', 0, 'moderator', '$2a$12$69rOPERjWxQ5fnzy4CbRZ.i.0w0MARpuH5hUf37.007eWx44i5bAK'),
-('mod4', 'mod4@example.com', 'Noah', 'White', 0, 'moderator', '$2a$12$69rOPERjWxQ5fnzy4CbRZ.i.0w0MARpuH5hUf37.007eWx44i5bAK'),
-('mod5', 'mod5@example.com', 'Isabella', 'Harris', 0, 'moderator', '$2a$12$69rOPERjWxQ5fnzy4CbRZ.i.0w0MARpuH5hUf37.007eWx44i5bAK'),
-('mod6', 'mod6@example.com', 'Mason', 'Martin', 0, 'moderator', '$2a$12$69rOPERjWxQ5fnzy4CbRZ.i.0w0MARpuH5hUf37.007eWx44i5bAK'),
-('mod7', 'mod7@example.com', 'Mia', 'Thompson', 0, 'moderator', '$2a$12$69rOPERjWxQ5fnzy4CbRZ.i.0w0MARpuH5hUf37.007eWx44i5bAK'),
-('mod8', 'mod8@example.com', 'Jacob', 'Garcia', 0, 'moderator', '$2a$12$69rOPERjWxQ5fnzy4CbRZ.i.0w0MARpuH5hUf37.007eWx44i5bAK'),
-('mod9', 'mod9@example.com', 'Abigail', 'Martinez', 0, 'moderator', '$2a$12$69rOPERjWxQ5fnzy4CbRZ.i.0w0MARpuH5hUf37.007eWx44i5bAK'),
-('mod10', 'mod10@example.com', 'Alexander', 'Robinson', 0, 'moderator', '$2a$12$69rOPERjWxQ5fnzy4CbRZ.i.0w0MARpuH5hUf37.007eWx44i5bAK'),
-('mod11', 'mod11@example.com', 'Emily', 'Clark', 0, 'moderator', '$2a$12$69rOPERjWxQ5fnzy4CbRZ.i.0w0MARpuH5hUf37.007eWx44i5bAK');
+('moderator1', 'moderator1@example.com', 'Harper', 'Anderson', 0, 'moderator', '$2a$12$69rOPERjWxQ5fnzy4CbRZ.i.0w0MARpuH5hUf37.007eWx44i5bAK'),
+('moderator2', 'moderator2@example.com', 'Ethan', 'Thomas', 0, 'moderator', '$2a$12$69rOPERjWxQ5fnzy4CbRZ.i.0w0MARpuH5hUf37.007eWx44i5bAK'),
+('moderator3', 'moderator3@example.com', 'Ava', 'Jackson', 0, 'moderator', '$2a$12$69rOPERjWxQ5fnzy4CbRZ.i.0w0MARpuH5hUf37.007eWx44i5bAK'),
+('moderator4', 'moderator4@example.com', 'Noah', 'White', 0, 'moderator', '$2a$12$69rOPERjWxQ5fnzy4CbRZ.i.0w0MARpuH5hUf37.007eWx44i5bAK'),
+('moderator5', 'moderator5@example.com', 'Isabella', 'Harris', 0, 'moderator', '$2a$12$69rOPERjWxQ5fnzy4CbRZ.i.0w0MARpuH5hUf37.007eWx44i5bAK'),
+('moderator6', 'moderator6@example.com', 'Mason', 'Martin', 0, 'moderator', '$2a$12$69rOPERjWxQ5fnzy4CbRZ.i.0w0MARpuH5hUf37.007eWx44i5bAK'),
+('moderator7', 'moderator7@example.com', 'Mia', 'Thompson', 0, 'moderator', '$2a$12$69rOPERjWxQ5fnzy4CbRZ.i.0w0MARpuH5hUf37.007eWx44i5bAK'),
+('moderator8', 'moderator8@example.com', 'Jacob', 'Garcia', 0, 'moderator', '$2a$12$69rOPERjWxQ5fnzy4CbRZ.i.0w0MARpuH5hUf37.007eWx44i5bAK'),
+('moderator9', 'moderator9@example.com', 'Abigail', 'Martinez', 0, 'moderator', '$2a$12$69rOPERjWxQ5fnzy4CbRZ.i.0w0MARpuH5hUf37.007eWx44i5bAK'),
+('moderator10', 'moderator10@example.com', 'Alexander', 'Robinson', 0, 'moderator', '$2a$12$69rOPERjWxQ5fnzy4CbRZ.i.0w0MARpuH5hUf37.007eWx44i5bAK'),
+('moderator11', 'moderator11@example.com', 'Emily', 'Clark', 0, 'moderator', '$2a$12$69rOPERjWxQ5fnzy4CbRZ.i.0w0MARpuH5hUf37.007eWx44i5bAK');
 
 INSERT INTO users (username, email, first_name, last_name, deleted, role, password) VALUES
 ('teacher1', 'teacher1@example.com', 'Daniel', 'Lewis', 0, 'teacher', '$2a$12$69rOPERjWxQ5fnzy4CbRZ.i.0w0MARpuH5hUf37.007eWx44i5bAK'),

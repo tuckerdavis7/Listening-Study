@@ -28,15 +28,14 @@ public class LoginService extends BaseService {
         try {
             ResultSet result = userRepository.getUserByEmail(email);
             Map<String, Object> loginMap = new HashMap<>();
+            responseString = super.formatJSON(loginMap, "failure"); // incorrect login
+
             while (result.next()) {
                 String hashPassword = result.getString("password");
                 boolean isMatching = BCrypt.checkpw(formPassword, hashPassword);
                 if (isMatching) {
                     loginMap.put("role", result.getString("role"));
                     responseString = super.formatJSON(loginMap, "success"); // correct login
-                }
-                else {
-                    responseString = super.formatJSON(loginMap, "failure"); // incorrect login
                 }
             }
         }

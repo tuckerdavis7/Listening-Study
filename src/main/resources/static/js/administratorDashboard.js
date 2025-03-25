@@ -121,46 +121,9 @@ var reportData = [
     }
 ]
 
-var userData = [
-    {
-        "first": "Joe",
-        "last": "Reiner",
-        "role": "teacher",
-        "email": "reiner@sru.edu",
-        "classes": [
-            {
-                "name": "Music History 1-1"
-            },
-            {
-                "name": "Music History 2-1"
-            }
-        ]
-    },
-    {
-        "first": "Ben",
-        "last": "Luzier",
-        "role": "administrator",
-        "email": "luzier@sru.edu",
-        "classes": ""
-    },
-    {
-        "first": "Brenden",
-        "last": "Stilwell",
-        "role": "moderator",
-        "email": "stilwell@sru.edu",
-        "classes": ""
-    },
-    {
-        "first": "Tucker",
-        "last": "Davis",
-        "role": "student",
-        "email": "davis@sru.edu",
-        "classes": ""
-    }
-]
-
 var reportTable;
 var userTable;
+var userColumns;
 
 $(document).ready(function () {
    let reportColumns = [
@@ -216,7 +179,7 @@ $(document).ready(function () {
         },
     ];
 
-    let userColumns = [
+    userColumns = [
         {
             class: "wrenchColumn",
             data: "role",
@@ -256,9 +219,10 @@ $(document).ready(function () {
             data: null,
             width: "6 rem",
             render: function(data, type, row, meta) {
-                return row.first + ' ' + row.last;
+                return row.firstName + ' ' + row.lastName;
             }
         },
+        { data: "username", class: "charcolumn", width: "5 rem" },
         {
             class: "charColumn",
             data: "role",
@@ -271,7 +235,6 @@ $(document).ready(function () {
     ]
 
     reportTable = initializeDataTableWithFilters('#reportTable', reportData, reportColumns, [1, 'asc'], 10);
-    userTable = initializeDataTableWithFilters('#userTable', userData, userColumns, [1, 'asc'], 10);
 
     showTab('bugReports'); //show bug reports tab first
 
@@ -340,7 +303,7 @@ $(document).ready(function () {
             $('#deleteUserButton').show();
         }
 
-        $('#userName').html(row.first + ' ' + row.last);
+        $('#userName').html(row.firstName + ' ' + row.lastName);
         $('#userEmail').html(row.email);
     });
 
@@ -362,6 +325,20 @@ $(document).ready(function () {
 
 //Function to toggle back and forth between tabs for tables
 function showTab(tabName) {
+    if (tabName === 'manageUsers') {
+        $.ajax({
+            url: 'http://localhost:8080/api/administrator/users',
+            method: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                userTable = initializeDataTableWithFilters('#userTable', data.data, userColumns, [1, 'asc'], 10);
+            },
+            error: function (xhr, status, error) {
+                console.error("Error fetching data from the API:", error);
+            }
+        });
+    }
+
     $('.tab-content').hide();
     $('.navbar-nav .nav-link').removeClass('active');
     $('#' + tabName).show();

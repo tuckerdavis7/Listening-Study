@@ -30,5 +30,6 @@ public class HttpServerConfiguration {
         server.createContext("/api/login", new LoginHandler());
         server.createContext("/api/register", new RegistrationHandler());
         server.createContext("/api/metadata", new MetadataHandler());
+        server.createContext("/api/administrator/users", new AdministratorUserHandler());
     }
 }

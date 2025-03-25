@@ -8,33 +8,6 @@ import java.util.Map;
 import com.example.configuration.DatabaseConfiguration;
 
 public class UserRepository {
-    public ResultSet getUserByEmail(String email) throws SQLException {
-        String query = "SELECT * FROM users WHERE email =?";
-        PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
-        pstmt.setString(1, email);
-        ResultSet rs = pstmt.executeQuery();
-
-       return rs;
-    }
-
-    public ResultSet getUserCountByEmail(String email) throws SQLException {
-        String query = "SELECT COUNT(*) FROM users WHERE email =?";
-        PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
-        pstmt.setString(1, email);
-        ResultSet rs = pstmt.executeQuery();
-
-        return rs;
-    }
-
-    public ResultSet getUserCountByUsername(String username) throws SQLException {
-        String query = "SELECT COUNT(*) FROM users WHERE username =?";
-        PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
-        pstmt.setString(1, username);
-        ResultSet rs = pstmt.executeQuery();
-
-        return rs;
-    }
-
     public void addUser(Map<String, Object> user) throws SQLException {
         String query = "INSERT INTO users (username, email, first_name, last_name, deleted, role, password) VALUES (?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
@@ -48,5 +21,44 @@ public class UserRepository {
         pstmt.setString(7, user.get("password").toString());
       
         pstmt.executeUpdate();
+    }
+
+    public ResultSet getAllUsers() throws SQLException {
+        String query = "SELECT * FROM users WHERE deleted =?";
+        PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
+        pstmt.setInt(1, 0);
+        ResultSet rs = pstmt.executeQuery();
+
+       return rs;
+    }
+
+    public ResultSet getUserByEmail(String email) throws SQLException {
+        String query = "SELECT * FROM users WHERE email =?";
+        PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
+        pstmt.setString(1, email);
+        ResultSet rs = pstmt.executeQuery();
+
+       return rs;
+    }
+
+    public ResultSet getUserCountByEmail(String email) throws SQLException {
+        String query = "SELECT COUNT(*) FROM users WHERE email =? AND deleted = ?";
+        PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
+        pstmt.setString(1, email);
+        pstmt.setInt(2, 0);
+
+        ResultSet rs = pstmt.executeQuery();
+
+        return rs;
+    }
+
+    public ResultSet getUserCountByUsername(String username) throws SQLException {
+        String query = "SELECT COUNT(*) FROM users WHERE username =? AND deleted = ?";
+        PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
+        pstmt.setString(1, username);
+        pstmt.setInt(2, 0);
+        ResultSet rs = pstmt.executeQuery();
+
+        return rs;
     }
 }

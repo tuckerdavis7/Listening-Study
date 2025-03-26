@@ -72,7 +72,11 @@ CREATE TABLE studentClass (
 CREATE TABLE reportTime (
     ID INT AUTO_INCREMENT PRIMARY KEY,
     timeOfReport DATETIME NOT NULL,
+    username VARCHAR(255),
+    email VARCHAR(255),
     description TEXT,
+    lastUpdatedTime DATETIME NOT NULL,
+    lastUpdatedBy VARCHAR(255),
     status VARCHAR(50)
 );
 

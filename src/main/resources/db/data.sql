@@ -115,18 +115,18 @@ SELECT
 FROM 
     student s;
 
-INSERT INTO reportTime (timeOfReport, description, status) VALUES
-('2025-03-01 09:30:00', 'Weekly performance report', 'Completed'),
-('2025-03-02 14:15:00', 'Student progress assessment', 'Pending'),
-('2025-03-05 10:00:00', 'Pop quiz results', 'In Progress'),
-('2025-03-08 13:45:00', 'Monthly evaluation', 'Completed'),
-('2025-03-10 11:30:00', 'Semester midpoint check', 'Completed'),
-('2025-03-12 15:20:00', 'Theory test results', 'Pending'),
-('2025-03-15 09:00:00', 'Composition project evaluation', 'In Progress'),
-('2025-03-18 14:30:00', 'Performance recital feedback', 'Completed'),
-('2025-03-20 10:45:00', 'Practical skills assessment', 'Pending'),
-('2025-03-22 13:15:00', 'Ear training test results', 'In Progress'),
-('2025-03-24 11:00:00', 'Year-end progress summary', 'Completed');
+INSERT INTO reportTime (timeOfReport, username, email, description, lastUpdatedTime, lastUpdatedBy, status) VALUES
+('2025-03-01 09:30:00', 'moderator1', 'moderator1@example.com', 'Weekly performance report', '2025-03-01 09:30:00', 'administrator1', 'Resolved'),
+('2025-03-02 14:15:00', 'moderator1', 'moderator1@example.com', 'Student progress assessment', '2025-03-01 09:30:00', 'administrator1', 'Open'),
+('2025-03-05 10:00:00', 'moderator1', 'moderator1@example.com', 'Pop quiz results', '2025-03-01 09:30:00', 'administrator1', 'Acknowledged'),
+('2025-03-08 13:45:00', 'moderator1', 'moderator1@example.com', 'Monthly evaluation', '2025-03-01 09:30:00', 'administrator1', 'Resolved'),
+('2025-03-10 11:30:00', 'moderator1', 'moderator1@example.com', 'Semester midpoint check', '2025-03-01 09:30:00', 'administrator1', 'Resolved'),
+('2025-03-12 15:20:00', 'moderator1', 'moderator1@example.com', 'Theory test results', '2025-03-01 09:30:00', 'administrator1', 'Open'),
+('2025-03-15 09:00:00', 'moderator1', 'moderator1@example.com', 'Composition project evaluation', '2025-03-01 09:30:00', 'administrator1', 'Acknowledged'),
+('2025-03-18 14:30:00', 'moderator1', 'moderator1@example.com', 'Performance recital feedback', '2025-03-01 09:30:00', 'administrator1', 'Resolved'),
+('2025-03-20 10:45:00', 'moderator1', 'moderator1@example.com', 'Practical skills assessment', '2025-03-01 09:30:00', 'administrator1', 'Open'),
+('2025-03-22 13:15:00', 'moderator1', 'moderator1@example.com', 'Ear training test results', '2025-03-01 09:30:00', 'administrator1', 'Acknowledged'),
+('2025-03-24 11:00:00', 'moderator1', 'moderator1@example.com', 'Year-end progress summary', '2025-03-01 09:30:00', 'administrator1', 'Resolved');
 
 INSERT INTO song (songName, songComposer, songYear, youtubeLink) VALUES
 ('Moonlight Sonata', 'Ludwig van Beethoven', 1801, 'https://www.youtube.com/watch?v=4Tr0otuiQuU'),

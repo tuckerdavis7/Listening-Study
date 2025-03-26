@@ -41,9 +41,10 @@
 
 .pillColumn {
   text-align: center;
+  font-size: 1.25rem;
 }
 
-.charColumn, .dt-type-numeric  {
+.charColumn, .dt-type-numeric, .dt-type-date  {
   text-align: left !important;
 }
 

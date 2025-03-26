@@ -1,132 +1,7 @@
-var reportData = [
-    {
-        "initialDate": "03/14/2025 13:35:37",
-        "first": "Jane",
-        "last": "Doe",
-        "email": "doe@sru.edu",
-        "description": "A long text-field explaining the issue at hand",
-        "status": "Open",
-        "modifiedDate": "03/14/2025 13:35:37",
-        "modifiedUser": "jdoe" 
-    },
-    {
-        "initialDate": "03/15/2025 09:45:00",
-        "first": "John",
-        "last": "Cena",
-        "email": "cena@sru.edu",
-        "description": "You can't see me?  No, I can't see the login page.  HELP!",
-        "status": "Acknowledged",
-        "modifiedDate": "03/15/2025 13:50:55",
-        "modifiedUser": "reiner_13" 
-    },
-    {
-        "initialDate": "03/10/2025 07:36:24",
-        "first": "Tucker",
-        "last": "Davis",
-        "email": "davis@sru.edu",
-        "description": "Ben fried the RAM on my laptop.  Who is surpised?",
-        "status": "Resolved",
-        "modifiedDate": "03/15/2025 13:47:56",
-        "modifiedUser": "reiner_13" 
-    },
-    {
-        "initialDate": "03/15/2025 09:45:00",
-        "first": "John",
-        "last": "Cena",
-        "email": "cena@sru.edu",
-        "description": "You can't see me?  No, I can't see the login page.  HELP!",
-        "status": "Acknowledged",
-        "modifiedDate": "03/15/2025 13:50:55",
-        "modifiedUser": "reiner_13" 
-    },
-    {
-        "initialDate": "03/15/2025 09:45:00",
-        "first": "John",
-        "last": "Cena",
-        "email": "cena@sru.edu",
-        "description": "You can't see me?  No, I can't see the login page.  HELP!",
-        "status": "Acknowledged",
-        "modifiedDate": "03/15/2025 13:50:55",
-        "modifiedUser": "reiner_13" 
-    },
-    {
-        "initialDate": "03/15/2025 09:45:00",
-        "first": "John",
-        "last": "Cena",
-        "email": "cena@sru.edu",
-        "description": "You can't see me?  No, I can't see the login page.  HELP!",
-        "status": "Acknowledged",
-        "modifiedDate": "03/15/2025 13:50:55",
-        "modifiedUser": "reiner_13" 
-    },
-    {
-        "initialDate": "03/15/2025 09:45:00",
-        "first": "John",
-        "last": "Cena",
-        "email": "cena@sru.edu",
-        "description": "You can't see me?  No, I can't see the login page.  HELP!",
-        "status": "Acknowledged",
-        "modifiedDate": "03/15/2025 13:50:55",
-        "modifiedUser": "reiner_13" 
-    },
-    {
-        "initialDate": "03/15/2025 09:45:00",
-        "first": "John",
-        "last": "Cena",
-        "email": "cena@sru.edu",
-        "description": "You can't see me?  No, I can't see the login page.  HELP!",
-        "status": "Acknowledged",
-        "modifiedDate": "03/15/2025 13:50:55",
-        "modifiedUser": "reiner_13" 
-    },
-    {
-        "initialDate": "03/15/2025 09:45:00",
-        "first": "John",
-        "last": "Cena",
-        "email": "cena@sru.edu",
-        "description": "You can't see me?  No, I can't see the login page.  HELP!",
-        "status": "Acknowledged",
-        "modifiedDate": "03/15/2025 13:50:55",
-        "modifiedUser": "reiner_13" 
-    },
-    {
-        "initialDate": "03/15/2025 09:45:00",
-        "first": "John",
-        "last": "Cena",
-        "email": "cena@sru.edu",
-        "description": "You can't see me?  No, I can't see the login page.  HELP!",
-        "status": "Acknowledged",
-        "modifiedDate": "03/15/2025 13:50:55",
-        "modifiedUser": "reiner_13" 
-    },
-    {
-        "initialDate": "03/15/2025 09:45:00",
-        "first": "John",
-        "last": "Cena",
-        "email": "cena@sru.edu",
-        "description": "You can't see me?  No, I can't see the login page.  HELP!",
-        "status": "Acknowledged",
-        "modifiedDate": "03/15/2025 13:50:55",
-        "modifiedUser": "reiner_13" 
-    },
-    {
-        "initialDate": "03/15/2025 09:45:00",
-        "first": "John",
-        "last": "Cena",
-        "email": "cena@sru.edu",
-        "description": "You can't see me?  No, I can't see the login page.  HELP!",
-        "status": "Acknowledged",
-        "modifiedDate": "03/15/2025 13:50:55",
-        "modifiedUser": "reiner_13" 
-    }
-]
-
-var reportTable;
-var userTable;
-var userColumns;
+var reportTable, reportColumns, userTable, userColumns;
 
 $(document).ready(function () {
-   let reportColumns = [
+    reportColumns = [
         {
             class: "wrenchColumn",
             data: null,
@@ -142,26 +17,19 @@ $(document).ready(function () {
             },
         },
         { data: "initialDate", class: "charcolumn", width: "2 rem" },
+        { data: "username", class: "charcolumn", width: "3 rem" },
         {
             class: "charColumn",
             data: null,
-            width: "6 rem",
+            width: "5 rem",
             render: function(data, type, row, meta) {
-                return row.first + ' ' + row.last;
+                return row.modifiedDate + ' by ' + row.modifiedBy; 
             }
         },
         {
-            class: "charColumn",
-            data: null,
-            width: "6 rem",
-            render: function(data, type, row, meta) {
-                return row.modifiedDate + ' by ' + row.modifiedUser; 
-            }
-        },
-        {
-            class: "charColumn pillColumn",
+            class: "pillColumn",
             data: "status",
-            width: "6 rem",
+            width: "3 rem",
             render: function(data, type, row, meta) {
                 let pillClass;
                 if (data === "Open") {
@@ -232,10 +100,32 @@ $(document).ready(function () {
             }
         },
         { data: "email", class: "charcolumn", width: "2 rem" }
-    ]
+    ];
 
-    reportTable = initializeDataTableWithFilters('#reportTable', reportData, reportColumns, [1, 'asc'], 10);
+    $.ajax({
+        url: 'http://localhost:8080/api/administrator/reports',
+        method: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            reportTable = initializeDataTableWithFilters('#reportTable', data.data, reportColumns, [1, 'asc'], 10);
+        },
+        error: function (xhr, status, error) {
+            console.error("Error fetching data from the API:", error);
+        }
+    });
 
+    $.ajax({
+        url: 'http://localhost:8080/api/administrator/users',
+        method: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            userTable = initializeDataTableWithFilters('#userTable', data.data, userColumns, [1, 'asc'], 10);
+        },
+        error: function (xhr, status, error) {
+            console.error("Error fetching data from the API:", error);
+        }
+    });
+    
     showTab('bugReports'); //show bug reports tab first
 
     $('#reportModal').on('show.bs.modal', function (event) {
@@ -243,11 +133,11 @@ $(document).ready(function () {
         let row = reportTable.row(button.data('rowindex')).data();
 
         $('#reportDate').html(row.initialDate);
-        $('#reportName').html(row.first + ' ' + row.last);
+        $('#reportUser').html(row.username);
         $('#reportEmail').html(row.email);
         $('#reportDate').html(row.initialDate);
         $('#reportDescription').html(row.description);
-        $('#reportModified').html(row.modifiedDate + ' ' + row.modifiedUser);
+        $('#reportModified').html(row.modifiedDate + ' ' + row.modifiedBy);
         $('#reportStatus').html(row.status);
 
         //clearing comment field in submodal
@@ -325,20 +215,6 @@ $(document).ready(function () {
 
 //Function to toggle back and forth between tabs for tables
 function showTab(tabName) {
-    if (tabName === 'manageUsers') {
-        $.ajax({
-            url: 'http://localhost:8080/api/administrator/users',
-            method: 'GET',
-            dataType: 'json',
-            success: function (data) {
-                userTable = initializeDataTableWithFilters('#userTable', data.data, userColumns, [1, 'asc'], 10);
-            },
-            error: function (xhr, status, error) {
-                console.error("Error fetching data from the API:", error);
-            }
-        });
-    }
-
     $('.tab-content').hide();
     $('.navbar-nav .nav-link').removeClass('active');
     $('#' + tabName).show();

@@ -40,4 +40,36 @@ public class AdministratorUserService extends BaseService {
         }
         return responseString;
     }
+
+    public String updateDesignation(HttpExchange exchange) throws IOException {
+        String responseString = "";
+        Map<String, Object> parameters = super.getParameters(exchange);
+
+        try {
+            userRepository.updateDesignation(parameters);
+            responseString = super.formatJSON("success");
+        }
+        catch (Exception e) {
+            responseString = "Internal Server Error";
+            logger.error("Error in updateDesignation of AdministratorUserService: " + e.getMessage());
+        }
+
+        return responseString;
+    }
+
+    public String deleteUser(HttpExchange exchange) throws IOException {
+        String responseString = "";
+        Map<String, Object> parameters = super.getParameters(exchange);
+
+        try {
+            userRepository.deleteUser(parameters);
+            responseString = super.formatJSON("success");
+        }
+        catch (Exception e) {
+            responseString = "Internal Server Error";
+            logger.error("Error in deleteUser of AdministratorUserService: " + e.getMessage());
+        }
+
+        return responseString;
+    }
 }

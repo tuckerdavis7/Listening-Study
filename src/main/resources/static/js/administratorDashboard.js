@@ -102,30 +102,10 @@ $(document).ready(function () {
         { data: "email", class: "charcolumn", width: "2 rem" }
     ];
 
-    $.ajax({
-        url: 'http://localhost:8080/api/administrator/reports',
-        method: 'GET',
-        dataType: 'json',
-        success: function (data) {
-            reportTable = initializeDataTableWithFilters('#reportTable', data.data, reportColumns, [1, 'asc'], 10);
-        },
-        error: function (xhr, status, error) {
-            console.error("Error fetching data from the API:", error);
-        }
-    });
+    //gather API data
+    getUserData();
+    getReportData();
 
-    $.ajax({
-        url: 'http://localhost:8080/api/administrator/users',
-        method: 'GET',
-        dataType: 'json',
-        success: function (data) {
-            userTable = initializeDataTableWithFilters('#userTable', data.data, userColumns, [1, 'asc'], 10);
-        },
-        error: function (xhr, status, error) {
-            console.error("Error fetching data from the API:", error);
-        }
-    });
-    
     showTab('bugReports'); //show bug reports tab first
 
     $('#reportModal').on('show.bs.modal', function (event) {
@@ -195,21 +175,58 @@ $(document).ready(function () {
 
         $('#userName').html(row.firstName + ' ' + row.lastName);
         $('#userEmail').html(row.email);
+        $(this).data('rowindex', button.data('rowindex')); //storing data for buttons
     });
 
-    $('#addDesignationButton').on('click', function() {
-        bootstrapAlert('success', 'Moderator designated successfully.');
-        $('#userModal').modal('hide');
-    });
+    $('#addDesignationButton, #removeDesignationButton').on('click', function() {
+        let rowIndex = $('#userModal').data('rowindex');
+        let row = userTable.row(rowIndex).data();
 
-    $('#removeDesignationButton').on('click', function() {
-        bootstrapAlert('success', 'Removed moderator designation successfully.');
-        $('#userModal').modal('hide');
+        //change the role for API data
+        let changedRole = (row.role === 'teacher') ? 'moderator' : 'teacher';
+        let designationForm = {"role": changedRole, "username": row.username};
+
+        $.ajax({
+            data: JSON.stringify(designationForm),
+            url: 'http://localhost:8080/api/administrator/users/',
+            type: 'PATCH',
+            contentType: 'application/json',
+            success: function(data) {
+                bootstrapAlert('success', 'Designation successful.');
+                $('#userModal').modal('hide');
+
+                //refresh table data
+                userTable.destroy();
+                getUserData();                     
+            },
+            error: function(xhr, status, error) {
+                bootstrapAlert('danger', 'Error while updating designation: ' + error);
+            }
+        });
     });
 
     $('#deleteUserButton').on('click', function() {
-        bootstrapAlert('success', 'Deleted user successfully.');
-        $('#userModal').modal('hide');
+        let rowIndex = $('#userModal').data('rowindex');
+        let row = userTable.row(rowIndex).data();
+
+        let deleteForm = {"username": row.username};
+        $.ajax({
+            data: JSON.stringify(deleteForm),
+            url: 'http://localhost:8080/api/administrator/users/',
+            type: 'DELETE',
+            contentType: 'application/json',
+            success: function() {
+                bootstrapAlert('success', 'Deleted user successfully.');
+                $('#userModal').modal('hide');
+
+                //refresh table data
+                userTable.destroy();
+                getUserData();
+            },
+            error: function(xhr, status, error) {
+                bootstrapAlert('danger', 'Error while deleting user: ' + error);
+            }
+        });
     });
 })
 
@@ -226,6 +243,37 @@ function showTab(tabName) {
     else if (tabName === 'manageUsers' && typeof userTable !== 'undefined') {
         userTable.columns.adjust().draw();
     }
+}
+
+//reusable function for ajax call to gather user data (Manage Users Screen)
+function getUserData() {
+    $.ajax({
+        url: 'http://localhost:8080/api/administrator/users',
+        method: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            userTable = initializeDataTableWithFilters('#userTable', data.data, userColumns, [1, 'asc'], 10);
+        },
+        error: function (xhr, status, error) {
+            console.error("Error fetching data from the API:", error);
+        }
+    });
+
+}
+
+//reusable function for ajax call to gather report data (Manage Bug Reports Screen)
+function getReportData() {
+    $.ajax({
+        url: 'http://localhost:8080/api/administrator/reports',
+        method: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            reportTable = initializeDataTableWithFilters('#reportTable', data.data, reportColumns, [1, 'asc'], 10);
+        },
+        error: function (xhr, status, error) {
+            console.error("Error fetching data from the API:", error);
+        }
+    });
 }
 
 function validateFormData() {

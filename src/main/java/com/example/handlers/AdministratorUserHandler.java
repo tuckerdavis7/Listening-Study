@@ -23,6 +23,16 @@ public class AdministratorUserHandler extends BaseHandler implements HttpHandler
                 response = administratorService.getAllUsers(exchange);
                 super.sendResponse(exchange, response, "Regular");
                 break;
+
+            case "PATCH":
+                response = administratorService.updateDesignation(exchange);
+                super.sendResponse(exchange, response, "Regular");
+                break;
+
+            case "DELETE":
+                response = administratorService.deleteUser(exchange);
+                super.sendResponse(exchange, response, "Regular");
+                break;
             
             default:
                 super.sendResponse(exchange, "Method Not Allowed", "Regular");

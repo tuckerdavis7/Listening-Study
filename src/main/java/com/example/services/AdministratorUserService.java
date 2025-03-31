@@ -46,7 +46,7 @@ public class AdministratorUserService extends BaseService {
         Map<String, Object> parameters = super.getParameters(exchange);
 
         try {
-            userRepository.updateDesignation(parameters);
+            userRepository.updateModeratorOrTeacherDesignation(parameters);
             responseString = super.formatJSON("success");
         }
         catch (Exception e) {

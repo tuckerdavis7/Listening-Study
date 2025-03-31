@@ -69,7 +69,7 @@ public class UserRepository {
         return rs;
     }
 
-    public void updateDesignation(Map<String, Object> user) throws SQLException {
+    public void updateModeratorOrTeacherDesignation(Map<String, Object> user) throws SQLException {
         String query = "UPDATE users SET role = ? WHERE username = ?";
         PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
 

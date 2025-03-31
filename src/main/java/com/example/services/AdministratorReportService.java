@@ -24,6 +24,7 @@ public class AdministratorReportService extends BaseService {
             
             while (result.next()) {
                 Map<String, Object> reportMap = new HashMap<>();
+                reportMap.put("ID", result.getInt("ID"));
                 reportMap.put("initialDate", result.getString("timeOfReport"));
                 reportMap.put("username", result.getString("username"));
                 reportMap.put("modifiedDate", result.getString("lastUpdatedTime"));
@@ -40,6 +41,22 @@ public class AdministratorReportService extends BaseService {
             responseString = "Internal Server Error";
             logger.error("Error in getAllReports of AdministratorReportService: " + e.getMessage());
         }
+        return responseString;
+    }
+
+    public String updateReport(HttpExchange exchange) throws IOException {
+        String responseString = "";
+        Map<String, Object> parameters = super.getParameters(exchange);
+
+        try {
+            reportRepository.updateReportStatus(parameters);
+            responseString = super.formatJSON("success");
+        }
+        catch (Exception e) {
+            responseString = "Internal Server Error";
+            logger.error("Error in updateReport of AdministratorReportService: " + e.getMessage());
+        }
+
         return responseString;
     }
 }

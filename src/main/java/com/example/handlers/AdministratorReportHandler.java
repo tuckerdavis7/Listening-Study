@@ -24,6 +24,11 @@ public class AdministratorReportHandler extends BaseHandler implements HttpHandl
                 super.sendResponse(exchange, response, "Regular");
                 break;
             
+            case "PATCH":
+                response = administratorReportService.updateReport(exchange);
+                super.sendResponse(exchange, response, "Regular");
+                break;
+            
             default:
                 super.sendResponse(exchange, "Method Not Allowed", "Regular");
                 break;

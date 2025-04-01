@@ -33,5 +33,6 @@ public class HttpServerConfiguration {
         server.createContext("/api/administrator/reports", new AdministratorReportHandler());
         server.createContext("/api/administrator/users", new AdministratorUserHandler());
         server.createContext("/api/teacher/songs", new TeacherSongHandler());
+        server.createContext("/api/studentperformance", new StudentPerformanceHandler());
     }
 }

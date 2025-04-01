@@ -1,3 +1,4 @@
+//add weight column to this table
 var songData = [
     {
         "playlist": "Classical 1",

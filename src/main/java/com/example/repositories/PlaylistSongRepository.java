@@ -23,7 +23,7 @@ public class PlaylistSongRepository {
        return songIDs;   
     }
 
-    public List<Integer> getSongTimestamps(int playListID, int playbackMethod) throws SQLException {
+    public List<Integer> getSongTimestamps(int playListID, int playbackMethod) throws SQLException {        
         List<Integer> timeStamps = new ArrayList<>();
 
         switch (playbackMethod) {
@@ -55,8 +55,17 @@ public class PlaylistSongRepository {
             }
             default:
                 return timeStamps;  
-        }     
-        
+        }   
     }
 
+    public void addToPlaylist(int playListID, int songID, int userDefinedtimestamp) throws SQLException {
+        String query = "INSERT INTO playlistsongs (playlistID, songID, userDefinedtimeStamp) VALUES (?, ?, ?)";
+        PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
+
+        pstmt.setInt(1, playListID);
+        pstmt.setInt(2, songID);
+        pstmt.setInt(3, userDefinedtimestamp);        
+        pstmt.executeUpdate();
+   
+    }
 }

@@ -32,5 +32,6 @@ public class HttpServerConfiguration {
         server.createContext("/api/metadata", new MetadataHandler());
         server.createContext("/api/administrator/reports", new AdministratorReportHandler());
         server.createContext("/api/administrator/users", new AdministratorUserHandler());
+        server.createContext("/api/studentperformance", new StudentPerformanceHandler());
     }
 }

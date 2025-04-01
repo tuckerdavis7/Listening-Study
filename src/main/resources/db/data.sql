@@ -85,7 +85,7 @@ INSERT INTO users (username, email, first_name, last_name, deleted, role, passwo
 ('student11', 'student11@example.com', 'Connor', 'Turner', 0, 'student', '$2a$12$69rOPERjWxQ5fnzy4CbRZ.i.0w0MARpuH5hUf37.007eWx44i5bAK');
 
 INSERT INTO administrator (Email, Firstname, LastName, isActive, user_id) 
-SELECT email, first_name, last_name, 1, user_id FROM users WHERE role = 'admin';
+SELECT email, first_name, last_name, 1, user_id FROM users WHERE role = 'administrator';
 
 INSERT INTO moderator (Email, Firstname, LastName, isActive, user_id) 
 SELECT email, first_name, last_name, 1, user_id FROM users WHERE role = 'moderator';
@@ -179,15 +179,15 @@ INSERT INTO playlistSongs (playlistID, songID) VALUES
 (11, 10),
 (11, 11);
 
-INSERT INTO studentPerformance (StudentID, ClassID, SongID, TimesCorrect, TimesQuizzed, Weight, Score) VALUES
-(1, 1, 1, 8, 10, 0.20, 80.00),
-(2, 2, 2, 7, 10, 0.30, 70.00),
-(3, 3, 3, 9, 12, 0.25, 75.00),
-(4, 4, 4, 5, 8, 0.38, 62.50),
-(5, 5, 5, 10, 10, 0.00, 100.00),
-(6, 6, 6, 6, 10, 0.40, 60.00),
-(7, 7, 7, 8, 10, 0.20, 80.00),
-(8, 8, 8, 7, 9, 0.22, 77.80),
-(9, 9, 9, 4, 10, 0.60, 40.00),
-(10, 10, 10, 9, 11, 0.18, 81.80),
-(11, 11, 11, 10, 10, 0.00, 100.00);
+INSERT INTO studentPerformance (StudentID, ClassID, SongID, PlaylistID, TimesCorrect, TimesQuizzed, Weight, Score) VALUES
+(1, 1, 1, 1, 8, 10, 0.20, 80.00),
+(2, 2, 2, 2, 7, 10, 0.30, 70.00),
+(3, 3, 3, 3, 9, 12, 0.25, 75.00),
+(4, 4, 4, 4, 5, 8, 0.38, 62.50),
+(5, 5, 5, 5, 10, 10, 0.00, 100.00),
+(6, 6, 6, 6, 6, 10, 0.40, 60.00),
+(7, 7, 7, 7, 8, 10, 0.20, 80.00),
+(8, 8, 8, 8, 7, 9, 0.22, 77.80),
+(9, 9, 9, 9, 4, 10, 0.60, 40.00),
+(10, 10, 10, 10, 9, 11, 0.18, 81.80),
+(11, 11, 11, 11, 10, 10, 0.00, 100.00);

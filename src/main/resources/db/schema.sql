@@ -95,6 +95,7 @@ CREATE TABLE studentPerformance (
     Weight DECIMAL,
     Score DECIMAL,
     SongID INT NOT NULL,
+    PlaylistID INT NOT NULL,
     TimesCorrect INT DEFAULT 0,
     TimesQuizzed INT DEFAULT 0,
     FOREIGN KEY (StudentID) REFERENCES student(ID),

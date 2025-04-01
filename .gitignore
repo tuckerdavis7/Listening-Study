@@ -1,6 +1,9 @@
 # Ignore target directory (compiled classes and JARs)
 target/
 
+# Ignore driver directory (ChromeDriver)
+driver/
+
 # Ignore dependency caches
 **/dependency-reduced-pom.xml
 **/pom.xml.tag

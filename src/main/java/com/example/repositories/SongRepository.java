@@ -7,27 +7,27 @@ import java.sql.SQLException;
 import com.example.configuration.DatabaseConfiguration;
 
 public class SongRepository {
-    public void commitSongData(String songName,  String songComposer, String songYear, String youtubeLink, int mostViewedtimestamp) throws SQLException {
-        String query = "INSERT INTO song (songName, songComposer, songYear, youtubeLink, mostViewedtimestamp) VALUES (?, ?, ?, ?, ?)";
+    public void commitSongData(String songName,  String songComposer, String songYear, String youtubeLink, int mrTimestamp) throws SQLException {
+        String query = "INSERT INTO song (songName, songComposer, songYear, youtubeLink, mrTimestamp) VALUES (?, ?, ?, ?, ?)";
         PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
 
         pstmt.setString(1, songName);
         pstmt.setString(2, songComposer);
         pstmt.setString(3, songYear);
         pstmt.setString(4, youtubeLink);
-        pstmt.setInt(5, mostViewedtimestamp);        
+        pstmt.setInt(5, mrTimestamp);        
         pstmt.executeUpdate();
    
     }
 
-    public int getSongID(String youtubeLink) throws SQLException {        
-        String query = "SELECT songID FROM songs WHERE youtubeLink =?";
-
+    public ResultSet getSongID(String youtubeLink) throws SQLException {        
+        String query = "SELECT ID FROM song WHERE youtubeLink =?";
         PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
+        
         pstmt.setString(1, youtubeLink);
-        ResultSet rs = pstmt.executeQuery();        
+        ResultSet rs = pstmt.executeQuery();
 
-       return rs.getInt("SongID");   
+        return rs;   
     }
     
 }

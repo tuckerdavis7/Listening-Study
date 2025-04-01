@@ -20,6 +20,7 @@ var songData = [
         "id": "0002"
     }
 ];
+let playlistID = 5;
 
 const pathArr = location.href.split('/');
 const userType = pathArr[pathArr.length - 3];
@@ -118,9 +119,45 @@ $(document).ready(function () {
         $('#url').html(row.url);
     });
 
-    $('#confirmSongBtn').on('click', function () {
-        bootstrapAlert('success', "Song Added");
-        $('#addSongModal').modal('hide');
+    $('#addSongForm').submit(function(event) {
+        event.preventDefault();
+        $("#confirmAddSongBtn").prop("disabled", true);
+        $("#addSongSpinner").removeClass("d-none");
+
+        let addSongForm = $('#addSongForm').serializeArray();
+        let addSongData = {};
+        addSongForm.forEach(element => {
+            addSongData[element.name] = element.value;
+        });
+        addSongData['playlistID'] = playlistID;
+
+        $.ajax({
+            data: JSON.stringify(addSongData),
+            url: 'http://localhost:8080/api/teacher/songs',
+            type: 'POST',
+            contentType: 'application/json',
+            success: function(data) {
+                let responseData = JSON.parse(data);
+                console.log(responseData);
+                if (responseData == "success") {
+                    console.log("Success for add song");
+                    bootstrapAlert('success', "Song Added");
+
+                    $('#addSongModal').modal('hide'); 
+                    $('#addSongForm')[0].reset();
+                }
+                else {
+                    console.log("Failed to add song")
+                    bootstrapAlert('danger', 'Invalid song information.');
+                }
+                $("#addSongSpinner").addClass("d-none");
+                $("#confirmAddSongBtn").prop("disabled", false);
+            },
+            error: function(xhr, status, error) {
+                bootstrapAlert('danger', 'Error adding song: ' + error);
+            }
+        });
+        
     });
 
     $('#editSongModal').on('show.bs.modal', function (event) {

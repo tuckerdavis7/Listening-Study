@@ -58,13 +58,13 @@ public class PlaylistSongRepository {
         }   
     }
 
-    public void addToPlaylist(int playListID, int songID, int userDefinedtimestamp) throws SQLException {
-        String query = "INSERT INTO playlistsongs (playlistID, songID, userDefinedtimeStamp) VALUES (?, ?, ?)";
+    public void addToPlaylist(int playListID, int songID, int userDefinedTimestamp) throws SQLException {
+        String query = "INSERT INTO playlistsongs (playlistID, songID, udTimeStamp) VALUES (?, ?, ?)";
         PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
 
         pstmt.setInt(1, playListID);
         pstmt.setInt(2, songID);
-        pstmt.setInt(3, userDefinedtimestamp);        
+        pstmt.setInt(3, userDefinedTimestamp);        
         pstmt.executeUpdate();
    
     }

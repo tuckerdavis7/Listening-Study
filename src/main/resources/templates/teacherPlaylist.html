@@ -129,13 +129,13 @@
                         </div>
                         <div class="mb-3">
                             <label for="editTimestamp" class="form-label">Timestamp</label>
-                            <input type="text" id="editTimestamp" class="form-control mb-3" placeholder="Enter timestamp">
-                            <small class="form-text text-muted">Optional. Please use the following timestamp format: X:XX</small>
+                            <input type="text" id="editTimestamp" class="form-control mb-3" pattern="^(?:\d{1,2}:)?[0-5]?\d:[0-5]\d$">
+                            <small class="form-text text-muted">Optional. Please use the following timestamp format: HH:MM:SS or MM:SS</small>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                        <button type="submit" class="btn btn-primary" id="confirmEditSongBtn">Save Changes</button>
                     </div>
                 </form>
             </div>
@@ -149,27 +149,36 @@
                     <h5 class="modal-title" id="addSongModalLabel">Add Song</h5>
                     <button type="button" class="btn-close modal-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    <label for="songName" class="form-label">Song Name</label>
-                    <input type="text" id="songName" class="form-control mb-3" placeholder="Enter song name" required>
+                <form id="addSongForm">
+                    <div class="modal-body">
+                        <label for="songName" class="form-label">Song Name</label>
+                        <input type="text" id="songName" class="form-control mb-3" name="name" placeholder="Enter song name" required>
 
-                    <label for="songURL" class="form-label">Song URL</label>
-                    <input type="text" id="songURL" class="form-control mb-3" placeholder="Enter song url" required>
+                        <label for="songURL" class="form-label">Song URL</label>
+                        <input type="text" id="songURL" class="form-control mb-3" name="url" placeholder="Enter song url" required>
 
-                    <label for="composer" class="form-label">Composer</label>
-                    <input type="text" id="composer" class="form-control mb-3" placeholder="Enter composer" required>
+                        <label for="composer" class="form-label">Composer</label>
+                        <input type="text" id="composer" class="form-control mb-3" name="composer" placeholder="Enter composer" required>
 
-                    <label for="year" class="form-label">Year</label>
-                    <input type="text" id="year" class="form-control mb-3" placeholder="Enter year" required>
+                        <label for="year" class="form-label">Year</label>
+                        <input type="text" id="year" class="form-control mb-3" name="year" placeholder="Enter year" required>
 
-                    <label for="timestamp" class="form-label">Timestamp</label>
-                    <input type="text" id="timestamp" class="form-control mb-3" placeholder="Enter timestamp">
-                    <small class="form-text text-muted">Optional. Please use the following timestamp format: X:XX</small>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="confirmSongBtn">Confirm</button>
-                </div>
+                        <label for="timestamp" class="form-label">Timestamp</label>
+                        <input type="text" id="timestamp" class="form-control mb-3" pattern="^(?:\d{1,2}:)?[0-5]?\d:[0-5]\d$" name="timestamp" placeholder="Enter timestamp">
+                        <small class="form-text text-muted">Optional. Please use the following timestamp format: HH:MM:SS or MM:SS</small>
+                    </div>
+                    <div class="modal-footer d-flex align-items-center">
+                        <div id="addSongSpinnerWrapper">
+                            <div class="spinner-border text-primary d-none" role="status" id="addSongSpinner">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </div>
+                        <div class="ms-auto">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary" id="confirmAddSongBtn">Confirm</button>
+                        </div>
+                    </div>                    
+                </form>
             </div>
         </div>
     </div>

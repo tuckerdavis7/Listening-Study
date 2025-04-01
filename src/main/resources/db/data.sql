@@ -128,18 +128,18 @@ INSERT INTO reportTime (timeOfReport, username, email, description, lastUpdatedT
 ('2025-03-22 13:15:00', 'moderator1', 'moderator1@example.com', 'Ear training test results', '2025-03-01 09:30:00', 'administrator1', 'Acknowledged'),
 ('2025-03-24 11:00:00', 'moderator1', 'moderator1@example.com', 'Year-end progress summary', '2025-03-01 09:30:00', 'administrator1', 'Resolved');
 
-INSERT INTO song (songName, songComposer, songYear, youtubeLink) VALUES
-('Moonlight Sonata', 'Ludwig van Beethoven', 1801, 'https://www.youtube.com/watch?v=4Tr0otuiQuU'),
-('Für Elise', 'Ludwig van Beethoven', 1810, 'https://www.youtube.com/watch?v=_mVW8tgGY_w'),
-('Claire de Lune', 'Claude Debussy', 1905, 'https://www.youtube.com/watch?v=CvFH_6DNRCY'),
-('Nocturne Op. 9 No. 2', 'Frédéric Chopin', 1832, 'https://www.youtube.com/watch?v=9E6b3swbnWg'),
-('The Four Seasons - Spring', 'Antonio Vivaldi', 1723, 'https://www.youtube.com/watch?v=mFWQgxXM_b8'),
-('Canon in D', 'Johann Pachelbel', 1680, 'https://www.youtube.com/watch?v=8Af372EQLck'),
-('Symphony No. 5', 'Ludwig van Beethoven', 1808, 'https://www.youtube.com/watch?v=fOk8Tm815lE'),
-('The Blue Danube', 'Johann Strauss II', 1866, 'https://www.youtube.com/watch?v=cKkDMiGUbUw'),
-('Requiem in D Minor', 'Wolfgang Amadeus Mozart', 1791, 'https://www.youtube.com/watch?v=Zi8vJ_lMxQI'),
-('Gymnopédie No. 1', 'Erik Satie', 1888, 'https://www.youtube.com/watch?v=S-Xm7s9eGxU'),
-('Prelude in C Major', 'Johann Sebastian Bach', 1722, 'https://www.youtube.com/watch?v=frxT2qB1POQ');
+INSERT INTO song (songName, songComposer, songYear, youtubeLink, mrTimestamp) VALUES
+('Moonlight Sonata', 'Ludwig van Beethoven', 1801, 'https://www.youtube.com/watch?v=4Tr0otuiQuU', 20),
+('Für Elise', 'Ludwig van Beethoven', 1810, 'https://www.youtube.com/watch?v=_mVW8tgGY_w', 82),
+('Claire de Lune', 'Claude Debussy', 1905, 'https://www.youtube.com/watch?v=CvFH_6DNRCY', -1),
+('Nocturne Op. 9 No. 2', 'Frédéric Chopin', 1832, 'https://www.youtube.com/watch?v=9E6b3swbnWg', 44),
+('The Four Seasons - Spring', 'Antonio Vivaldi', 1723, 'https://www.youtube.com/watch?v=mFWQgxXM_b8', 15),
+('Canon in D', 'Johann Pachelbel', 1680, 'https://www.youtube.com/watch?v=8Af372EQLck', 30),
+('Symphony No. 5', 'Ludwig van Beethoven', 1808, 'https://www.youtube.com/watch?v=fOk8Tm815lE', -1),
+('The Blue Danube', 'Johann Strauss II', 1866, 'https://www.youtube.com/watch?v=cKkDMiGUbUw', 20),
+('Requiem in D Minor', 'Wolfgang Amadeus Mozart', 1791, 'https://www.youtube.com/watch?v=Zi8vJ_lMxQI', 20),
+('Gymnopédie No. 1', 'Erik Satie', 1888, 'https://www.youtube.com/watch?v=S-Xm7s9eGxU', 15),
+('Prelude in C Major', 'Johann Sebastian Bach', 1722, 'https://www.youtube.com/watch?v=frxT2qB1POQ', 12);
 
 INSERT INTO playlist (playlistName, teacherID, classID) VALUES
 ('Classical Masterpieces', 1, 1),
@@ -154,30 +154,30 @@ INSERT INTO playlist (playlistName, teacherID, classID) VALUES
 ('World Music Exploration', 10, 10),
 ('Music Appreciation Selections', 11, 11);
 
-INSERT INTO playlistSongs (playlistID, songID) VALUES
-(1, 1),
-(1, 2),
-(1, 3),
-(2, 2),
-(2, 4),
-(3, 5),
-(3, 6),
-(4, 7),
-(4, 8),
-(5, 9),
-(5, 10),
-(6, 11),
-(6, 1),
-(7, 2),
-(7, 3),
-(8, 4),
-(8, 5),
-(9, 6),
-(9, 7),
-(10, 8),
-(10, 9),
-(11, 10),
-(11, 11);
+INSERT INTO playlistSongs (playlistID, songID, udTimestamp) VALUES
+(1, 1, 10),
+(1, 2, 55),
+(1, 3, -1),
+(2, 2, -1),
+(2, 4, -1),
+(3, 5, 20),
+(3, 6, 22),
+(4, 7, -1),
+(4, 8, -1),
+(5, 9, -1),
+(5, 10, -1),
+(6, 11, 11),
+(6, 1, 14),
+(7, 2, 14),
+(7, 3, -1),
+(8, 4, 12),
+(8, 5, 12),
+(9, 6, -1),
+(9, 7, -1),
+(10, 8, -1),
+(10, 9, -1),
+(11, 10, -1),
+(11, 11, -1);
 
 INSERT INTO studentPerformance (StudentID, ClassID, SongID, TimesCorrect, TimesQuizzed, Weight, Score) VALUES
 (1, 1, 1, 8, 10, 0.20, 80.00),

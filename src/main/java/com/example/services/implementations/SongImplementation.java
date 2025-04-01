@@ -69,7 +69,7 @@ public class SongImplementation {
         }
     }
 
-    private int convertTimeToSeconds(String time) {
+    public int convertTimeToSeconds(String time) {
         String[] parts = time.split(":");
         int seconds = 0;
         if (parts.length == 2) { // MM:SS format
@@ -99,5 +99,16 @@ public class SongImplementation {
         }
 
         return (int) Math.round(timestamp / 1000.0 * videoDuration);
+    }
+
+    public String extractVideoId(String url) {
+        String regex = "(?:youtube\\.com/watch\\?v=|youtu\\.be/)([a-zA-Z0-9_-]{11})";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(url);
+
+        if (matcher.find()) {
+            return matcher.group(1);
+        }
+        return "INVALID";
     }
 }

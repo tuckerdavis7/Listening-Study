@@ -85,7 +85,8 @@ CREATE TABLE song (
     songName VARCHAR(255) NOT NULL,
     songComposer VARCHAR(255) NOT NULL,
     songYear INT(4),
-    youtubeLink VARCHAR(255)
+    youtubeLink VARCHAR(255),
+    mrTimestamp INT DEFAULT -1
 );
 
 CREATE TABLE studentPerformance (
@@ -116,7 +117,8 @@ CREATE TABLE playlistSongs (
     playlistID INT NOT NULL,
     songID INT NOT NULL,
     FOREIGN KEY (playlistID) REFERENCES playlist(ID),
-    FOREIGN KEY (songID) REFERENCES song(ID)
+    FOREIGN KEY (songID) REFERENCES song(ID),
+    udTimestamp INT DEFAULT -1
 );
 
 CREATE TABLE metaData (

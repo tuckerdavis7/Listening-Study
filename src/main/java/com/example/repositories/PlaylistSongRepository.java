@@ -11,7 +11,7 @@ import com.example.configuration.DatabaseConfiguration;
 public class PlaylistSongRepository {
     public List<Integer> getSongIDs(int playListID) throws SQLException {
         List<Integer> songIDs = new ArrayList<>();
-        String query = "SELECT * FROM playlistsongs WHERE playlistID =?";
+        String query = "SELECT songID FROM playlistsongs WHERE playlistID =?";
 
         PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
         pstmt.setInt(1, playListID);
@@ -20,8 +20,43 @@ public class PlaylistSongRepository {
             songIDs.add(rs.getInt("songID"));
         }
 
-       return songIDs;        
+       return songIDs;   
+    }
 
+    public List<Integer> getSongTimestamps(int playListID, int playbackMethod) throws SQLException {
+        List<Integer> timeStamps = new ArrayList<>();
+
+        switch (playbackMethod) {
+            case 1:
+            {                
+                return timeStamps;
+            }
+            case 2:
+            {
+                String query = "SELECT timestamp FROM playlistsongs WHERE playlistID =?";
+                PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
+                pstmt.setInt(1, playListID);
+                ResultSet rs = pstmt.executeQuery();
+                while (rs.next()) {
+                    timeStamps.add(rs.getInt("songID"));
+                }
+                return timeStamps;
+            }
+            case 3:
+            {
+                String query = "SELECT userDefinedtimestamp FROM playlistsongs WHERE playlistID =?";
+                PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
+                pstmt.setInt(1, playListID);
+                ResultSet rs = pstmt.executeQuery();
+                while (rs.next()) {
+                    timeStamps.add(rs.getInt("songID"));
+                }
+                return timeStamps;
+            }
+            default:
+                return timeStamps;  
+        }     
+        
     }
 
 }

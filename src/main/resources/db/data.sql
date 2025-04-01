@@ -2,7 +2,7 @@
 SET FOREIGN_KEY_CHECKS = 0;
 TRUNCATE TABLE playlistSongs;
 TRUNCATE TABLE playlist;
-TRUNCATE TABLE songPerformance;
+TRUNCATE TABLE studentPerformance;
 TRUNCATE TABLE song;
 TRUNCATE TABLE reportTime;
 TRUNCATE TABLE studentClass;
@@ -179,15 +179,15 @@ INSERT INTO playlistSongs (playlistID, songID) VALUES
 (11, 10),
 (11, 11);
 
-INSERT INTO songPerformance (StudentID, ClassID, SongID, TimesCorrect, TimesQuizzed) VALUES
-(1, 1, 1, 8, 10),
-(2, 2, 2, 7, 10),
-(3, 3, 3, 9, 12),
-(4, 4, 4, 5, 8),
-(5, 5, 5, 10, 10),
-(6, 6, 6, 6, 10),
-(7, 7, 7, 8, 10),
-(8, 8, 8, 7, 9),
-(9, 9, 9, 4, 10),
-(10, 10, 10, 9, 11),
-(11, 11, 11, 10, 10);
+INSERT INTO studentPerformance (StudentID, ClassID, SongID, TimesCorrect, TimesQuizzed, Weight, Score) VALUES
+(1, 1, 1, 8, 10, 0.20, 80.00),
+(2, 2, 2, 7, 10, 0.30, 70.00),
+(3, 3, 3, 9, 12, 0.25, 75.00),
+(4, 4, 4, 5, 8, 0.38, 62.50),
+(5, 5, 5, 10, 10, 0.00, 100.00),
+(6, 6, 6, 6, 10, 0.40, 60.00),
+(7, 7, 7, 8, 10, 0.20, 80.00),
+(8, 8, 8, 7, 9, 0.22, 77.80),
+(9, 9, 9, 4, 10, 0.60, 40.00),
+(10, 10, 10, 9, 11, 0.18, 81.80),
+(11, 11, 11, 10, 10, 0.00, 100.00);

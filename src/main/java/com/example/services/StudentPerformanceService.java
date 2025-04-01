@@ -19,7 +19,6 @@ public class StudentPerformanceService extends BaseService {
     public String getSongPerformances(HttpExchange exchange) throws IOException {
         Map<String, Object> performanceParams = super.getQueryParameters(exchange);
         Object studentID = performanceParams.get("studentID");
-        logger.info("Hello:" + String.valueOf(studentID));
         String responseString = "";
         try {
             ResultSet result = studentPerformanceRepository.getPerformanceByUsername(studentID);
@@ -28,20 +27,27 @@ public class StudentPerformanceService extends BaseService {
             while (result.next()) {
                 Map<String, Object> performanceMap = new HashMap<>();
                 performanceMap.put("ID", result.getInt("ID"));
-                performanceMap.put("StudentID", result.getInt("StudentID"));
-                performanceMap.put("ClassID", result.getInt("ClassID"));
-                performanceMap.put("Weight", result.getDouble("Weight"));
-                performanceMap.put("Score", result.getDouble("Score"));
+                performanceMap.put("studentID", result.getInt("StudentID"));
+                performanceMap.put("classID", result.getInt("ClassID"));
+                performanceMap.put("weight", result.getDouble("Weight"));
+                performanceMap.put("score", result.getDouble("Score"));
                 performanceMap.put("SongID", result.getInt("SongID"));
-                performanceMap.put("TimesCorrect", result.getInt("TimesCorrect"));
-                performanceMap.put("TimesQuizzed", result.getInt("TimesQuizzed"));
+                performanceMap.put("timesCorrect", result.getInt("TimesCorrect"));
+                performanceMap.put("timesQuizzed", result.getInt("TimesQuizzed"));
+                performanceMap.put("songName", result.getString("songName"));
+                performanceMap.put("composer", result.getString("songComposer"));
+                performanceMap.put("year", result.getString("songYear"));
+                performanceMap.put("url", result.getString("youtubeLink"));
+                performanceMap.put("playlistName", result.getString("playlistName"));
+                performanceMap.put("className", result.getString("className"));
+                
                 performanceList.add(performanceMap);
             }
             responseString = super.formatJSON(performanceList, "success");
         }
         catch (Exception e) {
             responseString = "Internal Server Error";
-            logger.error("Error in getAllReports of AdministratorReportService: " + e.getMessage());
+            logger.error("Error in getSongPerformances of StudentPerformanceService: " + e.getMessage());
         }
         return responseString;
     }

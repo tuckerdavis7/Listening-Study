@@ -1,6 +1,7 @@
 package com.example.repositories;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.example.configuration.DatabaseConfiguration;
@@ -17,6 +18,16 @@ public class SongRepository {
         pstmt.setInt(5, mostViewedtimestamp);        
         pstmt.executeUpdate();
    
+    }
+
+    public int getSongID(String youtubeLink) throws SQLException {        
+        String query = "SELECT songID FROM songs WHERE youtubeLink =?";
+
+        PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
+        pstmt.setString(1, youtubeLink);
+        ResultSet rs = pstmt.executeQuery();        
+
+       return rs.getInt("SongID");   
     }
     
 }

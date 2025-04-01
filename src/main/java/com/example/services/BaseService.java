@@ -28,6 +28,38 @@ public class BaseService {
         String requestBody = readRequestBody(exchange);
         return gson.fromJson(requestBody, new TypeToken<Map<String, Object>>(){}.getType());
     }
+
+    protected Map<String, Object> getQueryParameters(HttpExchange exchange) {
+        Map<String, Object> parameters = new HashMap<>();
+        
+        String query = exchange.getRequestURI().getQuery();
+        if (query != null && !query.isEmpty()) {
+            String[] pairs = query.split("&");
+            for (String pair : pairs) {
+                int idx = pair.indexOf("=");
+                if (idx > 0) {
+                    String key = pair.substring(0, idx);
+                    String value = pair.substring(idx + 1);
+                    
+                    // Try to parse the value to a more specific type
+                    try {
+                        // Try to parse as Integer
+                        parameters.put(key, Integer.parseInt(value));
+                    } catch (NumberFormatException e1) {
+                        try {
+                            // Try to parse as Double
+                            parameters.put(key, Double.parseDouble(value));
+                        } catch (NumberFormatException e2) {
+                            // If both number parsing attempts fail, treat it as a String
+                            parameters.put(key, value);
+                        }
+                    }
+                }
+            }
+        }
+        
+        return parameters;
+    }
     
     // Helper method to read request body
     private String readRequestBody(HttpExchange exchange) throws IOException {

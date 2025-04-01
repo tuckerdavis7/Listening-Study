@@ -88,10 +88,12 @@ CREATE TABLE song (
     youtubeLink VARCHAR(255)
 );
 
-CREATE TABLE songPerformance (
+CREATE TABLE studentPerformance (
     ID INT AUTO_INCREMENT PRIMARY KEY,
     StudentID INT NOT NULL,
     ClassID INT NOT NULL,
+    Weight DECIMAL,
+    Score DECIMAL,
     SongID INT NOT NULL,
     TimesCorrect INT DEFAULT 0,
     TimesQuizzed INT DEFAULT 0,

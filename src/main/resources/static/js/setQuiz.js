@@ -5,23 +5,32 @@ $(document).ready(function() {
 
         if (valid) {
             //gather form data
-            // let registrationForm = $('#quizSettings').serializeArray().reduce(function (acc, item) {
-            //     acc[item.name] = item.value;
-            //     return acc;
-            // })
+            let quizForm = $('#quizSettings').serializeArray().reduce(function (acc, item) {
+                acc[item.name] = item.value;
+                return acc;
+            })
         
-            // //check if serialization maps incorrect key value pairs
-            // if (quizSettings.name && quizSettings.value) {
-            //     registrationForm[registrationForm.name] = registrationForm.value;
-            //     delete quizSettings.name;
-            //     delete quizSettings.value;
-            // }
+            //check if serialization maps incorrect key value pairs
+            if (quizForm.name && quizForm.value) {
+                quizForm[quizForm.name] = quizForm.value;
+                delete quizForm.name;
+                delete quizForm.value;
+            }
 
-            //ajax call here once implemented for API
-            bootstrapAlert('success', 'Quiz set!');
+            console.log(quizForm);
 
-            window.location.href='/student/quiz';
-   
+            // $.ajax({
+            //     data: JSON.stringify(quizForm),
+            //     url: 'http://localhost:8080/api/setquiz',
+            //     type: 'POST',
+            //     contentType: 'application/json',
+            //     success: function(data) {
+            //         // window.location.href='/student/quiz';                        
+            //     },
+            //     error: function(xhr, status, error) {
+            //         bootstrapAlert('danger', 'Error while logging in: ' + error);
+            //     }
+            // });
         }
     });
 });

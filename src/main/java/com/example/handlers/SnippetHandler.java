@@ -1,16 +1,16 @@
 package com.example.handlers;
 
-import com.sun.net.httpserver.HttpHandler;
-import com.sun.net.httpserver.HttpExchange;
-import com.example.services.SnippetService;
-
 import java.io.IOException;
+
+import com.example.services.SnippetService;
+import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpHandler;
 
 public class SnippetHandler extends BaseHandler implements HttpHandler {
     private SnippetService snippetService;
 
     public SnippetHandler() {
-        this.SnippetService = new SnippetService();
+        this.snippetService = new SnippetService();
     }
 
     @Override
@@ -19,8 +19,8 @@ public class SnippetHandler extends BaseHandler implements HttpHandler {
         String method = exchange.getRequestMethod();
 
         switch (method) {
-            case "GET":
-                response = snippetServiceService.getSnippet(exchange);
+            case "POST":
+                response = snippetService.getTimeStamp(exchange);
                 super.sendResponse(exchange, response, "Regular");
                 break;
 

@@ -1,7 +1,6 @@
 package com.example.services;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,9 +16,9 @@ import com.sun.net.httpserver.HttpExchange;
 
 public class TeacherSongService extends BaseService {
     private static final Logger logger = LoggerFactory.getLogger(TeacherSongService.class);
-    SongRepository songRepository = new SongRepository();
-    PlaylistSongRepository playlistSongRepository = new PlaylistSongRepository();
-    SongImplementation songImplementation = new SongImplementation();
+    private SongRepository songRepository = new SongRepository();
+    private PlaylistSongRepository playlistSongRepository = new PlaylistSongRepository();
+    private SongImplementation songImplementation = new SongImplementation();
 
     public String addSong(HttpExchange exchange) throws IOException {
         Map<String, Object> songData = super.getParameters(exchange);
@@ -38,10 +37,10 @@ public class TeacherSongService extends BaseService {
         try {
             songRepository.commitSongData(songName, songComposer, songYear, songVideoID, songMostReplayedTimestamp);
 
-            ResultSet rs = songRepository.getSongID(songVideoID);
+            ResultSet result = songRepository.getSongID(songVideoID);
             int songID = 0;
-            if (rs.next())
-                songID = rs.getInt("ID");
+            if (result.next())
+                songID = result.getInt("ID");
 
             playlistSongRepository.addToPlaylist(playlistID, songID, userDefinedTimestamp);
 
@@ -50,6 +49,37 @@ public class TeacherSongService extends BaseService {
         catch (Exception e) {
             responseString = "Internal Server Error";
             logger.error("Error in addSong of TeacherSongService: " + e.getMessage());
+        }
+        return responseString;
+    }
+
+    public String getPlaylistSongs(HttpExchange exchange) throws IOException {
+        Map<String, Object> songData = super.getQueryParameters(exchange);
+        int playlistID = ((Number)songData.get("playlistID")).intValue();
+        
+        String responseString = "";
+        try {
+            logger.info("getSongs");
+            ResultSet result = playlistSongRepository.getSongs(playlistID);
+
+            ArrayList<Map<String, Object>> songList = new ArrayList<>();
+            
+            while (result.next()) {
+                Map<String, Object> songMap = new HashMap<>();
+                songMap.put("name", result.getString("songName"));
+                songMap.put("composer", result.getString("songComposer"));
+                songMap.put("year", result.getString("songYear"));
+                songMap.put("url", result.getString("youtubeLink"));
+                songMap.put("mrTimestamp", result.getString("mrTimestamp"));
+                songMap.put("udTimestamp", result.getString("udTimestamp"));
+                
+                songList.add(songMap);
+            }
+            responseString = super.formatJSON(songList, "success");
+        }
+        catch (Exception e) {
+            responseString = "Internal Server Error";
+            logger.error("Error in getPlaylistSongs of TeacherSongService: " + e.getMessage());
         }
         return responseString;
     }

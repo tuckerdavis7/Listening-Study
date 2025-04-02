@@ -44,7 +44,7 @@ public class SongRepository {
         songData.add(rs.getString("songComposer"));
         songData.add(rs.getString("songYear"));
         songData.add(rs.getString("youtubeLink"));
-        songData.add(rs.getString("mostViewedtimestamp"));
+        songData.add(rs.getString("mrTimestamp"));
        
        return songData;   
     }    

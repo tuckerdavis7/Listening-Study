@@ -18,7 +18,7 @@
             <form id="quizSettings">
                 <div class="mb-3">
                     <label for="playlist" class="form-label">Playlist</label>
-                    <select class="form-select" id="playlist" required>
+                    <select class="form-select" id="playlist" name="playlist" required>
                         <option selected>Choose a playlist...</option>
                         <option value="1">Playlist 1</option>
                         <option value="2">Playlist 2</option>
@@ -28,7 +28,7 @@
                 
                 <div class="mb-3">
                     <label for="playbackMethod" class="form-label">Playback Method</label>
-                    <select class="form-select" id="playbackMethod" required>
+                    <select class="form-select" id="playbackMethod" name="playbackMethod" required>
                         <option selected>Choose a playback method...</option>
                         <option value="1">Random</option>
                         <option value="2">Most Replayed</option>                        
@@ -37,12 +37,12 @@
                 </div>                
                 <div class="mb-3">
                     <label for="playbackDuration" class="form-label">Playback Duration (seconds)</label>
-                    <input type="range" class="form-range" id="playbackDuration" min="60" max="90" step="1" value="60" oninput="durationValue.value = playbackDuration.value">
+                    <input type="range" class="form-range" id="playbackDuration" name="playbackDuration" min="60" max="90" step="1" value="60" oninput="durationValue.value = playbackDuration.value">
                     <input type="number" class="form-control mt-2" id="durationValue" min="60" max="90" step="1" value="60" oninput="playbackDuration.value = durationValue.value" required>
                 </div>                
                 <div class="mb-3">
                     <label for="numQuestions" class="form-label">Number of Questions</label>
-                    <input type="number" class="form-control" id="numQuestions" placeholder="Enter number of questions" min="1" required>
+                    <input type="number" class="form-control" name="numQuestions" id="numQuestions" placeholder="Enter number of questions" min="1" required>
                 </div>
                 
                 <button id="setButton" type="submit" class="btn btn-primary">Take Quiz</button>

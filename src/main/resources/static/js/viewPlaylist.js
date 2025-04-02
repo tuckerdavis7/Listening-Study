@@ -1,34 +1,13 @@
-var songData = [
-    {
-        "playlist": "Classical 1",
-        "name": "Fur Elise",
-        "composer": "Ludwig van Beethoven",
-        "year": "1810",
-        "url": "https://youtu.be/q9bU12gXUyM?si=gMz2qDgpwy6ZtolG",
-        "timestamp": "0:20",
-        "class": "MUSIC 101",
-        "id": "0001"
-    },
-    {
-        "playlist": "Classical 1",
-        "name": "Symphony No. 40",
-        "composer": "Wolfgang Amadeus Mozart",
-        "year": "1788",
-        "url": "https://youtu.be/JTc1mDieQI8?si=1ggnfrLLopftYWt7",
-        "timestamp": "0:44",
-        "class": "MUSIC 101",
-        "id": "0002"
-    }
-];
-let playlistID = 5;
-
 const pathArr = location.href.split('/');
 const userType = pathArr[pathArr.length - 3];
+const playlistID = pathArr[pathArr.length - 1];
 
 var songTable;
+let songColumns;
 
 $(document).ready(function () {
-    let songColumns = (userType == "teacher") ? [
+    getSongData();
+    songColumns = (userType == "teacher") ? [
         {
             class: "wrenchColumn",
             data: null,
@@ -57,7 +36,9 @@ $(document).ready(function () {
         { data: "name", class: "charcolumn", width: "3 rem" },
         { data: "composer", class: "charcolumn", width: "3 rem" },
         { data: "year", class: "charcolumn", width: "3 rem" },
-        { data: "url", class: "charcolumn", width: "3 rem" }
+        { data: "url", class: "charcolumn", width: "3 rem" },
+        { data: "mrTimestamp", class: "charcolumn", width: "1 rem" },
+        { data: "udTimestamp", class: "charcolumn", width: "1 rem" }
     ] : [
         {
             class: "previewColumn",
@@ -75,7 +56,7 @@ $(document).ready(function () {
         { data: "url", class: "charcolumn", width: "3 rem" }
     ]
     
-    songTable = initializeDataTableWithFilters('#songTable', songData, songColumns, [2, 'asc'], 10, [0,1]);
+    //songTable = initializeDataTableWithFilters('#songTable', songData, songColumns, [2, 'asc'], 10, [0,1]);
 
     let rowRemove;
     
@@ -170,7 +151,25 @@ $(document).ready(function () {
         $('#editComposer').val(row.composer);
         $('#editYear').val(row.year);
         $('#editURL').val(row.url);
-        $('#editTimestamp').val(row.timestamp);
+        $('#editTimestamp').val(row.udTimestamp);
 
     });
 });
+
+function getSongData() {
+    $.ajax({
+        url: `http://localhost:8080/api/teacher/songs?playlistID=${playlistID}`,
+        type: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            data.data.forEach(element => {
+                element.url = "https://youtu.be/" + element.url;
+            });
+            songTable = initializeDataTableWithFilters('#songTable', data.data, songColumns, [2, 'asc'], 10);
+        },
+        error: function (xhr, status, error) {
+            console.error("Error fetching data from the API:", error);
+        }
+    });
+
+}

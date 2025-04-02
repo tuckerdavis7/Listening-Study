@@ -68,4 +68,14 @@ public class PlaylistSongRepository {
         pstmt.executeUpdate();
    
     }
+
+    public ResultSet getSongs(int playListID) throws SQLException {
+        String query = "SELECT s.ID AS songID, s.songName, s.songComposer, s.songYear, s.youtubeLink, s.mrTimestamp, ps.udTimestamp FROM playlistSongs ps JOIN song s ON ps.songID = s.ID WHERE ps.playlistID = ?";
+
+        PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
+        pstmt.setInt(1, playListID);
+        ResultSet rs = pstmt.executeQuery();
+
+       return rs;
+    }
 }

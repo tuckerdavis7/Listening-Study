@@ -17,11 +17,11 @@ public class TeacherSongHandler extends BaseHandler implements HttpHandler {
     public void handle(HttpExchange exchange) throws IOException {
         String response = "";
         String method = exchange.getRequestMethod();
-
+        
         switch (method) {
             case "GET":
-                //response = teacherSongService.getAllUsers(exchange);
-                //super.sendResponse(exchange, response, "Regular");
+                response = teacherSongService.getPlaylistSongs(exchange);
+                super.sendResponse(exchange, response, "Regular");
                 break;
 
             case "POST":

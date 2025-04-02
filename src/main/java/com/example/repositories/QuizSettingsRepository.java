@@ -9,16 +9,6 @@ import com.example.configuration.DatabaseConfiguration;
 
 public class QuizSettingsRepository {
 
-    public ResultSet getQuizSettingsByID(Object classID) throws SQLException {
-        String query = "SELECT * FROM playlist WHERE classID = ?";
-
-        PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
-        pstmt.setInt(1, (Integer) classID);
-        ResultSet rs = pstmt.executeQuery();
-
-       return rs;
-    }
-
     public void addQuizSettings(int playlistID, String playbackMethod, int playbackDuration, int numQuestions) throws SQLException {
         String query = "INSERT INTO quizSettings (playlistID, playbackMethod, playbackDuration, numQuestions) VALUES (?, ?, ?, ?)";
         PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
@@ -29,4 +19,16 @@ public class QuizSettingsRepository {
         pstmt.setInt(4, numQuestions);
         pstmt.executeUpdate();
     }
+
+    public ResultSet getQuizSettingsByID(Object playlistID) throws SQLException {
+        String query = "SELECT * FROM quizSettings WHERE playlistID = ? and deleted = ?";
+
+        PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
+        pstmt.setInt(1, (Integer) playlistID);
+        pstmt.setInt(2, 0);
+        ResultSet rs = pstmt.executeQuery();
+
+       return rs;
+    }
+
 }

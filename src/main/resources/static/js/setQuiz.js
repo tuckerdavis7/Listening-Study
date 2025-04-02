@@ -38,11 +38,10 @@ $(document).ready(function() {
                  type: 'POST',
                  contentType: 'application/json',
                  success: function(data) {
-                     // window.location.href='/student/quiz';  
-                     bootstrapAlert('success', 'Hi Bro');                      
+                     window.location.href='/student/quiz';  
                  },
                  error: function(xhr, status, error) {
-                     bootstrapAlert('danger', 'Error while logging in: ' + error);
+                     bootstrapAlert('danger', 'Error while setting quiz: ' + error);
                  }
              });
         }

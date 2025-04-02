@@ -135,7 +135,8 @@ CREATE TABLE quizSettings (
     playlistID INT,
     playbackMethod VARCHAR(255),
     playbackDuration INT,
-    numQuestions INT
+    numQuestions INT,
+    deleted TINYINT(1) default 0
 );
 
 -- Create View for Playlist

@@ -47,10 +47,10 @@ public class SetQuizService extends BaseService {
     public String setQuizParameters(HttpExchange exchange) throws IOException {
         Map<String, Object> quizData = super.getParameters(exchange);
 
-        int playlistID = ((Number)quizData.get("playlist")).intValue();
+        int playlistID = Integer.parseInt((String)quizData.get("playlist"));
         String playbackMethod = (String)quizData.get("playbackMethod");
-        int playbackDuration = ((Number)quizData.get("playbackDuration")).intValue();
-        int numQuestions = ((Number)quizData.get("numQuestions")).intValue();
+        int playbackDuration = Integer.parseInt((String)quizData.get("playbackDuration"));
+        int numQuestions = Integer.parseInt((String)quizData.get("numQuestions"));
         
         String responseString = "";
         try {

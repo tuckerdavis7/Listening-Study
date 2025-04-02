@@ -1,10 +1,10 @@
 package com.example.handlers;
 
-import com.sun.net.httpserver.HttpHandler;
-import com.sun.net.httpserver.HttpExchange;
-import com.example.services.SetQuizService;
-
 import java.io.IOException;
+
+import com.example.services.SetQuizService;
+import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpHandler;
 
 public class SetQuizHandler extends BaseHandler implements HttpHandler {
     private SetQuizService setQuizService;
@@ -20,7 +20,12 @@ public class SetQuizHandler extends BaseHandler implements HttpHandler {
 
         switch (method) {
             case "POST":
-                response = setQuizService.getSongPerformances(exchange);
+                response = setQuizService.setQuizParameters(exchange);
+                super.sendResponse(exchange, response, "Regular");
+                break;
+
+            case "GET":
+                response = setQuizService.getPlaylists(exchange);
                 super.sendResponse(exchange, response, "Regular");
                 break;
 

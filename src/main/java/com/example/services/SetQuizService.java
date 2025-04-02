@@ -9,45 +9,57 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.example.repositories.StudentPerformanceRepository;
+import com.example.repositories.PlaylistRepository;
+import com.example.repositories.QuizSettingsRepository;
 import com.sun.net.httpserver.HttpExchange;
 
 public class SetQuizService extends BaseService {
     private static final Logger logger = LoggerFactory.getLogger(SetQuizService.class);
-    StudentPerformanceRepository studentPerformanceRepository = new StudentPerformanceRepository();
+    PlaylistRepository playlistRepository = new PlaylistRepository();
+    QuizSettingsRepository quizSettingsRepository = new QuizSettingsRepository();
 
-    public String getSongPerformances(HttpExchange exchange) throws IOException {
-        Map<String, Object> performanceParams = super.getQueryParameters(exchange);
-        Object studentID = performanceParams.get("studentID");
+    public String getPlaylists(HttpExchange exchange) throws IOException {
+        Map<String, Object> playlistParams = super.getQueryParameters(exchange);
+        Object classID = playlistParams.get("classID");
         String responseString = "";
         try {
-            ResultSet result = studentPerformanceRepository.getPerformanceByUsername(studentID);
-            ArrayList<Map<String, Object>> performanceList = new ArrayList<>();
+            ResultSet result = playlistRepository.getPlaylistByName(classID);
+            ArrayList<Map<String, Object>> playlistList = new ArrayList<>();
             
             while (result.next()) {
-                Map<String, Object> performanceMap = new HashMap<>();
-                performanceMap.put("ID", result.getInt("ID"));
-                performanceMap.put("studentID", result.getInt("StudentID"));
-                performanceMap.put("classID", result.getInt("ClassID"));
-                performanceMap.put("weight", result.getDouble("Weight"));
-                performanceMap.put("score", result.getDouble("Score"));
-                performanceMap.put("SongID", result.getInt("SongID"));
-                performanceMap.put("timesCorrect", result.getInt("TimesCorrect"));
-                performanceMap.put("timesQuizzed", result.getInt("TimesQuizzed"));
-                performanceMap.put("songName", result.getString("songName"));
-                performanceMap.put("composer", result.getString("songComposer"));
-                performanceMap.put("year", result.getString("songYear"));
-                performanceMap.put("url", result.getString("youtubeLink"));
-                performanceMap.put("playlistName", result.getString("playlistName"));
-                performanceMap.put("className", result.getString("className"));
+                Map<String, Object> playlistMap = new HashMap<>();
+                playlistMap.put("ID", result.getInt("ID"));
+                playlistMap.put("teacherID", result.getInt("teacherID"));
+                playlistMap.put("classID", result.getInt("classID"));
+                playlistMap.put("playlistName", result.getString("playlistName"));
                 
-                performanceList.add(performanceMap);
+                playlistList.add(playlistMap);
             }
-            responseString = super.formatJSON(performanceList, "success");
+            responseString = super.formatJSON(playlistList, "success");
         }
         catch (Exception e) {
             responseString = "Internal Server Error";
-            logger.error("Error in getSongPerformances of StudentPerformanceService: " + e.getMessage());
+            logger.error("Error in getPlaylists of SetQuizService: " + e.getMessage());
+        }
+        return responseString;
+    }
+
+    public String setQuizParameters(HttpExchange exchange) throws IOException {
+        Map<String, Object> quizData = super.getParameters(exchange);
+
+        int playlistID = ((Number)quizData.get("playlist")).intValue();
+        String playbackMethod = (String)quizData.get("playbackMethod");
+        int playbackDuration = ((Number)quizData.get("playbackDuration")).intValue();
+        int numQuestions = ((Number)quizData.get("numQuestions")).intValue();
+        
+        String responseString = "";
+        try {
+            quizSettingsRepository.addQuizSettings(playlistID, playbackMethod, playbackDuration, numQuestions);
+            responseString = super.formatJSON("success");
+        }
+        catch (Exception e) {
+            responseString = "Internal Server Error";
+            logger.error("Error in setQuizParameters of SetQuizService: " + e.getMessage());
         }
         return responseString;
     }

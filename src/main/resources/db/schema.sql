@@ -130,6 +130,14 @@ CREATE TABLE metaData (
     logo VARCHAR(255)
 );
 
+CREATE TABLE quizSettings (
+    ID INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    playlistID INT,
+    playbackMethod VARCHAR(255),
+    playbackDuration INT,
+    numQuestions INT
+);
+
 -- Create View for Playlist
 CREATE VIEW view_playlist AS
 SELECT

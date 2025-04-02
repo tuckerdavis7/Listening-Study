@@ -13,6 +13,7 @@ TRUNCATE TABLE teacherMaster;
 TRUNCATE TABLE class;
 TRUNCATE TABLE users;
 TRUNCATE TABLE metaData;
+TRUNCATE TABLE quizSettings;
 SET FOREIGN_KEY_CHECKS = 1;
 
 INSERT INTO metaData (appName, version, lastUpdate, logo) VALUES 
@@ -191,3 +192,17 @@ INSERT INTO studentPerformance (StudentID, ClassID, SongID, PlaylistID, TimesCor
 (9, 9, 9, 9, 4, 10, 0.60, 40.00),
 (10, 10, 10, 10, 9, 11, 0.18, 81.80),
 (11, 11, 11, 11, 10, 10, 0.00, 100.00);
+
+INSERT INTO quizSettings (playlistID, playbackMethod, playbackDuration, numQuestions) VALUES
+(1, 'Random', 30, 10),
+(1, 'Random', 45, 15),
+(2, 'Random', 20, 8),
+(3, 'MostReplayed', 60, 20),
+(4, 'TeacherTimestamp', 30, 12),
+(5, 'TeacherTimestamp', 40, 15),
+(6, 'MostReplayed', 25, 10),
+(7, 'Random', 35, 12),
+(8, 'TeacherTimestamp', 45, 15),
+(9, 'MostReplayed', 30, 10),
+(10, 'Random', 60, 20),
+(11, 'TeacherTimestamp', 20, 8); 

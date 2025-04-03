@@ -19,8 +19,8 @@ public class TakeQuizService extends BaseService {
     PlaylistSongRepository playlistSongRepository = new PlaylistSongRepository();
 
     public String getQuizSettings(HttpExchange exchange) throws IOException {
-        Map<String, Object> playlistParams = super.getQueryParameters(exchange);
-        Object playlistID = playlistParams.get("playlistID"); //needs different id later
+        Map<String, Object> configParams = super.getQueryParameters(exchange);
+        Object playlistID = configParams.get("playlistID"); //needs different id later
         String responseString = "";
         ArrayList<Map<String, Object>> quizSettingsList = new ArrayList<>();
 
@@ -36,15 +36,23 @@ public class TakeQuizService extends BaseService {
                 
                 quizSettingsList.add(quizSettingsMap);
             }
-            //responseString = super.formatJSON(quizSettingsList, "success");
+            responseString = super.formatJSON(quizSettingsList, "success");
         }
         catch (Exception e) {
             responseString = "Internal Server Error";
             logger.error("Error in getQuizSettings of TakeQuizService: " + e.getMessage());
         }
 
-        try {
-            ResultSet result = playlistSongRepository.getSongs(Integer.parseInt((String) playlistID));
+        return responseString;
+    }
+
+    public String getSongs(HttpExchange exchange) throws IOException {
+        Map<String, Object> songParams = super.getQueryParameters(exchange);
+        int playlistID = ((Number)songParams.get("playlistID")).intValue();
+        String responseString = "";
+
+         try {
+            ResultSet result = playlistSongRepository.getSongs(playlistID);
             ArrayList<Map<String, Object>> playlistSongList = new ArrayList<>();
 
             while (result.next()) {
@@ -64,64 +72,11 @@ public class TakeQuizService extends BaseService {
         } 
         catch (Exception e) {
             responseString = "Internal Server Error";
-            logger.error("Error in getQuizSettings (2) of TakeQuizService: " + e.getMessage());
+            logger.error("Error in getSongs of TakeQuizService: " + e.getMessage());
+            e.printStackTrace();
+
         }
 
         return responseString;
     }
-
-    /*public String getPlaylistSong(HttpExchange exchange) throws IOException {
-        Map<String, Object> playlistSongParams = super.getQueryParameters(exchange);
-        Object playlistIDObj = playlistSongParams.get("playlistID");
-        String responseString = "";
-        int playlistID = 0;
-
-        if (playlistIDObj instanceof  String) {
-            try {
-                playlistID = Integer.parseInt((String) playlistIDObj);
-            } 
-            catch (Exception e) {
-                logger.error("Invalid playlistID format: " + playlistIDObj);
-            }
-        }
-        try {
-            ResultSet result = playlistSongRepository.getSongs(playlistID);
-            ArrayList<Map<String, Object>> playlistSongList = new ArrayList<>();
-            
-            while (result.next()) {
-                Map<String, Object> playlistSongMap = new HashMap<>();
-                playlistSongMap.put("playlistID", result.getInt("playlistID"));
-                playlistSongMap.put("songID", result.getString("songID"));
-                playlistSongMap.put("udTimestamp", result.getInt("udTimestamp"));
-                
-                playlistSongList.add(playlistSongMap);
-            }
-            responseString = super.formatJSON(playlistSongList, "success");
-        }
-        catch (Exception e) {
-            responseString = "Internal Server Error";
-            logger.error("Error in getQuizSettings of TakeQuizService: " + e.getMessage());
-        }
-        return responseString;
-    }*/
-
-    // public String setQuizParameters(HttpExchange exchange) throws IOException {
-    //     Map<String, Object> quizData = super.getParameters(exchange);
-
-    //     int playlistID = Integer.parseInt((String)quizData.get("playlist"));
-    //     String playbackMethod = (String)quizData.get("playbackMethod");
-    //     int playbackDuration = Integer.parseInt((String)quizData.get("playbackDuration"));
-    //     int numQuestions = Integer.parseInt((String)quizData.get("numQuestions"));
-        
-    //     String responseString = "";
-    //     try {
-    //         quizSettingsRepository.addQuizSettings(playlistID, playbackMethod, playbackDuration, numQuestions);
-    //         responseString = super.formatJSON("success");
-    //     }
-    //     catch (Exception e) {
-    //         responseString = "Internal Server Error";
-    //         logger.error("Error in setQuizParameters of SetQuizService: " + e.getMessage());
-    //     }
-    //     return responseString;
-    // }
 }

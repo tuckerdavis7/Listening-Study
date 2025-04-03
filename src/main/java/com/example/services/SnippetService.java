@@ -3,7 +3,7 @@ package com.example.services;
 import java.io.IOException;
 import java.util.Map;
 
-import com.example.services.implementations.SnippetImplementation;
+import com.example.implementations.SnippetImplementation;
 import com.sun.net.httpserver.HttpExchange;
 
 public class SnippetService extends BaseService {

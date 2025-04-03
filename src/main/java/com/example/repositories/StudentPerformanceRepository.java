@@ -7,18 +7,29 @@ import java.sql.SQLException;
 import com.example.configuration.DatabaseConfiguration;
 
 public class StudentPerformanceRepository {
-     public ResultSet getPerformanceByUsername(Object studentID) throws SQLException {
-        String query = "SELECT sp.*, s.songName, s.songComposer, s.songYear, s.youtubeLink, c.className, p.playlistName " +
-        "FROM studentPerformance sp " +
-        "JOIN song s ON sp.SongID = s.ID " +
-        "JOIN class c ON sp.ClassID = c.ID " +
-        "JOIN playlist p ON sp.PlaylistID = p.ID " +
-        "WHERE sp.StudentID = ?";
+   public ResultSet getPerformanceByID(Object studentID) throws SQLException {
+      String query = "SELECT sp.*, s.songName, s.songComposer, s.songYear, s.youtubeLink, c.className, p.playlistName " +
+      "FROM studentPerformance sp " +
+      "JOIN song s ON sp.SongID = s.ID " +
+      "JOIN class c ON sp.ClassID = c.ID " +
+      "JOIN playlist p ON sp.PlaylistID = p.ID " +
+      "WHERE sp.StudentID = ?";
 
-        PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
-        pstmt.setInt(1, (Integer) studentID);
-        ResultSet rs = pstmt.executeQuery();
+      PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
+      pstmt.setInt(1, (Integer) studentID);
+      ResultSet rs = pstmt.executeQuery();
 
-       return rs;
-    }
+      return rs;
+   }
+
+   public ResultSet getQuizWeights(int songID, int studentID) throws SQLException {
+      String query = "SELECT Weight FROM studentPerformance WHERE songID = ? AND studentID = ?";
+
+      PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
+      pstmt.setInt(1, (Integer) songID);
+      pstmt.setInt(2, (Integer) studentID);
+      ResultSet rs = pstmt.executeQuery();
+
+      return rs;
+   }
 }

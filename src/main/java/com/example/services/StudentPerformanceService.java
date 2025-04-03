@@ -21,7 +21,7 @@ public class StudentPerformanceService extends BaseService {
         Object studentID = performanceParams.get("studentID");
         String responseString = "";
         try {
-            ResultSet result = studentPerformanceRepository.getPerformanceByUsername(studentID);
+            ResultSet result = studentPerformanceRepository.getPerformanceByID(studentID);
             ArrayList<Map<String, Object>> performanceList = new ArrayList<>();
             
             while (result.next()) {

@@ -195,14 +195,14 @@ INSERT INTO studentPerformance (StudentID, ClassID, SongID, PlaylistID, TimesCor
 
 INSERT INTO quizSettings (playlistID, playbackMethod, playbackDuration, numQuestions, deleted) VALUES
 (1, 'Random', 30, 10, 0),
-(1, 'Random', 45, 15, 0),
-(2, 'Random', 20, 8, 0),
-(3, 'MostReplayed', 60, 20, 0),
-(4, 'TeacherTimestamp', 30, 12, 0),
-(5, 'TeacherTimestamp', 40, 15, 0),
-(6, 'MostReplayed', 25, 10, 0),
-(7, 'Random', 35, 12, 0),
-(8, 'TeacherTimestamp', 45, 15, 0),
-(9, 'MostReplayed', 30, 10, 0),
-(10, 'Random', 60, 20, 0),
-(11, 'TeacherTimestamp', 20, 8, 0);
+(1, 'Random', 45, 15, 1),
+(2, 'Random', 20, 8, 1),
+(3, 'MostReplayed', 60, 20, 1),
+(4, 'TeacherTimestamp', 30, 12, 1),
+(5, 'TeacherTimestamp', 40, 15, 1),
+(6, 'MostReplayed', 25, 10, 1),
+(7, 'Random', 35, 12, 1),
+(8, 'TeacherTimestamp', 45, 15, 1),
+(9, 'MostReplayed', 30, 10, 1),
+(10, 'Random', 60, 20, 1),
+(11, 'TeacherTimestamp', 20, 8, 1);

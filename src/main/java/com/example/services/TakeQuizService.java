@@ -3,6 +3,7 @@ package com.example.services;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,12 +12,17 @@ import org.slf4j.LoggerFactory;
 
 import com.example.repositories.PlaylistSongRepository;
 import com.example.repositories.QuizSettingsRepository;
+import com.example.repositories.StudentPerformanceRepository;
 import com.sun.net.httpserver.HttpExchange;
+
+import com.example.services.implementations.TakeQuizImplementation;
 
 public class TakeQuizService extends BaseService {
     private static final Logger logger = LoggerFactory.getLogger(TakeQuizService.class);
     QuizSettingsRepository quizSettingsRepository = new QuizSettingsRepository();
     PlaylistSongRepository playlistSongRepository = new PlaylistSongRepository();
+    StudentPerformanceRepository studentPerformanceRepository = new StudentPerformanceRepository();
+    TakeQuizImplementation takeQuizImplementation = new TakeQuizImplementation();
 
     public String getQuizSettings(HttpExchange exchange) throws IOException {
         Map<String, Object> configParams = super.getQueryParameters(exchange);
@@ -49,11 +55,13 @@ public class TakeQuizService extends BaseService {
     public String getSongs(HttpExchange exchange) throws IOException {
         Map<String, Object> songParams = super.getQueryParameters(exchange);
         int playlistID = ((Number)songParams.get("playlistID")).intValue();
+        int studentID = ((Number)songParams.get("studentID")).intValue();
+        ArrayList<Map<String, Object>> playlistSongList = new ArrayList<>();
+        int numQuestions = 0;
         String responseString = "";
 
-         try {
+        try {
             ResultSet result = playlistSongRepository.getSongs(playlistID);
-            ArrayList<Map<String, Object>> playlistSongList = new ArrayList<>();
 
             while (result.next()) {
                 Map<String, Object> playlistSongMap = new HashMap<>();
@@ -65,17 +73,60 @@ public class TakeQuizService extends BaseService {
                 playlistSongMap.put("songYear", result.getInt("songYear"));
                 playlistSongMap.put("youtubeLink", result.getString("youtubeLink"));
                 playlistSongMap.put("mrTimestamp", result.getInt("mrTimestamp"));
+                playlistSongMap.put("weight", 1.0);
                 
                 playlistSongList.add(playlistSongMap);
             }
-            responseString = super.formatJSON(playlistSongList, "success");
+            
         } 
         catch (Exception e) {
             responseString = "Internal Server Error";
             logger.error("Error in getSongs of TakeQuizService: " + e.getMessage());
             e.printStackTrace();
+            return responseString;
+        }
+
+        try {
+            ResultSet result = quizSettingsRepository.getQuizSettingsByID(playlistID);
+
+            if (result.next()) {
+                numQuestions = result.getInt("numQuestions");
+            }
 
         }
+        catch (Exception e) {
+            responseString = "Internal Server Error";
+            logger.error("Error in getSongs of TakeQuizService: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        try {
+            for (Map<String, Object> song : playlistSongList) {
+                int songID = ((Number)song.get("songID")).intValue();
+                ResultSet result = studentPerformanceRepository.getQuizWeights(songID, studentID);
+
+                if (result.next()) {
+                    double weight = result.getDouble("Weight");
+                    song.put("weight", weight >= 0 ? weight : 1.0);
+                }
+            }
+
+            if (playlistSongList.isEmpty()) {
+                responseString = super.formatJSON("error", "No songs found.");
+            }
+            else {
+                List<Map<String, Object>> selectedQuestions = takeQuizImplementation.getWeightedRandom(playlistSongList, numQuestions);
+                responseString = super.formatJSON(selectedQuestions, "success");
+            }
+
+        } 
+        catch (Exception e) {
+            responseString = "Internal Server Error";
+            logger.error("Error in getSongs (3) of TakeQuizService: " + e.getMessage());
+            e.printStackTrace();
+        }
+        
+
 
         return responseString;
     }

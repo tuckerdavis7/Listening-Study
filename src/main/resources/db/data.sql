@@ -130,17 +130,17 @@ INSERT INTO reportTime (timeOfReport, username, email, description, lastUpdatedT
 ('2025-03-24 11:00:00', 'moderator1', 'moderator1@example.com', 'Year-end progress summary', '2025-03-01 09:30:00', 'administrator1', 'Resolved');
 
 INSERT INTO song (songName, songComposer, songYear, youtubeLink, mrTimestamp) VALUES
-('Moonlight Sonata', 'Ludwig van Beethoven', 1801, 'https://www.youtube.com/watch?v=4Tr0otuiQuU', 20),
-('Für Elise', 'Ludwig van Beethoven', 1810, 'https://www.youtube.com/watch?v=_mVW8tgGY_w', 82),
-('Claire de Lune', 'Claude Debussy', 1905, 'https://www.youtube.com/watch?v=CvFH_6DNRCY', -1),
-('Nocturne Op. 9 No. 2', 'Frédéric Chopin', 1832, 'https://www.youtube.com/watch?v=9E6b3swbnWg', 44),
-('The Four Seasons - Spring', 'Antonio Vivaldi', 1723, 'https://www.youtube.com/watch?v=mFWQgxXM_b8', 15),
-('Canon in D', 'Johann Pachelbel', 1680, 'https://www.youtube.com/watch?v=8Af372EQLck', 30),
-('Symphony No. 5', 'Ludwig van Beethoven', 1808, 'https://www.youtube.com/watch?v=fOk8Tm815lE', -1),
-('The Blue Danube', 'Johann Strauss II', 1866, 'https://www.youtube.com/watch?v=cKkDMiGUbUw', 20),
-('Requiem in D Minor', 'Wolfgang Amadeus Mozart', 1791, 'https://www.youtube.com/watch?v=Zi8vJ_lMxQI', 20),
-('Gymnopédie No. 1', 'Erik Satie', 1888, 'https://www.youtube.com/watch?v=S-Xm7s9eGxU', 15),
-('Prelude in C Major', 'Johann Sebastian Bach', 1722, 'https://www.youtube.com/watch?v=frxT2qB1POQ', 12);
+('Moonlight Sonata', 'Ludwig van Beethoven', 1801, '4Tr0otuiQuU', 20),
+('Für Elise', 'Ludwig van Beethoven', 1810, 'q9bU12gXUyM', 82),
+('Claire de Lune', 'Claude Debussy', 1905, 'CvFH_6DNRCY', -1),
+('Nocturne Op. 9 No. 2', 'Frédéric Chopin', 1832, '9E6b3swbnWg', 44),
+('The Four Seasons - Spring', 'Antonio Vivaldi', 1723, 'mFWQgxXM_b8', 15),
+('Canon in D', 'Johann Pachelbel', 1680, '8Af372EQLck', 30),
+('Symphony No. 5', 'Ludwig van Beethoven', 1808, 'fOk8Tm815lE', -1),
+('The Blue Danube', 'Johann Strauss II', 1866, 'cKkDMiGUbUw', 20),
+('Requiem in D Minor', 'Wolfgang Amadeus Mozart', 1791, 'Zi8vJ_lMxQI', 20),
+('Gymnopédie No. 1', 'Erik Satie', 1888, 'S-Xm7s9eGxU', 15),
+('Prelude in C Major', 'Johann Sebastian Bach', 1722, 'frxT2qB1POQ', 12);
 
 INSERT INTO playlist (playlistName, teacherID, classID) VALUES
 ('Classical Masterpieces', 1, 1),

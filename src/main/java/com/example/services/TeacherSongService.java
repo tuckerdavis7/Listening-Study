@@ -59,7 +59,6 @@ public class TeacherSongService extends BaseService {
         
         String responseString = "";
         try {
-            logger.info("getSongs");
             ResultSet result = playlistSongRepository.getSongs(playlistID);
 
             ArrayList<Map<String, Object>> songList = new ArrayList<>();

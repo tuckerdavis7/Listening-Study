@@ -21,4 +21,35 @@ public class StudentPerformanceRepository {
 
        return rs;
     }
+
+    public ResultSet getPerformanceData(int studentID, int playlistID, int songID) throws SQLException {
+      String query = "SELECT *" +
+      "FROM studentPerformance" +      
+      "WHERE StudentID = ? and PlayListID = ? and SongID = ?";
+
+      PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
+      pstmt.setInt(1, (Integer) studentID);
+      pstmt.setInt(1, (Integer) playlistID);
+      pstmt.setInt(1, (Integer) songID);
+      ResultSet rs = pstmt.executeQuery();
+
+     return rs;
+  }
+
+  public void updatePerformanceData(int timesQuizzed, int timesCorrect, double weight, double rate, int ID) throws SQLException {
+   String query = "UPDATE studentPerformance " +
+                   "SET weight = ?, score = ?, timesQuizzed = ?, timesCorrect = ? " +
+                   "WHERE ID = ?";
+
+    try (PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query)) {
+        pstmt.setDouble(1, weight);
+        pstmt.setDouble(2, rate); // Assuming "score" = "rate"
+        pstmt.setInt(3, timesQuizzed);
+        pstmt.setInt(4, timesCorrect);
+        pstmt.setInt(5, ID);
+
+        pstmt.executeUpdate();
+    }
+
+}
 }

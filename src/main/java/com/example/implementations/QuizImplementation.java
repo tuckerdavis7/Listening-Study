@@ -1,4 +1,4 @@
-package com.example.services.implementations;
+package com.example.implementations;
 
 import java.util.ArrayList;
 import java.util.List;

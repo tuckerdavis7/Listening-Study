@@ -1,4 +1,4 @@
-package com.example.services.implementations;
+package com.example.implementations;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;

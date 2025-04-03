@@ -15,7 +15,7 @@ import com.example.repositories.QuizSettingsRepository;
 import com.example.repositories.StudentPerformanceRepository;
 import com.sun.net.httpserver.HttpExchange;
 
-import com.example.services.implementations.TakeQuizImplementation;
+import com.example.implementations.TakeQuizImplementation;
 
 public class TakeQuizService extends BaseService {
     private static final Logger logger = LoggerFactory.getLogger(TakeQuizService.class);

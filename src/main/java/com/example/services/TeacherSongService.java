@@ -9,9 +9,9 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.example.implementations.SongImplementation;
 import com.example.repositories.PlaylistSongRepository;
 import com.example.repositories.SongRepository;
-import com.example.services.implementations.SongImplementation;
 import com.sun.net.httpserver.HttpExchange;
 
 public class TeacherSongService extends BaseService {
@@ -59,7 +59,6 @@ public class TeacherSongService extends BaseService {
         
         String responseString = "";
         try {
-            logger.info("getSongs");
             ResultSet result = playlistSongRepository.getSongs(playlistID);
 
             ArrayList<Map<String, Object>> songList = new ArrayList<>();

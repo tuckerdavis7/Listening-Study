@@ -3,8 +3,6 @@ package com.example.repositories;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 import com.example.configuration.DatabaseConfiguration;
 
@@ -32,21 +30,21 @@ public class SongRepository {
         return rs;   
     }
 
-    public List<String> getSongData(int songID) throws SQLException {
-        List<String> songData = new ArrayList<>();        
+    public ResultSet getSongData(int songID) throws SQLException {
+        //List<String> songData = new ArrayList<>();        
         String query = "SELECT * FROM songs WHERE songID =?";
 
         PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
         pstmt.setInt(1, songID);
         ResultSet rs = pstmt.executeQuery();
 
-        songData.add(rs.getString("songName"));
-        songData.add(rs.getString("songComposer"));
-        songData.add(rs.getString("songYear"));
-        songData.add(rs.getString("youtubeLink"));
-        songData.add(rs.getString("mrTimestamp"));
+        //songData.add(rs.getString("songName"));
+       // songData.add(rs.getString("songComposer"));
+       // songData.add(rs.getString("songYear"));
+        //songData.add(rs.getString("youtubeLink"));
+        //songData.add(rs.getString("mrTimestamp"));
        
-       return songData;   
+       return rs;   
     }    
     
 }

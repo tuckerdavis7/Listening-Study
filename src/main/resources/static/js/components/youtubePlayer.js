@@ -37,7 +37,25 @@ $(document).ready(function () {
 
     document.addEventListener('attemptLimit', function() {
         playerLock = true;
-    })
+    });
+
+    document.addEventListener('getVideoDuration', function getVideoDuration() {
+        let videoDuration;
+        try {
+            videoDuration = player.getDuration();
+        }
+        catch {
+            videoDuration = -1;
+        }
+
+        const responseEvent = new CustomEvent('returnVideoDuration', {
+            detail: {
+                'videoDuration': videoDuration
+            }
+        });
+
+        document.dispatchEvent(responseEvent);
+    });
 
     setInterval(updateElapsedTime, 1000);
 
@@ -48,7 +66,6 @@ $(document).ready(function () {
 
 function loadYouTubeAPI() {
     if (typeof YT === 'undefined' || typeof YT.Player === 'undefined') {
-        console.log("Loading YouTube API...");
         var tag = document.createElement('script');
         tag.src = "https://www.youtube.com/iframe_api";
         var firstScriptTag = document.getElementsByTagName('script')[0];

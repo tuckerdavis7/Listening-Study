@@ -34,5 +34,6 @@ public class HttpServerConfiguration {
         server.createContext("/api/studentperformance", new StudentPerformanceHandler());
         server.createContext("/api/setquiz", new SetQuizHandler());
         server.createContext("/api/takequiz", new TakeQuizHandler());
+        server.createContext("/api/snippet", new SnippetHandler());
     }
 }

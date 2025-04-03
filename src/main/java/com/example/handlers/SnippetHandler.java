@@ -19,10 +19,15 @@ public class SnippetHandler extends BaseHandler implements HttpHandler {
         String method = exchange.getRequestMethod();
 
         switch (method) {
-            case "POST":
+            case "GET":
                 response = snippetService.getTimeStamp(exchange);
                 super.sendResponse(exchange, response, "Regular");
                 break;
+
+            // case "POST":
+            //     response = snippetService.getTimeStamp(exchange);
+            //     super.sendResponse(exchange, response, "Regular");
+            //     break;
 
             // case "PATCH":
             //     response = studentPerformanceService.updateDesignation(exchange);

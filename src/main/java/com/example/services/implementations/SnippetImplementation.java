@@ -6,13 +6,13 @@ public class SnippetImplementation {
     public int generateRandomTimestamp(int songDuration){
         
         Random random = new Random();
-        int timeStamp = random.nextInt(songDuration);
+        int timestamp = random.nextInt(songDuration);
 
-        return timeStamp;
+        return timestamp;
     }
 
-    public int refactorTimeStamp(int songDuration, int playbackduration){
-        return songDuration - playbackduration; 
+    public int refactorTimeStamp(int songDuration, int playbackDuration){
+        return songDuration - playbackDuration; 
     }
     
 }

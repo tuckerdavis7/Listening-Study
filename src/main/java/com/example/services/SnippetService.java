@@ -3,35 +3,38 @@ package com.example.services;
 import java.io.IOException;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.example.services.implementations.SnippetImplementation;
 import com.sun.net.httpserver.HttpExchange;
 
-//int playbackMethod, int playbackduration, int songDuration, int timeStamp
 public class SnippetService extends BaseService {
+    private static final Logger logger = LoggerFactory.getLogger(SnippetService.class);
     private SnippetImplementation snippetImplementation = new SnippetImplementation();
+
     public String getTimeStamp(HttpExchange exchange) throws IOException {      
-        Map<String, Object> songData = super.getParameters(exchange);
-        
-        int playbackMethod = ((Number)songData.get("playbackMethod")).intValue();
+        Map<String, Object> songData = super.getQueryParameters(exchange);
+        String playbackMethod = (String)songData.get("playbackMethod");
         int playbackDuration = ((Number)songData.get("playbackDuration")).intValue();
         int songDuration = ((Number)songData.get("songDuration")).intValue();
-        int timeStamp = ((Number)songData.get("timeStamp")).intValue();
-
-        if (playbackMethod == 1 || timeStamp == -1) {
-            timeStamp = snippetImplementation.generateRandomTimestamp(songDuration);
+        int timestamp = ((Number)songData.get("timestamp")).intValue();
+        
+        if (playbackMethod.equals("Random") || timestamp == -1) {
+            timestamp = snippetImplementation.generateRandomTimestamp(songDuration);
         }
  
-        boolean boundaryCheck = checkTimeBoundary(songDuration, playbackDuration, timeStamp);
+        boolean boundaryCheck = checkTimeBoundary(songDuration, playbackDuration, timestamp);
             
          if(!boundaryCheck){
-            timeStamp = snippetImplementation.refactorTimeStamp(songDuration, playbackDuration);
+            timestamp = snippetImplementation.refactorTimeStamp(songDuration, playbackDuration);
          }
         
-        return Integer.toString(timeStamp);
+        return Integer.toString(timestamp);
     } 
 
-    public boolean checkTimeBoundary(int songDuration, int playbackduration, int timeStamp){
-        return timeStamp <= songDuration - playbackduration;
+    private boolean checkTimeBoundary(int songDuration, int playbackDuration, int timestamp){
+        return timestamp <= songDuration - playbackDuration;
     }
     
 }

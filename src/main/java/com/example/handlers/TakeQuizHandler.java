@@ -7,10 +7,10 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
 public class TakeQuizHandler extends BaseHandler implements HttpHandler {
-    private TakeQuizService quizSettingsService;
+    private TakeQuizService takeQuizService;
 
     public TakeQuizHandler() {
-        this.quizSettingsService = new TakeQuizService();
+        this.takeQuizService = new TakeQuizService();
     }
 
     @Override
@@ -20,14 +20,25 @@ public class TakeQuizHandler extends BaseHandler implements HttpHandler {
 
         switch (method) {
             // case "POST":
-            //     response = quizSettingsService.setQuizParameters(exchange);
+            //     response = takeQuizService.setQuizParameters(exchange);
             //     super.sendResponse(exchange, response, "Regular");
             //     break;
 
             case "GET":
-                response = quizSettingsService.getQuizSettings(exchange);
-                super.sendResponse(exchange, response, "Regular");
-                break;
+                if (exchange.getRequestURI().getPath().equals("/api/takequiz/settings")) {
+                    response = takeQuizService.getQuizSettings(exchange);
+                    super.sendResponse(exchange, response, "Regular");
+                    break;
+                } 
+                else if (exchange.getRequestURI().getPath().equals("/api/takequiz/songs")) {
+                    response = takeQuizService.getSongs(exchange);
+                    super.sendResponse(exchange, response, "Regular");
+                    break;
+                }
+                else {
+                    super.sendResponse(exchange, "Method Not Allowed", "Regular");
+                    break;
+                }        
 
             // case "PATCH":
             //     response = quizSettingsService.updateDesignation(exchange);

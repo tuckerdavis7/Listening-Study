@@ -6,7 +6,6 @@ import com.google.gson.reflect.TypeToken;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.net.URI;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.HashMap;
@@ -14,21 +13,44 @@ import java.util.List;
 import java.util.Map;
 
 import com.sun.net.httpserver.HttpExchange;
+
+/**
+ * Base Service class that contains methods to be used in other service classes.
+ */
 public class BaseService {
     private Gson gson = new Gson();
     
-    // Get multiple JSON objects as parameters
+    /**
+     * Takes in JSON body (POST, PATCH, DELETE) from request and returns multiple JSON objects
+     *
+     * @param exchange The data from the API request
+     * @throws IOException If formatting operations fail
+     * @return List of JSON objects to be used
+     */
     protected List<Map<String, Object>> getParametersList(HttpExchange exchange) throws IOException {
         String requestBody = readRequestBody(exchange);
         return gson.fromJson(requestBody, new TypeToken<List<Map<String, Object>>>(){}.getType());
     }
     
-    // Get a single JSON object as parameter
+    /**
+     * Takes in JSON body (POST, PATCH, UPDATE) from request and returns a single JSON object
+     *
+     * @param exchange The data from the API request
+     * @throws IOException If formatting operations fail
+     * @return Map of singular JSON object to be used
+     */
     protected Map<String, Object> getParameters(HttpExchange exchange) throws IOException {
         String requestBody = readRequestBody(exchange);
         return gson.fromJson(requestBody, new TypeToken<Map<String, Object>>(){}.getType());
     }
 
+    /**
+     * Takes in parameters from URL (GET requests) body from request and returns a single JSON object
+     *
+     * @param exchange The data from the API request
+     * @throws IOException If formatting operations fail
+     * @return Map of singular JSON object to be used
+     */
     protected Map<String, Object> getQueryParameters(HttpExchange exchange) {
         Map<String, Object> parameters = new HashMap<>();
         
@@ -61,7 +83,13 @@ public class BaseService {
         return parameters;
     }
     
-    // Helper method to read request body
+    /**
+     * Helper method used to grab the request body for POST, PATCH, DELETE calls
+     *
+     * @param exchange The data from the API request
+     * @throws IOException If the method is unable to read the request body
+     * @return String formatted request body to be used in other methods
+     */
     private String readRequestBody(HttpExchange exchange) throws IOException {
         InputStream inputStream = exchange.getRequestBody();
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
@@ -73,7 +101,14 @@ public class BaseService {
         return body.toString();
     }
     
-    //return JSON-formatted string (GET)
+    /**
+     * Returns a JSON-formatted string to frontend (GET)
+     *
+     * @param data The data to be returned to the frontend
+     * @param status A status used by the UI (typically "success" or "failure")
+     * @throws IOException If the method is unable to process and return the format
+     * @return String formatted response body
+     */
     protected String formatJSON(Object data, String status) throws IOException {
         String responseString = "";
         Map<String, Object> responseMap = Map.of("status", status, "data", data);
@@ -83,7 +118,13 @@ public class BaseService {
         return responseString;
     }
     
-    //return JSON-formatted string (POST, UPDATE, DELETE) on success
+    /**
+     * Returns a successful status message to frontend (POST, PATCH, DELETE)
+     *
+     * @param status The status used by the UI
+     * @throws IOException If the method is unable to process and return the status
+     * @return String formatted status
+     */
     protected String formatJSON(String status) throws IOException {
         String responseString = "";
         Map<String, Object> map = new HashMap<>();
@@ -94,7 +135,14 @@ public class BaseService {
         return responseString;
     }
 
-    //return JSON-formatted string (POST, UPDATE, DELETE) on failure
+    /**
+     * Returns a failed status message to frontend (POST, PATCH, DELETE)
+     *
+     * @param status The status used by the UI
+     * @param message The message to be returned with the status
+     * @throws IOException If the method is unable to process and return the status
+     * @return String formatted status
+     */
     protected String formatJSON(String status, String message) throws IOException {
         String responseString = "";
         Map<String, Object> map = new HashMap<>();
@@ -104,12 +152,5 @@ public class BaseService {
         responseString = objectMapper.writeValueAsString(map);
        
         return responseString;
-    }
-    
-    //return last part of URL path for processing
-    protected String getLastPathSegment(URI uri) {
-        String path = uri.getPath();
-        String[] segments = path.split("/");
-        return segments.length > 0 ? segments[segments.length - 1] : null;
     }
 }

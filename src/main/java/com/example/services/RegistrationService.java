@@ -11,10 +11,20 @@ import org.slf4j.LoggerFactory;
 import com.example.repositories.UserRepository;
 import com.sun.net.httpserver.HttpExchange;
 
+/**
+ * Service class for taking API requests, processing, and sending queries related to user registration.
+ */
 public class RegistrationService extends BaseService {
     private static final Logger logger = LoggerFactory.getLogger(LoginService.class);
     UserRepository userRepository = new UserRepository();
 
+    /**
+     * Sends the data for a user to be registered to the database
+     *
+     * @param exchange The data from the API request
+     * @throws IOException If data processing fails
+     * @return String JSON formatted string of data for frontend
+     */
     public String registerUser(HttpExchange exchange) throws IOException {
         String responseString = "";
         Map<String, Object> registrationParams = super.getParameters(exchange);

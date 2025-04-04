@@ -28,14 +28,8 @@ public class TeacherSongHandler extends BaseHandler implements HttpHandler {
                 break;
 
             case "POST":
-                System.out.println("Hellodjlkfjdskf");
                 response = teacherSongService.addSong(exchange);
                 super.sendResponse(exchange, response, "Regular");
-                break;
-
-            case "PATCH":
-                //response = teacherSongService.deleteUser(exchange);
-                //super.sendResponse(exchange, response, "Regular");
                 break;
             
             default:

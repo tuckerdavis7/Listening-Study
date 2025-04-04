@@ -49,6 +49,13 @@ public class QuizSettingsRepository {
         return rs;
     }
 
+    /**
+     * Returns the number of questions from the chosen quizSettingsID
+     *
+     * @param quizSettingsID The ID of the active quiz
+     * @throws SQLException When the query does not run properly
+     * @return ResultSet containing query results
+     */
     public ResultSet getNumQuestionsByID(Object quizSettingsID) throws SQLException {
         String query = "SELECT * FROM quizSettings WHERE ID = ?";
 
@@ -59,6 +66,12 @@ public class QuizSettingsRepository {
         return rs;
     }
 
+    /**
+     * Sets deleted field in quiz settings table to 1 by quizSettingsID
+     *
+     * @param quizSettingsID The ID of the active quiz
+     * @throws SQLException When the query does not run properly
+     */
     public void setDeletedByID(int quizSettingsID) throws SQLException {
         String query = "UPDATE quizSettings set deleted = 1 where ID = ?";
 

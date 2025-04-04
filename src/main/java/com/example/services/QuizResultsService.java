@@ -18,6 +18,9 @@ import com.example.repositories.SongRepository;
 import com.example.repositories.StudentPerformanceRepository;
 import com.sun.net.httpserver.HttpExchange;
 
+/**
+ * Service class for taking API requests, processing, and sending queries for the quiz results page.
+ */
 public class QuizResultsService extends BaseService {
     private static final Logger logger = LoggerFactory.getLogger(QuizResultsService.class);
     private SongRepository songRepository = new SongRepository();
@@ -26,6 +29,13 @@ public class QuizResultsService extends BaseService {
     private QuizSettingsRepository quizSettingsRepository = new QuizSettingsRepository();
     private QuizImplementation quizImplementation = new QuizImplementation();
 
+    /**
+     * Sets quiz results in the database and calculates results
+     *
+     * @param exchange The data from the API request
+     * @throws IOException If data processing fails
+     * @return String JSON formatted string of data for frontend
+     */
     public String setQuizResults(HttpExchange exchange) throws IOException {
         List<Map<String, Object>> quizData = super.getParametersList(exchange);
         List<Map<String, Object>> songQuizData = new ArrayList<>();
@@ -104,6 +114,13 @@ public class QuizResultsService extends BaseService {
         return responseString;
     }
 
+    /**
+     * Forwards quiz results to the quiz results page
+     *
+     * @param exchange The data from the API request
+     * @throws IOException If data processing fails
+     * @return String JSON formatted string of data for frontend
+     */
     public String forwardQuizResults(HttpExchange exchange) throws IOException {
         List<Map<String, Object>> quizData = super.getParametersList(exchange);
 

@@ -32,27 +32,24 @@ public class TeacherSongService extends BaseService {
      */
     public String addSong(HttpExchange exchange) throws IOException {
         Map<String, Object> songData = super.getParameters(exchange);
-        
-        int playlistID = ((Number)songData.get("playlistID")).intValue();
+        String playlistID = (String)songData.get("playlistID");
         String songName = (String)songData.get("name");
         String songComposer = (String)songData.get("composer");
         String songYear = (String)songData.get("year");
         String songURL = (String)songData.get("url");
         int userDefinedTimestamp = songImplementation.convertTimeToSeconds((String)songData.get("timestamp"));
-
         int songMostReplayedTimestamp = songImplementation.getMostReplayedTimestamp(songURL);
         String songVideoID = songImplementation.extractVideoId(songURL);
-        
         String responseString = "";
         try {
             songRepository.commitSongData(songName, songComposer, songYear, songVideoID, songMostReplayedTimestamp);
-
+            logger.info("3");
             ResultSet result = songRepository.getSongID(songVideoID);
             int songID = 0;
             if (result.next())
                 songID = result.getInt("ID");
 
-            playlistSongRepository.addToPlaylist(playlistID, songID, userDefinedTimestamp);
+            playlistSongRepository.addToPlaylist(Integer.parseInt(playlistID), songID, userDefinedTimestamp);
 
             responseString = super.formatJSON("success");
         }

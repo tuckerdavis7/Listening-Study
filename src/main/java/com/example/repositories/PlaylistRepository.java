@@ -6,9 +6,18 @@ import java.sql.SQLException;
 
 import com.example.configuration.DatabaseConfiguration;
 
+/**
+ * Repository class to execute queries on the playlist table.
+ */
 public class PlaylistRepository {
-
-    public ResultSet getPlaylistByName(Object classID) throws SQLException {
+    /**
+     * Returns the playlist by Class ID
+     *
+     * @param ClassID The ID of the active classID
+     * @throws SQLException When the query does not run properly
+     * @return ResultSet containing query results
+     */
+    public ResultSet getPlaylistByClassID(Object classID) throws SQLException {
         String query = "SELECT * FROM playlist WHERE classID = ?";
 
         PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
@@ -17,17 +26,5 @@ public class PlaylistRepository {
 
        return rs;
     }
-
-    public void commitQuizData(String songName,  String songComposer, String songYear, String youtubeLink, int mrTimestamp) throws SQLException {
-        String query = "INSERT INTO song (songName, songComposer, songYear, youtubeLink, mrTimestamp) VALUES (?, ?, ?, ?, ?)";
-        PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
-
-        pstmt.setString(1, songName);
-        pstmt.setString(2, songComposer);
-        pstmt.setString(3, songYear);
-        pstmt.setString(4, youtubeLink);
-        pstmt.setInt(5, mrTimestamp);        
-        pstmt.executeUpdate();
-   
-    }
+    
 }

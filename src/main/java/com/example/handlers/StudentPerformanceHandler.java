@@ -6,13 +6,25 @@ import com.example.services.StudentPerformanceService;
 
 import java.io.IOException;
 
+/**
+ * Handler class for processing API requests related to viewing the student performance page.
+ */
 public class StudentPerformanceHandler extends BaseHandler implements HttpHandler {
     private StudentPerformanceService studentPerformanceService;
 
+    /**
+     * Class constructor to intialize service file
+     */
     public StudentPerformanceHandler() {
         this.studentPerformanceService = new StudentPerformanceService();
     }
 
+    /**
+     * Handles/routes HTTP requests from frontend to proper service method
+     *
+     * @param exchange The data from the API request
+     * @throws IOException If HTTP request send or recieve operations fail
+     */
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         String response = "";
@@ -23,16 +35,6 @@ public class StudentPerformanceHandler extends BaseHandler implements HttpHandle
                 response = studentPerformanceService.getSongPerformances(exchange);
                 super.sendResponse(exchange, response, "Regular");
                 break;
-
-            // case "PATCH":
-            //     response = studentPerformanceService.updateDesignation(exchange);
-            //     super.sendResponse(exchange, response, "Regular");
-            //     break;
-
-            // case "DELETE":
-            //     response = studentPerformanceService.deleteUser(exchange);
-            //     super.sendResponse(exchange, response, "Regular");
-            //     break;
             
             default:
                 super.sendResponse(exchange, "Method Not Allowed", "Regular");

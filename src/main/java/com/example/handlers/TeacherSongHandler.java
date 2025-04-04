@@ -6,6 +6,9 @@ import com.example.services.TeacherSongService;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
+/**
+ * Handler class for processing API requests related to the song page from teacher view.
+ */
 public class TeacherSongHandler extends BaseHandler implements HttpHandler {
     private TeacherSongService teacherSongService;
 

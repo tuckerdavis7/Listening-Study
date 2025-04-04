@@ -50,7 +50,9 @@ $(document).ready(function () {
         { data: "className", class: "charcolumn", width: "3 rem" },
         { data: "timesCorrect", class: "charcolumn", width: "3 rem" },
         { data: "timesQuizzed", class: "charcolumn", width: "3 rem" },
-        { data: "score", class: "charcolumn", width: "3 rem" }
+        { data: "score", class: "charcolumn", width: "3 rem" },
+        { data: "weight", class: "charcolumn", width: "3 rem" },
+
     ]
 
     $.ajax({

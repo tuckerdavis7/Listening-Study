@@ -7,11 +7,20 @@ import java.sql.SQLException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Configuration class for database setup
+ */
 public class DatabaseConfiguration {
     private static final Logger logger = LoggerFactory.getLogger(DatabaseConfiguration.class);
     private static Connection con;
     static ApplicationConfiguration applicationConfiguration = ApplicationConfiguration.getInstance();
 
+    /**
+     * Creates a connection to the database
+     *
+     * @throws ClassNotFoundException If the database driver can't be found
+     * @throws SQLException If the connection to the database fails
+     */
     public static void connect() throws Exception{
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -32,7 +41,10 @@ public class DatabaseConfiguration {
         }       
     }
 
-    //allows for connection access from repository classes
+    /**
+     * Creates connection access to repository classes
+     *
+     */
     public static Connection getConnection() {
         return con;
     }

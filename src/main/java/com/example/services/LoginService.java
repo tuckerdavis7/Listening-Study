@@ -11,9 +11,20 @@ import org.slf4j.LoggerFactory;
 
 import com.example.repositories.UserRepository;
 import com.sun.net.httpserver.HttpExchange;
+/**
+ * Service class for taking API requests, processing, and sending queries related to user login.
+ */
 public class LoginService extends BaseService {
     private static final Logger logger = LoggerFactory.getLogger(LoginService.class);
     UserRepository userRepository = new UserRepository();
+
+    /**
+     * Takes the username and password of a username and compares it to the details in the database
+     *
+     * @param exchange The data from the API request
+     * @throws IOException If data processing fails
+     * @return String JSON formatted string of data for frontend
+     */
     public String authenticateLogin(HttpExchange exchange) throws IOException {
         Map<String, Object> loginParams = super.getParameters(exchange);
        

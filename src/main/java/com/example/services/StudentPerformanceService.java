@@ -12,10 +12,21 @@ import org.slf4j.LoggerFactory;
 import com.example.repositories.StudentPerformanceRepository;
 import com.sun.net.httpserver.HttpExchange;
 
+/**
+ * Service class for taking API requests, processing, and sending queries for the student performance screen.
+ */
 public class StudentPerformanceService extends BaseService {
     private static final Logger logger = LoggerFactory.getLogger(StudentPerformanceService.class);
     StudentPerformanceRepository studentPerformanceRepository = new StudentPerformanceRepository();
 
+    
+    /**
+     * Gets the performance of songs for a student
+     *
+     * @param exchange The data from the API request
+     * @throws IOException If data processing fails
+     * @return String JSON formatted string of data for frontend
+     */
     public String getSongPerformances(HttpExchange exchange) throws IOException {
         Map<String, Object> performanceParams = super.getQueryParameters(exchange);
         Object studentID = performanceParams.get("studentID");

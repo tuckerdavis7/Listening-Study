@@ -6,6 +6,9 @@ import com.example.services.TeacherSongService;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
+/**
+ * Handler class for processing API requests related to the song page from teacher view.
+ */
 public class TeacherSongHandler extends BaseHandler implements HttpHandler {
     private TeacherSongService teacherSongService;
 
@@ -25,14 +28,8 @@ public class TeacherSongHandler extends BaseHandler implements HttpHandler {
                 break;
 
             case "POST":
-                System.out.println("Hellodjlkfjdskf");
                 response = teacherSongService.addSong(exchange);
                 super.sendResponse(exchange, response, "Regular");
-                break;
-
-            case "PATCH":
-                //response = teacherSongService.deleteUser(exchange);
-                //super.sendResponse(exchange, response, "Regular");
                 break;
             
             default:

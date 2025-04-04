@@ -17,6 +17,9 @@ import com.sun.net.httpserver.HttpExchange;
 
 import com.example.implementations.TakeQuizImplementation;
 
+/**
+ * Service class for taking API requests, processing, and sending queries for the take quiz screen.
+ */
 public class TakeQuizService extends BaseService {
     private static final Logger logger = LoggerFactory.getLogger(TakeQuizService.class);
     QuizSettingsRepository quizSettingsRepository = new QuizSettingsRepository();
@@ -24,6 +27,13 @@ public class TakeQuizService extends BaseService {
     StudentPerformanceRepository studentPerformanceRepository = new StudentPerformanceRepository();
     TakeQuizImplementation takeQuizImplementation = new TakeQuizImplementation();
 
+    /**
+     * Gets the quiz settings for the given playlistID
+     *
+     * @param exchange The data from the API request
+     * @throws IOException If data processing fails
+     * @return String JSON formatted string of data for frontend
+     */
     public String getQuizSettings(HttpExchange exchange) throws IOException {
         Map<String, Object> configParams = super.getQueryParameters(exchange);
         Object playlistID = configParams.get("playlistID"); //needs different id later
@@ -52,6 +62,13 @@ public class TakeQuizService extends BaseService {
         return responseString;
     }
 
+    /**
+     * Gets the songs from the given playlistID
+     *
+     * @param exchange The data from the API request
+     * @throws IOException If data processing fails
+     * @return String JSON formatted string of data for frontend
+     */
     public String getSongs(HttpExchange exchange) throws IOException {
         Map<String, Object> songParams = super.getQueryParameters(exchange);
         int playlistID = ((Number)songParams.get("playlistID")).intValue();
@@ -125,8 +142,6 @@ public class TakeQuizService extends BaseService {
             logger.error("Error in getSongs (3) of TakeQuizService: " + e.getMessage());
             e.printStackTrace();
         }
-        
-
 
         return responseString;
     }

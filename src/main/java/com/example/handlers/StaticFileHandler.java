@@ -12,10 +12,16 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Handler class for serving static files back to the frontend.
+ */
 public class StaticFileHandler extends BaseHandler implements HttpHandler {
     private static final Logger logger = LoggerFactory.getLogger(StaticFileHandler.class);
     private final Map<String, String> contentTypeMap;
     
+    /**
+     * Class constructor to intialize a map containing acceptable content types
+     */
     public StaticFileHandler() {
         contentTypeMap = new HashMap<>();
         contentTypeMap.put("ico", "image/x-icon");
@@ -32,6 +38,12 @@ public class StaticFileHandler extends BaseHandler implements HttpHandler {
         contentTypeMap.put("txt", "text/plain");
     }
     
+    /**
+     * Handles/routes static requests from frontend to proper service method
+     *
+     * @param exchange The data from the static request
+     * @throws IOException If static request send or recieve operations fail
+     */
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         String path = exchange.getRequestURI().getPath();
@@ -63,6 +75,12 @@ public class StaticFileHandler extends BaseHandler implements HttpHandler {
         super.sendResponse(exchange, "Not Found", "Regular");
     }
     
+    /**
+     * Sets the content type of the file to be returned to the frontend.
+     *
+     * @param exchange The data from the static request
+     * @param path The path used for gathering the file extension
+     */
     private void setContentType(HttpExchange exchange, String path) {
         String extension = getFileExtension(path);
         
@@ -71,6 +89,12 @@ public class StaticFileHandler extends BaseHandler implements HttpHandler {
         exchange.getResponseHeaders().set("Content-Type", contentType);
     }
     
+    /**
+     * Returns the file extension type based on the path provided
+     *
+     * @param path The path used for gathering the file extension
+     * @return String containing the file extension
+     */
     private String getFileExtension(String path) {
         int lastDotIndex = path.lastIndexOf('.');
         if (lastDotIndex != -1 && lastDotIndex < path.length() - 1) {

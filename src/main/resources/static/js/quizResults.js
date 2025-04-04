@@ -1,8 +1,9 @@
 
-let quizSettingsID = 1;
+let quizSettingsID = 19;
 
 $(document).ready(async function() {
     let wrongAnswers = await getWrongAnswers();
+    //console.log(wrongAnswers);
     let songIDs = getSongIDs(wrongAnswers);
     let correctAnswers = await getCorrectAnswers(songIDs);
     let numQuestions = 3;
@@ -40,19 +41,20 @@ $(document).ready(async function() {
 
 
 async function getWrongAnswers() {
-    let wrongAnswers = [];
-    $.ajax({
-        url: `http://localhost:8080/api/quizResults?quizSettingsID=${quizSettingsID}`,
-        type: 'GET',
-        dataType: 'json',
-        success: function(data) {
-            wrongAnswers = data.data;
-        },
-        error: function(xhr, status, error) {
-            bootstrapAlert('danger', 'Error1 while updating designation: ' + error);
-        }
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: `http://localhost:8080/api/quizResults?quizSettingsID=${quizSettingsID}`,
+            type: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                resolve(data.data);
+            },
+            error: function(xhr, status, error) {
+                bootstrapAlert('danger', 'Error1 while updating designation: ' + error);
+                reject(error);
+            }
+        });
     });
-    return wrongAnswers;
 }
 
 function getSongIDs(wrongAnswers) {
@@ -66,20 +68,22 @@ function getSongIDs(wrongAnswers) {
 }
 
 async function getCorrectAnswers(songIDs) {
-    let correctAnswers;
-    $.ajax({
-        method: "POST",
-        url: "http://localhost:8080/api/quizResults/correct",
-        contentType: 'application/json',
-        dataType: 'json',
-        data: JSON.stringify(songIDs),
-        success: function(data) {
-            console.log(data.data);
-            correctAnswers = data.data;
-        },
-        error: function(xhr, status, error) {
-            bootstrapAlert('danger', 'Error2 while updating designation: ' + error);
-        }
+    console.log(songIDs);
+    console.log("songIDs");
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            method: "POST",
+            url: "http://localhost:8080/api/quizResults/correct",
+            contentType: 'application/json',
+            dataType: 'json',
+            data: JSON.stringify(songIDs),
+            success: function(data) {
+                resolve(data.data);
+            },
+            error: function(xhr, status, error) {
+                bootstrapAlert('danger', 'Error2 while updating designation: ' + error);
+                reject(error);
+            }
+        });
     });
-    return correctAnswers;
 }

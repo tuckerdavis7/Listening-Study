@@ -93,8 +93,8 @@ CREATE TABLE studentPerformance (
     ID INT AUTO_INCREMENT PRIMARY KEY,
     StudentID INT NOT NULL,
     ClassID INT NOT NULL,
-    Weight DECIMAL,
-    Score DECIMAL,
+    Weight DECIMAL(3,2),
+    Score DECIMAL(5,2),
     SongID INT NOT NULL,
     PlaylistID INT NOT NULL,
     TimesCorrect INT DEFAULT 0,
@@ -137,6 +137,17 @@ CREATE TABLE quizSettings (
     playbackDuration INT,
     numQuestions INT,
     deleted TINYINT(1) default 0
+);
+
+CREATE TABLE quizResults (
+    ID INT AUTO_INCREMENT PRIMARY KEY,
+    quizSettingsID INT NOT NULL,
+    songID INT NOT NULL,
+    songName VARCHAR(255) NOT NULL,
+    songComposer VARCHAR(255),
+    songYear INT,
+    deleted BOOLEAN DEFAULT FALSE,
+    FOREIGN KEY (quizSettingsID) REFERENCES quizSettings(ID) ON DELETE CASCADE
 );
 
 -- Create View for Playlist

@@ -32,7 +32,7 @@ public class SongRepository {
 
     public ResultSet getSongData(int songID) throws SQLException {
         //List<String> songData = new ArrayList<>();        
-        String query = "SELECT * FROM songs WHERE songID =?";
+        String query = "SELECT * FROM song WHERE ID =?";
 
         PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
         pstmt.setInt(1, songID);

@@ -5,16 +5,20 @@ import java.util.List;
 import java.util.Map;
 
 public class QuizImplementation {
-    public boolean checkAnswers(Map<String, Object> quizData, Map<String, Object> songData){
-        return !(quizData.get("name") != songData.get("name") ||quizData.get("composer") != songData.get("composer") || quizData.get("year") != songData.get("year"));
+    public boolean checkAnswers(Map<String, Object> quizData, Map<String, Object> songData) {
+        if (((String)quizData.get("name")).toLowerCase().equals(((String)songData.get("name")).toLowerCase()) &&
+            ((String)quizData.get("composer")).toLowerCase().equals(((String)songData.get("composer")).toLowerCase()) &&
+            ((String)quizData.get("year")).toLowerCase().equals(((String)songData.get("year")).toLowerCase()))
+            return true;
+        return false;
     } 
 
     public List<Double> calculateWeight(int timesQuizzed, int timesCorrect){
-        double weight = 1 - (timesCorrect/timesQuizzed);
-        double rate = timesCorrect/timesQuizzed * 100;
-        List<Double> weightRate = new ArrayList<>();
-        weightRate.add(weight);
-        weightRate.add(rate); 
-        return weightRate;
+        double weight = 1 - ((double)timesCorrect / timesQuizzed);
+        double score = ((double)timesCorrect / timesQuizzed) * 100;
+        List<Double> weightScore = new ArrayList<>();
+        weightScore.add(weight);
+        weightScore.add(score); 
+        return weightScore;
     } 
 }

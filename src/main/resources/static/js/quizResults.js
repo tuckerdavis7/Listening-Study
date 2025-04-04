@@ -1,79 +1,35 @@
-let userAnswers = [
-    [
-        {
-            "name": "songName",
-            "value": "Far elise"
-        },
-        {
-            "name": "composer",
-            "value": "Ludwig van Beethoven"
-        },
-        {
-            "name": "year",
-            "value": "1810"
-        }
-    ],
-    [
-        {
-            "name": "songName",
-            "value": "symphony no. 41"
-        },
-        {
-            "name": "composer",
-            "value": "Wolfgang Amadeus Mozart"
-        },
-        {
-            "name": "year",
-            "value": "1788"
-        }
-    ]
-]
-let playlistData = [
-    {
-        "playlist": "Classical 1",
-        "name": "Fur Elise",
-        "composer": "Ludwig van Beethoven",
-        "year": "1810",
-        "url": "https://youtu.be/q9bU12gXUyM?si=gMz2qDgpwy6ZtolG",
-        "timestamp": 160,
-        "class": "MUSIC 101",
-        "id": "0001"
-    },
-    {
-        "playlist": "Classical 1",
-        "name": "Symphony No. 40",
-        "composer": "Wolfgang Amadeus Mozart",
-        "year": "1788",
-        "url": "https://youtu.be/JTc1mDieQI8?si=1ggnfrLLopftYWt7",
-        "timestamp": 44,
-        "class": "MUSIC 101",
-        "id": "0002"
-    }
-];
 
-$(document).ready(function() {
-    let wrongAnswerIndices = getWrongAnswers();
+let quizSettingsID = 1;
+
+$(document).ready(async function() {
+    let wrongAnswers = await getWrongAnswers();
+    let songIDs = getSongIDs(wrongAnswers);
+    let correctAnswers = await getCorrectAnswers(songIDs);
+    let numQuestions = 3;
+    console.log(numQuestions);
+    console.log(wrongAnswers);
+    console.log(correctAnswers);
+
     let container = $('#wrongAnswersContainer');
 
-    for (let i = 0; i < wrongAnswerIndices.length; i++) {
+    for (let i = 0; i < wrongAnswers.length; i++) {
         let subcontainer = $('<div class="card m-4 shadow answerCard"></div>');
         container.append(subcontainer);
         
-        subcontainer.append(`<h4 class="card-title">Question ${wrongAnswerIndices[i]+1}:`);
         subcontainer.append('<h6 class="card-subtitle"><b>Your Answer</b>:</h6>');
-        subcontainer.append(`<p class="card-text"><u>Song Name</u>: ${userAnswers[wrongAnswerIndices[i]][0].value}`);
-        subcontainer.append(`<p class="card-text"><u>Composer</u>: ${userAnswers[wrongAnswerIndices[i]][1].value}`);
-        subcontainer.append(`<p class="card-text"><u>Year</u>: ${userAnswers[wrongAnswerIndices[i]][2].value}`);
+        subcontainer.append(`<p class="card-text"><u>Song Name</u>: ${wrongAnswers[i].name}`);
+        subcontainer.append(`<p class="card-text"><u>Composer</u>: ${wrongAnswers[i].composer}`);
+        subcontainer.append(`<p class="card-text"><u>Year</u>: ${wrongAnswers[i].year}`);
         subcontainer.append('<h6 class="card-subtitle"><b>Answer</b>:</h6>');
-        subcontainer.append(`<p class="card-text"><u>Song Name</u>: ${playlistData[wrongAnswerIndices[i]]['name']}`);
-        subcontainer.append(`<p class="card-text"><u>Composer</u>: ${playlistData[wrongAnswerIndices[i]]['composer']}`);
-        subcontainer.append(`<p class="card-text"><u>Year</u>: ${playlistData[wrongAnswerIndices[i]]['year']}`);
+        subcontainer.append(`<p class="card-text"><u>Song Name</u>: ${correctAnswers[i].name}`);
+        subcontainer.append(`<p class="card-text"><u>Composer</u>: ${correctAnswers[i].composer}`);
+        subcontainer.append(`<p class="card-text"><u>Year</u>: ${correctAnswers[i].year}`);
     }
 
-    let numberCorrect = userAnswers.length - wrongAnswerIndices.length;
-    let scorePercentage = (numberCorrect) / userAnswers.length * 100;
+    let numberCorrect = numQuestions - wrongAnswers.length;
+    let scorePercentage = (numberCorrect / numQuestions) * 100;
     $('#userScore').html(numberCorrect);
-    $('#totalQuestions').html(userAnswers.length);
+    $('#totalQuestions').html(numQuestions);
     $('#scorePercentage').html(scorePercentage);
 
     if (scorePercentage == 100) {
@@ -82,23 +38,48 @@ $(document).ready(function() {
     }
 });
 
-function getWrongAnswers() {
+
+async function getWrongAnswers() {
     let wrongAnswers = [];
-    for (let i = 0; i < userAnswers.length; i++) {
-        let answerKey = playlistData[i];
-
-        if (
-            answerKey['name'].toLowerCase() == userAnswers[i][0]['value'].toLowerCase() &&
-            answerKey['composer'].toLowerCase() == userAnswers[i][1]['value'].toLowerCase() &&
-            answerKey['year'] == userAnswers[i][2]['value']
-        ) {
-            //console.log(answerKey);
-            //console.log(userAnswers[i]);
+    $.ajax({
+        url: `http://localhost:8080/api/quizResults?quizSettingsID=${quizSettingsID}`,
+        type: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            wrongAnswers = data.data;
+        },
+        error: function(xhr, status, error) {
+            bootstrapAlert('danger', 'Error1 while updating designation: ' + error);
         }
-        else {
-            wrongAnswers.push(i);
-        }
-    }
+    });
     return wrongAnswers;
+}
 
+function getSongIDs(wrongAnswers) {
+    let songIDs = [];
+    wrongAnswers.forEach(element => {
+        songIDs.push({"songID": element.songID});
+    });
+    console.log(songIDs);
+    return songIDs;
+    
+}
+
+async function getCorrectAnswers(songIDs) {
+    let correctAnswers;
+    $.ajax({
+        method: "POST",
+        url: "http://localhost:8080/api/quizResults/correct",
+        contentType: 'application/json',
+        dataType: 'json',
+        data: JSON.stringify(songIDs),
+        success: function(data) {
+            console.log(data.data);
+            correctAnswers = data.data;
+        },
+        error: function(xhr, status, error) {
+            bootstrapAlert('danger', 'Error2 while updating designation: ' + error);
+        }
+    });
+    return correctAnswers;
 }

@@ -206,3 +206,17 @@ INSERT INTO quizSettings (playlistID, playbackMethod, playbackDuration, numQuest
 (9, 'MostReplayed', 30, 10, 1),
 (10, 'Random', 60, 20, 1),
 (11, 'TeacherTimestamp', 20, 8, 1);
+
+INSERT INTO quizResults (quizSettingsID, songID, songName, songComposer, songYear, deleted) VALUES
+(1, 101, 'Bohemian Rhapsody', 'Freddie Mercury', 1975, TRUE),
+(2, 102, 'Imagine', 'John Lennon', 1971, TRUE),
+(3, 103, 'Billie Jean', 'Michael Jackson', 1982, TRUE),
+(4, 104, 'Like a Rolling Stone', 'Bob Dylan', 1965, TRUE),
+(5, 105, 'Hey Jude', 'Paul McCartney', 1968, TRUE),
+(6, 106, 'Hotel California', 'Don Henley', 1976, TRUE),
+(7, 107, 'Smells Like Teen Spirit', 'Kurt Cobain', 1991, TRUE),
+(8, 108, 'Sweet Child O Mine', 'Slash', 1987, TRUE),
+(9, 109, 'Rolling in the Deep', 'Adele', 2010, TRUE),
+(10, 110, 'Uptown Funk', 'Mark Ronson', 2014, TRUE),
+(11, 111, 'Shape of You', 'Ed Sheeran', 2017, TRUE),
+(12, 112, 'Blinding Lights', 'The Weeknd', 2019, TRUE);

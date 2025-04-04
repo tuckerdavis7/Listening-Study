@@ -27,7 +27,25 @@ public class QuizSettingsRepository {
         pstmt.setInt(2, 0);
         ResultSet rs = pstmt.executeQuery();
 
-       return rs;
+        return rs;
+    }
+
+    public ResultSet getNumQuestionsByID(Object quizSettingsID) throws SQLException {
+        String query = "SELECT * FROM quizSettings WHERE ID = ?";
+
+        PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
+        pstmt.setInt(1, (Integer) quizSettingsID);
+        ResultSet rs = pstmt.executeQuery();
+
+        return rs;
+    }
+
+    public void setDeletedByID(int quizSettingsID) throws SQLException {
+        String query = "UPDATE quizSettings set deleted = 1 where ID = ?";
+
+        PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
+        pstmt.setInt(1, (Integer) quizSettingsID);
+        pstmt.executeUpdate();
     }
 
 }

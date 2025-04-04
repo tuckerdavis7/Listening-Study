@@ -19,15 +19,31 @@ public class QuizResultsHandler extends BaseHandler implements  HttpHandler {
         String method = exchange.getRequestMethod();
 
         switch (method) {
-            // case "POST":
-            //     response = quizSettingsService.setQuizParameters(exchange);
-            //     super.sendResponse(exchange, response, "Regular");
-            //     break;
-
             case "GET":
                 response = quizResultsService.getQuizResults(exchange);
                 super.sendResponse(exchange, response, "Regular");
                 break;
+
+            case "POST":
+                if (exchange.getRequestURI().getPath().equals("/api/quizResults/submit")) {
+                    response = quizResultsService.setQuizResults(exchange);
+                    super.sendResponse(exchange, response, "Regular");
+                    break;
+                }
+                else if (exchange.getRequestURI().getPath().equals("/api/quizResults/forward")) {
+                    response = quizResultsService.forwardQuizResults(exchange);
+                    super.sendResponse(exchange, response, "Regular");
+                    break;
+                }
+                else if (exchange.getRequestURI().getPath().equals("/api/quizResults/correct")) {
+                    response = quizResultsService.getCorrectAnswers(exchange);
+                    super.sendResponse(exchange, response, "Regular");
+                    break;
+                }
+                else {
+                    super.sendResponse(exchange, "Method Not Allowed", "Regular");
+                    break;
+                }  
 
             // case "PATCH":
             //     response = quizSettingsService.updateDesignation(exchange);

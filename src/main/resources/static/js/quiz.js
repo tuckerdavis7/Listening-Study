@@ -29,6 +29,7 @@ let quizQuestions = [];
 let quizSettings = {};
 let playbackMethod = "Random";
 let playbackDuration = 60;
+let activeQuizID = 0;
 
 let userAnswers = [];
 let questionNumber = 0;
@@ -45,6 +46,7 @@ $(document).ready(async function() {
     await updateQuizSettings();
     playbackMethod = quizSettings[0]['playbackMethod'];
     playbackDuration = quizSettings[0]['playbackDuration'];
+    activeQuizID = quizSettings[0]['quizSettingsID'];
 
 
     document.addEventListener('playerReady', function() {
@@ -85,9 +87,10 @@ $(document).ready(async function() {
         answer['name'] = formData[0]['value'];
         answer['composer'] = formData[1]['value'];
         answer['year'] = formData[2]['value'];
+        answer['songID'] = quizQuestions[questionNumber]['songID'];
+        answer['playlistID'] = quizQuestions[questionNumber]['playlistID'];
 
         userAnswers.push(answer);
-        console.log(userAnswers);
         nextQuestion();
     });
 });
@@ -113,7 +116,7 @@ function checkAnswers(formData) {
     }
 }
 
-function nextQuestion() {
+async function nextQuestion() {
     questionNumber++;
     songListens = 0;
     $('#songListens').html(3);
@@ -125,8 +128,15 @@ function nextQuestion() {
         loadCurrentSong();
     }
     else {
-        //console.log("QUIZ COMPLETE!");
-        //alert(`Quiz complete! You got ${numberCorrect} out of ${playlistData.length} correct.`);
+        
+        let wrongAnswers = await submitAnswers();
+        wrongAnswers.forEach(element => {
+            element.quizSettingsID = activeQuizID;
+        });
+
+        await forwardAnswers(wrongAnswers);
+
+
         window.location.href = "./quizResults";
     }
 }
@@ -143,7 +153,7 @@ async function loadCurrentSong() {
     }
     
     songDuration = await getVideoDuration();
-    await setNewSong(videoId, playbackTimestamp, 5);
+    await setNewSong(videoId, playbackTimestamp, playbackDuration);
 
     if (songListens == 0) {
         const newSongWait = setTimeout(async function () {
@@ -152,7 +162,7 @@ async function loadCurrentSong() {
             let fixedTimestamp = await getCorrectTimestamp(playbackTimestamp);
             if (fixedTimestamp != playbackTimestamp) {
                 playbackTimestamp = fixedTimestamp;
-                await setNewSong(videoId, fixedTimestamp, 5);
+                await setNewSong(videoId, fixedTimestamp, playbackDuration);
             }
         }, 1000);
     }
@@ -222,4 +232,38 @@ async function setNewSong(videoId, timestamp, playbackDuration) {
         }
     });
     document.dispatchEvent(setNewSong);
+}
+
+async function submitAnswers() {
+    try {
+        const response = await $.ajax({
+            method: "POST",
+            url: "http://localhost:8080/api/quizResults/submit",
+            contentType: 'application/json',
+            dataType: 'json',
+            data: JSON.stringify(userAnswers)
+        });
+        return response.data;
+    }
+    catch (error) {
+        console.log("Error fetching data from the API:", error);
+        return null;
+    }
+}
+
+async function forwardAnswers(wrongAnswers) {
+    try {
+        const response = await $.ajax({
+            method: "POST",
+            url: "http://localhost:8080/api/quizResults/forward",
+            contentType: 'application/json',
+            dataType: 'json',
+            data: JSON.stringify(wrongAnswers)
+        });
+        return response.data;
+    }
+    catch (error) {
+        console.log("Error fetching data from the API:", error);
+        return null;
+    }
 }

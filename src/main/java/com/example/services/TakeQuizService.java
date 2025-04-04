@@ -39,6 +39,7 @@ public class TakeQuizService extends BaseService {
                 quizSettingsMap.put("playbackMethod", result.getString("playbackMethod"));
                 quizSettingsMap.put("playbackDuration", result.getInt("playbackDuration"));
                 quizSettingsMap.put("numQuestions", result.getString("numQuestions"));
+                quizSettingsMap.put("quizSettingsID", result.getInt("ID"));
                 
                 quizSettingsList.add(quizSettingsMap);
             }

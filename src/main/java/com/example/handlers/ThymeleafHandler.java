@@ -11,10 +11,16 @@ import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
+/**
+ * Handler class for returning dynamic thymeleaf templates and fragments.
+ */
 public class ThymeleafHandler extends BaseHandler implements HttpHandler {
     private static final Logger logger = LoggerFactory.getLogger(ThymeleafHandler.class);
     private TemplateEngine templateEngine;
 
+    /**
+     * Class constructor to create the templating engine
+     */
     public ThymeleafHandler() {
         ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
         templateResolver.setPrefix("templates/"); //check template folder
@@ -26,6 +32,12 @@ public class ThymeleafHandler extends BaseHandler implements HttpHandler {
         this.templateEngine.setTemplateResolver(templateResolver);
     }
 
+    /**
+     * Handles/routes dynamic thymeleaf requests from frontend to proper service method
+     *
+     * @param exchange The data from the API request
+     * @throws IOException If template request send or recieve operations fail
+     */
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         String path = exchange.getRequestURI().getPath();
@@ -118,7 +130,13 @@ public class ThymeleafHandler extends BaseHandler implements HttpHandler {
         }
     }
 
-    //base rendering function for all pages
+    /**
+     * Helper function to render requested templates
+     *
+     * @param template The template name to be used
+     * @param context The data from the API request
+     * @return String The processed template, or a messsage showing failed template rendering
+     */
     private String render(String template, Context context) {
         try {
             return templateEngine.process(template, context);

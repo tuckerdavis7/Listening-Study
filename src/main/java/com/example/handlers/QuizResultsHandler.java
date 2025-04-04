@@ -6,13 +6,25 @@ import com.example.services.QuizResultsService;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
+/**
+ * Handler class for processing API requests related to quiz results.
+ */
 public class QuizResultsHandler extends BaseHandler implements  HttpHandler {
     private QuizResultsService quizResultsService;
 
+    /**
+     * Class constructor to intialize service file
+     */
     public QuizResultsHandler() {
         this.quizResultsService = new QuizResultsService();
     }
 
+    /**
+     * Handles/routes HTTP requests from frontend to proper service method
+     *
+     * @param exchange The data from the API request
+     * @throws IOException If HTTP request send or recieve operations fail
+     */
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         String response = "";

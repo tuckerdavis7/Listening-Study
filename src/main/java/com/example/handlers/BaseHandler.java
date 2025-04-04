@@ -6,7 +6,18 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * Base Handler class that contains methods to be used in other handlers.
+ */
 public class BaseHandler {
+    /**
+     * Handles sending the response to the frontend.
+     *
+     * @param exchange The data from the API request
+     * @param responseContent Parameter used to determine the HTTP code to be returned
+     * @param responseType Checks if the request is static ("Thymeleaf") or dynamic (all other API calls).
+     * @throws IOException If HTTP request send or recieve operations fail
+     */
     protected void sendResponse(HttpExchange exchange, String responseContent, String responseType) throws IOException {
         int responseCode;
         switch (responseContent) {

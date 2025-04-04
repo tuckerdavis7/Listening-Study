@@ -7,7 +7,17 @@ import java.util.Map;
 
 import com.example.configuration.DatabaseConfiguration;
 
+/**
+ * Repository class to execute queries on the user table.
+ */
 public class UserRepository {
+    
+    /**
+     * Adds the user to the user table
+     *
+     * @param Map user that contains the user and its data
+     * @throws SQLException When the query does not run properly
+     */
     public void addUser(Map<String, Object> user) throws SQLException {
         String query = "INSERT INTO users (username, email, first_name, last_name, deleted, role, password) VALUES (?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
@@ -22,6 +32,12 @@ public class UserRepository {
         pstmt.executeUpdate();
     }
 
+    /**
+     * deletes user from the user table
+     *
+     * @param Map user that contains the user and its data
+     * @throws SQLException When the query does not run properly
+     */
     public void deleteUser(Map<String, Object> user) throws SQLException {
         String query = "UPDATE users SET deleted = ? WHERE username = ?";
         PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
@@ -29,17 +45,15 @@ public class UserRepository {
         pstmt.setInt(1,1);
         pstmt.setString(2, user.get("username").toString());
         pstmt.executeUpdate();
-    }
+    } 
 
-    public ResultSet getAllUsers() throws SQLException {
-        String query = "SELECT * FROM users WHERE deleted =?";
-        PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
-        pstmt.setInt(1, 0);
-        ResultSet rs = pstmt.executeQuery();
-
-       return rs;
-    }
-
+    /**
+     * returns user by email
+     *
+     * @param email of the user
+     * @throws SQLException When the query does not run properly
+     * @return result set of the query
+     */
     public ResultSet getUserByEmail(String email) throws SQLException {
         String query = "SELECT * FROM users WHERE email =?";
         PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
@@ -49,6 +63,13 @@ public class UserRepository {
        return rs;
     }
 
+    /**
+     * returns count of a specific email
+     *
+     * @param email of the user
+     * @throws SQLException When the query does not run properly
+     * @return result set of the query
+     */
     public ResultSet getUserCountByEmail(String email) throws SQLException {
         String query = "SELECT COUNT(*) FROM users WHERE email =? AND deleted = ?";
         PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
@@ -59,6 +80,13 @@ public class UserRepository {
         return rs;
     }
 
+     /**
+     * returns count of a specific username
+     *
+     * @param username of the user
+     * @throws SQLException When the query does not run properly
+     * @return result set of the query
+     */
     public ResultSet getUserCountByUsername(String username) throws SQLException {
         String query = "SELECT COUNT(*) FROM users WHERE username =? AND deleted = ?";
         PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
@@ -69,6 +97,12 @@ public class UserRepository {
         return rs;
     }
 
+    /**
+     * updates a moderator or teacher role
+     *
+     * @param map of the user data
+     * @throws SQLException When the query does not run properly
+     */
     public void updateModeratorOrTeacherDesignation(Map<String, Object> user) throws SQLException {
         String query = "UPDATE users SET role = ? WHERE username = ?";
         PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);

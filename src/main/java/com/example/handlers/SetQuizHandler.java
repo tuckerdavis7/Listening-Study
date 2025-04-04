@@ -6,13 +6,25 @@ import com.example.services.SetQuizService;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
+/**
+ * Handler class for processing API requests related to quiz setup.
+ */
 public class SetQuizHandler extends BaseHandler implements HttpHandler {
     private SetQuizService setQuizService;
 
+    /**
+     * Class constructor to intialize service file
+     */
     public SetQuizHandler() {
         this.setQuizService = new SetQuizService();
     }
 
+    /**
+     * Handles/routes HTTP requests from frontend to proper service method
+     *
+     * @param exchange The data from the API request
+     * @throws IOException If HTTP request send or recieve operations fail
+     */
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         String response = "";
@@ -28,16 +40,6 @@ public class SetQuizHandler extends BaseHandler implements HttpHandler {
                 response = setQuizService.getPlaylists(exchange);
                 super.sendResponse(exchange, response, "Regular");
                 break;
-
-            // case "PATCH":
-            //     response = setQuizService.updateDesignation(exchange);
-            //     super.sendResponse(exchange, response, "Regular");
-            //     break;
-
-            // case "DELETE":
-            //     response = setQuizService.deleteUser(exchange);
-            //     super.sendResponse(exchange, response, "Regular");
-            //     break;
             
             default:
                 super.sendResponse(exchange, "Method Not Allowed", "Regular");

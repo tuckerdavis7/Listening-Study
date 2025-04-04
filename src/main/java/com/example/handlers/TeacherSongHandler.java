@@ -18,7 +18,8 @@ public class TeacherSongHandler extends BaseHandler implements HttpHandler {
     public TeacherSongHandler() {
         this.teacherSongService = new TeacherSongService();
     }
- /**
+
+    /**
      * Handles/routes HTTP requests from frontend to proper service method
      *
      * @param exchange The data from the API request

@@ -41,7 +41,7 @@ public class StudentPerformanceRepository {
      * @throws SQLException When the query does not run properly
      * @return ResultSet containing query results
      */
-   public ResultSet getQuizWeights(int songID, int studentID) throws SQLException {
+   public ResultSet getSongWeight(int songID, int studentID) throws SQLException {
       String query = "SELECT Weight FROM studentPerformance WHERE songID = ? AND studentID = ?";
 
       PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);

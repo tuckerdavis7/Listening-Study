@@ -120,7 +120,7 @@ public class TakeQuizService extends BaseService {
         try {
             for (Map<String, Object> song : playlistSongList) {
                 int songID = ((Number)song.get("songID")).intValue();
-                ResultSet result = studentPerformanceRepository.getQuizWeights(songID, studentID);
+                ResultSet result = studentPerformanceRepository.getSongWeight(songID, studentID);
 
                 if (result.next()) {
                     double weight = result.getDouble("Weight");
@@ -132,8 +132,8 @@ public class TakeQuizService extends BaseService {
                 responseString = super.formatJSON("error", "No songs found.");
             }
             else {
-                List<Map<String, Object>> selectedQuestions = takeQuizImplementation.getWeightedRandom(playlistSongList, numQuestions);
-                responseString = super.formatJSON(selectedQuestions, "success");
+                List<Map<String, Object>> selectedSongs = takeQuizImplementation.getWeightedRandomShuffle(playlistSongList, numQuestions);
+                responseString = super.formatJSON(selectedSongs, "success");
             }
 
         } 

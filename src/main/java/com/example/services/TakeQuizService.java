@@ -120,7 +120,7 @@ public class TakeQuizService extends BaseService {
         try {
             for (Map<String, Object> song : playlistSongList) {
                 int songID = ((Number)song.get("songID")).intValue();
-                ResultSet result = studentPerformanceRepository.getQuizWeights(songID, studentID);
+                ResultSet result = studentPerformanceRepository.getSongWeight(songID, studentID);
 
                 if (result.next()) {
                     double weight = result.getDouble("Weight");

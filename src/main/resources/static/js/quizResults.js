@@ -1,9 +1,9 @@
 
-let quizSettingsID = 19;
+let quizSettingsID = 22;
 
 $(document).ready(async function() {
     let wrongAnswers = await getWrongAnswers();
-    //console.log(wrongAnswers);
+    console.log(wrongAnswers);
     let songIDs = getSongIDs(wrongAnswers);
     let correctAnswers = await getCorrectAnswers(songIDs);
     let numQuestions = 3;
@@ -13,7 +13,7 @@ $(document).ready(async function() {
 
     let container = $('#wrongAnswersContainer');
 
-    for (let i = 0; i < wrongAnswers.length; i++) {
+    for (let i = 0; i < wrongAnswers.length - 1; i++) {
         let subcontainer = $('<div class="card m-4 shadow answerCard"></div>');
         container.append(subcontainer);
         
@@ -27,7 +27,8 @@ $(document).ready(async function() {
         subcontainer.append(`<p class="card-text"><u>Year</u>: ${correctAnswers[i].year}`);
     }
 
-    let numberCorrect = numQuestions - wrongAnswers.length;
+    let numberCorrect = numQuestions - (wrongAnswers.length - 1);
+    console.log(numberCorrect);
     let scorePercentage = (numberCorrect / numQuestions) * 100;
     $('#userScore').html(numberCorrect);
     $('#totalQuestions').html(numQuestions);
@@ -59,9 +60,9 @@ async function getWrongAnswers() {
 
 function getSongIDs(wrongAnswers) {
     let songIDs = [];
-    wrongAnswers.forEach(element => {
-        songIDs.push({"songID": element.songID});
-    });
+    for (let i = 0; i < wrongAnswers.length - 1; i++) {
+        songIDs.push({ songID: wrongAnswers[i].songID });
+    }    
     console.log(songIDs);
     return songIDs;
     

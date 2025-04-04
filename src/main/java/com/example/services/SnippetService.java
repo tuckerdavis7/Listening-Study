@@ -6,9 +6,19 @@ import java.util.Map;
 import com.example.implementations.SnippetImplementation;
 import com.sun.net.httpserver.HttpExchange;
 
+/**
+ * Service class for taking API requests, processing, and sending queries for the student song snippets.
+ */
 public class SnippetService extends BaseService {
     private SnippetImplementation snippetImplementation = new SnippetImplementation();
 
+      /**
+     * Gets the timestamp for the song
+     *
+     * @param exchange The data from the API request
+     * @throws IOException If data processing fails
+     * @return String timestamp for frontend
+     */
     public String getTimeStamp(HttpExchange exchange) throws IOException {      
         Map<String, Object> songData = super.getQueryParameters(exchange);
         String playbackMethod = (String)songData.get("playbackMethod");
@@ -29,6 +39,14 @@ public class SnippetService extends BaseService {
         return Integer.toString(timestamp);
     } 
 
+    /**
+     * Checks the boundary of the song snippet and playback duration
+     *
+     * @param songDuration length of the song
+     * @param playBlackDuration lenght of the song playback
+     * @param timeStamp timestamp the playback starts at
+     * @return result of if the song plays outside of the boundary
+     */
     private boolean checkTimeBoundary(int songDuration, int playbackDuration, int timestamp){
         return timestamp <= songDuration - playbackDuration;
     }

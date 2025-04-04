@@ -139,6 +139,17 @@ CREATE TABLE quizSettings (
     deleted TINYINT(1) default 0
 );
 
+CREATE TABLE quizResults (
+    ID INT AUTO_INCREMENT PRIMARY KEY,
+    quizSettingsID INT NOT NULL,
+    songID INT NOT NULL,
+    songName VARCHAR(255) NOT NULL,
+    songComposer VARCHAR(255),
+    songYear INT,
+    deleted BOOLEAN DEFAULT FALSE,
+    FOREIGN KEY (quizSettingsID) REFERENCES quizSettings(ID) ON DELETE CASCADE
+);
+
 -- Create View for Playlist
 CREATE VIEW view_playlist AS
 SELECT

@@ -21,7 +21,7 @@ public class SnippetImplementation {
     }
 
      /**
-     * Generates a random timestamp for the song and teturns
+     * Generates a random timestamp for the song and returns
      *
      * @param Song duration length of song
      * @param Playback duration length song playback

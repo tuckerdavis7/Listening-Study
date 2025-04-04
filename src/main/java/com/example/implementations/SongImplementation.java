@@ -1,13 +1,5 @@
 package com.example.implementations;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-
 import java.time.Duration;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -15,10 +7,27 @@ import java.util.regex.Pattern;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
+/**
+ * Implementation class for extra processing of songs.
+ */
 public class SongImplementation {
     
 
+     /**
+     * Generates a timestamp based on the most viewed part of the song
+     *
+     * @param URL link to the youtube song
+     * @throws exception if the heatmap is not found
+     * @return refractored timestamp
+     */
     public int getMostReplayedTimestamp(String url) {
 
         System.setProperty("webdriver.chrome.driver", "./driver/chromedriver.exe");
@@ -57,6 +66,13 @@ public class SongImplementation {
         return -1;
     }
 
+    /**
+     * Retrieves the duration of the video
+     *
+     * @param Driver webdriver controls browser for video information retrieval
+     * @throws exception if it cannot get the video duration
+     * @return video duration as int
+     */
     private int getVideoDuration(WebDriver driver) {
         try {
             WebElement durationElement = driver.findElement(By.cssSelector(".ytp-time-duration"));
@@ -69,6 +85,12 @@ public class SongImplementation {
         }
     }
 
+      /**
+     * Converts time of video into seconds
+     *
+     * @param time as length of the video
+     * @return second of the video
+     */
     public int convertTimeToSeconds(String time) {
         String[] parts = time.split(":");
         int seconds = 0;
@@ -81,6 +103,13 @@ public class SongImplementation {
         return seconds;
     }
 
+      /**
+     * Retrieves the most replayed timestamp of the video
+     *
+     * @param heatmap is where viewership of the video is
+     * @param videoDuration is the length of the video
+     * @return most replayed timestamp
+     */
     private int extractMostReplayedTimestamp(String heatmap, int videoDuration) {
         Pattern pattern = Pattern.compile("([0-9\\.]+),([0-9\\.]+)");
         Matcher matcher = pattern.matcher(heatmap);
@@ -101,6 +130,12 @@ public class SongImplementation {
         return (int) Math.round(timestamp / 1000.0 * videoDuration);
     }
 
+      /**
+     * Extracts the video ID if valid
+     *
+     * @param url is the link to the youtube video     
+     * @return the ID returned or invalid if not a valid link
+     */
     public String extractVideoId(String url) {
         String regex = "(?:youtube\\.com/watch\\?v=|youtu\\.be/)([a-zA-Z0-9_-]{11})";
         Pattern pattern = Pattern.compile(regex);

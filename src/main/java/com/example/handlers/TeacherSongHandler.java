@@ -12,10 +12,18 @@ import com.sun.net.httpserver.HttpHandler;
 public class TeacherSongHandler extends BaseHandler implements HttpHandler {
     private TeacherSongService teacherSongService;
 
+    /**
+     * Class constructor to intialize service file
+     */
     public TeacherSongHandler() {
         this.teacherSongService = new TeacherSongService();
     }
-
+ /**
+     * Handles/routes HTTP requests from frontend to proper service method
+     *
+     * @param exchange The data from the API request
+     * @throws IOException If HTTP request send or recieve operations fail
+     */
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         String response = "";

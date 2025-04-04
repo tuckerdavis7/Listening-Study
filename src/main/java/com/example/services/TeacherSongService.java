@@ -14,12 +14,22 @@ import com.example.repositories.PlaylistSongRepository;
 import com.example.repositories.SongRepository;
 import com.sun.net.httpserver.HttpExchange;
 
+/**
+ * Service class for taking API requests, processing, and sending queries for the teacher songs.
+ */
 public class TeacherSongService extends BaseService {
     private static final Logger logger = LoggerFactory.getLogger(TeacherSongService.class);
     private SongRepository songRepository = new SongRepository();
     private PlaylistSongRepository playlistSongRepository = new PlaylistSongRepository();
     private SongImplementation songImplementation = new SongImplementation();
 
+     /**
+     * Adds a song to a playlist by sending its data
+     *
+     * @param exchange The data from the API request
+     * @throws IOException If data processing fails
+     * @return String JSON formatted string of data for frontend
+     */
     public String addSong(HttpExchange exchange) throws IOException {
         Map<String, Object> songData = super.getParameters(exchange);
         
@@ -53,6 +63,13 @@ public class TeacherSongService extends BaseService {
         return responseString;
     }
 
+     /**
+     * Gets the playlist songs to view a playlist
+     *
+     * @param exchange The data from the API request
+     * @throws IOException If data processing fails
+     * @return String JSON formatted string of data for frontend with songs 
+     */
     public String getPlaylistSongs(HttpExchange exchange) throws IOException {
         Map<String, Object> songData = super.getQueryParameters(exchange);
         int playlistID = ((Number)songData.get("playlistID")).intValue();

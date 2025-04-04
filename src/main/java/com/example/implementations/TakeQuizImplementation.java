@@ -19,7 +19,7 @@ public class TakeQuizImplementation {
      * @param numQuestions Number of questions specified from the quiz settings
      * @return List Song details with weight included for frontend
      */
-    public List<Map<String, Object>> getWeightedRandom(ArrayList<Map<String, Object>> playlistSongList, int numQuestions) {
+    public List<Map<String, Object>> getWeightedRandomShuffle(ArrayList<Map<String, Object>> playlistSongList, int numQuestions) {
         List<Map<String, Object>> selectedQuestions = new ArrayList<>();
         Set<Integer> selectedSongIDs = new HashSet<>();
 

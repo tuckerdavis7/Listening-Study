@@ -132,7 +132,7 @@ public class TakeQuizService extends BaseService {
                 responseString = super.formatJSON("error", "No songs found.");
             }
             else {
-                List<Map<String, Object>> selectedQuestions = takeQuizImplementation.getWeightedRandom(playlistSongList, numQuestions);
+                List<Map<String, Object>> selectedQuestions = takeQuizImplementation.getWeightedRandomShuffle(playlistSongList, numQuestions);
                 responseString = super.formatJSON(selectedQuestions, "success");
             }
 

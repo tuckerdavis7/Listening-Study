@@ -7,8 +7,18 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Random;
 
+/**
+ * Implementation class for taking processing on the take quiz screen.
+ */
 public class TakeQuizImplementation {
 
+    /**
+     * Gets the list of random weights assigned to songs
+     *
+     * @param playlistSongList List of songs frmo the playlist
+     * @param numQuestions Number of questions specified from the quiz settings
+     * @return List Song details with weight included for frontend
+     */
     public List<Map<String, Object>> getWeightedRandom(ArrayList<Map<String, Object>> playlistSongList, int numQuestions) {
         List<Map<String, Object>> selectedQuestions = new ArrayList<>();
         Set<Integer> selectedSongIDs = new HashSet<>();
@@ -55,6 +65,12 @@ public class TakeQuizImplementation {
         return selectedQuestions;
     }
 
+    /**
+     * Helper function to get the weight from each map object
+     *
+     * @param value List of songs frmo the playlist
+     * @return double weight value
+     */
     private double extractWeight(Object value) {
         if (value instanceof Number) {
             return ((Number) value).doubleValue();

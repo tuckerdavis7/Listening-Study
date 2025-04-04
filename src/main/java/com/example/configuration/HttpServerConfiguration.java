@@ -9,9 +9,17 @@ import org.slf4j.LoggerFactory;
 
 import com.example.handlers.*;
 
+/**
+ * Configuration class for HTTP server
+ */
 public class HttpServerConfiguration {
     private static final Logger logger = LoggerFactory.getLogger(HttpServerConfiguration.class);
 
+    /**
+     * Starts the HTTP server for the application
+     *
+     * @throws IOException If the server can't be started
+     */
     public static void startServer() throws IOException {
         ApplicationConfiguration applicationConfiguration = ApplicationConfiguration.getInstance();
         final int PORT = applicationConfiguration.getServerPort();
@@ -23,7 +31,10 @@ public class HttpServerConfiguration {
         logger.info("Server started at http://localhost:" + PORT);
     }
 
-    //create all contexts for API here
+    /**
+     * Creates all of the API endpoints used within the application.
+     *
+     */
     private static void createAPIEndpoints(HttpServer server) {
         server.createContext("/", new ThymeleafHandler());
         server.createContext("/static", new StaticFileHandler());

@@ -145,6 +145,13 @@ public class QuizResultsService extends BaseService {
         return responseString;
     }
 
+    /**
+     * Returns quiz results to the quiz results page
+     *
+     * @param exchange The data from the API request
+     * @throws IOException If data processing fails
+     * @return String JSON formatted string of data for frontend
+     */
     public String getQuizResults(HttpExchange exchange) throws IOException {
         Map<String, Object> configParams = super.getQueryParameters(exchange);
         Object quizSettingsID = configParams.get("quizSettingsID");
@@ -191,6 +198,13 @@ public class QuizResultsService extends BaseService {
         return responseString;
     }
 
+    /**
+     * Returns the correct answers from the taken quiz on the quiz results page
+     *
+     * @param exchange The data from the API request
+     * @throws IOException If data processing fails
+     * @return String JSON formatted string of data for frontend
+     */
     public String getCorrectAnswers(HttpExchange exchange) throws IOException {
         List<Map<String, Object>> songIDs = super.getParametersList(exchange);
         List<Map<String, Object>> songData = new ArrayList<>();

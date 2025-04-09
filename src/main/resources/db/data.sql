@@ -19,6 +19,7 @@ SET FOREIGN_KEY_CHECKS = 1;
 INSERT INTO metaData (appName, version, lastUpdate, logo) VALUES 
 ('Listening Study', '1.0', '2025-02-19', ''),
 ('Listening Study', '2.0', '2025-03-19', '');
+('Listening Study', '3.0', '2025-04-04', '');
 
 INSERT INTO class (className) VALUES
 ('Music Theory 101'),

@@ -1,4 +1,4 @@
-package com.example.objects;
+package com.example.configuration;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -7,9 +7,9 @@ import org.slf4j.LoggerFactory;
  * Singleton class to manage user session information across the application.
  * Stores user details such as username, email, and other user-specific IDs.
  */
-public class Session {
-    private static final Logger logger = LoggerFactory.getLogger(Session.class);
-    private static Session instance;
+public class SessionConfiguration {
+    private static final Logger logger = LoggerFactory.getLogger(SessionConfiguration.class);
+    private static SessionConfiguration instance;
    
     private Integer userId;
     private String email;
@@ -20,7 +20,7 @@ public class Session {
      * Private constructor for the singleton
      *
      */
-    private Session() {
+    private SessionConfiguration() {
         this.isAuthenticated = false;
     }
    
@@ -29,9 +29,9 @@ public class Session {
      *
      * @return The Session instance
      */
-    public static synchronized Session getInstance() {
+    public static synchronized SessionConfiguration getInstance() {
         if (instance == null) {
-            instance = new Session();
+            instance = new SessionConfiguration();
         }
         return instance;
     }

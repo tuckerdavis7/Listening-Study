@@ -2,7 +2,7 @@ package com.example.handlers;
 
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpExchange;
-import com.example.objects.Session;
+import com.example.configuration.SessionConfiguration;
 import com.example.services.LoginService;
 
 import java.io.IOException;
@@ -39,7 +39,7 @@ public class LoginHandler extends BaseHandler implements HttpHandler {
                     break;
                 } 
                 else if (exchange.getRequestURI().getPath().equals("/api/login/logout")) {
-                    Session session = Session.getInstance();
+                    SessionConfiguration session = SessionConfiguration.getInstance();
                     session.clear();
                     super.sendResponse(exchange, "", "Regular");
                     break;

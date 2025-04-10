@@ -64,11 +64,12 @@ public class StaticFileHandler extends BaseHandler implements HttpHandler {
                         }
                         return;
                     } catch (IOException e) {
-                        logger.warn("Issue sending static file: {}", e.getMessage());
+                        logger.warn("Issue sending static file");
                     }
                 }
             } catch (IOException e) {
-                logger.error("Error opening static file: {}", e.getMessage());
+                logger.error("Error opening static file:");
+                e.printStackTrace();
             }
         }
         

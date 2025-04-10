@@ -58,7 +58,8 @@ public class StudentPerformanceService extends BaseService {
         }
         catch (Exception e) {
             responseString = "Internal Server Error";
-            logger.error("Error in getSongPerformances of StudentPerformanceService: " + e.getMessage());
+            logger.error("Error in getSongPerformances of StudentPerformanceService:");
+            e.printStackTrace();
         }
         return responseString;
     }

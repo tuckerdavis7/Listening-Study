@@ -14,12 +14,15 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Implementation class for extra processing of songs.
  */
 public class SongImplementation {
-    
+    private static final Logger logger = LoggerFactory.getLogger(SongImplementation.class);
+
 
      /**
      * Generates a timestamp based on the most viewed part of the song
@@ -51,16 +54,17 @@ public class SongImplementation {
             Element heatmapPath = doc.selectFirst("path.ytp-heat-map-path");
             if (heatmapPath != null) {
                 String dAttribute = heatmapPath.attr("d");
-                //System.out.println("Heatmap path data: " + dAttribute);
+                //logger.info("Heatmap path data: " + dAttribute);
                 return extractMostReplayedTimestamp(dAttribute, videoDuration);
             }
             else {
-                System.out.println("Heatmap not found.");
+                logger.info("Heatmap not found.");
             }
 
         }
         catch (Exception e) {
-            System.out.println(e.toString());
+            logger.error("error in getMostReplyaedTimestamp of SongImplementation:");
+            e.printStackTrace();
         }
 
         return -1;
@@ -80,7 +84,8 @@ public class SongImplementation {
             return convertTimeToSeconds(durationText);
         }
         catch (Exception e) {
-            System.out.println("Failed to get video duration: " + e.getMessage());
+            logger.error("Error in getVideoDuration of Song Implementation: Failed to get video duration");
+            e.printStackTrace();
             return -1;
         }
     }

@@ -58,7 +58,8 @@ public class QuizResultsService extends BaseService {
             }
             catch (SQLException e)
             {
-                logger.error("Error in getting song data: " + e.getMessage());
+                logger.error("Error in getting song data:");
+                e.printStackTrace();
        
             }
 
@@ -73,7 +74,8 @@ public class QuizResultsService extends BaseService {
             }
             catch (SQLException e)
             {
-                logger.error("Error in getting performance data: " + e.getMessage());       
+                logger.error("Error in getting performance data:");
+                e.printStackTrace();
             }
             
             boolean quizzedBefore = performance.size() != 0;
@@ -105,7 +107,8 @@ public class QuizResultsService extends BaseService {
                     studentPerformanceRepository.addPerformanceData(1, 1, weightScore.get(0), weightScore.get(1), songID, playlistID, timesQuizzed, timesCorrect);
             }
             catch (SQLException e) {
-                logger.error("Error in setting quiz results: " + e.getMessage());
+                logger.error("Error in setting quiz results:");
+                e.printStackTrace();
                 responseString = "Internal Server Error";
             }
         }        
@@ -136,7 +139,8 @@ public class QuizResultsService extends BaseService {
                 quizResultsRepository.addQuizResults(quizSettingsID, songName, songComposer, songYear, songID);
             }
             catch (Exception e) {
-                logger.error("Error in forwarding quiz results: " + e.getMessage());
+                logger.error("Error in forwarding quiz results:");
+                e.printStackTrace();
                 responseString = "Internal Server Error";
             }
         }
@@ -175,7 +179,8 @@ public class QuizResultsService extends BaseService {
         }
         catch (Exception e) {
             responseString = "Internal Server Error";
-            logger.error("Error in getQuizResults1 of QuizResultsService: " + e.getMessage());
+            logger.error("Error in getQuizResults1 of QuizResultsService:");
+            e.printStackTrace();
         }
 
         try {
@@ -192,7 +197,8 @@ public class QuizResultsService extends BaseService {
         }
         catch (Exception e) {
             responseString = "Internal Server Error";
-            logger.error("Error in getQuizResults2 of QuizResultsService: " + e.getMessage());
+            logger.error("Error in getQuizResults2 of QuizResultsService:");
+            e.printStackTrace();
         }
 
         return responseString;
@@ -228,7 +234,8 @@ public class QuizResultsService extends BaseService {
             }
             catch (Exception e) {
                 responseString = "Internal Server Error";
-                logger.error("Error in getCorrectAnswers1 of QuizResultsService: " + e.getMessage());
+                logger.error("Error in getCorrectAnswers1 of QuizResultsService:");
+                e.printStackTrace();
             }
 
             try {
@@ -236,7 +243,8 @@ public class QuizResultsService extends BaseService {
             }
             catch (Exception e) {
                 responseString = "Internal Server Error";
-                logger.error("Error in getCorrectAnswers2 of QuizResultsService: " + e.getMessage());
+                logger.error("Error in getCorrectAnswers2 of QuizResultsService:");
+                e.printStackTrace();
             }
 
             try {
@@ -244,7 +252,8 @@ public class QuizResultsService extends BaseService {
             }
             catch (Exception e) {
                 responseString = "Internal Server Error";
-                logger.error("Error in getCorrectAnswers3 of QuizResultsService: " + e.getMessage());
+                logger.error("Error in getCorrectAnswers3 of QuizResultsService:");
+                e.printStackTrace();
             }
 
         }

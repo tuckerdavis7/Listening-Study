@@ -14,14 +14,16 @@ public class Main {
             HttpServerConfiguration.startServer();
         }
         catch (Exception e) {
-            logger.error("Error while starting HTTP server: " + e.getMessage());
+            logger.error("Error while starting HTTP server:");
+            e.printStackTrace();
         }
         
         try {
             DatabaseConfiguration.connect();
         }
         catch (Exception e) {
-            logger.error("Error while connecting to database: " + e.getMessage());
+            logger.error("Error while connecting to database:");
+            e.printStackTrace();
         }
     }
 }

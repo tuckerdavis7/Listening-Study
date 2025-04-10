@@ -55,7 +55,7 @@ public class TeacherSongService extends BaseService {
         }
         catch (Exception e) {
             responseString = "Internal Server Error";
-            logger.error("Error in addSong of TeacherSongService: " + e.getMessage());
+            logger.error("Error in addSong of TeacherSongService:");
         }
         return responseString;
     }
@@ -92,7 +92,7 @@ public class TeacherSongService extends BaseService {
         }
         catch (Exception e) {
             responseString = "Internal Server Error";
-            logger.error("Error in getPlaylistSongs of TeacherSongService: " + e.getMessage());
+            logger.error("Error in getPlaylistSongs of TeacherSongService:");
         }
         return responseString;
     }

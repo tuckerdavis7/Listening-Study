@@ -141,7 +141,8 @@ public class ThymeleafHandler extends BaseHandler implements HttpHandler {
         try {
             return templateEngine.process(template, context);
         } catch (Exception e) {
-            logger.error("Error processing Thymeleaf template: " + e.getMessage());
+            logger.error("Error processing Thymeleaf template:");
+            e.printStackTrace();
             return "<h1>Template rendering failed</h1>";
         }
     }

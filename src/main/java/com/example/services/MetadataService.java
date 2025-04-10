@@ -40,7 +40,8 @@ public class MetadataService extends BaseService {
         }
         catch (Exception e) {
             responseString = "Internal Server Error";
-            logger.error("Error in getMetadata of MetadataService: " + e.getMessage());
+            logger.error("Error in getMetadata of MetadataService:");
+            e.printStackTrace();
         }
         return responseString;
     }

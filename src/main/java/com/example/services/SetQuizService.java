@@ -49,7 +49,8 @@ public class SetQuizService extends BaseService {
         }
         catch (Exception e) {
             responseString = "Internal Server Error";
-            logger.error("Error in getPlaylists of SetQuizService: " + e.getMessage());
+            logger.error("Error in getPlaylists of SetQuizService:");
+            e.printStackTrace();
         }
         return responseString;
     }
@@ -76,7 +77,8 @@ public class SetQuizService extends BaseService {
         }
         catch (Exception e) {
             responseString = "Internal Server Error";
-            logger.error("Error in setQuizParameters of SetQuizService: " + e.getMessage());
+            logger.error("Error in setQuizParameters of SetQuizService:");
+            e.printStackTrace();
         }
         return responseString;
     }

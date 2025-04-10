@@ -57,7 +57,8 @@ public class TakeQuizService extends BaseService {
         }
         catch (Exception e) {
             responseString = "Internal Server Error";
-            logger.error("Error in getQuizSettings of TakeQuizService: " + e.getMessage());
+            logger.error("Error in getQuizSettings of TakeQuizService:");
+            e.printStackTrace();
         }
 
         return responseString;
@@ -99,7 +100,7 @@ public class TakeQuizService extends BaseService {
         } 
         catch (Exception e) {
             responseString = "Internal Server Error";
-            logger.error("Error in getSongs of TakeQuizService: " + e.getMessage());
+            logger.error("Error in getSongs of TakeQuizService:");
             e.printStackTrace();
             return responseString;
         }
@@ -114,7 +115,7 @@ public class TakeQuizService extends BaseService {
         }
         catch (Exception e) {
             responseString = "Internal Server Error";
-            logger.error("Error in getSongs of TakeQuizService: " + e.getMessage());
+            logger.error("Error in getSongs of TakeQuizService:");
             e.printStackTrace();
         }
 
@@ -140,7 +141,7 @@ public class TakeQuizService extends BaseService {
         } 
         catch (Exception e) {
             responseString = "Internal Server Error";
-            logger.error("Error in getSongs (3) of TakeQuizService: " + e.getMessage());
+            logger.error("Error in getSongs (3) of TakeQuizService:");
             e.printStackTrace();
         }
 

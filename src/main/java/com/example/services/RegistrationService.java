@@ -43,7 +43,8 @@ public class RegistrationService extends BaseService {
         }
         catch (Exception e) {
             responseString = "Internal Server Error";
-            logger.error("Error in registerUser (1) of RegistrationService: " + e.getMessage());
+            logger.error("Error in registerUser (1) of RegistrationService:");
+            e.printStackTrace();
         }
 
         //check if username already exists
@@ -60,7 +61,8 @@ public class RegistrationService extends BaseService {
         }
         catch (Exception e) {
             responseString = "Internal Server Error";
-            logger.error("Error in registerUser (2) of RegistrationService: " + e.getMessage());
+            logger.error("Error in registerUser (2) of RegistrationService:");
+            e.printStackTrace();
         }
         
         //add user
@@ -74,7 +76,8 @@ public class RegistrationService extends BaseService {
         }
         catch (Exception e) {
             responseString = "Internal Server Error";
-            logger.error("Error in registerUser (3) of RegistrationService: " + e.getMessage());
+            logger.error("Error in registerUser (3) of RegistrationService:");
+            e.printStackTrace();
         }
 
         return responseString;

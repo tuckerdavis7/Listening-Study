@@ -9,6 +9,7 @@ import org.mindrot.jbcrypt.BCrypt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.example.objects.Session;
 import com.example.repositories.UserRepository;
 import com.sun.net.httpserver.HttpExchange;
 /**
@@ -42,12 +43,17 @@ public class LoginService extends BaseService {
                 if (isMatching) {
                     loginMap.put("role", result.getString("role"));
                     responseString = super.formatJSON(loginMap, "success"); // correct login
+
+                    //initialize session for user
+                    Session session = Session.getInstance();
+                    session.initialize(result.getInt("user_id"), email, result.getString("role"));
                 }
             }
         }
         catch (Exception e) {
             responseString = "Internal Server Error";
-            logger.error("Error in authenticateLogin of LoginService: " + e.getMessage());
+            logger.error("Error in authenticateLogin of LoginService: ");
+            e.printStackTrace();
         }
         return responseString;
     }

@@ -42,30 +42,18 @@ public class ApplicationConfiguration {
         return instance;
     }
 
-    /**
-     * Returns database username
-     */
     public String getDbUsername() {
         return properties.getProperty("db.username");
     }
 
-    /**
-     * Returns database password
-     */
     public String getDbPassword() {
         return properties.getProperty("db.password");
     }
 
-    /**
-     * Returns database URL
-     */
     public String getDbURL() {
         return properties.getProperty("db.url");
     }
 
-    /**
-     * Returns server port
-     */
     public Integer getServerPort() {
         return Integer.parseInt(properties.getProperty("server.port"));
     }

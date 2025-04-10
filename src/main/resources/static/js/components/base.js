@@ -16,7 +16,17 @@ $(document).ready(function() {
     });
 })
 
-//Function that handles universal logout.  Built in case if more is required for API
+//Function that handles universal logout
 function handleLogOut() {
-    window.location.href = '/';
+    $.ajax({
+        url: 'http://localhost:8080/api/login/logout',
+        type: 'POST',
+        contentType: 'application/json',
+        success: function(data) {
+            window.location.href = '/';
+        },
+        error: function(xhr, status, error) {
+            bootstrapAlert('danger', error);
+        }
+    })
 }

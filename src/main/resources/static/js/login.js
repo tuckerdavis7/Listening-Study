@@ -19,12 +19,11 @@ $(document).ready(function() {
         
             $.ajax({
                 data: JSON.stringify(loginForm),
-                url: 'http://localhost:8080/api/login',
+                url: 'http://localhost:8080/api/login/verify',
                 type: 'POST',
                 contentType: 'application/json',
                 success: function(data) {
                     let responseData = JSON.parse(data);
-                    console.log(responseData);
 
                     if (responseData?.status === "success") {
                         switch(responseData.data.role) {

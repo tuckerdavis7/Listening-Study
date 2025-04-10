@@ -2,6 +2,7 @@ package com.example.handlers;
 
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpExchange;
+import com.example.objects.Session;
 import com.example.services.LoginService;
 
 import java.io.IOException;
@@ -32,9 +33,17 @@ public class LoginHandler extends BaseHandler implements HttpHandler {
 
         switch (method) {
             case "POST":
-                response = loginService.authenticateLogin(exchange);
-                super.sendResponse(exchange, response, "Regular");
-                break;
+                if (exchange.getRequestURI().getPath().equals("/api/login/verify")) {
+                    response = loginService.authenticateLogin(exchange);
+                    super.sendResponse(exchange, response, "Regular");
+                    break;
+                } 
+                else if (exchange.getRequestURI().getPath().equals("/api/login/logout")) {
+                    Session session = Session.getInstance();
+                    session.clear();
+                    super.sendResponse(exchange, "", "Regular");
+                    break;
+                }
             
             default:
                 super.sendResponse(exchange, "Method Not Allowed", "Regular");

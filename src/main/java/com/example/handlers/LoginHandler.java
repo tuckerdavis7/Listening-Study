@@ -40,7 +40,7 @@ public class LoginHandler extends BaseHandler implements HttpHandler {
                 } 
                 else if (exchange.getRequestURI().getPath().equals("/api/login/logout")) {
                     SessionConfiguration session = SessionConfiguration.getInstance();
-                    session.clear();
+                    session.logout();
                     super.sendResponse(exchange, "", "Regular");
                     break;
                 }

@@ -54,7 +54,7 @@ public class SessionConfiguration {
     /**
      * Clears all session data (logs the user out).
      */
-    public void clear() {
+    public void logout() {
         this.userId = null;
         this.email = null;
         this.role = null;

@@ -39,6 +39,7 @@ public class ConfigurationService extends BaseService {
                 appDetailsMap.put("lastUpdate", result.getString("lastUpdate"));
                 appDetailsMap.put("logo", result.getString("logo"));
                 appDetailsMap.put("role", session.getRole());
+                appDetailsMap.put("isAuthenticated", session.isAuthenticated());
                 responseString = super.formatJSON(appDetailsMap, "success");
             }
         }

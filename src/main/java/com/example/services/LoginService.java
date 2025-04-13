@@ -20,7 +20,7 @@ public class LoginService extends BaseService {
     UserRepository userRepository = new UserRepository();
 
     /**
-     * Takes the username and password of a username and compares it to the details in the database
+     * Takes the email and password of a user and compares it to the details in the database
      *
      * @param exchange The data from the API request
      * @throws IOException If data processing fails

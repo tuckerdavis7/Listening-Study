@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Singleton class to manage user session information across the application.
- * Stores user details such as username, email, and other user-specific IDs.
+ * Stores user details such as user ID, email, and other user-specific IDs.
  */
 public class SessionConfiguration {
     private static final Logger logger = LoggerFactory.getLogger(SessionConfiguration.class);

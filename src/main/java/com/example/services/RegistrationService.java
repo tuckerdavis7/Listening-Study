@@ -36,7 +36,7 @@ public class RegistrationService extends BaseService {
             if  (emailResult.next()) {
                 int count = emailResult.getInt(1);
                 if (count > 0) {
-                    responseString = super.formatJSON("failure", "Account with username already exists");
+                    responseString = super.formatJSON("failure", "Account with email already exists");
                     return responseString;
                 }
             }
@@ -44,24 +44,6 @@ public class RegistrationService extends BaseService {
         catch (Exception e) {
             responseString = "Internal Server Error";
             logger.error("Error in registerUser (1) of RegistrationService:");
-            e.printStackTrace();
-        }
-
-        //check if username already exists
-        String username = (String) registrationParams.get("username");
-        try {
-            ResultSet usernameResult = userRepository.getUserCountByUsername(username);
-            if  (usernameResult.next()) {
-                int count = usernameResult.getInt(1);
-                if (count > 0) {
-                    responseString = super.formatJSON("failure", "Account with username already exists");
-                    return responseString;
-                }
-            }
-        }
-        catch (Exception e) {
-            responseString = "Internal Server Error";
-            logger.error("Error in registerUser (2) of RegistrationService:");
             e.printStackTrace();
         }
         

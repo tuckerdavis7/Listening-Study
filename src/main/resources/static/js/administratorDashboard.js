@@ -17,7 +17,6 @@ $(document).ready(function () {
             },
         },
         { data: "initialDate", class: "charcolumn", width: "2 rem" },
-        { data: "username", class: "charcolumn", width: "3 rem" },
         {
             class: "charColumn",
             data: null,
@@ -90,7 +89,6 @@ $(document).ready(function () {
                 return row.firstName + ' ' + row.lastName;
             }
         },
-        { data: "username", class: "charcolumn", width: "5 rem" },
         {
             class: "charColumn",
             data: "role",
@@ -113,7 +111,6 @@ $(document).ready(function () {
         let row = reportTable.row(button.data('rowindex')).data();
 
         $('#reportDate').html(row.initialDate);
-        $('#reportUser').html(row.username);
         $('#reportEmail').html(row.email);
         $('#reportDate').html(row.initialDate);
         $('#reportDescription').html(row.description);
@@ -184,7 +181,7 @@ $(document).ready(function () {
 
         //change the role for API data
         let changedRole = (row.role === 'teacher') ? 'moderator' : 'teacher';
-        let designationForm = {"role": changedRole, "username": row.username};
+        let designationForm = {"role": changedRole, "email": row.email};
 
         $.ajax({
             data: JSON.stringify(designationForm),
@@ -209,7 +206,7 @@ $(document).ready(function () {
         let rowIndex = $('#userModal').data('rowindex');
         let row = userTable.row(rowIndex).data();
 
-        let deleteForm = {"username": row.username};
+        let deleteForm = {"email": row.email};
         $.ajax({
             data: JSON.stringify(deleteForm),
             url: 'http://localhost:8080/api/administrator/users/',

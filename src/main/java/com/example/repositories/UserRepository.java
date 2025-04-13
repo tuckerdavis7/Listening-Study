@@ -19,10 +19,9 @@ public class UserRepository {
      * @throws SQLException When the query does not run properly
      */
     public void addUser(Map<String, Object> user) throws SQLException {
-        String query = "INSERT INTO users (username, email, first_name, last_name, deleted, role, password) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO users (email, first_name, last_name, deleted, role, password) VALUES (?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
 
-        pstmt.setString(1, user.get("username").toString());
         pstmt.setString(2, user.get("email").toString());
         pstmt.setString(3, user.get("firstName").toString());
         pstmt.setString(4, user.get("lastName").toString());
@@ -39,11 +38,11 @@ public class UserRepository {
      * @throws SQLException When the query does not run properly
      */
     public void deleteUser(Map<String, Object> user) throws SQLException {
-        String query = "UPDATE users SET deleted = ? WHERE username = ?";
+        String query = "UPDATE users SET deleted = ? WHERE email = ?";
         PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
 
         pstmt.setInt(1,1);
-        pstmt.setString(2, user.get("username").toString());
+        pstmt.setString(2, user.get("email").toString());
         pstmt.executeUpdate();
     } 
 
@@ -80,23 +79,6 @@ public class UserRepository {
         return rs;
     }
 
-     /**
-     * returns count of a specific username
-     *
-     * @param username of the user
-     * @throws SQLException When the query does not run properly
-     * @return result set of the query
-     */
-    public ResultSet getUserCountByUsername(String username) throws SQLException {
-        String query = "SELECT COUNT(*) FROM users WHERE username =? AND deleted = ?";
-        PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
-        pstmt.setString(1, username);
-        pstmt.setInt(2, 0);
-        ResultSet rs = pstmt.executeQuery();
-
-        return rs;
-    }
-
     /**
      * updates a moderator or teacher role
      *
@@ -104,11 +86,11 @@ public class UserRepository {
      * @throws SQLException When the query does not run properly
      */
     public void updateModeratorOrTeacherDesignation(Map<String, Object> user) throws SQLException {
-        String query = "UPDATE users SET role = ? WHERE username = ?";
+        String query = "UPDATE users SET role = ? WHERE email = ?";
         PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
 
         pstmt.setString(1, user.get("role").toString());
-        pstmt.setString(2, user.get("username").toString());
+        pstmt.setString(2, user.get("email").toString());
         pstmt.executeUpdate();
     }
 }

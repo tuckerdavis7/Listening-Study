@@ -5,7 +5,6 @@ USE listeningapp2;
 -- Users Table - Central user management
 CREATE TABLE users (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(255) NOT NULL UNIQUE,
     email VARCHAR(255) NOT NULL UNIQUE,
     first_name VARCHAR(255) NOT NULL,
     last_name VARCHAR(255) NOT NULL,
@@ -72,7 +71,6 @@ CREATE TABLE studentClass (
 CREATE TABLE reportTime (
     ID INT AUTO_INCREMENT PRIMARY KEY,
     timeOfReport DATETIME NOT NULL,
-    username VARCHAR(255),
     email VARCHAR(255),
     description TEXT,
     lastUpdatedTime DATETIME NOT NULL,

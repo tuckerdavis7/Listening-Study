@@ -10,6 +10,7 @@ $(document).ready(function() {
             $('#userCount').html('User Count: ' + responseData?.data?.userCount);
             $('#lastUpdate').html('Last updated: ' + responseData?.data?.lastUpdate);
             $('#userRole').val(responseData?.data?.role);
+            $('#userAuthentication').val(responseData?.data?.isAuthenticated);
         },
         error: function(xhr, status, error) {
             bootstrapAlert('danger', error);

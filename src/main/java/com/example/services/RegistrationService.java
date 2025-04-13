@@ -15,7 +15,7 @@ import com.sun.net.httpserver.HttpExchange;
  * Service class for taking API requests, processing, and sending queries related to user registration.
  */
 public class RegistrationService extends BaseService {
-    private static final Logger logger = LoggerFactory.getLogger(LoginService.class);
+    private static final Logger logger = LoggerFactory.getLogger(RegistrationService.class);
     UserRepository userRepository = new UserRepository();
 
     /**
@@ -58,7 +58,7 @@ public class RegistrationService extends BaseService {
         }
         catch (Exception e) {
             responseString = "Internal Server Error";
-            logger.error("Error in registerUser (3) of RegistrationService:");
+            logger.error("Error in registerUser (2) of RegistrationService:");
             e.printStackTrace();
         }
 

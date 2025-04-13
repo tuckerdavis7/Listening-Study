@@ -19,15 +19,15 @@ public class UserRepository {
      * @throws SQLException When the query does not run properly
      */
     public void addUser(Map<String, Object> user) throws SQLException {
-        String query = "INSERT INTO users (email, first_name, last_name, deleted, role, password) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO users (email, first_name, last_name, deleted, role, password) VALUES (?, ?, ?, ?, ?, ?)";
         PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
 
-        pstmt.setString(2, user.get("email").toString());
-        pstmt.setString(3, user.get("firstName").toString());
-        pstmt.setString(4, user.get("lastName").toString());
-        pstmt.setInt(5, 0);
-        pstmt.setString(6, user.get("accountType").toString());
-        pstmt.setString(7, user.get("password").toString());
+        pstmt.setString(1, user.get("email").toString());
+        pstmt.setString(2, user.get("firstName").toString());
+        pstmt.setString(3, user.get("lastName").toString());
+        pstmt.setInt(4, 0);
+        pstmt.setString(5, user.get("accountType").toString());
+        pstmt.setString(6, user.get("password").toString());
         pstmt.executeUpdate();
     }
 

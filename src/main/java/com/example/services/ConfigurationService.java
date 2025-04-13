@@ -8,13 +8,14 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.example.configuration.SessionConfiguration;
 import com.example.repositories.MetadataRepository;
 import com.sun.net.httpserver.HttpExchange;
 /**
  * Service class for taking API requests, processing, and sending queries related to project metadata.
  */
-public class MetadataService extends BaseService {
-    private static final Logger logger = LoggerFactory.getLogger(MetadataService.class);
+public class ConfigurationService extends BaseService {
+    private static final Logger logger = LoggerFactory.getLogger(ConfigurationService.class);
     MetadataRepository metadataRepository = new MetadataRepository();
 
     /**
@@ -28,6 +29,8 @@ public class MetadataService extends BaseService {
         String responseString = "";
         try {
             ResultSet result = metadataRepository.getApplicationMetadata();
+            SessionConfiguration session = SessionConfiguration.getInstance();
+
             while (result.next()) {
                 Map<String, Object> appDetailsMap = new HashMap<>();
                 appDetailsMap.put("appName", result.getString("appName"));
@@ -35,6 +38,7 @@ public class MetadataService extends BaseService {
                 appDetailsMap.put("userCount", result.getInt("userCount"));
                 appDetailsMap.put("lastUpdate", result.getString("lastUpdate"));
                 appDetailsMap.put("logo", result.getString("logo"));
+                appDetailsMap.put("role", session.getRole());
                 responseString = super.formatJSON(appDetailsMap, "success");
             }
         }

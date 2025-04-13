@@ -40,7 +40,7 @@ public class HttpServerConfiguration {
         server.createContext("/static", new StaticFileHandler());
         server.createContext("/api/login", new LoginHandler());
         server.createContext("/api/register", new RegistrationHandler());
-        server.createContext("/api/metadata", new MetadataHandler());
+        server.createContext("/api/configuration", new ConfigurationHandler());
         server.createContext("/api/teacher/songs", new TeacherSongHandler());
         server.createContext("/api/studentperformance", new StudentPerformanceHandler());
         server.createContext("/api/setquiz", new SetQuizHandler());

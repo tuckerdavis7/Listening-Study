@@ -1,4 +1,4 @@
-var reportTable, reportColumns, userTable, userColumns;
+var reportTable, reportColumns, userTable, userColumns, sessionData;
 
 $(document).ready(function () {
     reportColumns = [

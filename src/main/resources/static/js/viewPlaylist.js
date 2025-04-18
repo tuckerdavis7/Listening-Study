@@ -44,7 +44,7 @@ $(document).ready(function () {
             class: "previewColumn",
             data: null,
             render: function(data, type, row, meta) {
-                var previewButton = '<a class="btn-sm btn btn-info" href="#" role="button"><span class="fa fa-play" aria-hidden="true" data-bs-toggle="modal" data-bs-target="#previewModal"></span></a>';
+                var previewButton = '<a class="btn-sm btn btn-info" href="#" role="button"><span class="fa fa-play" aria-hidden="true" data-bs-toggle="modal" data-bs-target="#previewModal" data-rowindex="' + meta.row + '"></span></a>';
                 return previewButton;
             },
             orderable: false,
@@ -56,7 +56,6 @@ $(document).ready(function () {
         { data: "url", class: "charcolumn", width: "3 rem" }
     ]
     
-    //songTable = initializeDataTableWithFilters('#songTable', songData, songColumns, [2, 'asc'], 10, [0,1]);
 
     let rowRemove;
     
@@ -98,6 +97,17 @@ $(document).ready(function () {
         $('#composer').html(row.composer);
         $('#year').html(row.year);
         $('#url').html(row.url);
+        
+        let splitURL = row.url.split("/");
+        
+        let setNewSong = new CustomEvent('setNewSong', {
+            detail: {
+                "url": splitURL[splitURL.length - 1],
+                "timestamp": 0,
+                "songLength": 60
+            }
+        });
+        document.dispatchEvent(setNewSong);
     });
 
     $('#addSongForm').submit(function(event) {

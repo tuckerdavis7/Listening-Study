@@ -130,7 +130,7 @@ CREATE TABLE metaData (
 
 CREATE TABLE quizSettings (
     ID INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
-    playlistID INT,
+    user_id INT,
     playbackMethod VARCHAR(255),
     playbackDuration INT,
     numQuestions INT,
@@ -146,6 +146,13 @@ CREATE TABLE quizResults (
     songYear INT,
     deleted BOOLEAN DEFAULT FALSE,
     FOREIGN KEY (quizSettingsID) REFERENCES quizSettings(ID) ON DELETE CASCADE
+);
+
+CREATE TABLE sessions (
+    session_id VARCHAR(255) PRIMARY KEY,
+    user_id INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    expires_at TIMESTAMP
 );
 
 -- Create View for Playlist

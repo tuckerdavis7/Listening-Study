@@ -2,14 +2,21 @@ package com.example.services;
 
 import java.io.IOException;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import org.mindrot.jbcrypt.BCrypt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.example.configuration.SessionConfiguration;
+//import com.example.configuration.SessionConfiguration;
+
+import com.example.repositories.SessionRepository;
 import com.example.repositories.UserRepository;
 import com.sun.net.httpserver.HttpExchange;
 /**
@@ -18,6 +25,7 @@ import com.sun.net.httpserver.HttpExchange;
 public class LoginService extends BaseService {
     private static final Logger logger = LoggerFactory.getLogger(LoginService.class);
     UserRepository userRepository = new UserRepository();
+    SessionRepository sessionRepository = new SessionRepository();
 
     /**
      * Takes the email and password of a user and compares it to the details in the database
@@ -45,8 +53,12 @@ public class LoginService extends BaseService {
                     responseString = super.formatJSON(loginMap, "success"); // correct login
 
                     //initialize session for user
-                    SessionConfiguration session = SessionConfiguration.getInstance();
-                    session.initialize(result.getInt("user_id"), email, result.getString("role"));
+                    String sessionID = UUID.randomUUID().toString();
+                    Timestamp expiresAt = Timestamp.from(Instant.now().plus(Duration.ofMinutes(3)));
+
+                    sessionRepository.createSession(sessionID, result.getInt("user_id"), expiresAt);
+
+                    exchange.getResponseHeaders().add("Set-Cookie", "SESSIONID=" + sessionID + "; HttpOnly; Path=/; Max-Age=1800");
                 }
             }
         }

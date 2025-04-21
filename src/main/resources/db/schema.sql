@@ -148,6 +148,13 @@ CREATE TABLE quizResults (
     FOREIGN KEY (quizSettingsID) REFERENCES quizSettings(ID) ON DELETE CASCADE
 );
 
+CREATE TABLE sessions (
+    session_id VARCHAR(255) PRIMARY KEY,
+    user_id INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    expires_at TIMESTAMP
+);
+
 -- Create View for Playlist
 CREATE VIEW view_playlist AS
 SELECT

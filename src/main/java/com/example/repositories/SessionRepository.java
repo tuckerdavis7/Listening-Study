@@ -5,7 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 
-import com.example.configuration.DatabaseConfiguration;
+import com.example.configurations.DatabaseConfiguration;
 
 public class SessionRepository {
      /**

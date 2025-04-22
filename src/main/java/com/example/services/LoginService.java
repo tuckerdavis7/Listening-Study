@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 
 import com.example.repositories.SessionRepository;
 import com.example.repositories.UserRepository;
-import com.example.utils.CookieUtils;
+import com.example.utils.CookieUtil;
 import com.sun.net.httpserver.HttpExchange;
 /**
  * Service class for taking API requests, processing, and sending queries related to user login.
@@ -71,7 +71,7 @@ public class LoginService extends BaseService {
 
     public String userLogout(HttpExchange exchange) {
         String response = "";
-        String sessionID = CookieUtils.getCookieSessionID(exchange);
+        String sessionID = CookieUtil.getCookieSessionID(exchange);
 
         if(sessionID != null) {
             try {

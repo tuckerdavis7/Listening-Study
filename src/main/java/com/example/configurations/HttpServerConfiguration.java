@@ -1,4 +1,4 @@
-package com.example.configuration;
+package com.example.configurations;
 
 import com.sun.net.httpserver.HttpServer;
 import java.io.IOException;

@@ -13,11 +13,6 @@ CREATE TABLE users (
     password VARCHAR(60) NOT NULL
 );
 
-CREATE TABLE class (
-    ID INT AUTO_INCREMENT PRIMARY KEY,
-    className VARCHAR(255) NOT NULL
-);
-
 CREATE TABLE teacherMaster (
     ID INT AUTO_INCREMENT PRIMARY KEY,
     Email VARCHAR(255) NOT NULL,
@@ -26,6 +21,13 @@ CREATE TABLE teacherMaster (
     isActive BOOLEAN DEFAULT TRUE,
     user_id INT,
     FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+
+CREATE TABLE class (
+    ID INT AUTO_INCREMENT PRIMARY KEY,
+    className VARCHAR(255) NOT NULL,
+    teacherID int,
+    FOREIGN KEY (teacherid) REFERENCES teachermaster(id)
 );
 
 CREATE TABLE moderator (
@@ -198,6 +200,19 @@ LEFT JOIN
     student s ON c.ID = s.classID
 LEFT JOIN
     users u_s ON s.user_id = u_s.user_id;
+
+-- Class View for teachers
+CREATE VIEW class_overview AS
+SELECT 
+    c.id AS class_id,
+    c.classname,
+    c.teacherid AS teacher_id,
+    COUNT(DISTINCT sc.studentid) AS students_count,
+    COUNT(DISTINCT p.id) AS playlist_count
+FROM class c
+LEFT JOIN studentclass sc ON c.id = sc.classid
+LEFT JOIN playlist p ON c.id = p.classid
+GROUP BY c.id, c.classname, c.teacherid;
 
 -- Metadata view
 CREATE VIEW view_metadata AS 

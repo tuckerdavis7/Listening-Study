@@ -21,18 +21,7 @@ INSERT INTO metaData (appName, version, lastUpdate, logo) VALUES
 ('Listening Study', '2.0', '2025-03-19', ''),
 ('Listening Study', '3.0', '2025-04-04', '');
 
-INSERT INTO class (className) VALUES
-('Music Theory 101'),
-('Classical Piano'),
-('Jazz Ensemble'),
-('Vocal Training'),
-('Music History'),
-('Guitar Fundamentals'),
-('Electronic Music Production'),
-('Orchestral Studies'),
-('Music Composition'),
-('World Music'),
-('Music Appreciation');
+
 
 INSERT INTO users (email, first_name, last_name, deleted, role, password) VALUES
 ('administrator1@example.com', 'John', 'Smith', 0, 'administrator', '$2a$12$69rOPERjWxQ5fnzy4CbRZ.i.0w0MARpuH5hUf37.007eWx44i5bAK'),
@@ -73,6 +62,22 @@ INSERT INTO users (email, first_name, last_name, deleted, role, password) VALUES
 ('teacher10@example.com', 'Victoria', 'Lopez', 0, 'teacher', '$2a$12$69rOPERjWxQ5fnzy4CbRZ.i.0w0MARpuH5hUf37.007eWx44i5bAK'),
 ('teacher11@example.com', 'Henry', 'Hill', 0, 'teacher', '$2a$12$69rOPERjWxQ5fnzy4CbRZ.i.0w0MARpuH5hUf37.007eWx44i5bAK');
 
+INSERT INTO teacherMaster (Email, Firstname, LastName, isActive, user_id) 
+SELECT email, first_name, last_name, 1, user_id FROM users WHERE role = 'teacher';
+ 
+INSERT INTO class (className, teacherID) VALUES
+('Music Theory 101', 1),
+('Classical Piano', 2),
+('Jazz Ensemble', 3),
+('Vocal Training', 4),
+('Music History', 5),
+('Guitar Fundamentals', 6),
+('Electronic Music Production', 7),
+('Orchestral Studies', 8),
+('Music Composition', 9),
+('World Music', 10),
+('Music Appreciation', 11);
+
 INSERT INTO users (email, first_name, last_name, deleted, role, password) VALUES
 ('student1@example.com', 'Liam', 'Scott', 0, 'student', '$2a$12$69rOPERjWxQ5fnzy4CbRZ.i.0w0MARpuH5hUf37.007eWx44i5bAK'),
 ('student2@example.com', 'Zoe', 'Green', 0, 'student', '$2a$12$69rOPERjWxQ5fnzy4CbRZ.i.0w0MARpuH5hUf37.007eWx44i5bAK'),
@@ -91,9 +96,6 @@ SELECT email, first_name, last_name, 1, user_id FROM users WHERE role = 'adminis
 
 INSERT INTO moderator (Email, Firstname, LastName, isActive, user_id) 
 SELECT email, first_name, last_name, 1, user_id FROM users WHERE role = 'moderator';
-
-INSERT INTO teacherMaster (Email, Firstname, LastName, isActive, user_id) 
-SELECT email, first_name, last_name, 1, user_id FROM users WHERE role = 'teacher';
 
 INSERT INTO student (Email, Firstname, LastName, isActive, classID, user_id) 
 SELECT 

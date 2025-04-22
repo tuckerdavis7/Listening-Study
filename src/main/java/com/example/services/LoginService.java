@@ -14,8 +14,6 @@ import org.mindrot.jbcrypt.BCrypt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-//import com.example.configuration.SessionConfiguration;
-
 import com.example.repositories.SessionRepository;
 import com.example.repositories.UserRepository;
 import com.example.utils.CookieUtils;

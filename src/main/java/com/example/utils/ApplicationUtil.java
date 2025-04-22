@@ -1,4 +1,4 @@
-package com.example.configuration;
+package com.example.utils;
 
 import java.io.InputStream;
 import java.util.Properties;
@@ -6,15 +6,15 @@ import java.util.Properties;
 /**
  * Configuration class for application properties
  */
-public class ApplicationConfiguration {
+public class ApplicationUtil {
     private static final String PROPERTIES_FILE = "application.properties";
     private static Properties properties = new Properties();
-    private static ApplicationConfiguration instance = null;
+    private static ApplicationUtil instance = null;
     
     /**
      * Class constructor to load properties file
      */
-    private ApplicationConfiguration() {
+    public ApplicationUtil() {
         try (InputStream input = getClass().getClassLoader().getResourceAsStream(PROPERTIES_FILE)) {
             if (input == null) {
                 throw new RuntimeException("Unable to find " + PROPERTIES_FILE);
@@ -31,11 +31,11 @@ public class ApplicationConfiguration {
      *
      */
     //creates retrievable singleton instance from other files
-    public static ApplicationConfiguration getInstance() {
+    public static ApplicationUtil getInstance() {
         if (instance == null) {
-            synchronized (ApplicationConfiguration.class) {
+            synchronized (ApplicationUtil.class) {
                 if (instance == null) {
-                    instance = new ApplicationConfiguration();
+                    instance = new ApplicationUtil();
                 }
             }
         }

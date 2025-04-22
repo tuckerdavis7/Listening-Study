@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.example.handlers.*;
+import com.example.utils.ApplicationUtil;
 
 /**
  * Configuration class for HTTP server
@@ -21,7 +22,7 @@ public class HttpServerConfiguration {
      * @throws IOException If the server can't be started
      */
     public static void startServer() throws IOException {
-        ApplicationConfiguration applicationConfiguration = ApplicationConfiguration.getInstance();
+        ApplicationUtil applicationConfiguration = ApplicationUtil.getInstance();
         final int PORT = applicationConfiguration.getServerPort();
         HttpServer server = HttpServer.create(new InetSocketAddress(PORT), 0);
 
@@ -40,7 +41,7 @@ public class HttpServerConfiguration {
         server.createContext("/static", new StaticFileHandler());
         server.createContext("/api/login", new LoginHandler());
         server.createContext("/api/register", new RegistrationHandler());
-        server.createContext("/api/configuration", new ConfigurationHandler());
+        server.createContext("/api/configuration", new MetadataHandler());
         server.createContext("/api/teacher/songs", new TeacherSongHandler());
         server.createContext("/api/studentperformance", new StudentPerformanceHandler());
         server.createContext("/api/setquiz", new SetQuizHandler());

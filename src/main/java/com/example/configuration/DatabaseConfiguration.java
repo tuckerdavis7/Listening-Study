@@ -7,13 +7,15 @@ import java.sql.SQLException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.example.utils.ApplicationUtil;
+
 /**
  * Configuration class for database setup
  */
 public class DatabaseConfiguration {
     private static final Logger logger = LoggerFactory.getLogger(DatabaseConfiguration.class);
     private static Connection con;
-    static ApplicationConfiguration applicationConfiguration = ApplicationConfiguration.getInstance();
+    static ApplicationUtil applicationConfiguration = ApplicationUtil.getInstance();
 
     /**
      * Creates a connection to the database

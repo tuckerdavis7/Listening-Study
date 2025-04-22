@@ -6,15 +6,15 @@ import java.sql.SQLException;
 
 import com.example.configurations.DatabaseConfiguration;
 
-public class ClassRepository {
-      public ResultSet getClasslist(int teacherID) throws SQLException {
-        String query = "SELECT * FROM class_overview WHERE teacher_id = ?";
+public class StudentRepository {
+    public ResultSet getStudentRoster(int classID) throws SQLException {
+        String query = "SELECT ID, Email, Firstname, LastName FROM student WHERE classID = ?";
 
         PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
-        pstmt.setInt(1, teacherID);
+        pstmt.setInt(1, classID);
         ResultSet rs = pstmt.executeQuery();
 
-       return rs;
+        return rs;
     }
     
 }

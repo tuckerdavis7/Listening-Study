@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.sun.net.httpserver.HttpExchange;
 
-public class CookieUtils {
+public class CookieUtil {
     public static String getCookie(HttpExchange exchange, String name) {
         List<String> cookies = exchange.getRequestHeaders().get("Cookie");
         if (cookies == null) return null;

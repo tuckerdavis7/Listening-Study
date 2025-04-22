@@ -2,29 +2,15 @@ package com.example.handlers;
 
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpExchange;
-import com.example.configuration.SessionConfiguration;
 import com.example.services.LoginService;
 
 import java.io.IOException;
-import java.sql.SQLException;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.openqa.selenium.devtools.v114.audits.model.CookieIssueDetails;
-
-import com.example.repositories.SessionRepository;
-import com.example.repositories.UserRepository;
-
-import com.example.utils.CookieUtils;
 
 /**
  * Handler class for processing API requests related to user login.
  */
 public class LoginHandler extends BaseHandler implements HttpHandler {
-    private static final Logger logger = LoggerFactory.getLogger(LoginService.class);
     private LoginService loginService;
-    SessionRepository sessionRepository = new SessionRepository();
 
     /**
      * Class constructor to intialize service file
@@ -52,15 +38,7 @@ public class LoginHandler extends BaseHandler implements HttpHandler {
                     break;
                 } 
                 else if (exchange.getRequestURI().getPath().equals("/api/login/logout")) {
-                    String sessionID = CookieUtils.getCookieSessionID(exchange);
-                    if(sessionID != null) {
-                        try {
-                            sessionRepository.deleteSession(sessionID);
-                        } catch (SQLException ex) {
-                            logger.error("Error in session cookie of LoginHandler: ");
-                        }
-                        exchange.getResponseHeaders().add("Set-Cookie", "SESSIONID=deleted; Path=/; Max-Age=0");
-                    }
+                    response = loginService.userLogout(exchange);
                     super.sendResponse(exchange, "", "Regular");
                     break;
                 }

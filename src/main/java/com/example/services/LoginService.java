@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 
 import com.example.repositories.SessionRepository;
 import com.example.repositories.UserRepository;
+import com.example.utils.CookieUtils;
 import com.sun.net.httpserver.HttpExchange;
 /**
  * Service class for taking API requests, processing, and sending queries related to user login.
@@ -56,9 +57,9 @@ public class LoginService extends BaseService {
                     String sessionID = UUID.randomUUID().toString();
                     Timestamp expiresAt = Timestamp.from(Instant.now().plus(Duration.ofMinutes(3)));
 
-                    sessionRepository.createSession(sessionID, result.getInt("user_id"), expiresAt);
+                    sessionRepository.createSession(sessionID, result.getInt("user_id"), loginMap.get("role").toString(), expiresAt);
 
-                    exchange.getResponseHeaders().add("Set-Cookie", "SESSIONID=" + sessionID + "; HttpOnly; Path=/; Max-Age=1800");
+                    exchange.getResponseHeaders().add("Set-Cookie", "SESSIONID=" + sessionID + "; HttpOnly; Path=/; Max-Age=180");
                 }
             }
         }
@@ -68,5 +69,22 @@ public class LoginService extends BaseService {
             e.printStackTrace();
         }
         return responseString;
+    }
+
+    public String userLogout(HttpExchange exchange) {
+        String response = "";
+        String sessionID = CookieUtils.getCookieSessionID(exchange);
+
+        if(sessionID != null) {
+            try {
+                sessionRepository.deleteSession(sessionID);
+            }
+            catch (SQLException e) {
+                logger.error("Error in session cookie of LoginHandler: ");
+            }
+            exchange.getResponseHeaders().add("Set-Cookie", "SESSIONID=deleted; Path=/; Max-Age=0");
+        }
+
+        return response;
     }
 }

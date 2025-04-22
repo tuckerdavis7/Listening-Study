@@ -13,13 +13,14 @@ public class SessionRepository {
      *
      * @throws SQLException When the query does not run properly
      */
-    public void createSession(String sessionID, int userID, Timestamp expiresAt) throws SQLException {
-        String query = "INSERT INTO sessions (session_id, user_id, expires_at) VALUES (?, ?, ?)";
+    public void createSession(String sessionID, int userID, String userRole, Timestamp expiresAt) throws SQLException {
+        String query = "INSERT INTO sessions (session_id, user_id, role, expires_at) VALUES (?, ?, ?, ?)";
         PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
 
         pstmt.setString(1, sessionID);
         pstmt.setInt(2, userID);
-        pstmt.setTimestamp(3, expiresAt);    
+        pstmt.setString(3, userRole);
+        pstmt.setTimestamp(4, expiresAt);    
         pstmt.executeUpdate();
     }
 

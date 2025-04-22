@@ -34,8 +34,8 @@ public class TeacherRosterService extends BaseService {
                 Map<String, Object> studentMap = new HashMap<>();
                 studentMap.put("ID", result.getInt("ID"));
                 studentMap.put("Firstname", result.getString("Firstname"));
-                studentMap.put("LastName", result.getInt("LastName"));
-                studentMap.put("Email", result.getInt("Email"));
+                studentMap.put("LastName", result.getString("LastName"));
+                studentMap.put("Email", result.getString("Email"));
                 
                 classRoster.add(studentMap);
             }

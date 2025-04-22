@@ -7,7 +7,7 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
 /**
- * Handler class for processing API requests related to the song page from teacher view.
+ * Handler class for processing API requests related to the class page from teacher view.
  */
 public class TeacherRosterHandler extends BaseHandler implements HttpHandler {
     private TeacherRosterService teacherRosterService;

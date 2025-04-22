@@ -47,6 +47,20 @@ public class UserRepository {
     } 
 
     /**
+     * returns all users
+     *
+     * @throws SQLException When the query does not run properly
+     * @return result set of the query
+     */
+    public ResultSet getAllUsers() throws SQLException {
+        String query = "SELECT * FROM users";
+        PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
+        ResultSet rs = pstmt.executeQuery();
+
+       return rs;
+    }
+
+    /**
      * returns user by email
      *
      * @param email of the user

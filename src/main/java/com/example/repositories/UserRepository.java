@@ -5,7 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
 
-import com.example.configuration.DatabaseConfiguration;
+import com.example.configurations.DatabaseConfiguration;
 
 /**
  * Repository class to execute queries on the user table.

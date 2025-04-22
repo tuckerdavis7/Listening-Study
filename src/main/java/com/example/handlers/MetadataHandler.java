@@ -2,21 +2,21 @@ package com.example.handlers;
 
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpExchange;
-import com.example.services.ConfigurationService;
+import com.example.services.MetadataService;
 
 import java.io.IOException;
 
 /**
  * Handler class for processing API requests related to metadata.
  */
-public class ConfigurationHandler extends BaseHandler implements HttpHandler {
-    private ConfigurationService metadataService;
+public class MetadataHandler extends BaseHandler implements HttpHandler {
+    private MetadataService metadataService;
 
     /**
      * Class constructor to intialize service file
      */
-    public ConfigurationHandler() {
-        this.metadataService = new ConfigurationService();
+    public MetadataHandler() {
+        this.metadataService = new MetadataService();
     }
 
     /**

@@ -1,10 +1,11 @@
 package com.example;
 
 import org.slf4j.LoggerFactory;
-import org.slf4j.Logger;
 
-import com.example.configuration.DatabaseConfiguration;
-import com.example.configuration.HttpServerConfiguration;
+import com.example.configurations.DatabaseConfiguration;
+import com.example.configurations.HttpServerConfiguration;
+
+import org.slf4j.Logger;
 
 public class Main {
     private static final Logger logger = LoggerFactory.getLogger(Main.class);

@@ -4,7 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import com.example.configuration.DatabaseConfiguration;
+import com.example.configurations.DatabaseConfiguration;
 
 public class ClassRepository {
       public ResultSet getClasslist(int teacherID) throws SQLException {

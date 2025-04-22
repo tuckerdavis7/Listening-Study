@@ -151,6 +151,7 @@ CREATE TABLE quizResults (
 CREATE TABLE sessions (
     session_id VARCHAR(255) PRIMARY KEY,
     user_id INT NOT NULL,
+    role VARCHAR(32) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     expires_at TIMESTAMP
 );

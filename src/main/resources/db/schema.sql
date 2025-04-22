@@ -130,7 +130,7 @@ CREATE TABLE metaData (
 
 CREATE TABLE quizSettings (
     ID INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
-    playlistID INT,
+    user_id INT,
     playbackMethod VARCHAR(255),
     playbackDuration INT,
     numQuestions INT,

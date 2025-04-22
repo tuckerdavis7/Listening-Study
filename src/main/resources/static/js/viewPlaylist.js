@@ -124,7 +124,7 @@ $(document).ready(function () {
 
         $.ajax({
             data: JSON.stringify(addSongData),
-            url: 'http://localhost:8080/api/teacher/songs',
+            url: 'http://localhost:8080/api/teachersong/addSong',
             type: 'POST',
             contentType: 'application/json',
             success: function(data) {
@@ -155,25 +155,74 @@ $(document).ready(function () {
         let button = $(event.relatedTarget);
         let row = songTable.row(button.data('rowindex')).data();
 
-        console.log(row);
-
         $('#editSongName').val(row.name);
         $('#editComposer').val(row.composer);
         $('#editYear').val(row.year);
         $('#editURL').val(row.url);
-        $('#editTimestamp').val(row.udTimestamp);
+        if (row.udTimestamp == -1)
+            $('#editTimestamp').val('');
+        else {
+            let timestamp = getTimestamp(row.udTimestamp);
+            $('#editTimestamp').val(timestamp);
+        }
 
+    });
+
+    $('#editSongForm').submit(function (event) {
+        event.preventDefault();
+        $("#confirmEditSongBtn").prop("disabled", true);
+        $("#editSongSpinner").removeClass("d-none");
+
+        let editSongForm = $('#editSongForm').serializeArray();
+        let editSongData = {};
+        editSongForm.forEach(element => {
+            editSongData[element.name] = element.value;
+        });
+        editSongData['playlistID'] = playlistID;
+        console.log(editSongForm);
+
+        $.ajax({
+            data: JSON.stringify(editSongData),
+            url: 'http://localhost:8080/api/teachersong/editSong',
+            type: 'POST',
+            contentType: 'application/json',
+            success: function(data) {
+                let responseData = JSON.parse(data);
+                console.log(responseData);
+                if (responseData == "success") {
+                    console.log("Success for edit song");
+                    bootstrapAlert('success', "Song Edited");
+
+                    $('#editSongModal').modal('hide'); 
+                    $('#editSongForm')[0].reset();
+                }
+                else {
+                    console.log("Failed to add song")
+                    bootstrapAlert('danger', 'Invalid song information.');
+                }
+                $("#editSongSpinner").addClass("d-none");
+                $("#confirmEditSongBtn").prop("disabled", false);
+            },
+            error: function(xhr, status, error) {
+                console.log(error);
+                bootstrapAlert('danger', 'Error editing song: ' + error);
+                $("#editSongSpinner").addClass("d-none");
+                $("#confirmEditSongBtn").prop("disabled", false);
+            }
+        });
     });
 });
 
 function getSongData() {
     $.ajax({
-        url: `http://localhost:8080/api/teacher/songs?playlistID=${playlistID}`,
+        url: `http://localhost:8080/api/teachersong?playlistID=${playlistID}`,
         type: 'GET',
         dataType: 'json',
         success: function (data) {
             data.data.forEach(element => {
                 element.url = "https://youtu.be/" + element.url;
+                element.mrTimestamp = element.mrTimestamp == -1 ? "None" : getTimestamp(element.mrTimestamp);
+                element.udTimestamp = element.udTimestamp == -1 ? "None" : getTimestamp(element.udTimestamp);
             });
             songTable = initializeDataTableWithFilters('#songTable', data.data, songColumns, [2, 'asc'], 10);
         },
@@ -182,4 +231,17 @@ function getSongData() {
         }
     });
 
+}
+
+function getTimestamp(totalSeconds) {
+    let hours = Math.floor(totalSeconds / 3600);
+    totalSeconds %= 3600;
+    let minutes = Math.floor(totalSeconds / 60);
+    let seconds = totalSeconds % 60;
+    let timestamp;
+    if (hours != 0)
+        timestamp = `${hours}:${minutes}:${seconds}`;
+    else
+        timestamp = `${minutes}:${seconds}`;
+    return timestamp;
 }

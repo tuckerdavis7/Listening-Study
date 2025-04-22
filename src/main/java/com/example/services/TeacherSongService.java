@@ -38,25 +38,46 @@ public class TeacherSongService extends BaseService {
         String songYear = (String)songData.get("year");
         String songURL = (String)songData.get("url");
         int userDefinedTimestamp = songImplementation.convertTimeToSeconds((String)songData.get("timestamp"));
-        int songMostReplayedTimestamp = songImplementation.getMostReplayedTimestamp(songURL);
         String songVideoID = songImplementation.extractVideoId(songURL);
         String responseString = "";
+
+        int songID = -1;
+        //Check if song exists already in song table
         try {
-            songRepository.commitSongData(songName, songComposer, songYear, songVideoID, songMostReplayedTimestamp);
-            logger.info("3");
             ResultSet result = songRepository.getSongID(songVideoID);
-            int songID = 0;
             if (result.next())
                 songID = result.getInt("ID");
+        }
+        catch (Exception e) {
+            responseString = "Internal Server Error";
+            logger.error("Error in addSong1 of TeacherSongService");
+        }
 
+        //If song does not exist in song table, add it
+        try {
+            if (songID == -1) {
+                int songMostReplayedTimestamp = songImplementation.getMostReplayedTimestamp(songURL);
+                songRepository.commitSongData(songName, songComposer, songYear, songVideoID, songMostReplayedTimestamp);
+                ResultSet result = songRepository.getSongID(songVideoID);
+                if (result.next())
+                    songID = result.getInt("ID");
+            }
+        }
+        catch (Exception e) {
+            responseString = "Internal Server Error";
+            logger.error("Error in addSong2 of TeacherSongService");
+        }
+
+        //Add song to playlist
+        try {
             playlistSongRepository.addToPlaylist(Integer.parseInt(playlistID), songID, userDefinedTimestamp);
-
             responseString = super.formatJSON("success");
         }
         catch (Exception e) {
             responseString = "Internal Server Error";
-            logger.error("Error in addSong of TeacherSongService:");
+            logger.error("Error in addSong3 of TeacherSongService");
         }
+
         return responseString;
     }
 
@@ -96,4 +117,50 @@ public class TeacherSongService extends BaseService {
         }
         return responseString;
     }
+
+     public String editSong(HttpExchange exchange) throws IOException {
+        Map<String, Object> songData = super.getParameters(exchange);
+        String playlistID = (String)songData.get("playlistID");
+        String songName = (String)songData.get("name");
+        String songComposer = (String)songData.get("composer");
+        String songYear = (String)songData.get("year");
+        String songURL = (String)songData.get("url");
+        int userDefinedTimestamp = songImplementation.convertTimeToSeconds((String)songData.get("timestamp"));
+        String songVideoID = songImplementation.extractVideoId(songURL);
+        String responseString = "";
+
+        int songID = 0;
+        //Get songID in song table
+        try {
+            ResultSet result = songRepository.getSongID(songVideoID);
+            if (result.next())
+                songID = result.getInt("ID");
+        }
+        catch (Exception e) {
+            responseString = "Internal Server Error";
+            logger.error("Error in editSong1 of TeacherSongService");
+        }
+
+        //Update song in songs table
+        try {
+            int songMostReplayedTimestamp = songImplementation.getMostReplayedTimestamp(songURL);
+            songRepository.updateSongData(songName, songComposer, songYear, songVideoID, songMostReplayedTimestamp, songID);
+        }
+        catch (Exception e) {
+            responseString = "Internal Server Error";
+            logger.error("Error in editSong2 of TeacherSongService");
+        }
+
+        //Update song in playlist songs table
+        try {
+            playlistSongRepository.updatePlaylistSong(Integer.parseInt(playlistID), songID, userDefinedTimestamp);
+            responseString = super.formatJSON("success");
+        }
+        catch (Exception e) {
+            responseString = "Internal Server Error";
+            logger.error("Error in editSong3 of TeacherSongService");
+        }
+
+        return responseString;
+     }
 }

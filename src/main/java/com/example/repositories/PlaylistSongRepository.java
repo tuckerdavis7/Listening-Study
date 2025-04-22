@@ -77,7 +77,7 @@ public class PlaylistSongRepository {
     }
 
     /**
-     * Adds a SongID and its userdefinedtimstamp to a playlist
+     * Adds a SongID and its user-defined timestamp to a playlist
      *
      * @param playlistID The ID of the playlist being inserted into
      * @param songID The ID of the song getting added to the playlist
@@ -102,13 +102,42 @@ public class PlaylistSongRepository {
      * @throws SQLException When the query does not run properly
      * @return ResultSet containing query results
      */
-    public ResultSet getSongs(int playListID) throws SQLException {
+    public ResultSet getSongs(int playlistID) throws SQLException {
         String query = "SELECT s.ID AS songID, s.songName, s.songComposer, s.songYear, s.youtubeLink, s.mrTimestamp, ps.playlistID, ps.udTimestamp FROM playlistSongs ps JOIN song s ON ps.songID = s.ID WHERE ps.playlistID = ?";
 
         PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
-        pstmt.setInt(1, playListID);
+        pstmt.setInt(1, playlistID);
         ResultSet rs = pstmt.executeQuery();
 
-       return rs;
+        return rs;
+    }
+
+    /**
+     * Returns the resultset containing the playlist song data.
+     *
+     * @param playlistID The ID of the active playlist
+     * @param songID The ID of the active song
+     * @throws SQLException When the query does not run properly
+     * @return ResultSet containing query results
+     */
+    public ResultSet getPlaylistSongs(int playlistID, int songID) throws SQLException {
+        String query = "SELECT * FROM playlistsongs WHERE playlistID = ? and songID = ?";
+
+        PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
+        pstmt.setInt(1, playlistID);
+        pstmt.setInt(2, songID);
+        ResultSet rs = pstmt.executeQuery();
+
+        return rs;
+    }
+
+    public void updatePlaylistSong(int playlistID, int songID, int udTimestamp) throws SQLException {
+        String query = "UPDATE playlistsongs SET udTimestamp = ? WHERE playlistID = ? and songID = ?";
+        PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
+
+        pstmt.setInt(1, udTimestamp);
+        pstmt.setInt(2, playlistID);
+        pstmt.setInt(3, songID);
+        pstmt.executeUpdate();
     }
 }

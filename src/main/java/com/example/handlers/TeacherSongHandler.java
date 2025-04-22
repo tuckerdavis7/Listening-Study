@@ -37,9 +37,20 @@ public class TeacherSongHandler extends BaseHandler implements HttpHandler {
                 break;
 
             case "POST":
-                response = teacherSongService.addSong(exchange);
-                super.sendResponse(exchange, response, "Regular");
-                break;
+                if (exchange.getRequestURI().getPath().equals("/api/teachersong/addSong")) {
+                    response = teacherSongService.addSong(exchange);
+                    super.sendResponse(exchange, response, "Regular");
+                    break;
+                }
+                else if (exchange.getRequestURI().getPath().equals("/api/teachersong/editSong")) {
+                    response = teacherSongService.editSong(exchange);
+                    super.sendResponse(exchange, response, "Regular");
+                    break;
+                }
+                else {
+                    super.sendResponse(exchange, "Method Not Allowed", "Regular");
+                    break;
+                }
             
             default:
                 super.sendResponse(exchange, "Method Not Allowed", "Regular");

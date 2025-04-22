@@ -91,12 +91,15 @@ public class SongImplementation {
     }
 
       /**
-     * Converts time of video into seconds
+     * Converts timestamp string into seconds
      *
-     * @param time as length of the video
-     * @return second of the video
+     * @param time timestamp string in HH:MM:SS or MM:SS format
+     * @return timestamp measured in seconds
      */
     public int convertTimeToSeconds(String time) {
+        if (time.equals(""))
+            return -1;
+
         String[] parts = time.split(":");
         int seconds = 0;
         if (parts.length == 2) { // MM:SS format

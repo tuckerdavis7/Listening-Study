@@ -73,6 +73,19 @@ public class SongRepository {
         //songData.add(rs.getString("mrTimestamp"));
        
        return rs;   
+    }
+
+    public void updateSongData(String songName,  String songComposer, String songYear, String youtubeLink, int mrTimestamp, int songID) throws SQLException {
+        String query = "UPDATE song SET songName = ?, songComposer = ?, songYear = ?, youtubeLink = ?, mrTimestamp = ? WHERE ID = ?";
+        PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
+
+        pstmt.setString(1, songName);
+        pstmt.setString(2, songComposer);
+        pstmt.setString(3, songYear);
+        pstmt.setString(4, youtubeLink);
+        pstmt.setInt(5, mrTimestamp);
+        pstmt.setInt(6, songID);
+        pstmt.executeUpdate();
     }    
     
 }

@@ -131,13 +131,20 @@
                         </div>
                         <div class="mb-3">
                             <label for="editTimestamp" class="form-label">Timestamp</label>
-                            <input type="text" id="editTimestamp" class="form-control mb-3" pattern="^(?:\d{1,2}:)?[0-5]?\d:[0-5]\d$">
+                            <input type="text" id="editTimestamp" class="form-control mb-3" pattern="^(?:\d{1,2}:)?[0-5]?\d:[0-5]\d$" name="timestamp">
                             <small class="form-text text-muted">Optional. Please use the following timestamp format: HH:MM:SS or MM:SS</small>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary" id="confirmEditSongBtn">Save Changes</button>
+                        <div id="editSongSpinnerWrapper">
+                            <div class="spinner-border text-primary d-none" role="status" id="editSongSpinner">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </div>
+                        <div class="ms-auto">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary" id="confirmEditSongBtn">Save Changes</button>
+                        </div>
                     </div>
                 </form>
             </div>

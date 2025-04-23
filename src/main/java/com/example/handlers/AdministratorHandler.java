@@ -41,6 +41,23 @@ public class AdministratorHandler extends BaseHandler implements HttpHandler {
                     response = administratorService.getAllReports(exchange);
                     super.sendResponse(exchange, response, "Regular");
                 }
+
+            case "PATCH":
+                if (exchange.getRequestURI().getPath().equals("/api/administrator/users")) {
+                    response = administratorService.updateDesignation(exchange);
+                    super.sendResponse(exchange, response, "Regular");
+                    break;
+                }
+                else if (exchange.getRequestURI().getPath().equals(("/api/administrator/reports"))) {
+                    response = administratorService.updateReportStatus(exchange);
+                    super.sendResponse(exchange, response, "Regular");
+                    break;
+                }
+                
+            case "DELETE":
+                response = administratorService.deleteUser(exchange);
+                super.sendResponse(exchange, response, "Regular");
+                break;
             
             default:
                 super.sendResponse(exchange, "Method Not Allowed", "Regular");

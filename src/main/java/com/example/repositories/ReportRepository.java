@@ -28,17 +28,18 @@ public class ReportRepository {
      /**
      * Modifies the report table by changing the status of a report
      *
-     * @param User Map that that contains the status if report and id.
+     * @param report Map that that contains the status if report and id.
      * @throws SQLException When the query does not run properly    
      */
-    public void updateReportStatus(Map<String, Object> user) throws SQLException {
-        String query = "UPDATE report SET status = ? WHERE ID = ?";
+    public void updateReportStatus(Map<String, Object> report) throws SQLException {
+        String query = "UPDATE reportTime SET status = ?, resolution = ? WHERE ID = ?";
         PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
 
-        Object id = user.get("ID");
+        Object id = report.get("id");
 
-        pstmt.setString(1, user.get("status").toString());
-        pstmt.setInt(2, (Integer) id);
+        pstmt.setString(1, report.get("status").toString());
+        pstmt.setString(2, report.get("resolution").toString());
+        pstmt.setInt(3, Integer.parseInt(id.toString()));
         pstmt.executeUpdate();
     }
 }

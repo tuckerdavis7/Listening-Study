@@ -53,8 +53,9 @@ public class UserRepository {
      * @return result set of the query
      */
     public ResultSet getAllUsers() throws SQLException {
-        String query = "SELECT * FROM users";
+        String query = "SELECT * FROM users WHERE deleted = ?";
         PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
+        pstmt.setInt(1, 0);
         ResultSet rs = pstmt.executeQuery();
 
        return rs;

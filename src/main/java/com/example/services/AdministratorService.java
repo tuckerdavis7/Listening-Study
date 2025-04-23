@@ -18,6 +18,13 @@ public class AdministratorService extends BaseService {
     UserRepository userRepository = new UserRepository();
     ReportRepository reportRepository = new ReportRepository();
 
+    /**
+     * Gathers the reports from the DB
+     *
+     * @param exchange The data from the API request
+     * @throws IOException If data processing fails
+     * @return String JSON formatted string of data for frontend
+     */
     public String getAllReports(HttpExchange exchange) throws IOException {
         String responseString = "";
         try {
@@ -33,6 +40,7 @@ public class AdministratorService extends BaseService {
                 reportMap.put("description", result.getString("description"));
                 reportMap.put("email", result.getString("email"));
                 reportMap.put("status", result.getString("status"));
+                reportMap.put("resolution", result.getString("resolution"));
                 
                 reportList.add(reportMap);
             }
@@ -40,11 +48,19 @@ public class AdministratorService extends BaseService {
         }
         catch (Exception e) {
             responseString = "Internal Server Error";
-            logger.error("Error in getAllReports of AdministratorReportService: " + e.getMessage());
+            logger.error("Error in getAllReports of AdministratorService:");
+            e.printStackTrace();
         }
         return responseString;
     }
 
+     /**
+     * Gathers the users from the DB
+     *
+     * @param exchange The data from the API request
+     * @throws IOException If data processing fails
+     * @return String JSON formatted string of data for frontend
+     */
     public String getAllUsers(HttpExchange exchange) throws IOException {
         String responseString = "";
         try {
@@ -64,11 +80,19 @@ public class AdministratorService extends BaseService {
         }
         catch (Exception e) {
             responseString = "Internal Server Error";
-            logger.error("Error in getAllUsers of AdministratorUserService: " + e.getMessage());
+            logger.error("Error in getAllUsers of AdministratorService:");
+            e.printStackTrace();
         }
         return responseString;
     }
 
+     /**
+     * Updates the designation of a teacher or moderator
+     *
+     * @param exchange The data from the API request
+     * @throws IOException If data processing fails
+     * @return String JSON formatted string of success or error message
+     */
     public String updateDesignation(HttpExchange exchange) throws IOException {
         String responseString = "";
         Map<String, Object> parameters = super.getParameters(exchange);
@@ -79,12 +103,20 @@ public class AdministratorService extends BaseService {
         }
         catch (Exception e) {
             responseString = "Internal Server Error";
-            logger.error("Error in updateDesignation of AdministratorUserService: " + e.getMessage());
+            logger.error("Error in updateDesignation of AdministratorService:");
+            e.printStackTrace();
         }
 
         return responseString;
     }
 
+    /**
+     * Deletes (marks for deletion) a user
+     *
+     * @param exchange The data from the API request
+     * @throws IOException If data processing fails
+     * @return String JSON formatted string of success or error message
+     */
     public String deleteUser(HttpExchange exchange) throws IOException {
         String responseString = "";
         Map<String, Object> parameters = super.getParameters(exchange);
@@ -95,7 +127,32 @@ public class AdministratorService extends BaseService {
         }
         catch (Exception e) {
             responseString = "Internal Server Error";
-            logger.error("Error in deleteUser of AdministratorUserService: " + e.getMessage());
+            logger.error("Error in deleteUser of AdministratorService:");
+            e.printStackTrace();
+        }
+
+        return responseString;
+    }
+
+    /**
+     * Updates the status of a bug report
+     *
+     * @param exchange The data from the API request
+     * @throws IOException If data processing fails
+     * @return String JSON formatted string of success or error message
+     */
+    public String updateReportStatus(HttpExchange exchange) throws IOException {
+        String responseString = "";
+        Map<String, Object> parameters = super.getParameters(exchange);
+
+        try {
+            reportRepository.updateReportStatus(parameters);
+            responseString = super.formatJSON("success");
+        }
+        catch (Exception e) {
+            responseString = "Internal Server Error";
+            logger.error("Error in updateReport of AdministratorService:");
+            e.printStackTrace();
         }
 
         return responseString;

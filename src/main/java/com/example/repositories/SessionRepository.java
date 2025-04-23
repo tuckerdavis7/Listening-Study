@@ -43,4 +43,20 @@ public class SessionRepository {
         }
         return null;
     }
+
+    /**
+     * Returns the session details including the user's role based on a valid session ID.
+     *
+     * @param sessionID The session ID of the user
+     * @throws SQLException When the query fails to execute properly
+     * @return ResultSet containing session information if the session is valid and not expired
+     */
+    public ResultSet getUserRoleBySessionID(String sessionID) throws SQLException {
+        String query = "SELECT * FROM sessions where session_id = ? and expires_at > CURRENT_TIMESTAMP";
+        PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
+
+        pstmt.setString(1, sessionID);
+        ResultSet rs = pstmt.executeQuery();
+        return rs;
+    }
 }

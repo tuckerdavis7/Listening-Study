@@ -23,6 +23,33 @@ public class CookieUtil {
     public static String getCookieSessionID(HttpExchange exchange) {
         return getCookie(exchange, "SESSIONID");
     }
+
+    /**
+     * Checks if the request has a valid session cookie.
+     *
+     * @param exchange The data from the API request
+     * @return true if a valid session exists, false otherwise
+     */
+    public boolean hasValidSession(HttpExchange exchange) {
+        // Get cookies from request headers
+        String cookies = exchange.getRequestHeaders().getFirst("Cookie");
+        
+        // Check if cookies exist
+        if (cookies == null || cookies.isEmpty()) {
+            return false;
+        }
+        
+        // Look for SESSIONID
+        for (String cookie : cookies.split(";")) {
+            String trimmedCookie = cookie.trim();
+            if (trimmedCookie.startsWith("SESSIONID=")) {
+                String sessionId = trimmedCookie.substring("SESSIONID=".length());
+                return sessionId != null && !sessionId.isEmpty();
+            }
+        }
+        
+        return false;
+    }
     
 }
 

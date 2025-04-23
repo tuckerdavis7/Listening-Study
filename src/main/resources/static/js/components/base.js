@@ -1,14 +1,21 @@
 $(document).ready(function() {
+    //checks for ajax errors related to URL fishing and unauthroized access
     $(document).ajaxError(function(event, xhr, settings) {
-        if (xhr.status === 401) {
-            try {
-                const response = JSON.parse(xhr.responseText);
+        console.log("outer reached");
+        const response = JSON.parse(xhr.responseText);
+        try {
+            if (xhr.status === 401) {
                 if (response.error === "session_expired") {
-                    // Redirect to root when session has expired
                     window.location.href = response.redirect || "/";
                 }
-            } catch (e) {}
-        }
+            }
+            else if (xhr.status === 403) {
+                console.log("reached");
+                if (response.error === "unauthorized") {
+                    window.location.href = response.redirect || "/unauthorized";
+                }
+            }
+        } catch (e) {}
     });
 
     //set metadata for each page in footer

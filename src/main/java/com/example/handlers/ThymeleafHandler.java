@@ -50,6 +50,9 @@ public class ThymeleafHandler extends BaseHandler implements HttpHandler {
         // Map paths to templates
         if (path.equals("/")) {
             template = "index";
+        } else if (path.equals("/unauthorized")) {
+            template = "unauthorized";
+            welcomeMessage = "Unauthorized!";
         } else if (path.equals("/bugreports")) {
             template = "bugReports";
             welcomeMessage = "Welcome to the Bug Report page!";

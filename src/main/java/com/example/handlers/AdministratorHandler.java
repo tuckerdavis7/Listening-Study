@@ -27,8 +27,7 @@ public class AdministratorHandler extends BaseHandler implements HttpHandler {
      */
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-        if (!super.hasValidSession(exchange)) {
-            super.redirectToRoot(exchange);
+        if (!super.isRequestAuthorized(exchange)) {
             return;
         }
 

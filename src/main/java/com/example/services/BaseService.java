@@ -1,16 +1,22 @@
 package com.example.services;
 
+import com.example.repositories.SessionRepository;
+import com.example.utils.CookieUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.sql.ResultSet;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.sun.net.httpserver.HttpExchange;
 
@@ -18,7 +24,36 @@ import com.sun.net.httpserver.HttpExchange;
  * Base Service class that contains methods to be used in other service classes.
  */
 public class BaseService {
+    private static final Logger logger = LoggerFactory.getLogger(BaseService.class);
     private Gson gson = new Gson();
+    SessionRepository sessionRepository = new SessionRepository();
+
+    /**
+     * Compares the user's role (retrieved from session) with the role extracted from the URL.
+     *
+     * @param exchange The HTTP exchange containing the request and cookies
+     * @param urlRole The role extracted from the URL path (e.g., "administrator", "student")
+     * @return true if the user's role matches the role in the URL; false otherwise
+     * @throws IOException If reading the session cookie fails
+     */
+    public boolean compareRoles(HttpExchange exchange, String urlRole) throws IOException{
+        String sessionID = CookieUtil.getCookieSessionID(exchange);
+
+        try {
+            ResultSet result = sessionRepository.getUserRoleBySessionID(sessionID);
+            if (result.next()) {
+                String userRole = result.getString("role");
+                if (userRole.equals(urlRole) || userRole.equals("administrator")) {
+                    return true;
+                }
+            }
+        }
+        catch (Exception e) {
+            logger.error("Error in compareRoles of BaseService:");
+            e.printStackTrace();
+        }
+        return false;
+    }
     
     /**
      * Takes in JSON body (POST, PATCH, DELETE) from request and returns multiple JSON objects

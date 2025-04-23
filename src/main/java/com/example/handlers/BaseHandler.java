@@ -1,56 +1,58 @@
 package com.example.handlers;
 
-import com.example.services.AdministratorService;
+import com.example.services.BaseService;
+import com.example.utils.CookieUtil;
 import com.sun.net.httpserver.HttpExchange;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * Base Handler class that contains methods to be used in other handlers.
  */
 public class BaseHandler {
-    private static final Logger logger = LoggerFactory.getLogger(AdministratorService.class);
+    private BaseService baseService;
+    private CookieUtil cookieUtil;
 
     /**
-     * Checks if the request has a valid session cookie.
-     *
-     * @param exchange The data from the API request
-     * @return true if a valid session exists, false otherwise
+     * Class constructor to intialize service and util files
      */
-    protected boolean hasValidSession(HttpExchange exchange) {
-        // Get cookies from request headers
-        String cookies = exchange.getRequestHeaders().getFirst("Cookie");
-        
-        // Check if cookies exist
-        if (cookies == null || cookies.isEmpty()) {
-            return false;
-        }
-        
-        // Look for SESSIONID
-        for (String cookie : cookies.split(";")) {
-            String trimmedCookie = cookie.trim();
-            if (trimmedCookie.startsWith("SESSIONID=")) {
-                String sessionId = trimmedCookie.substring("SESSIONID=".length());
-                return sessionId != null && !sessionId.isEmpty();
-            }
-        }
-        
-        return false;
+    public BaseHandler() {
+        this.baseService = new BaseService();
+        this.cookieUtil = new CookieUtil();
     }
 
     /**
-     * Redirects the request to the application root URL.
+     * Validates if the request has a valid session and matching role.
+     *
+     * @param exchange The HTTP exchange containing the request
+     * @return true if the request is authorized; false otherwise
+     * @throws IOException If redirection fails
+     */
+    protected boolean isRequestAuthorized(HttpExchange exchange) throws IOException {
+        if (!cookieUtil.hasValidSession(exchange)) {
+            redirectToRoot(exchange);
+            return false;
+        }
+
+        String role = extractRoleFromUrl(exchange);
+        boolean isRoleMatching = baseService.compareRoles(exchange, role);
+        if (!isRoleMatching) {
+            redirectToUnauthorized(exchange);
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Helper to redirect the request to the application root URL.
      *
      * @param exchange The HTTP exchange to redirect
      * @throws IOException If an I/O error occurs during redirection
      */
     protected void redirectToRoot(HttpExchange exchange) throws IOException {
-        logger.warn("URL access attempt without valid session");
         exchange.getResponseHeaders().add("Set-Cookie", "SESSIONID=expired; Path=/; Max-Age=0");
         
         exchange.getResponseHeaders().add("Content-Type", "application/json");
@@ -62,6 +64,53 @@ public class BaseHandler {
         }
 
         exchange.close();
+    }
+
+    /**
+     * Helper to redirect the request to the application unauthorized page's URL.
+     *
+     * @param exchange The HTTP exchange to redirect
+     * @throws IOException If an I/O error occurs during redirection
+     */
+    protected void redirectToUnauthorized(HttpExchange exchange) throws IOException {        
+        exchange.getResponseHeaders().add("Content-Type", "application/json");
+        String jsonResponse = "{\"error\":\"unauthorized\",\"redirect\":\"/unauthorized\"}";
+        byte[] responseBytes = jsonResponse.getBytes(StandardCharsets.UTF_8);
+        exchange.sendResponseHeaders(403, responseBytes.length);
+        try (OutputStream os = exchange.getResponseBody()) {
+            os.write(responseBytes);
+        }
+
+        exchange.close();
+    }
+
+    /**
+     * Helper to extract the role from the browser URL path.
+     * For example, from "/administrator/dashboard" or "localhost:8080/administrator/dashboard" 
+     * it will extract "administrator".
+     *
+     * @param exchange The HTTP exchange containing the request
+     * @return The extracted role (student, teacher, moderator, administrator) or null if not found
+     */
+    protected String extractRoleFromUrl(HttpExchange exchange) {
+        String path = exchange.getRequestURI().getPath();
+        
+        // Split the path by "/" and check each segment
+        String[] segments = path.split("/");
+        
+        for (int i = 0; i < segments.length; i++) {
+            String segment = segments[i].trim();
+            if (!segment.isEmpty()) {
+                // Check if the segment is one of our defined roles
+                if (segment.equals("student") || 
+                    segment.equals("teacher") || 
+                    segment.equals("moderator") || 
+                    segment.equals("administrator")) {
+                    return segment;
+                }
+            }
+        }        
+        return null;
     }
     
     /**

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unauthorized Access</title>
+    <div th:replace="~{fragments/styles :: styles}"></div>
+
+    <div th:replace="~{fragments/scripts :: scripts}"></div>
+
+    <link rel="stylesheet" href="../static/css/unauthorized.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Unauthorized Access</h1>
+        <p>You don't have permission to view this page.</p>
+        
+        <div class="image-container">
+            <img src="../static/images/unauthorized.jpg" alt="Music instruments">
+        </div>
+        
+        <button class="btn btn-primary" onclick="window.history.go(-2)">Go Back</button>
+    </div>
+</body>
+</html>

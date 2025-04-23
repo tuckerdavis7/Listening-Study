@@ -32,7 +32,7 @@ $(document).ready(async function() {
     let scorePercentage = (numberCorrect / numQuestions) * 100;
     $('#userScore').html(numberCorrect);
     $('#totalQuestions').html(numQuestions);
-    $('#scorePercentage').html(scorePercentage);
+    $('#scorePercentage').html(scorePercentage.toFixed(2));
 
     if (scorePercentage == 100) {
         console.log("good job")

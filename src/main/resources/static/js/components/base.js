@@ -1,7 +1,7 @@
 $(document).ready(function() {
     //set metadata for each page in footer
     $.ajax({
-        url: 'http://localhost:8080/api/configuration',
+        url: 'http://localhost:8080/api/metadata',
         type: 'GET',
         contentType: 'application/json',
         success: function(data) {

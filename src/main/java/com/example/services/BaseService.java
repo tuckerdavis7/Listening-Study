@@ -29,6 +29,30 @@ public class BaseService {
     SessionRepository sessionRepository = new SessionRepository();
 
     /**
+     * Returns the user ID retrieved from the session.
+     *
+     * @param exchange The HTTP exchange containing the request and cookies
+     * @return user ID retrieved using the session ID cookie
+     * @throws IOException If reading the session cookie fails
+     */
+    public int getSessionUserID(HttpExchange exchange) throws IOException {
+        String sessionID = CookieUtil.getCookieSessionID(exchange);
+
+        try {
+            ResultSet result = sessionRepository.getUserRoleBySessionID(sessionID);
+            if (result.next()) {
+                int userID = result.getInt("user_id");
+                return userID;
+            }
+        }
+        catch (Exception e) {
+            logger.error("Error in getSessionUserID of BaseService:");
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    /**
      * Compares the user's role (retrieved from session) with the role extracted from the URL.
      *
      * @param exchange The HTTP exchange containing the request and cookies

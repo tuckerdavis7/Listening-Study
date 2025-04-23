@@ -27,9 +27,14 @@ public class AdministratorHandler extends BaseHandler implements HttpHandler {
      */
     @Override
     public void handle(HttpExchange exchange) throws IOException {
+        if (!super.hasValidSession(exchange)) {
+            super.redirectToRoot(exchange);
+            return;
+        }
+
         String response = "";
         String method = exchange.getRequestMethod();
-
+        
         switch (method) {
             case "GET":
                 if (exchange.getRequestURI().getPath().equals("/api/administrator/users")) {

@@ -1,4 +1,16 @@
 $(document).ready(function() {
+    $(document).ajaxError(function(event, xhr, settings) {
+        if (xhr.status === 401) {
+            try {
+                const response = JSON.parse(xhr.responseText);
+                if (response.error === "session_expired") {
+                    // Redirect to root when session has expired
+                    window.location.href = response.redirect || "/";
+                }
+            } catch (e) {}
+        }
+    });
+
     //set metadata for each page in footer
     $.ajax({
         url: 'http://localhost:8080/api/metadata',

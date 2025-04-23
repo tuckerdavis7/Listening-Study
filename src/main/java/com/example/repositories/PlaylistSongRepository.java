@@ -140,4 +140,13 @@ public class PlaylistSongRepository {
         pstmt.setInt(3, songID);
         pstmt.executeUpdate();
     }
+
+    public void deletePlaylistSong(int playlistID, int songID) throws SQLException {
+        String query = "DELETE FROM playlistsongs WHERE playlistID = ? and songID = ?";
+        PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
+
+        pstmt.setInt(1, playlistID);
+        pstmt.setInt(2, songID);
+        pstmt.executeUpdate();
+    }
 }

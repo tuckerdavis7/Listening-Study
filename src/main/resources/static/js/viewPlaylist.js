@@ -2,11 +2,13 @@ const pathArr = location.href.split('/');
 const userType = pathArr[pathArr.length - 3];
 const playlistID = pathArr[pathArr.length - 1];
 
-var songTable;
+let songTable;
 let songColumns;
+let masterSongData;
+let deleteSongID = -1;
 
 $(document).ready(function () {
-    getSongData();
+    updateSongTable();
     songColumns = (userType == "teacher") ? [
         {
             class: "wrenchColumn",
@@ -124,7 +126,7 @@ $(document).ready(function () {
 
         $.ajax({
             data: JSON.stringify(addSongData),
-            url: 'http://localhost:8080/api/teachersong/addSong',
+            url: 'http://localhost:8080/api/teachersong',
             type: 'POST',
             contentType: 'application/json',
             success: function(data) {
@@ -136,6 +138,9 @@ $(document).ready(function () {
 
                     $('#addSongModal').modal('hide'); 
                     $('#addSongForm')[0].reset();
+                    
+                    updateSongTable();
+                    window.location.reload();
                 }
                 else {
                     console.log("Failed to add song")
@@ -159,10 +164,10 @@ $(document).ready(function () {
         $('#editComposer').val(row.composer);
         $('#editYear').val(row.year);
         $('#editURL').val(row.url);
-        if (row.udTimestamp == -1)
+        if (row.udTimestamp == "None")
             $('#editTimestamp').val('');
         else {
-            let timestamp = getTimestamp(row.udTimestamp);
+            let timestamp = row.udTimestamp;
             $('#editTimestamp').val(timestamp);
         }
 
@@ -178,13 +183,14 @@ $(document).ready(function () {
         editSongForm.forEach(element => {
             editSongData[element.name] = element.value;
         });
-        editSongData['playlistID'] = playlistID;
-        console.log(editSongForm);
+        editSongData['playlistID'] = parseInt(playlistID);
+        editSongData['songID'] = getSongID(editSongData['url']);
+        console.log(editSongData);
 
         $.ajax({
             data: JSON.stringify(editSongData),
-            url: 'http://localhost:8080/api/teachersong/editSong',
-            type: 'POST',
+            url: 'http://localhost:8080/api/teachersong',
+            type: 'PATCH',
             contentType: 'application/json',
             success: function(data) {
                 let responseData = JSON.parse(data);
@@ -195,9 +201,12 @@ $(document).ready(function () {
 
                     $('#editSongModal').modal('hide'); 
                     $('#editSongForm')[0].reset();
+                    
+                    updateSongTable();
+                    window.location.reload();
                 }
                 else {
-                    console.log("Failed to add song")
+                    console.log("Failed to edit song")
                     bootstrapAlert('danger', 'Invalid song information.');
                 }
                 $("#editSongSpinner").addClass("d-none");
@@ -211,9 +220,57 @@ $(document).ready(function () {
             }
         });
     });
+
+    $('#removeConfirmation').on('show.bs.modal', function (event) {
+        let button = $(event.relatedTarget);
+        let row = songTable.row(button.data('rowindex')).data();
+        deleteSongID = row["songID"];
+    });
+
+    $('#removeConfirmation').on('hide.bs.modal', function (event) {
+        let button = $(event.relatedTarget);
+        let row = songTable.row(button.data('rowindex')).data();
+        deleteSongID = -1;
+    });
+
+    $('#removeConfirmationButton').click(function () {
+        let deleteSongData = {};
+        deleteSongData['playlistID'] = parseInt(playlistID);
+        deleteSongData['songID'] = deleteSongID;
+        console.log(deleteSongData);
+
+        $.ajax({
+            data: JSON.stringify(deleteSongData),
+            url: 'http://localhost:8080/api/teachersong',
+            type: 'DELETE',
+            contentType: 'application/json',
+            success: function(data) {
+                let responseData = JSON.parse(data);
+                console.log(responseData);
+                if (responseData == "success") {
+                    console.log("Success for delete song");
+                    bootstrapAlert('success', "Song Deleted");
+
+                    $('#removeConfirmation').modal('hide'); 
+                    
+                    updateSongTable();
+                    window.location.reload();
+                }
+                else {
+                    console.log("Failed to delete song")
+                    bootstrapAlert('danger', 'Failed to delete song.');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.log(error);
+                bootstrapAlert('danger', 'Error deleting song: ' + error);
+                $("#removeConfirmation").addClass("d-none");
+            }
+        });
+    });
 });
 
-function getSongData() {
+function updateSongTable() {
     $.ajax({
         url: `http://localhost:8080/api/teachersong?playlistID=${playlistID}`,
         type: 'GET',
@@ -224,7 +281,11 @@ function getSongData() {
                 element.mrTimestamp = element.mrTimestamp == -1 ? "None" : getTimestamp(element.mrTimestamp);
                 element.udTimestamp = element.udTimestamp == -1 ? "None" : getTimestamp(element.udTimestamp);
             });
-            songTable = initializeDataTableWithFilters('#songTable', data.data, songColumns, [2, 'asc'], 10);
+            masterSongData = data.data;
+            console.log(masterSongData);
+            
+            if (!songTable)
+                songTable = initializeDataTableWithFilters('#songTable', masterSongData, songColumns, [2, 'asc'], 10);
         },
         error: function (xhr, status, error) {
             console.error("Error fetching data from the API:", error);
@@ -244,4 +305,13 @@ function getTimestamp(totalSeconds) {
     else
         timestamp = `${minutes}:${seconds}`;
     return timestamp;
+}
+
+function getSongID(url) {
+    console.log(masterSongData);
+    for (let i = 0; i < masterSongData.length; i++) {
+        if (masterSongData[i].url == url)
+            return masterSongData[i].songID;
+    }
+    return -1;
 }

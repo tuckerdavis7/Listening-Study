@@ -100,6 +100,7 @@ public class TeacherSongService extends BaseService {
             
             while (result.next()) {
                 Map<String, Object> songMap = new HashMap<>();
+                songMap.put("songID", result.getInt("songID"));
                 songMap.put("name", result.getString("songName"));
                 songMap.put("composer", result.getString("songComposer"));
                 songMap.put("year", result.getString("songYear"));
@@ -118,9 +119,10 @@ public class TeacherSongService extends BaseService {
         return responseString;
     }
 
-     public String editSong(HttpExchange exchange) throws IOException {
+    public String editSong(HttpExchange exchange) throws IOException {
         Map<String, Object> songData = super.getParameters(exchange);
-        String playlistID = (String)songData.get("playlistID");
+        int songID = ((Number)songData.get("songID")).intValue();
+        int playlistID = ((Number)songData.get("playlistID")).intValue();
         String songName = (String)songData.get("name");
         String songComposer = (String)songData.get("composer");
         String songYear = (String)songData.get("year");
@@ -128,18 +130,6 @@ public class TeacherSongService extends BaseService {
         int userDefinedTimestamp = songImplementation.convertTimeToSeconds((String)songData.get("timestamp"));
         String songVideoID = songImplementation.extractVideoId(songURL);
         String responseString = "";
-
-        int songID = 0;
-        //Get songID in song table
-        try {
-            ResultSet result = songRepository.getSongID(songVideoID);
-            if (result.next())
-                songID = result.getInt("ID");
-        }
-        catch (Exception e) {
-            responseString = "Internal Server Error";
-            logger.error("Error in editSong1 of TeacherSongService");
-        }
 
         //Update song in songs table
         try {
@@ -153,7 +143,7 @@ public class TeacherSongService extends BaseService {
 
         //Update song in playlist songs table
         try {
-            playlistSongRepository.updatePlaylistSong(Integer.parseInt(playlistID), songID, userDefinedTimestamp);
+            playlistSongRepository.updatePlaylistSong(playlistID, songID, userDefinedTimestamp);
             responseString = super.formatJSON("success");
         }
         catch (Exception e) {
@@ -162,5 +152,24 @@ public class TeacherSongService extends BaseService {
         }
 
         return responseString;
-     }
+    }
+
+    public String deleteSong(HttpExchange exchange) throws IOException {
+        Map<String, Object> songData = super.getParameters(exchange);
+        int songID = ((Number)songData.get("songID")).intValue();
+        int playlistID = ((Number)songData.get("playlistID")).intValue();
+        String responseString = "";
+
+        //Delete song in playlist songs table
+        try {
+            playlistSongRepository.deletePlaylistSong(playlistID, songID);
+            responseString = super.formatJSON("success");
+        }
+        catch (Exception e) {
+            responseString = "Internal Server Error";
+            logger.error("Error in deleteSong of TeacherSongService");
+        }
+
+        return responseString;
+    }
 }

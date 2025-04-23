@@ -1,4 +1,4 @@
-var reportTable, reportColumns, userTable, userColumns, sessionData;
+var reportTable, reportColumns, userTable, userColumns;
 
 $(document).ready(function () {
     reportColumns = [
@@ -109,6 +109,7 @@ $(document).ready(function () {
     $('#reportModal').on('show.bs.modal', function (event) {
         let button = $(event.relatedTarget);
         let row = reportTable.row(button.data('rowindex')).data();
+        let resolution = (row.resolution === '') ? 'N/A' : row.resolution;
 
         $('#reportDate').html(row.initialDate);
         $('#reportEmail').html(row.email);
@@ -116,6 +117,8 @@ $(document).ready(function () {
         $('#reportDescription').html(row.description);
         $('#reportModified').html(row.modifiedDate + ' ' + row.modifiedBy);
         $('#reportStatus').html(row.status);
+        $('#reportResolution').html(resolution);
+        $('#reportID').val(row.ID);
 
         //clearing comment field in submodal
         $('#resolution').val('');
@@ -135,17 +138,43 @@ $(document).ready(function () {
         }
     });
 
-    $('#acknowledgeReportButton').on('click', function() {
-        bootstrapAlert('info', 'Report acknowledged.');
-        $('#reportModal').modal('hide');
-    });
+    $('#acknowledgeReportButton, #saveReportButton').on('click', function() {
+        let statusForm = {status: null, resolution: "", id: $('#reportID').val()};
+        let isResolutionFieldEmpty = false;
 
-    $('#saveReportButton').on('click', function() {
-        let valid = validateFormData();
-        if (valid) {
-            bootstrapAlert('success', 'Report resolved successfully.');
-            $('#reportModal, #reportSubModal').modal('hide');
+        if ($('#acknowledgeReportButton').is(":visible")) {
+            statusForm.status = "Acknowledged";
         }
+        else {
+            statusForm.status = "Resolved";
+            statusForm.resolution = $('#resolution').val();
+
+            let valid = validateFormData();
+            if (!valid) {
+                isResolutionFieldEmpty = true;
+            }
+        }
+
+        if (!isResolutionFieldEmpty) {
+            $.ajax({
+                data: JSON.stringify(statusForm),
+                url: 'http://localhost:8080/api/administrator/reports',
+                type: 'PATCH',
+                contentType: 'application/json',
+                success: function(data) {
+                    bootstrapAlert('success', 'Status updated.');
+                    $('#reportModal, #reportSubModal').modal('hide');
+    
+                    //refresh table data
+                    reportTable.destroy();
+                    getReportData();                     
+                },
+                error: function(xhr, status, error) {
+                    bootstrapAlert('danger', 'Error while updating status: ' + error);
+                }
+            });
+        }
+       
     });
 
     $('#userModal').on('show.bs.modal', function (event) {
@@ -185,7 +214,7 @@ $(document).ready(function () {
 
         $.ajax({
             data: JSON.stringify(designationForm),
-            url: 'http://localhost:8080/api/administrator/users/',
+            url: 'http://localhost:8080/api/administrator/users',
             type: 'PATCH',
             contentType: 'application/json',
             success: function(data) {
@@ -209,7 +238,7 @@ $(document).ready(function () {
         let deleteForm = {"email": row.email};
         $.ajax({
             data: JSON.stringify(deleteForm),
-            url: 'http://localhost:8080/api/administrator/users/',
+            url: 'http://localhost:8080/api/administrator/users',
             type: 'DELETE',
             contentType: 'application/json',
             success: function() {

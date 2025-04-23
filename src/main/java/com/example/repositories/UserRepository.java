@@ -47,6 +47,21 @@ public class UserRepository {
     } 
 
     /**
+     * returns all users
+     *
+     * @throws SQLException When the query does not run properly
+     * @return result set of the query
+     */
+    public ResultSet getAllUsers() throws SQLException {
+        String query = "SELECT * FROM users WHERE deleted = ?";
+        PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
+        pstmt.setInt(1, 0);
+        ResultSet rs = pstmt.executeQuery();
+
+       return rs;
+    }
+
+    /**
      * returns user by email
      *
      * @param email of the user

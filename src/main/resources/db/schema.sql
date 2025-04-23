@@ -75,6 +75,7 @@ CREATE TABLE reportTime (
     timeOfReport DATETIME NOT NULL,
     email VARCHAR(255),
     description TEXT,
+    resolution TEXT,
     lastUpdatedTime DATETIME NOT NULL,
     lastUpdatedBy VARCHAR(255),
     status VARCHAR(50)

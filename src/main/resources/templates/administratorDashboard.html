@@ -66,6 +66,10 @@
                                 <th scope="row" class="p-0 py-2">Status:</th>
                                 <td class="py-2" id="reportStatus"></td>
                             </tr>
+                            <tr class="mb-3">
+                                <th scope="row" class="p-0 py-2">Resolution:</th>
+                                <td class="py-2" id="reportResolution"></td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -154,6 +158,9 @@
             </div>
         </div>
     </div>
+
+    <input type="hidden" id="reportID">
+    <input type="hidden" id="userID">
 
     <div th:replace="~{fragments/footer :: footer}"></div>
 </body>

@@ -14,14 +14,13 @@ TRUNCATE TABLE class;
 TRUNCATE TABLE users;
 TRUNCATE TABLE metaData;
 TRUNCATE TABLE quizSettings;
+TRUNCATE TABLE sessions;
 SET FOREIGN_KEY_CHECKS = 1;
 
 INSERT INTO metaData (appName, version, lastUpdate, logo) VALUES 
 ('Listening Study', '1.0', '2025-02-19', ''),
 ('Listening Study', '2.0', '2025-03-19', ''),
 ('Listening Study', '3.0', '2025-04-04', '');
-
-
 
 INSERT INTO users (email, first_name, last_name, deleted, role, password) VALUES
 ('administrator1@example.com', 'John', 'Smith', 0, 'administrator', '$2a$12$69rOPERjWxQ5fnzy4CbRZ.i.0w0MARpuH5hUf37.007eWx44i5bAK'),
@@ -60,12 +59,14 @@ INSERT INTO users (email, first_name, last_name, deleted, role, password) VALUES
 ('teacher8@example.com', 'Chloe', 'King', 0, 'teacher', '$2a$12$69rOPERjWxQ5fnzy4CbRZ.i.0w0MARpuH5hUf37.007eWx44i5bAK'),
 ('teacher9@example.com', 'Samuel', 'Wright', 0, 'teacher', '$2a$12$69rOPERjWxQ5fnzy4CbRZ.i.0w0MARpuH5hUf37.007eWx44i5bAK'),
 ('teacher10@example.com', 'Victoria', 'Lopez', 0, 'teacher', '$2a$12$69rOPERjWxQ5fnzy4CbRZ.i.0w0MARpuH5hUf37.007eWx44i5bAK'),
+('test.teacher@example.com', 'Test', 'Teacher', 0, 'teacher', '$2a$12$69rOPERjWxQ5fnzy4CbRZ.i.0w0MARpuH5hUf37.007eWx44i5bAK'),
 ('teacher11@example.com', 'Henry', 'Hill', 0, 'teacher', '$2a$12$69rOPERjWxQ5fnzy4CbRZ.i.0w0MARpuH5hUf37.007eWx44i5bAK');
 
 INSERT INTO teacherMaster (Email, Firstname, LastName, isActive, user_id) 
 SELECT email, first_name, last_name, 1, user_id FROM users WHERE role = 'teacher';
  
 INSERT INTO class (className, teacherID) VALUES
+('Test Music Class', 11),
 ('Music Theory 101', 1),
 ('Classical Piano', 2),
 ('Jazz Ensemble', 3),
@@ -76,7 +77,7 @@ INSERT INTO class (className, teacherID) VALUES
 ('Orchestral Studies', 8),
 ('Music Composition', 9),
 ('World Music', 10),
-('Music Appreciation', 11);
+('Music Appreciation', 6);
 
 INSERT INTO users (email, first_name, last_name, deleted, role, password) VALUES
 ('student1@example.com', 'Liam', 'Scott', 0, 'student', '$2a$12$69rOPERjWxQ5fnzy4CbRZ.i.0w0MARpuH5hUf37.007eWx44i5bAK'),

@@ -1,47 +1,7 @@
-var reportData = [
-    {
-        "initialDate": "03/14/2025 13:35:37",
-        "first": "Jane",
-        "last": "Doe",
-        "email": "doe@sru.edu",
-        "description": "A long text-field explaining the issue at hand",
-        "status": "Open",
-        "modifiedDate": "03/14/2025 13:35:37",
-        "modifiedUser": "jdoe" 
-    },
-    {
-        "initialDate": "03/15/2025 09:45:00",
-        "first": "Jane",
-        "last": "Doe",
-        "email": "doe@sru.edu",
-        "description": "You can't see me?  No, I can't see the login page.  HELP!",
-        "status": "Acknowledged",
-        "modifiedDate": "03/15/2025 13:50:55",
-        "modifiedUser": "reiner_13" 
-    },
-    {
-        "initialDate": "03/10/2025 07:36:24",
-        "first": "Jane",
-        "last": "Doe",
-        "email": "doe@sru.edu",
-        "description": "Ben fried the RAM on my laptop.  Who is surpised?",
-        "status": "Resolved",
-        "modifiedDate": "03/15/2025 13:47:56",
-        "modifiedUser": "reiner_13" 
-    }
-]
-
-var userData = [
-    {
-        "role": "administrator"
-    }
-    
-]
-
-var bugTable;
+var bugTable, bugColumns;
 
 $(document).ready(function () {
-    let bugColumns = [
+    bugColumns = [
         {
             class: "wrenchColumn",
             data: null,
@@ -63,7 +23,7 @@ $(document).ready(function () {
             data: null,
             width: "5 rem",
             render: function(data, type, row, meta) {
-                return row.modifiedDate + ' by ' + row.modifiedUser; 
+                return row.modifiedDate + ' by ' + row.modifiedBy; 
             }
         },
         {
@@ -88,7 +48,7 @@ $(document).ready(function () {
        
     ];
 
-    bugTable = initializeDataTableWithFilters('#bugTable', reportData, bugColumns, [1, 'asc'], 10);
+    getBugData();
 
     $('#bugModal').on('show.bs.modal', function (event) {
         $('#description').val('');
@@ -97,48 +57,87 @@ $(document).ready(function () {
     $('#saveBugButton').on('click', function() {
         let valid = validateFormData();
         if (valid) {
-            bootstrapAlert('success', 'Report created successfully.');
-            $('#bugModal').modal('hide');
+            let bugForm = {"description": $('#description').val()};
+
+            console.log(bugForm);
+
+            $.ajax({
+                data: JSON.stringify(bugForm),
+                url: 'http://localhost:8080/api/bugReports',
+                type: 'POST',
+                contentType: 'application/json',
+                success: function(data) {
+                    bootstrapAlert('success', 'Report created successfully');
+                    $('#bugModal').modal('hide');
+    
+                    //refresh table data
+                    bugTable.destroy();
+                    getBugData();                     
+                },
+                error: function(xhr, status, error) {
+                    bootstrapAlert('danger', 'Error while adding report: ' + error);
+                }
+            });
         }
     });
 
     $('#resolveModal').on('show.bs.modal', function (event) {
         let button = $(event.relatedTarget);
         let row = bugTable.row(button.data('rowindex')).data();
+        let resolution = (row.resolution === '') ? 'N/A' : row.resolution;
 
         $('#resolveDate').html(row.initialDate);
-        $('#resolveName').html(row.first + ' ' + row.last);
         $('#resolveEmail').html(row.email);
-        $('#resolveDate').html(row.initialDate);
         $('#resolveDescription').html(row.description);
-        $('#resolveModified').html(row.modifiedDate + ' ' + row.modifiedUser);
+        $('#resolveModified').html(row.modifiedDate + ' by ' + row.modifiedBy);
         $('#resolveStatus').html(row.status);
+        $('#resolveResolution').html(resolution);
+        $('#reportID').val(row.ID);
+
+        if (row.status === 'Resolved') {
+            $('#resolveReportButton').hide();
+        }
+        else {
+            $('#resolveReportButton').show();
+        }
     });
 
     $('#resolveReportButton').on('click', function() {
-        bootstrapAlert('success', 'Report resolved successfully.');
-        $('#resolveModal').modal('hide');
+        let bugForm = {id: $('#reportID').val()};
+
+        $.ajax({
+            data: JSON.stringify(bugForm),
+            url: 'http://localhost:8080/api/bugReports',
+            type: 'PATCH',
+            contentType: 'application/json',
+            success: function(data) {
+                bootstrapAlert('success', 'Report resolved.');
+                $('#resolveModal').modal('hide');
+
+                //refresh table data
+                bugTable.destroy();
+                getBugData();                     
+            },
+            error: function(xhr, status, error) {
+                bootstrapAlert('danger', 'Error while updating report: ' + error);
+            }
+        });
     });
 });
 
-function navigateHome(){
-    switch(userData[0].role) {
-        case "administrator":
-            window.location.href = '/administrator/dashboard';
-            break;
-        
-        case "moderator":
-            window.location.href='/moderator/dashboard'
-            break;
-
-        case "teacher":
-            window.location.href='/teacher/dashboard'
-            break;
-        
-        case "student":
-        window.location.href='/student/dashboard'
-        break;
-    }
+//api call to get data for page
+function getBugData() {
+    $.ajax({
+        url: 'http://localhost:8080/api/bugReports',
+        method: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            bugTable = initializeDataTableWithFilters('#bugTable', data.data, bugColumns, [1, 'asc'], 10);
+        },
+        error: function (xhr, status, error) {
+            console.error("Error fetching data from the API:", error);
+        }
+    });
 }
 
 function validateFormData() {

@@ -1,6 +1,5 @@
 package com.example.configurations;
 
-import com.sun.net.httpserver.HttpServer;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 
@@ -9,6 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import com.example.handlers.*;
 import com.example.utils.ApplicationUtil;
+import com.sun.net.httpserver.HttpServer;
 
 /**
  * Configuration class for HTTP server
@@ -51,5 +51,11 @@ public class HttpServerConfiguration {
         server.createContext("/api/quizResults", new QuizResultsHandler());
         server.createContext("/api/administrator", new AdministratorHandler());
         server.createContext("/api/createplaylist", new CreatePlaylistHandler());
+        server.createContext("/api/bugReports", new BugReportHandler());
+        server.createContext("/api/moderator", new ModeratorHandler());
+        server.createContext("/api/teacherClasslist", new TeacherClasslistHandler());
+        server.createContext("/api/teacherRoster", new TeacherRosterHandler());
+        server.createContext("/api/teacherLibrary", new TeacherLibraryHandler());
+
     }
 }

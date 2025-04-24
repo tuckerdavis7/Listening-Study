@@ -80,10 +80,6 @@
                                 <td class="py-2" id="resolveDate"></td>
                             </tr>
                             <tr class="mb-3">
-                                <th scope="row" class="p-0 py-2">Name:</th>
-                                <td class="py-2" id="resolveName"></td>
-                            </tr>
-                            <tr class="mb-3">
                                 <th scope="row" class="p-0 py-2">Email:</th>
                                 <td class="py-2" id="resolveEmail"></td>
                             </tr>
@@ -99,6 +95,10 @@
                                 <th scope="row" class="p-0 py-2">Status:</th>
                                 <td class="py-2" id="resolveStatus"></td>
                             </tr>
+                            <tr class="mb-3">
+                                <th scope="row" class="p-0 py-2">Resolution:</th>
+                                <td class="py-2" id="resolveResolution"></td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -109,6 +109,7 @@
             </div>
         </div>
     </div>
+    <input type="hidden" id="reportID">
 
     <div th:replace="~{fragments/footer :: footer}"></div>
 </body>

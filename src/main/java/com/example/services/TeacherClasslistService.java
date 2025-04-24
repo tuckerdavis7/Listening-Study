@@ -28,10 +28,11 @@ public class TeacherClasslistService extends BaseService {
 
         try {
             ResultSet rs = teacherRepository.getTeacherID(userID);
-            teacherID = rs.getInt("teacherID"); 
+            rs.next();
+            teacherID = rs.getInt("ID"); 
         } catch (SQLException e) {
             responseString = "Internal Server Error";
-            logger.error("Error in getClasslist of TeacherClasslistService:");            
+            logger.error("Error in getClasslist of TeacherClasslistService 1:");            
             e.printStackTrace();
             return responseString;
         }      
@@ -55,7 +56,7 @@ public class TeacherClasslistService extends BaseService {
         }
         catch (Exception e) {
             responseString = "Internal Server Error";
-            logger.error("Error in getClasslist of TeacherClasslistService:");
+            logger.error("Error in getClasslist of TeacherClasslistService 2:");
         }
         return responseString;
     }

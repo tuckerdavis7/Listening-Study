@@ -10,13 +10,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.example.repositories.ReportRepository;
+import com.example.repositories.TeacherRepository;
 import com.example.repositories.UserRepository;
+import com.example.repositories.ClassRepository;
 import com.sun.net.httpserver.HttpExchange;
 
 public class AdministratorService extends BaseService {
     private static final Logger logger = LoggerFactory.getLogger(AdministratorService.class);
     UserRepository userRepository = new UserRepository();
     ReportRepository reportRepository = new ReportRepository();
+    ClassRepository classRepository = new ClassRepository();
+    TeacherRepository teacherRepository = new TeacherRepository();
 
     /**
      * Gathers the reports from the DB
@@ -73,6 +77,7 @@ public class AdministratorService extends BaseService {
                 userMap.put("firstName", result.getString("first_name"));
                 userMap.put("lastName", result.getString("last_name"));
                 userMap.put("role", result.getString("role"));
+                userMap.put("id", result.getInt("user_id"));
                 
                 usersList.add(userMap);
             }
@@ -105,8 +110,30 @@ public class AdministratorService extends BaseService {
             responseString = "Internal Server Error";
             logger.error("Error in updateDesignation of AdministratorService:");
             e.printStackTrace();
+            return responseString;
         }
 
+        //remove teachers from any classes, checks for moderator since the role is already changed
+        if (parameters.get("role").equals("moderator")) {
+            try {
+                classRepository.removeTeacherFromClasses(parameters);
+            }
+            catch (Exception e) {
+                responseString = "Internal Server Error";
+                logger.error("Error in updateDesignation (2) of AdministratorService:");
+                e.printStackTrace();
+                return responseString;
+            }
+
+            try {
+                teacherRepository.removeTeacherFromClasses(parameters);
+            }
+            catch (Exception e) {
+                responseString = "Internal Server Error";
+                logger.error("Error in updateDesignation (3) of AdministratorService:");
+                e.printStackTrace();
+            }
+        }
         return responseString;
     }
 

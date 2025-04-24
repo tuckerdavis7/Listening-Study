@@ -39,11 +39,8 @@ public class BaseService {
         String sessionID = CookieUtil.getCookieSessionID(exchange);
 
         try {
-            ResultSet result = sessionRepository.getUserRoleBySessionID(sessionID);
-            if (result.next()) {
-                int userID = result.getInt("user_id");
-                return userID;
-            }
+            int userID = sessionRepository.getUserIDBySessionID(sessionID);
+            return userID;
         }
         catch (Exception e) {
             logger.error("Error in getSessionUserID of BaseService:");

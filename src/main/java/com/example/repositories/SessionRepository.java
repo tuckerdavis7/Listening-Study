@@ -32,7 +32,7 @@ public class SessionRepository {
         pstmt.executeUpdate();
     }
 
-    public Integer getSessionUserID(String sessionID) throws SQLException {
+    public Integer getUserIDBySessionID(String sessionID) throws SQLException {
         String query = "SELECT user_id FROM sessions WHERE session_id = ? AND expires_at > CURRENT_TIMESTAMP";
         PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
 
@@ -52,7 +52,7 @@ public class SessionRepository {
      * @return ResultSet containing session information if the session is valid and not expired
      */
     public ResultSet getUserRoleBySessionID(String sessionID) throws SQLException {
-        String query = "SELECT * FROM sessions where session_id = ? and expires_at > CURRENT_TIMESTAMP";
+        String query = "SELECT role FROM sessions where session_id = ? and expires_at > CURRENT_TIMESTAMP";
         PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
 
         pstmt.setString(1, sessionID);

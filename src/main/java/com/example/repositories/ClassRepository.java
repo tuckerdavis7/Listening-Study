@@ -18,7 +18,12 @@ public class ClassRepository {
     return rs;
   }
 
-
+/**
+ * Removes a teacher from all classes by setting their teacherID to NULL.
+ *
+ * @param teacher a map containing the teacher's data, including the user ID
+ * @throws SQLException if the SQL query encounters an error during execution
+ */
   public void removeTeacherFromClasses(Map<String, Object> teacher) throws SQLException {
     String query = "UPDATE class SET teacherID = NULL WHERE teacherID = (SELECT tm.ID FROM teacherMaster tm WHERE tm.user_id = ?)";
 
@@ -26,13 +31,6 @@ public class ClassRepository {
     PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
     pstmt.setInt(1, (int)Double.parseDouble(id.toString()));
     pstmt.executeUpdate();
-
-    //query for teacherMaster
-    query = "UPDATE teacherMaster set isActive = 0 where user_id = ?";
-
-    PreparedStatement pstmt2 = DatabaseConfiguration.getConnection().prepareStatement(query);
-    pstmt2.setInt(1, (int)Double.parseDouble(id.toString()));
-    pstmt2.executeUpdate();
   }
     
 }

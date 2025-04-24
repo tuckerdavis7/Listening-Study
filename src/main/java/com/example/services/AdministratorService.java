@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.example.repositories.ReportRepository;
+import com.example.repositories.TeacherRepository;
 import com.example.repositories.UserRepository;
 import com.example.repositories.ClassRepository;
 import com.sun.net.httpserver.HttpExchange;
@@ -19,6 +20,7 @@ public class AdministratorService extends BaseService {
     UserRepository userRepository = new UserRepository();
     ReportRepository reportRepository = new ReportRepository();
     ClassRepository classRepository = new ClassRepository();
+    TeacherRepository teacherRepository = new TeacherRepository();
 
     /**
      * Gathers the reports from the DB
@@ -115,15 +117,23 @@ public class AdministratorService extends BaseService {
         if (parameters.get("role").equals("moderator")) {
             try {
                 classRepository.removeTeacherFromClasses(parameters);
-                //teacherRepository.removeTeacherFromClasses(parameters);
             }
             catch (Exception e) {
                 responseString = "Internal Server Error";
                 logger.error("Error in updateDesignation (2) of AdministratorService:");
                 e.printStackTrace();
+                return responseString;
+            }
+
+            try {
+                teacherRepository.removeTeacherFromClasses(parameters);
+            }
+            catch (Exception e) {
+                responseString = "Internal Server Error";
+                logger.error("Error in updateDesignation (3) of AdministratorService:");
+                e.printStackTrace();
             }
         }
-
         return responseString;
     }
 

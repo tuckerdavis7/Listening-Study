@@ -45,7 +45,12 @@ public class SongImplementation {
 
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
             wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("path.ytp-heat-map-path")));
-
+        }
+        catch (Exception e) {
+            logger.error("error in getMostReplayedTimestamp1 of SongImplementation:");
+            e.printStackTrace();
+        }
+        try {
             int videoDuration = getVideoDuration(driver);
 
             String pageSource = driver.getPageSource();
@@ -63,7 +68,7 @@ public class SongImplementation {
 
         }
         catch (Exception e) {
-            logger.error("error in getMostReplyaedTimestamp of SongImplementation:");
+            logger.error("error in getMostReplayedTimestamp2 of SongImplementation:");
             e.printStackTrace();
         }
 

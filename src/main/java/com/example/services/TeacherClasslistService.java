@@ -2,6 +2,7 @@ package com.example.services;
 
 import java.io.IOException;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -10,20 +11,31 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.example.repositories.ClassRepository;
+import com.example.repositories.TeacherRepository;
 import com.sun.net.httpserver.HttpExchange;
 
 
 public class TeacherClasslistService extends BaseService {
     private static final Logger logger = LoggerFactory.getLogger(TeacherClasslistService.class);
     private ClassRepository classlistRepository = new ClassRepository();
+    private TeacherRepository teacherRepository = new TeacherRepository();
 
 
     public String getClasslist(HttpExchange exchange) throws IOException {
-        Map<String, Object> teacherData = super.getQueryParameters(exchange);
-        int teacherID = ((Number)teacherData.get("teacherID")).intValue();       
-
-        
+        int userID = super.getSessionUserID(exchange);
+        int teacherID = -1;
         String responseString = "";
+
+        try {
+            ResultSet rs = teacherRepository.getTeacherID(userID);
+            teacherID = rs.getInt("teacherID"); 
+        } catch (SQLException e) {
+            responseString = "Internal Server Error";
+            logger.error("Error in getClasslist of TeacherClasslistService:");            
+            e.printStackTrace();
+            return responseString;
+        }      
+        
         try {
             ResultSet result = classlistRepository.getClasslist(teacherID);
             

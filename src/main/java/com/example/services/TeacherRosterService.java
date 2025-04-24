@@ -17,7 +17,6 @@ public class TeacherRosterService extends BaseService {
     private static final Logger logger = LoggerFactory.getLogger(TeacherRosterService.class);
     private StudentRepository studentRepository = new StudentRepository();
 
-
     public String getClassRoster(HttpExchange exchange) throws IOException {
         Map<String, Object> classData = super.getQueryParameters(exchange);
         int classID = ((Number)classData.get("classID")).intValue();       

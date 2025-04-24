@@ -50,5 +50,6 @@ public class HttpServerConfiguration {
         server.createContext("/api/snippet", new SnippetHandler());
         server.createContext("/api/quizResults", new QuizResultsHandler());
         server.createContext("/api/administrator", new AdministratorHandler());
+        server.createContext("/api/bugReports", new BugReportHandler());
     }
 }

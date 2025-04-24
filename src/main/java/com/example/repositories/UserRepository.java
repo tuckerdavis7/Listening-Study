@@ -78,6 +78,22 @@ public class UserRepository {
     }
 
     /**
+     * returns user by id
+     *
+     * @param id of the user
+     * @throws SQLException When the query does not run properly
+     * @return result set of the query
+     */
+    public ResultSet getUserById(Integer id) throws SQLException {
+        String query = "SELECT * FROM users WHERE user_id =?";
+        PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
+        pstmt.setInt(1, id);
+        ResultSet rs = pstmt.executeQuery();
+
+       return rs;
+    }
+
+    /**
      * returns count of a specific email
      *
      * @param email of the user

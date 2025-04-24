@@ -47,6 +47,8 @@ let classData = [
 var classTable;
 
 $(document).ready(function () {
+    
+
     let classColumns = [
         {
             class: "viewColumn",
@@ -64,11 +66,23 @@ $(document).ready(function () {
             orderable: false,
             width: "1 em"
         },
-        { data: "classID", class: "charcolumn", width: "2 rem"},
-        { data: "className", class: "charcolumn", width: "3 rem"},
-        { data: "studentCount", class: "charcolumn", width: "3 rem"},
-        { data: "playlistCount", class: "charcolumn", width: "1 rem"},
+        { data: "class_id", class: "charcolumn", width: "2 rem"},
+        { data: "classname", class: "charcolumn", width: "3 rem"},
+        { data: "students_count", class: "charcolumn", width: "3 rem"},
+        { data: "playlist_count", class: "charcolumn", width: "1 rem"},
     ]
 
-    classTable = initializeDataTableWithFilters('#classTable', classData, classColumns, [1, 'asc'], 10);
+    $.ajax({
+        url: `http://localhost:8080/api/teacherClasslist`,
+        type: 'GET',
+        dataType: 'json',
+        success: function (data) {                        
+            
+            if (!classTable)
+                classTable = initializeDataTableWithFilters('#classTable', data.data, classColumns, [1, 'asc'], 10);
+        },
+        error: function (xhr, status, error) {
+            console.error("Error fetching data from the API:", error);
+        }
+    });
 })

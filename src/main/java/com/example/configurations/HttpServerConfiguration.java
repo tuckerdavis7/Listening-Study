@@ -1,14 +1,29 @@
 package com.example.configurations;
 
-import com.sun.net.httpserver.HttpServer;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.example.handlers.*;
+import com.example.handlers.AdministratorHandler;
+import com.example.handlers.LoginHandler;
+import com.example.handlers.MetadataHandler;
+import com.example.handlers.ModeratorHandler;
+import com.example.handlers.QuizResultsHandler;
+import com.example.handlers.RegistrationHandler;
+import com.example.handlers.SetQuizHandler;
+import com.example.handlers.SnippetHandler;
+import com.example.handlers.StaticFileHandler;
+import com.example.handlers.StudentPerformanceHandler;
+import com.example.handlers.TakeQuizHandler;
+import com.example.handlers.TeacherClasslistHandler;
+import com.example.handlers.TeacherLibraryHandler;
+import com.example.handlers.TeacherRosterHandler;
+import com.example.handlers.TeacherSongHandler;
+import com.example.handlers.ThymeleafHandler;
 import com.example.utils.ApplicationUtil;
+import com.sun.net.httpserver.HttpServer;
 
 /**
  * Configuration class for HTTP server
@@ -51,5 +66,10 @@ public class HttpServerConfiguration {
         server.createContext("/api/quizResults", new QuizResultsHandler());
         server.createContext("/api/administrator", new AdministratorHandler());
         server.createContext("/api/bugReports", new BugReportHandler());
+        server.createContext("/api/moderator", new ModeratorHandler());
+        server.createContext("/api/teacherClasslist", new TeacherClasslistHandler());
+        server.createContext("/api/teacherRoster", new TeacherRosterHandler());
+        server.createContext("/api/teacherLibrary", new TeacherLibraryHandler());
+
     }
 }

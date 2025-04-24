@@ -59,5 +59,30 @@ public class PlaylistRepository {
 
         return rs;
     }
+
+    public ResultSet getPlaylistIDsForUser(int userID) throws SQLException {
+        String query = "(" + 
+                        "    SELECT DISTINCT p.ID AS playlist_id" +
+                        "    FROM users u" +
+                        "    JOIN student s ON u.user_id = s.user_id" +
+                        "    LEFT JOIN studentClass sc ON s.ID = sc.studentID" +
+                        "    LEFT JOIN class c ON sc.classID = c.ID" +
+                        "    JOIN playlist p ON p.classID = c.ID" +
+                        "    WHERE u.user_id = ?" +
+                        ")" +
+                        "UNION" +
+                        "(" +
+                        "    SELECT p.ID AS playlist_id" +
+                        "    FROM users u" +
+                        "    JOIN teacherMaster t ON u.user_id = t.user_id" +
+                        "    JOIN playlist p ON p.teacherID = t.ID" +
+                        "    WHERE u.user_id = ?" +
+                        ")";
+        PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
+        pstmt.setInt(1, userID);
+        pstmt.setInt(2, userID);
+        ResultSet rs = pstmt.executeQuery();
+        return rs;
+    }
     
 }

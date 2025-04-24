@@ -33,6 +33,8 @@ public class TeacherSongHandler extends BaseHandler implements HttpHandler {
         switch (method) {
             case "GET":
                 response = teacherSongService.getPlaylistSongs(exchange);
+                if (response.equals("Unauthorized"))
+                    redirectToUnauthorized(exchange);
                 super.sendResponse(exchange, response, "Regular");
                 break;
             case "POST":

@@ -1,7 +1,6 @@
 $(document).ready(function() {
     //checks for ajax errors related to URL fishing and unauthroized access
     $(document).ajaxError(function(event, xhr, settings) {
-        console.log("outer reached");
         const response = JSON.parse(xhr.responseText);
         try {
             if (xhr.status === 401) {
@@ -10,7 +9,6 @@ $(document).ready(function() {
                 }
             }
             else if (xhr.status === 403) {
-                console.log("reached");
                 if (response.error === "unauthorized") {
                     window.location.href = response.redirect || "/unauthorized";
                 }

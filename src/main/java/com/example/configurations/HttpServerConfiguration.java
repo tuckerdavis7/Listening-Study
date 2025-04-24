@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import com.example.handlers.AdministratorHandler;
 import com.example.handlers.LoginHandler;
 import com.example.handlers.MetadataHandler;
+import com.example.handlers.ModeratorHandler;
 import com.example.handlers.QuizResultsHandler;
 import com.example.handlers.RegistrationHandler;
 import com.example.handlers.SetQuizHandler;
@@ -64,6 +65,7 @@ public class HttpServerConfiguration {
         server.createContext("/api/snippet", new SnippetHandler());
         server.createContext("/api/quizResults", new QuizResultsHandler());
         server.createContext("/api/administrator", new AdministratorHandler());
+        server.createContext("/api/moderator", new ModeratorHandler());
         server.createContext("/api/teacherClasslist", new TeacherClasslistHandler());
         server.createContext("/api/teacherRoster", new TeacherRosterHandler());
         server.createContext("/api/teacherLibrary", new TeacherLibraryHandler());

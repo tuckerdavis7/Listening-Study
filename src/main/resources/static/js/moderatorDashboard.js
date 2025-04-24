@@ -1,4 +1,4 @@
-let classData = [
+/*let classData = [
     {
         "classID": "01",
         "className": "Music Theory Basics",
@@ -35,12 +35,14 @@ let classData = [
         "studentCount": "22",
         "playlistCount": "7"
     },
-];
+];*/
 
-var classTable;
+var classTable, classColumns;
 
 $(document).ready(function () {
-    let classColumns = [
+    getClasses();
+
+    classColumns = [
         {
             class: "viewColumn",
             data: null,
@@ -66,7 +68,7 @@ $(document).ready(function () {
             <button class ="btn btn-danger remove-btn">Remove</button>
         `},
     ];
-    
+   
     classTable = initializeDataTableWithFilters('#classTable', classData, classColumns, [1, 'asc'], 5, [0,5]);
 
         //event listener for disable button
@@ -106,3 +108,17 @@ $(document).ready(function () {
     });
 })
 
+function getClasses() {
+    $.ajax({
+        url: 'http://localhost:8080/api/moderator/dashboard',
+        method: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            classData = initializeDataTableWithFilters('#classTable', data.data, classColumns, [1, 'asc'], 10);
+        },
+        error: function (xhr, status, error) {
+            console.error("Error fetching data from the API:", error);
+        }
+    });
+
+}

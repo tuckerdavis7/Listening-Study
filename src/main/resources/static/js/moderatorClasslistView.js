@@ -1,35 +1,3 @@
-/*let students = [
-    {
-      "studentId": 1,
-      "firstName": "John",
-      "lastName": "Doe",
-      "email": "john.doe@example.com"
-    },
-    {
-      "studentId": 2,
-      "firstName": "Jane",
-      "lastName": "Smith",
-      "email": "jane.smith@example.com"
-    },
-    {
-      "studentId": 3,
-      "firstName": "Alice",
-      "lastName": "Johnson",
-      "email": "alice.johnson@example.com"
-    },
-    {
-      "studentId": 4,
-      "firstName": "Bob",
-      "lastName": "Brown",
-      "email": "bob.brown@example.com"
-    },
-    {
-      "studentId": 5,
-      "firstName": "Charlie",
-      "lastName": "Davis",
-      "email": "charlie.davis@example.com"
-    }
-  ]*/
   const pathArr = location.href.split('/');
   const classID = pathArr[pathArr.length - 1];
   

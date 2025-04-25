@@ -4,22 +4,21 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.example.repositories.ClassRepository;
+import com.example.repositories.StudentRepository;
 import com.example.repositories.UserRepository;
-import com.example.repositories.TeacherRepository;
 import com.sun.net.httpserver.HttpExchange;
 
 public class ModeratorService extends BaseService {
     private static final Logger logger = LoggerFactory.getLogger(ModeratorService.class);
     ClassRepository classRepository = new ClassRepository();
     UserRepository userRepository = new UserRepository();
-    TeacherRepository teacherRepository = new TeacherRepository();
+    StudentRepository studentRepository = new StudentRepository();
 
      /**
      * Gathers the classes from the DB
@@ -129,27 +128,33 @@ public class ModeratorService extends BaseService {
         return responseString;
     }
 
-    /**
-     * Updates the status of a bug report
-     *
-     * @param exchange The data from the API request
-     * @throws IOException If data processing fails
-     * @return String JSON formatted string of success or error message
-     */
-    /*public String updateReportStatus(HttpExchange exchange) throws IOException {
+    public String getClassStudents(HttpExchange exchange) throws IOException {
+        logger.info("at getClassStudents in ModeratorService");
+        Map<String, Object> classData = super.getQueryParameters(exchange);
+        int classID = ((Number)classData.get("classID")).intValue();
         String responseString = "";
-        Map<String, Object> parameters = super.getParameters(exchange);
-
         try {
-            reportRepository.updateReportStatus(parameters);
-            responseString = super.formatJSON("success");
+            ResultSet result = studentRepository.getStudentRoster(classID);
+            ArrayList<Map<String, Object>> classTeachers = new ArrayList<>();
+            
+            while (result.next()) {
+                Map<String, Object> classTeachersMap = new HashMap<>();
+                classTeachersMap.put("studentID", result.getInt("ID"));
+                classTeachersMap.put("firstName", result.getString("FirstName"));
+                classTeachersMap.put("lastName", result.getString("LastName"));
+                classTeachersMap.put("email", result.getString("Email"));
+                
+                classTeachers.add(classTeachersMap);
+            }
+            responseString = super.formatJSON(classTeachers, "success");
         }
         catch (Exception e) {
             responseString = "Internal Server Error";
-            logger.error("Error in updateReport of AdministratorService:");
+            logger.error("Error in getAllClasses of ModeratorService:");
             e.printStackTrace();
         }
-
         return responseString;
-    }*/
+    }
+
+    
 }

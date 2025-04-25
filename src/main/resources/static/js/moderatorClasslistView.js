@@ -1,4 +1,4 @@
-let students = [
+/*let students = [
     {
       "studentId": 1,
       "firstName": "John",
@@ -29,13 +29,17 @@ let students = [
       "lastName": "Davis",
       "email": "charlie.davis@example.com"
     }
-  ]
-
-  var studentTable;
+  ]*/
+  const pathArr = location.href.split('/');
+  const classID = pathArr[pathArr.length - 1];
+  
+  var studentTable, students, studentColumns;
 
   $(document).ready(function () {
-    let studentColumns = [
-        { data: "studentId", class: "charcolumn", width: "2 rem"},
+    getStudents();
+
+    studentColumns = [
+        { data: "studentID", class: "charcolumn", width: "2 rem"},
         { data: "firstName", class: "charcolumn", width: "3 rem"},
         { data: "lastName", class: "charcolumn", width: "3 rem"},
         { data: "email", class: "charcolumn", width: "1 rem"},
@@ -45,7 +49,7 @@ let students = [
         `},
     ]
     
-    studentTable = initializeDataTableWithFilters('#studentTable', students, studentColumns, [0, 'asc'], 5, [4]);
+    //studentTable = initializeDataTableWithFilters('#studentTable', students, studentColumns, [0, 'asc'], 5, [4]);
 
     //event listener for disable button
     $('#studentTable tbody').on('click', '.disable-btn', function() {
@@ -85,3 +89,18 @@ let students = [
     });
 })
 
+function getStudents() {
+  $.ajax({
+      url: `http://localhost:8080/api/moderator/classlist?classID=${classID}`,
+      method: 'GET',
+      dataType: 'json',
+      success: function (data) {
+          students = initializeDataTableWithFilters('#studentTable', data.data, studentColumns, [1, 'asc'], 10);
+          console.log(data.data);
+      },
+      error: function (xhr, status, error) {
+          console.error("Error fetching data from the API:", error);
+      }
+  });
+
+}

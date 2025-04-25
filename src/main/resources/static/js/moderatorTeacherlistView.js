@@ -1,36 +1,3 @@
-/*let teachers = [
-    {
-      "teacherId": 1,
-      "firstName": "John",
-      "lastName": "Johnson",
-      "email": "john.johnson@sru.edu",
-    },
-    {
-      "teacherId": 2,
-      "firstName": "Johnson",
-      "lastName": "John",
-      "email": "johnson.john@sru.edu",
-    },
-    {
-      "teacherId": 3,
-      "firstName": "Alice",
-      "lastName": "Johnson",
-      "email": "alice.johnson@example.com"
-    },
-    {
-      "teacherId": 4,
-      "firstName": "Bob",
-      "lastName": "Brown",
-      "email": "bob.brown@example.com"
-    },
-    {
-      "teacherId": 5,
-      "firstName": "Charlie",
-      "lastName": "Davis",
-      "email": "charlie.davis@example.com"
-    }
-  ]*/
-
   const pathArr = location.href.split('/');
   const classID = pathArr[pathArr.length - 1];
 

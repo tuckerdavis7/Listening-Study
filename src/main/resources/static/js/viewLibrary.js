@@ -1,15 +1,15 @@
-var playlistData = [
-    {
-        "name": "Classical 1",
-        "class": "MUSIC 101",
-        "playlistId": "0001"
-    },
-    {
-        "name": "Jazz 1",
-        "class": "MUSIC 102",
-        "playlistId": "0002"
-    }
-];
+// var playlistData = [
+//     {
+//         "name": "Classical 1",
+//         "class": "MUSIC 101",
+//         "playlistId": "0001"
+//     },
+//     {
+//         "name": "Jazz 1",
+//         "class": "MUSIC 102",
+//         "playlistId": "0002"
+//     }
+// ];
 
 const pathArr = location.href.split('/');
 const userType = pathArr[pathArr.length - 2];
@@ -45,8 +45,9 @@ $(document).ready(function () {
             orderable: false,
             width: "1 em"
         },
-        { data: "name", class: "charcolumn", width: "3 rem" },
-        { data: "class", class: "charcolumn", width: "3 rem" }
+        { data: "playlistId", class: "charcolumn", width: "3 rem" },
+        { data: "playlistName", class: "charcolumn", width: "3 rem" },
+        { data: "className", class: "charcolumn", width: "3 rem" }
     ] : [
         {
             class: "viewColumn",
@@ -59,12 +60,26 @@ $(document).ready(function () {
             orderable: false,
             width: "1 em"
         },
-        { data: "name", class: "charcolumn", width: "3 rem" },
-        { data: "class", class: "charcolumn", width: "3 rem" }
+        { data: "playlistId", class: "charcolumn", width: "3 rem" },
+        { data: "playlistName", class: "charcolumn", width: "3 rem" },
+        { data: "className", class: "charcolumn", width: "3 rem" }
     ];
 
+    $.ajax({
+        url: `http://localhost:8080/api/teacherClasslist`,
+        type: 'GET',
+        dataType: 'json',
+        success: function (data) {                        
+            
+            if (!playlistTable)
+                playlistTable = initializeDataTableWithFilters('#playlistTable', data.data, playlistColumns, [1, 'asc'], 10);
+        },
+        error: function (xhr, status, error) {
+            console.error("Error fetching data from the API:", error);
+        }
+    });
+
     let ignoredColumns = (userType == "teacher") ? [0,1] : [0];
-    playlistTable = initializeDataTableWithFilters('#playlistTable', playlistData, playlistColumns, [2, 'asc'], 10, ignoredColumns);
 
     let rowRemove;
     

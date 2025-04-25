@@ -40,12 +40,12 @@ public class ModeratorHandler extends BaseHandler implements HttpHandler {
                     super.sendResponse(exchange, response, "Regular");
                     break;
                 }
-                /*else if (exchange.getRequestURI().getPath().equals("/api/administrator/reports")) {
-                    response = administratorService.getAllReports(exchange);
+                else if (exchange.getRequestURI().getPath().equals("/api/moderator/teacherlist")) {
+                    response = moderatorService.getClassTeachers(exchange);
                     super.sendResponse(exchange, response, "Regular");
                 }
 
-            case "PATCH":
+            /*case "PATCH":
                 if (exchange.getRequestURI().getPath().equals("/api/administrator/users")) {
                     response = administratorService.updateDesignation(exchange);
                     super.sendResponse(exchange, response, "Regular");

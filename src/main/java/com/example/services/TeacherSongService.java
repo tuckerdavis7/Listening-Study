@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.example.implementations.SongImplementation;
+import com.example.repositories.PlaylistRepository;
 import com.example.repositories.PlaylistSongRepository;
 import com.example.repositories.SongRepository;
 import com.sun.net.httpserver.HttpExchange;
@@ -21,6 +22,7 @@ public class TeacherSongService extends BaseService {
     private static final Logger logger = LoggerFactory.getLogger(TeacherSongService.class);
     private SongRepository songRepository = new SongRepository();
     private PlaylistSongRepository playlistSongRepository = new PlaylistSongRepository();
+    private PlaylistRepository playlistRepository = new PlaylistRepository();
     private SongImplementation songImplementation = new SongImplementation();
 
      /**
@@ -90,9 +92,30 @@ public class TeacherSongService extends BaseService {
      */
     public String getPlaylistSongs(HttpExchange exchange) throws IOException {
         Map<String, Object> songData = super.getQueryParameters(exchange);
+        int userID = super.getSessionUserID(exchange);
         int playlistID = ((Number)songData.get("playlistID")).intValue();
-        
         String responseString = "";
+
+        try {
+            ResultSet result = playlistRepository.getPlaylistIDsForUser(userID);
+
+            boolean found = false;
+            while (result.next() && !found) {
+                int pID = result.getInt("playlist_id");
+                if (pID == playlistID) {
+                    found = true;
+                }
+            }
+
+            if (!found) {
+                responseString = "Unauthorized";
+                return responseString;
+            }
+        }
+        catch (Exception e) {
+            responseString = "Internal Server Error";
+            logger.error("Error in getPlaylistSongs1 of TeacherSongService:");
+        }
         try {
             ResultSet result = playlistSongRepository.getSongs(playlistID);
 
@@ -114,7 +137,7 @@ public class TeacherSongService extends BaseService {
         }
         catch (Exception e) {
             responseString = "Internal Server Error";
-            logger.error("Error in getPlaylistSongs of TeacherSongService:");
+            logger.error("Error in getPlaylistSongs2 of TeacherSongService:");
         }
         return responseString;
     }

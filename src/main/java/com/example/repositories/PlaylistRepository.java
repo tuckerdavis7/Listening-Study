@@ -24,7 +24,7 @@ public class PlaylistRepository {
         pstmt.setInt(1, (Integer) classID);
         ResultSet rs = pstmt.executeQuery();
 
-       return rs;
+        return rs;
     }
 
     public ResultSet getPlaylistByTeacherID(Object teacherID) throws SQLException {
@@ -36,7 +36,53 @@ public class PlaylistRepository {
         pstmt.setInt(1, (Integer) teacherID);
         ResultSet rs = pstmt.executeQuery();
 
-       return rs;
+        return rs;
+    }
+
+    public void createPlaylist(String playlistName, int teacherID, int classID) throws SQLException {
+        String query = "INSERT INTO playlist (playlistName, teacherID, classID) VALUES (?, ?, ?)";
+
+        PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
+        pstmt.setString(1, playlistName);
+        pstmt.setInt(2, teacherID);
+        pstmt.setInt(3, classID);
+        pstmt.executeUpdate();
+    }
+
+    public ResultSet getPlaylistID(int teacherID, int classID) throws SQLException {
+        String query = "SELECT ID FROM playlist WHERE teacherID = ? and classID = ?";
+
+        PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
+        pstmt.setInt(1, teacherID);
+        pstmt.setInt(2, classID);
+        ResultSet rs = pstmt.executeQuery();
+
+        return rs;
+    }
+
+    public ResultSet getPlaylistIDsForUser(int userID) throws SQLException {
+        String query = "(" + 
+                        "    SELECT DISTINCT p.ID AS playlist_id" +
+                        "    FROM users u" +
+                        "    JOIN student s ON u.user_id = s.user_id" +
+                        "    LEFT JOIN studentClass sc ON s.ID = sc.studentID" +
+                        "    LEFT JOIN class c ON sc.classID = c.ID" +
+                        "    JOIN playlist p ON p.classID = c.ID" +
+                        "    WHERE u.user_id = ?" +
+                        ")" +
+                        "UNION" +
+                        "(" +
+                        "    SELECT p.ID AS playlist_id" +
+                        "    FROM users u" +
+                        "    JOIN teacherMaster t ON u.user_id = t.user_id" +
+                        "    JOIN playlist p ON p.teacherID = t.ID" +
+                        "    WHERE u.user_id = ?" +
+                        ")";
+        PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
+        pstmt.setInt(1, userID);
+        pstmt.setInt(2, userID);
+        ResultSet rs = pstmt.executeQuery();
+        return rs;
     }
     
 }

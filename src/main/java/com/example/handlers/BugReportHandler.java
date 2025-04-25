@@ -2,21 +2,18 @@ package com.example.handlers;
 
 import java.io.IOException;
 
-import com.example.services.TeacherSongService;
+import com.example.services.BugReportService;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
-/**
- * Handler class for processing API requests related to the song page from teacher view.
- */
-public class TeacherSongHandler extends BaseHandler implements HttpHandler {
-    private TeacherSongService teacherSongService;
+public class BugReportHandler extends BaseHandler implements HttpHandler{
+    private BugReportService bugReportService;
 
     /**
      * Class constructor to intialize service file
      */
-    public TeacherSongHandler() {
-        this.teacherSongService = new TeacherSongService();
+    public BugReportHandler() {
+        this.bugReportService = new BugReportService();
     }
 
     /**
@@ -27,27 +24,27 @@ public class TeacherSongHandler extends BaseHandler implements HttpHandler {
      */
     @Override
     public void handle(HttpExchange exchange) throws IOException {
+        if (!super.isRequestAuthorized(exchange)) {
+            return;
+        }
+
         String response = "";
         String method = exchange.getRequestMethod();
         
         switch (method) {
             case "GET":
-                response = teacherSongService.getPlaylistSongs(exchange);
-                if (response.equals("Unauthorized"))
-                    redirectToUnauthorized(exchange);
+                response = bugReportService.getUserReports(exchange);
                 super.sendResponse(exchange, response, "Regular");
                 break;
-            case "POST":
-                response = teacherSongService.addSong(exchange);
-                super.sendResponse(exchange, response, "Regular");
-                break;
+            
             case "PATCH":
-                response = teacherSongService.editSong(exchange);
+                response = bugReportService.resolveReport(exchange);
                 super.sendResponse(exchange, response, "Regular");
                 break;
-            case "DELETE":
-                response = teacherSongService.deleteSong(exchange);
-                super.sendResponse(exchange, response, "Regular");
+
+            case "POST":
+                response = bugReportService.addReport(exchange);
+                super.sendResponse(exchange, response, "Regular");;
                 break;
             
             default:

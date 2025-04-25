@@ -1,26 +1,15 @@
-$(document).ready(function() {
+$(document).ready(async function() {
     let playlistData = {
         playlistName: "",
-        class: "",
-        tracks: []
+        classID: "",
+        songData: []
     };
 
     //dummy class options JSON
-    let classOptions = ["Class A", "Class B", "Class C"];
+    //let classOptions = ["Class A", "Class B", "Class C"];
 
-    //function to populate the class dropdown
-    function loadClassOptions() {
-        let classSelect = $("#classSelect");
-        classSelect.empty(); // Clear existing options
-        classSelect.append('<option value="" selected disabled>Select a class</option>'); // Default option
-        
-        classOptions.forEach(className => {
-            classSelect.append(`<option value="${className}">${className}</option>`);
-        });
-    }
-
-    //call function to load class options on page load
-    loadClassOptions();
+    let classOptions = await getClassOptions();
+    populateClassOptions(classOptions);
 
     //validate the last track card before adding a new one
     function validateLastTrack() {
@@ -52,7 +41,7 @@ $(document).ready(function() {
 
         $('.track-card').each(function() {
             $(this).find('input').each(function() {
-                if (!$(this).val().trim()) {
+                if (!$(this).val().trim() && !$(this).hasClass('track-timestamp')) {
                     isValid = false;
                     $(this).addClass("is-invalid");
                 } else {
@@ -94,6 +83,11 @@ $(document).ready(function() {
                         <label class="form-label">Year</label>
                         <input type="number" class="form-control track-year" min="1900" max="2099" placeholder="Enter year">
                     </div>
+                    <div class="mb-2">
+                        <label class="form-label">Timestamp</label>
+                        <input type="text" class="form-control track-timestamp" pattern="^(?:\d{1,2}:)?[0-5]?\d:[0-5]\d$" placeholder="Enter timestamp">
+                        <small class="form-text text-muted">Optional. Please use the following timestamp format: HH:MM:SS or MM:SS</small>
+                    </div>
                     <button class="btn btn-danger remove-card mt-2">Remove</button>
                 </div>
             </div>`;
@@ -127,47 +121,84 @@ $(document).ready(function() {
     });
 
     //function to save playlist data as JSON
-    $('#savePlaylist').click(function() {
+    $('#savePlaylist').click(async function() {
         // Ensure all track fields are filled before saving
         if (!validateAllTracks()) {
             return;
         }
-
-        let tracks = [];
 
         $('.track-card').each(function() {
             let track = {
                 name: $(this).find('.track-name').val().trim(),
                 youtubeLink: $(this).find('.track-link').val().trim(),
                 composer: $(this).find('.track-composer').val().trim(),
-                year: $(this).find('.track-year').val().trim()
+                year: $(this).find('.track-year').val().trim(),
+                timestamp: $(this).find('.track-timestamp').val().trim()
             };
 
-            tracks.push(track);
+            playlistData.songData.push(track);
         });
 
         //store playlist name and class
         playlistData.playlistName = $('#playlistName').val().trim();
-        playlistData.class = $('#classSelect').val();
-        playlistData.tracks = tracks;
+        playlistData.classID = $('#classSelect').val();
 
         //check if playlist is valid
-        if (!playlistData.playlistName || !playlistData.class) {
+        if (!playlistData.playlistName || !playlistData.classID) {
             bootstrapAlert('danger', 'Please enter a playlist name and select a class.');
+            playlistData.songData = [];
             return;
         }
 
-        //convert to JSON and log
-        let playlistJSON = JSON.stringify(playlistData, null, 4);
-        console.log("Saved Playlist:", playlistJSON);
-
-        //store JSON in local storage (or send via AJAX later)
-        localStorage.setItem("savedPlaylist", playlistJSON);
+        await createPlaylist(playlistData);
 
         bootstrapAlert('success', 'Playlist saved successfully!');
-        window.location.href = '/teacher/Playlists';
     });
 
     //ensure the first card has the Add button on page load
     updateAddButton();
 });
+
+async function getClassOptions() {
+    try {
+        const response = await $.ajax({
+            url: `http://localhost:8080/api/createplaylist`,
+            type: 'GET',
+            dataType: 'json'
+        });
+        return response.data;
+    }
+    catch (error) {
+        console.error("Error fetching data from the API:", error);
+        bootstrapAlert("danger", "Error fetching class data.");
+        return [];
+    }
+}
+
+//function to populate the class dropdown
+function populateClassOptions(classOptions) {
+    let classSelect = $("#classSelect");
+    classSelect.empty(); // Clear existing options
+    classSelect.append('<option value="" selected disabled>Select a class</option>'); // Default option
+    
+    for (let i = 0; i < classOptions.length; i++) {
+        classSelect.append(`<option value="${classOptions[i].classID}">${classOptions[i].className}</option>`);
+    }
+}
+
+async function createPlaylist(playlistData) {
+    console.log(playlistData);
+    try {
+        const response = await $.ajax({
+            data: JSON.stringify(playlistData),
+            url: 'http://localhost:8080/api/createplaylist',
+            type: 'POST',
+            contentType: 'application/json'
+        });
+    }
+    catch (error) {
+        console.error("Error creating playlist:", error);
+        bootstrapAlert("danger", "Error creating playlist");
+        playlistData.songData = [];
+    }
+}

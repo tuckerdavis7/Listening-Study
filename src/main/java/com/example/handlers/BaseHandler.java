@@ -1,12 +1,12 @@
 package com.example.handlers;
 
-import com.example.services.BaseService;
-import com.example.utils.CookieUtil;
-import com.sun.net.httpserver.HttpExchange;
-
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
+
+import com.example.services.BaseService;
+import com.example.utils.CookieUtil;
+import com.sun.net.httpserver.HttpExchange;
 
 /**
  * Base Handler class that contains methods to be used in other handlers.
@@ -39,6 +39,7 @@ public class BaseHandler {
         String role = extractRoleFromUrl(exchange);
         boolean isRoleMatching = baseService.compareRoles(exchange, role);
         if (!isRoleMatching) {
+            System.out.println("if statement reached");
             redirectToUnauthorized(exchange);
             return false;
         }

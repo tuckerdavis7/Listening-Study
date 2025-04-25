@@ -41,7 +41,7 @@ public class TeacherLibraryService extends BaseService {
 
             while (result.next()) {
                 Map<String, Object> playlistMap = new HashMap<>();
-                playlistMap.put("ID", result.getInt("ID"));
+                playlistMap.put("playlistID", result.getInt("ID"));
                 playlistMap.put("playlistName", result.getString("playlistName"));
                 playlistMap.put("className", result.getString("className"));
                 

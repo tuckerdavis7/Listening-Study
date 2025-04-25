@@ -27,7 +27,7 @@ public class TeacherLibraryService extends BaseService {
         try {
             ResultSet rs = teacherRepository.getTeacherID(userID);
             rs.next();
-            teacherID = rs.getInt("teacherID"); 
+            teacherID = rs.getInt("ID"); 
         } catch (SQLException e) {
             responseString = "Internal Server Error";
             logger.error("Error in getLibrary of TeacherLibraryService:");            
@@ -42,7 +42,7 @@ public class TeacherLibraryService extends BaseService {
 
             while (result.next()) {
                 Map<String, Object> playlistMap = new HashMap<>();
-                playlistMap.put("ID", result.getInt("playlistID"));
+                playlistMap.put("playlistID", result.getInt("ID"));
                 playlistMap.put("playlistName", result.getString("playlistName"));
                 playlistMap.put("className", result.getString("className"));
                 
@@ -53,6 +53,7 @@ public class TeacherLibraryService extends BaseService {
         catch (Exception e) {
             responseString = "Internal Server Error";
             logger.error("Error in getLibrary of TeacherLibraryService:");
+            e.printStackTrace();
         }
         return responseString;
     }

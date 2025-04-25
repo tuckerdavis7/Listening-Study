@@ -36,12 +36,16 @@ public class BaseHandler {
             return false;
         }
 
-        String role = extractRoleFromUrl(exchange);
-        boolean isRoleMatching = baseService.compareRoles(exchange, role);
-        if (!isRoleMatching) {
-            System.out.println("if statement reached");
-            redirectToUnauthorized(exchange);
-            return false;
+        //check for Bug Reports page, since it doesn't require a role
+        String path = exchange.getRequestURI().toString();
+        if (!path.contains("/api/bugReports")) {
+            //Compare roles for any other pages
+            String role = extractRoleFromUrl(exchange);
+            boolean isRoleMatching = baseService.compareRoles(exchange, role);
+            if (!isRoleMatching) {
+                redirectToUnauthorized(exchange);
+                return false;
+            }
         }
 
         return true;

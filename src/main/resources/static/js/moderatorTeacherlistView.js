@@ -1,4 +1,4 @@
-let teachers = [
+/*let teachers = [
     {
       "teacherId": 1,
       "firstName": "John",
@@ -29,13 +29,18 @@ let teachers = [
       "lastName": "Davis",
       "email": "charlie.davis@example.com"
     }
-  ]
+  ]*/
 
-  var teacherTable;
+  const pathArr = location.href.split('/');
+  const classID = pathArr[pathArr.length - 1];
+
+  var teacherTable, teachers, teacherColumns;
 
   $(document).ready(function () {
-    let teacherColumns = [
-        { data: "teacherId", class: "charcolumn", width: "2 rem"},
+    getTeachers();
+
+    teacherColumns = [
+        { data: "teacherID", class: "charcolumn", width: "2 rem"},
         { data: "firstName", class: "charcolumn", width: "3 rem"},
         { data: "lastName", class: "charcolumn", width: "3 rem"},
         { data: "email", class: "charcolumn", width: "1 rem"},
@@ -44,8 +49,6 @@ let teachers = [
             <button class ="btn btn-danger remove-btn">Remove</button>
         `},
     ];
-
-    teacherTable = initializeDataTableWithFilters('#teacherTable', teachers, teacherColumns, [0, 'asc'], 5, [4]);
 
     //event listener for disable button
     $('#teacherTable tbody').on('click', '.disable-btn', function() {
@@ -84,3 +87,19 @@ let teachers = [
         $('#addTeacherModal').modal('hide');
     });
 })
+
+function getTeachers() {
+  $.ajax({
+      url: `http://localhost:8080/api/moderator/teacherlist?classID=${classID}`,
+      method: 'GET',
+      dataType: 'json',
+      success: function (data) {
+          teachers = initializeDataTableWithFilters('#teacherTable', data.data, teacherColumns, [1, 'asc'], 10);
+          console.log(data.data);
+      },
+      error: function (xhr, status, error) {
+          console.error("Error fetching data from the API:", error);
+      }
+  });
+
+}

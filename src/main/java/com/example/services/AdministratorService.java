@@ -171,6 +171,20 @@ public class AdministratorService extends BaseService {
     public String updateReportStatus(HttpExchange exchange) throws IOException {
         String responseString = "";
         Map<String, Object> parameters = super.getParameters(exchange);
+        Integer userID = super.getSessionUserID(exchange);
+
+        try {
+            ResultSet result = userRepository.getUserById(userID);
+            if (result.next()) {
+                parameters.put("lastUpdatedBy", result.getString("email").toString());
+            }
+        }
+        catch (Exception e) {
+            responseString = "Internal Server Error";
+            logger.error("Error in updateReport of AdministratorService:");
+            e.printStackTrace();
+            return responseString;
+        }
 
         try {
             reportRepository.updateReportStatus(parameters);
@@ -178,7 +192,7 @@ public class AdministratorService extends BaseService {
         }
         catch (Exception e) {
             responseString = "Internal Server Error";
-            logger.error("Error in updateReport of AdministratorService:");
+            logger.error("Error in updateReport (2) of AdministratorService:");
             e.printStackTrace();
         }
 

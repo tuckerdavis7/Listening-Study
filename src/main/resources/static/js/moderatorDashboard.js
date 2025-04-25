@@ -1,42 +1,3 @@
-/*let classData = [
-    {
-        "classID": "01",
-        "className": "Music Theory Basics",
-        "studentCount": "12",
-        "playlistCount": "3"
-    },
-    {
-        "classID": "02",
-        "className": "Jazz Improvisation",
-        "studentCount": "18",
-        "playlistCount": "5"
-    },
-    {
-        "classID": "03",
-        "className": "Classical Compositions",
-        "studentCount": "20",
-        "playlistCount": "4"
-    },
-    {
-        "classID": "04",
-        "className": "Rock History 101",
-        "studentCount": "25",
-        "playlistCount": "6"
-    },
-    {
-        "classID": "05",
-        "className": "Electronic Music Production",
-        "studentCount": "15",
-        "playlistCount": "8"
-    },
-    {
-        "classID": "06",
-        "className": "Hip-Hop & Rap Culture",
-        "studentCount": "22",
-        "playlistCount": "7"
-    },
-];*/
-
 var classTable, classColumns;
 
 $(document).ready(function () {
@@ -68,8 +29,6 @@ $(document).ready(function () {
             <button class ="btn btn-danger remove-btn">Remove</button>
         `},
     ];
-   
-    classTable = initializeDataTableWithFilters('#classTable', classData, classColumns, [1, 'asc'], 5, [0,5]);
 
         //event listener for disable button
         $('#classTable tbody').on('click', '.disable-btn', function() {

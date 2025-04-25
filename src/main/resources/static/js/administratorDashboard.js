@@ -208,7 +208,6 @@ $(document).ready(function () {
         let rowIndex = $('#userModal').data('rowindex');
         let row = userTable.row(rowIndex).data();
 
-        console.log(row);
         // change the role for API data
         let changedRole = (row.role === 'teacher') ? 'moderator' : 'teacher';
         let designationForm = {"role": changedRole, "email": row.email, "id": row.id};

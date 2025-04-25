@@ -20,7 +20,9 @@ public class TeacherLibraryHandler extends BaseHandler implements HttpHandler{
         
         switch (method) {
             case "GET":
+                System.out.print("In get method");
                 response = teacherLibraryService.getLibrary(exchange);
+                System.out.print("Out of get method!");
                 super.sendResponse(exchange, response, "Regular");
                 break;
             

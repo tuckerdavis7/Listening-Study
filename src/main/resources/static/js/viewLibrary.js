@@ -38,14 +38,14 @@ $(document).ready(function () {
             class: "viewColumn",
             data: null,
             render: function(data, type, row, meta) {
-                var playlistId = row.playlistId;
+                var playlistId = row.playlistID;
                 var viewButton = '<a class="btn-sm btn btn-info" href="./playlists/' + playlistId + '" role="button"><span class="fa fa-eye" aria-hidden="true"></span></a>';
                 return viewButton;
             },
             orderable: false,
             width: "1 em"
         },
-        { data: "playlistId", class: "charcolumn", width: "3 rem" },
+        { data: "playlistID", class: "charcolumn", width: "3 rem" },
         { data: "playlistName", class: "charcolumn", width: "3 rem" },
         { data: "className", class: "charcolumn", width: "3 rem" }
     ] : [
@@ -53,20 +53,20 @@ $(document).ready(function () {
             class: "viewColumn",
             data: null,
             render: function(data, type, row, meta) {
-                var playlistId = row.playlistId;
+                var playlistId = row.playlistID;
                 var viewButton = '<a class="btn-sm btn btn-info" href="./playlists/' + playlistId + '" role="button"><span class="fa fa-eye" aria-hidden="true"></span></a>';
                 return viewButton;
             },
             orderable: false,
             width: "1 em"
         },
-        { data: "playlistId", class: "charcolumn", width: "3 rem" },
+        { data: "playlistID", class: "charcolumn", width: "3 rem" },
         { data: "playlistName", class: "charcolumn", width: "3 rem" },
         { data: "className", class: "charcolumn", width: "3 rem" }
     ];
 
     $.ajax({
-        url: `http://localhost:8080/api/teacherClasslist`,
+        url: `http://localhost:8080/api/teacherLibrary`,
         type: 'GET',
         dataType: 'json',
         success: function (data) {                        

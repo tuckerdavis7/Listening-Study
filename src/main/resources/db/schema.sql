@@ -68,6 +68,8 @@ CREATE TABLE studentClass (
     FOREIGN KEY (classID) REFERENCES class(ID)
 );
 
+CREATE unique index stclass_unq ON studentclass (studentID, classID);
+
 CREATE TABLE reportTime (
     ID INT AUTO_INCREMENT PRIMARY KEY,
     timeOfReport DATETIME NOT NULL,

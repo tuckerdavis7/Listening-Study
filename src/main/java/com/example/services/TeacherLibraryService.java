@@ -31,7 +31,6 @@ public class TeacherLibraryService extends BaseService {
         } catch (SQLException e) {
             responseString = "Internal Server Error";
             logger.error("Error in getLibrary of TeacherLibraryService:");            
-            e.printStackTrace();
             return responseString;
         }               
                
@@ -66,9 +65,7 @@ public class TeacherLibraryService extends BaseService {
         
         
         try {
-            System.out.println("Renaming playlist ID: " + playlistID + " to new name: " + newPlaylistName);
-            playlistRepository.renamePlaylist(playlistID, newPlaylistName);
-            
+            playlistRepository.renamePlaylist(playlistID, newPlaylistName);            
         } catch (SQLException e) {
             responseString = "Internal Server Error";
             logger.error("Error in renamePlaylist of TeacherLibraryService:");

@@ -122,17 +122,16 @@ $(document).ready(function () {
         let button = $(event.relatedTarget);
         let row = playlistTable.row(button.data('rowindex')).data();
 
-        console.log(row);
 
         $('#songName').val(row.name);
     });
 
     let rowRename;
-
+    let playlistRowData;
     $(document).on('click', '#renamePlaylist', function() {
         const row = $(this).closest('tr');
         rowRename = row;
-
+        playlistRowData = playlistTable.row(rowRename).data();
         $('#renamePlaylistModal').modal('show');
     });
 
@@ -140,35 +139,35 @@ $(document).ready(function () {
         let button = $(event.relatedTarget);
         let row = playlistTable.row(button.data('rowindex')).data();
 
-        console.log("Renaming:", row);
-
         $('#newPlaylistName').val(row.playlistName);
     });
 
     $('#renamePlaylistForm').submit(function(event) {
-        event.preventDefault();
+        event.preventDefault(); 
     
         const newPlaylistName = $('#newPlaylistName').val();
-        const playlistId = rowRename.find('td').eq(0).text(); 
+        const playlistId = playlistRowData.playlistID; 
     
         $.ajax({
-            url: 'http://localhost:8080/api/teacherLibrary',
+            url: `http://localhost:8080/api/teacherLibrary?playlistID=${playlistId}&newName=${encodeURIComponent(newPlaylistName)}`,
             type: 'POST',
-            data: {
-                playlistID: playlistId,
-                newName: newPlaylistName
+            xhrFields: {
+                withCredentials: true,
             },
             success: function(response) {
                 console.log("Rename success:", response);
                 $('#renamePlaylistModal').modal('hide');
-                playlistTable.ajax.reload();
-                
+    
+                let data = playlistTable.row(rowRename).data();
+                data.playlistName = newPlaylistName;
+                playlistTable.row(rowRename).data(data).invalidate().draw(false);
             },
             error: function(xhr, status, error) {
                 console.error("Error renaming playlist:", error);
             }
         });
     });
+    
     
 
     

@@ -1,45 +1,27 @@
-let students = [
-    {
-      "studentId": 1,
-      "firstName": "John",
-      "lastName": "Doe",
-      "email": "john.doe@example.com"
-    },
-    {
-      "studentId": 2,
-      "firstName": "Jane",
-      "lastName": "Smith",
-      "email": "jane.smith@example.com"
-    },
-    {
-      "studentId": 3,
-      "firstName": "Alice",
-      "lastName": "Johnson",
-      "email": "alice.johnson@example.com"
-    },
-    {
-      "studentId": 4,
-      "firstName": "Bob",
-      "lastName": "Brown",
-      "email": "bob.brown@example.com"
-    },
-    {
-      "studentId": 5,
-      "firstName": "Charlie",
-      "lastName": "Davis",
-      "email": "charlie.davis@example.com"
-    }
-  ]
+const pathArr = location.pathname.split('/').filter(p => p.length > 0);
+const userType = pathArr[pathArr.length - 3];
+const classID = pathArr[pathArr.length - 1];
 
-  var studentTable;
+var studentTable;
 
 $(document).ready(function () {
   let studentColumns = [            
-    { data: "studentId", class: "charcolumn", width: "2 rem"},
-    { data: "firstName", class: "charcolumn", width: "3 rem"},
-    { data: "lastName", class: "charcolumn", width: "3 rem"},
-    { data: "email", class: "charcolumn", width: "1 rem"},
-]
+    { data: "ID", class: "charcolumn", width: "2 rem" },
+    { data: "Firstname", class: "charcolumn", width: "3 rem" },
+    { data: "LastName", class: "charcolumn", width: "3 rem" },
+    { data: "Email", class: "charcolumn", width: "1 rem" },
+];
 
-  studentTable = initializeDataTableWithFilters('#studentTable', students, studentColumns, [0, 'asc'], 10, []);
+  $.ajax({
+    url: `http://localhost:8080/api/teacherRoster?classID=${classID}`,
+    type: 'GET',
+    dataType: 'json',
+    success: function (data) {
+        if (!studentTable)
+            studentTable = initializeDataTableWithFilters('#studentTable', data.data, studentColumns, [0, 'asc'], 10);
+    },
+    error: function (xhr, status, error) {
+        console.error("Error fetching students:", error);
+    }
+  });
 })

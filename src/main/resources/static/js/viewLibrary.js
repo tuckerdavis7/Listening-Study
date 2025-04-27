@@ -26,7 +26,7 @@ $(document).ready(function () {
                 var dropdown = '<div class="dropdown show">' +
                     '<a class="btn-sm btn btn-info" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fa fa-wrench" aria-hidden="true"></span></a>' +
                     '<div class="dropdown-menu aria-labelledby="dropdownMenuLink">' +
-                    '<a class="dropdown-item" id="editPlaylist" data-rowindex ="' + meta.row + '" data-bs-toggle="modal" data-bs-target="#editPlaylistModal">Edit Playlist</a>' + 
+                    '<a class="dropdown-item" id="renamePlaylist" data-rowindex ="' + meta.row + '" data-bs-toggle="modal" data-bs-target="#renamePlaylistModal">Rename Playlist</a>' + 
                     '<a class="dropdown-item text-danger fw-bold" id="deletePlaylist" data-rowindex ="' + meta.row + '" data-bs-toggle="modal" data-bs-target="#removeConfirmation">Delete Playlist</a>' + 
                     '</div></div>';
                 return dropdown;
@@ -73,6 +73,7 @@ $(document).ready(function () {
             
             if (!playlistTable)
                 playlistTable = initializeDataTableWithFilters('#playlistTable', data.data, playlistColumns, [1, 'asc'], 10);
+        
         },
         error: function (xhr, status, error) {
             console.error("Error fetching data from the API:", error);
@@ -121,8 +122,53 @@ $(document).ready(function () {
         let button = $(event.relatedTarget);
         let row = playlistTable.row(button.data('rowindex')).data();
 
-        console.log(row);
 
         $('#songName').val(row.name);
     });
+
+    let rowRename;
+    let playlistRowData;
+    $(document).on('click', '#renamePlaylist', function() {
+        const row = $(this).closest('tr');
+        rowRename = row;
+        playlistRowData = playlistTable.row(rowRename).data();
+        $('#renamePlaylistModal').modal('show');
+    });
+
+    $('#renamePlaylistModal').on('show.bs.modal', function (event) {
+        let button = $(event.relatedTarget);
+        let row = playlistTable.row(button.data('rowindex')).data();
+
+        $('#newPlaylistName').val(row.playlistName);
+    });
+
+    $('#renamePlaylistForm').submit(function(event) {
+        event.preventDefault(); 
+    
+        const newPlaylistName = $('#newPlaylistName').val();
+        const playlistId = playlistRowData.playlistID; 
+    
+        $.ajax({
+            url: `http://localhost:8080/api/teacherLibrary?playlistID=${playlistId}&newName=${encodeURIComponent(newPlaylistName)}`,
+            type: 'POST',
+            xhrFields: {
+                withCredentials: true,
+            },
+            success: function(response) {
+                console.log("Rename success:", response);
+                $('#renamePlaylistModal').modal('hide');
+    
+                let data = playlistTable.row(rowRename).data();
+                data.playlistName = newPlaylistName;
+                playlistTable.row(rowRename).data(data).invalidate().draw(false);
+            },
+            error: function(xhr, status, error) {
+                console.error("Error renaming playlist:", error);
+            }
+        });
+    });
+    
+    
+
+    
 });

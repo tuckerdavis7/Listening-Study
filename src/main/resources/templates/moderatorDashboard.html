@@ -53,18 +53,15 @@
                 <button type="button" class="btn-close modal-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <!--Add Class Name-->
-                <label for="className" class="form-label">Class Name</label>
-                <input type="text" id="className" class="form-control mb-3" placeholder="Enter class name" required>
+                <form id="addClassForm">
+                    <!--Add Class Name-->
+                    <label for="className" class="form-label">Class Name</label>
+                    <input type="text" id="className" name="className" class="form-control mb-3" placeholder="Enter class name" required>
 
-                <!--Teacher Search-->
-                <label for="findTeacher" class="form-label">Add Teacher</label>
-                <input type="text" id="findTeacher" class="form-control mb-3" placeholder="Search teacher by email">
-                
-                <!--Results-->
-                <ul id="searchResults" class="list-group">
-                    <!--Eventually dynamic-->
-                </ul>
+                    <!--Teacher Search-->
+                    <label for="findTeacher" class="form-label">Add Teacher</label>
+                    <input type="text" id="findTeacher" name="findTeacher" class="form-control mb-3" placeholder="Search teacher by email" required>
+                </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

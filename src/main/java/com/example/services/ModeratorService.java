@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import com.example.repositories.ClassRepository;
 import com.example.repositories.StudentRepository;
 import com.example.repositories.UserRepository;
+import com.example.repositories.TeacherRepository;
 import com.sun.net.httpserver.HttpExchange;
 
 public class ModeratorService extends BaseService {
@@ -19,6 +20,7 @@ public class ModeratorService extends BaseService {
     ClassRepository classRepository = new ClassRepository();
     UserRepository userRepository = new UserRepository();
     StudentRepository studentRepository = new StudentRepository();
+    TeacherRepository teacherRepository = new TeacherRepository();
 
      /**
      * Gathers the classes from the DB
@@ -28,7 +30,7 @@ public class ModeratorService extends BaseService {
      * @return String JSON formatted string of data for frontend
      */
     public String getAllClasses(HttpExchange exchange) throws IOException {
-        logger.info("at getAllClasses in ModeratorService");
+        //logger.info("at getAllClasses in ModeratorService");
         String responseString = "";
         try {
             ResultSet result = classRepository.getAllClasses();
@@ -151,6 +153,47 @@ public class ModeratorService extends BaseService {
         catch (Exception e) {
             responseString = "Internal Server Error";
             logger.error("Error in getAllClasses of ModeratorService:");
+            e.printStackTrace();
+        }
+        return responseString;
+    }
+
+    public String addClass(HttpExchange exchange) throws IOException {
+        logger.info("at addClass in ModeratorService");
+        Map<String, Object> addClassData = super.getParameters(exchange);
+
+        String className = (String)addClassData.get("className");
+        String teacherEmail = (String)addClassData.get("findTeacher");
+        int teacherID = -1;
+        
+        String responseString = "";
+
+        try {
+            ResultSet result = teacherRepository.getTeacherByEmail(teacherEmail);
+
+            if(result.next()) {
+                teacherID = result.getInt("ID");
+            }
+            else {
+                logger.error("Teacher not found for email: " + teacherEmail);
+                responseString = "Teacher not found!";
+                return responseString;
+            }
+        }
+        catch (Exception e){
+            responseString = "Internal Server Error";
+            logger.error("Error in addClass1 of ModeratorService");
+            e.printStackTrace();
+            return responseString;
+        }
+
+        try {
+            classRepository.addClass(className, teacherID);
+            responseString = super.formatJSON("success");
+        }
+        catch (Exception e) {
+            responseString = "Internal Server Error";
+            logger.error("Error in addClass2 of ModeratorService:");
             e.printStackTrace();
         }
         return responseString;

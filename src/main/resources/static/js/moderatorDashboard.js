@@ -25,7 +25,6 @@ $(document).ready(function () {
         { data: "studentCount", class: "charColumn", width: "3 rem"},
         { data: "playlistCount", class: "charColumn", width: "1 rem"},
         { data: "null", class: "text-center", defaultContent: `
-            <button class="btn btn-warning disable-btn">Disable</button>
             <button class ="btn btn-danger remove-btn">Remove</button>
         `},
     ];

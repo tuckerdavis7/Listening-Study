@@ -24,7 +24,7 @@ public class ClassRepository {
   }
 
     public ResultSet getAllClasses() throws SQLException {
-      String query = "SELECT * FROM class";
+      String query = "SELECT * FROM class_overview";
       PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
       ResultSet rs = pstmt.executeQuery();
 
@@ -81,6 +81,32 @@ public class ClassRepository {
     PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
     pstmt.setInt(1, classID);
     pstmt.executeUpdate();
+  }
+
+  public void addTeacherToClass(int classID, String teacherEmail) throws SQLException {
+    logger.info("at addTeacherToClass in ClassRepository");
+    String query = """
+                      UPDATE class c
+                      SET c.teacherID = (SELECT tm.ID FROM teachermaster tm WHERE tm.Email = ?)
+                      WHERE c.ID = ?
+                      AND c.teacherID is NULL
+                    """;
+
+    PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
+    pstmt.setString(1, teacherEmail);
+    pstmt.setInt(2, classID);
+    pstmt.executeUpdate();
+  }
+
+  public ResultSet getStudentsByClassID(int classID) throws SQLException {
+    logger.info("at getTeachersByClassID in ClassRepository");
+    String query = "SELECT studentID, studentEmail, studentFirstname, studentLastname FROM view_class WHERE classID = ?";
+
+    PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
+    pstmt.setInt(1, classID);
+    ResultSet rs = pstmt.executeQuery();
+
+    return rs;
   }
     
 }

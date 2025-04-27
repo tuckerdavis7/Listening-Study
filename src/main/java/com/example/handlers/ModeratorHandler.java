@@ -35,32 +35,59 @@ public class ModeratorHandler extends BaseHandler implements HttpHandler {
         switch (method) {
             case "GET":
                 if (exchange.getRequestURI().getPath().equals("/api/moderator/dashboard")) {
-                    //logger.info("at GET in ModeratorHandler");
+                    logger.info("at GET1 in ModeratorHandler");
                     response = moderatorService.getAllClasses(exchange);
                     super.sendResponse(exchange, response, "Regular");
                     break;
                 }
                 else if (exchange.getRequestURI().getPath().equals("/api/moderator/teacherlist")) {
+                    logger.info("at GET2 in ModeratorHandler");
                     response = moderatorService.getClassTeachers(exchange);
                     super.sendResponse(exchange, response, "Regular");
+                    break;
                 }
                 else if (exchange.getRequestURI().getPath().equals("/api/moderator/classlist")) {
+                    logger.info("at GET3 in ModeratorHandler");
                     response = moderatorService.getClassStudents(exchange);
                     super.sendResponse(exchange, response, "Regular");
+                    break;
                 }
+                break;
 
             case "POST":
                 if (exchange.getRequestURI().getPath().equals("/api/moderator/dashboard")) {
-                    logger.info("at POST in ModeratorHandler");
+                    logger.info("at POST1 in ModeratorHandler");
                     response = moderatorService.addClass(exchange);
                     super.sendResponse(exchange, response, "Regular");
                     break;
                 }
-                
+                else if (exchange.getRequestURI().getPath().equals("/api/moderator/teacherlist")) {
+                    logger.info("at POST2 in ModeratorHandler");
+                    response = moderatorService.addTeacher(exchange);
+                    super.sendResponse(exchange, response, "Regular");
+                    break;
+                }
+                else if (exchange.getRequestURI().getPath().equals("/api/moderator/classlist")) {
+                    logger.info("at POST3 in ModeratorHandler");
+                    response = moderatorService.addStudent(exchange);
+                    super.sendResponse(exchange, response, "Regular");
+                    break;
+                }
+                break;
+
             case "PATCH":
-            logger.info("at PATCH in ModeratorHandler");
-                response = moderatorService.removeTeacher(exchange);
-                super.sendResponse(exchange, response, "Regular");
+                if (exchange.getRequestURI().getPath().equals("/api/moderator/teacherlist")) {
+                    logger.info("at PATCH1 in ModeratorHandler");
+                    response = moderatorService.removeTeacher(exchange);
+                    super.sendResponse(exchange, response, "Regular");
+                    break;
+                }
+                else if (exchange.getRequestURI().getPath().equals("/api/moderator/classlist")) {
+                    logger.info("at PATCH2 in ModeratorHandler");
+                    response = moderatorService.removeStudent(exchange);
+                    super.sendResponse(exchange, response, "Regular");
+                    break;
+                }
                 break;
             
             default:

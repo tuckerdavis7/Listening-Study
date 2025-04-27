@@ -36,9 +36,28 @@
     });
 
     //Add Teacher confirm button sample
-    $('#confirmTeacherBtn').on('click', function () {
-        bootstrapAlert('success', "Teacher Added");
-        $('#addTeacherModal').modal('hide');
+    $('#confirmTeacherButton').on('click', function (event) {
+        event.preventDefault();
+        let valid = validateFormData();
+
+        if (valid) {
+            //gather form data
+            let teacherData = $('#addTeacherForm').serializeArray().reduce(function (acc, item) {
+                acc[item.name] = item.value;
+                return acc;
+            }, {});
+        
+            //check if serialization maps incorrect key value pairs
+            if (teacherData.name && teacherData.value) {
+                teacherData[teacherData.name] = teacherData.value;
+                delete teacherData.name;
+                delete teacherData.value;
+            }
+
+            teacherData.classID = classID;
+            console.log(teacherData);
+            addTeacher(teacherData);
+        }
     });
 })
 
@@ -77,4 +96,47 @@ function removeTeacher(deleteForm) {
             bootstrapAlert('danger', 'Error while removing teacher: ' + error);
         }
     });
+}
+
+function addTeacher(teacherData) {
+    $.ajax({
+        data: JSON.stringify(teacherData),
+        url: `http://localhost:8080/api/moderator/teacherlist?classID=${classID}`,
+        method: 'POST',
+        contentType: 'application/json',
+        success: function (data) {
+            console.log("Teacher added");
+            bootstrapAlert('success', "Teacher Added");
+            $('#addTeacherModal').modal('hide');
+
+            //refresh table data
+            teacherTable.destroy();
+            getTeachers();
+        },
+        error: function (xhr, status, error) {
+            console.error("Teacher could not be added: ", error);
+            bootstrapAlert('danger', 'Teacher could not be added: ' + error);
+        }
+    });
+}
+
+function validateFormData() {
+    let allAreFilled = true;
+    document.getElementById('addTeacherModal').querySelectorAll("[required]").forEach(function (i) {
+        if (!allAreFilled) {
+            return;
+        }
+
+        if (!i.value) {
+            allAreFilled = false;
+            return;
+        }
+
+    })
+    if (!allAreFilled) {
+        bootstrapAlert('danger', 'Fill all fields.');
+        return false;
+    }
+
+    return true;
 }

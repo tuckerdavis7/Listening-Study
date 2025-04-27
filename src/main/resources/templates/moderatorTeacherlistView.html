@@ -52,17 +52,15 @@
                     <button type="button" class="btn-close modal-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <!--Search-->
-                    <input type="text" id="findTeacher" class="form-control mb-3" placeholder="Search by email">
+                    <form id="addTeacherForm">
+                        <!--Search-->
+                        <input type="text" id="findTeacher" name="email" class="form-control mb-3" placeholder="Search by email" required>
+                    </form>
                     
-                    <!--Results-->
-                    <ul id="searchResults" class="list-group">
-                        <!--Eventually dynamic-->
-                    </ul>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="confirmTeacherBtn">Confirm</button>
+                    <button type="button" class="btn btn-primary" id="confirmTeacherButton">Confirm</button>
                 </div>
             </div>
         </div>

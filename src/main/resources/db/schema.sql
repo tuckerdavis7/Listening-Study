@@ -56,9 +56,7 @@ CREATE TABLE student (
     Firstname VARCHAR(100) NOT NULL,
     LastName VARCHAR(100) NOT NULL,
     isActive BOOLEAN DEFAULT TRUE,
-    classID INT,
     user_id INT,
-    FOREIGN KEY (classID) REFERENCES class(ID),
     FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
@@ -189,16 +187,17 @@ SELECT
     s.ID AS studentID,
     u_s.email AS studentEmail,
     u_s.first_name AS studentFirstname,
-    u_s.last_name AS studentLastname,
-    s.isActive AS studentIsActive
+    u_s.last_name AS studentLastname
 FROM
     class c
 JOIN
-    teacherMaster t ON c.ID = t.ID
+    teachermaster t ON c.teacherID = t.ID
 LEFT JOIN
     users u_t ON t.user_id = u_t.user_id
 LEFT JOIN
-    student s ON c.ID = s.classID
+    studentclass sc ON c.ID = sc.classID
+LEFT JOIN
+    student s ON sc.studentID = s.ID
 LEFT JOIN
     users u_s ON s.user_id = u_s.user_id;
 

@@ -69,9 +69,18 @@ public class ClassRepository {
 
     PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
 
-        pstmt.setString(1, className);
-        pstmt.setInt(2, teacherID);
-        pstmt.executeUpdate();
+      pstmt.setString(1, className);
+      pstmt.setInt(2, teacherID);
+      pstmt.executeUpdate();
+  }
+
+  public void removeTeacherFromClass(int classID) throws SQLException {
+    logger.info("at removeTeacherFromClass in ClassRepository");
+    String query = "UPDATE class SET teacherID = NULL WHERE ID=?";
+
+    PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
+    pstmt.setInt(1, classID);
+    pstmt.executeUpdate();
   }
     
 }

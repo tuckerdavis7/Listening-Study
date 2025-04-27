@@ -12,40 +12,27 @@
         { data: "lastName", class: "charcolumn", width: "3 rem"},
         { data: "email", class: "charcolumn", width: "1 rem"},
         { data: "null", class: "text-center", defaultContent: `
-            <button class="btn btn-warning disable-btn">Disable</button>
             <button class ="btn btn-danger remove-btn">Remove</button>
         `},
     ];
 
-    //event listener for disable button
-    $('#teacherTable tbody').on('click', '.disable-btn', function() {
-        const button = $(this);
-
-        if(button.hasClass('btn-warning')) {
-            button.text('Enable');
-            button.removeClass('btn-warning').addClass('btn-secondary');
-        }
-        else {
-            button.text('Disable');
-            button.removeClass('btn-secondary').addClass('btn-warning');
-        }
-    });
-
-    //event listener for remove button
-    let rowRemove;
-
     $('#teacherTable tbody').on('click', '.remove-btn', function() {
         const row = $(this).closest('tr');
-        rowRemove = row;
+        const rowIndex = teacherTable.row(row).index();
 
+        $('#removeConfirmation').data('rowindex', rowIndex)
         $('#removeConfirmation').modal('show');
     });
 
     $('#removeConfirmationButton').on('click', function() {
-        if(rowRemove) {
-            teacherTable.row(rowRemove).remove().draw();
-            $('#removeConfirmation').modal('hide');
-        }
+        let rowIndex = $('#removeConfirmation').data('rowindex');
+        let row = teacherTable.row(rowIndex).data();
+
+        let deleteForm = {
+            "email": row.email,
+            "classID": classID
+        };
+        removeTeacher(deleteForm);
     });
 
     //Add Teacher confirm button sample
@@ -61,7 +48,7 @@ function getTeachers() {
       method: 'GET',
       dataType: 'json',
       success: function (data) {
-          teachers = initializeDataTableWithFilters('#teacherTable', data.data, teacherColumns, [1, 'asc'], 10);
+          teacherTable = initializeDataTableWithFilters('#teacherTable', data.data, teacherColumns, [1, 'asc'], 10);
           console.log(data.data);
       },
       error: function (xhr, status, error) {
@@ -69,4 +56,25 @@ function getTeachers() {
       }
   });
 
+}
+
+function removeTeacher(deleteForm) {
+    $.ajax({
+        data: JSON.stringify(deleteForm),
+        url: `http://localhost:8080/api/moderator/teacherlist?classID=${classID}`,
+        type: 'PATCH',
+        contentType: 'application/json',
+        success: function() {
+            console.log(deleteForm);
+            bootstrapAlert('success', 'Removed teacher successfully.');
+            $('#removeConfirmation').modal('hide');
+
+            //refresh table data
+            teacherTable.destroy();
+            getTeachers();
+        },
+        error: function(xhr, status, error) {
+            bootstrapAlert('danger', 'Error while removing teacher: ' + error);
+        }
+    });
 }

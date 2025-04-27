@@ -78,30 +78,6 @@ public class ModeratorService extends BaseService {
         return responseString;
     }
 
-    /**
-     * Deletes (marks for deletion) a user
-     *
-     * @param exchange The data from the API request
-     * @throws IOException If data processing fails
-     * @return String JSON formatted string of success or error message
-     */
-    public String deleteUser(HttpExchange exchange) throws IOException {
-        String responseString = "";
-        Map<String, Object> parameters = super.getParameters(exchange);
-
-        try {
-            userRepository.deleteUser(parameters);
-            responseString = super.formatJSON("success");
-        }
-        catch (Exception e) {
-            responseString = "Internal Server Error";
-            logger.error("Error in deleteUser of AdministratorService:");
-            e.printStackTrace();
-        }
-
-        return responseString;
-    }
-
     public String getClassTeachers(HttpExchange exchange) throws IOException {
         logger.info("at getClassTeachers in ModeratorService");
         Map<String, Object> classData = super.getQueryParameters(exchange);
@@ -113,7 +89,7 @@ public class ModeratorService extends BaseService {
             
             while (result.next()) {
                 Map<String, Object> classTeachersMap = new HashMap<>();
-                classTeachersMap.put("teacherID", result.getInt("ID"));
+                classTeachersMap.put("teacherID", result.getInt("teacherID"));
                 classTeachersMap.put("firstName", result.getString("FirstName"));
                 classTeachersMap.put("lastName", result.getString("LastName"));
                 classTeachersMap.put("email", result.getString("Email"));
@@ -199,5 +175,28 @@ public class ModeratorService extends BaseService {
         return responseString;
     }
 
+    public String removeTeacher(HttpExchange exchange) throws IOException {
+        logger.info("at removeTeacher in ModeratorService");
+        logger.info("Before Map");
+        Map<String, Object> parameters = super.getParameters(exchange);
+        logger.info("After Map");
+        String tempID = (String)parameters.get("classID");
+        int classID = Integer.parseInt(tempID);
+
+        String responseString = "";
+
+        try {
+            logger.info("at try of removeTeacher in ModeratorService");
+            classRepository.removeTeacherFromClass(classID);
+            responseString = super.formatJSON("success");
+        }
+        catch (Exception e) {
+            responseString = "Internal Server Error";
+            logger.error("Error in removeTeacher of ModeratorService:");
+            e.printStackTrace();
+        }
+
+        return responseString;
+    }
     
 }

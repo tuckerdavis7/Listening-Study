@@ -56,16 +56,12 @@ public class ModeratorHandler extends BaseHandler implements HttpHandler {
                     super.sendResponse(exchange, response, "Regular");
                     break;
                 }
-                /*else if (exchange.getRequestURI().getPath().equals(("/api/administrator/reports"))) {
-                    response = administratorService.updateReportStatus(exchange);
-                    super.sendResponse(exchange, response, "Regular");
-                    break;
-                }
                 
-            case "DELETE":
-                response = administratorService.deleteUser(exchange);
+            case "PATCH":
+            logger.info("at PATCH in ModeratorHandler");
+                response = moderatorService.removeTeacher(exchange);
                 super.sendResponse(exchange, response, "Regular");
-                break;*/
+                break;
             
             default:
                 super.sendResponse(exchange, "Method Not Allowed", "Regular");

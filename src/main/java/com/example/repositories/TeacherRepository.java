@@ -33,4 +33,13 @@ public class TeacherRepository {
         pstmt.setInt(1, (int)Double.parseDouble(id.toString()));
         pstmt.executeUpdate();
     }
+
+    public ResultSet getTeacherByEmail(String teacherEmail) throws SQLException {
+        String query = "SELECT * FROM teachermaster WHERE Email = ?";
+        PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
+        pstmt.setString(1, teacherEmail);
+        ResultSet rs = pstmt.executeQuery();
+
+       return rs;
+    }
 }

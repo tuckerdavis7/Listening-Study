@@ -62,5 +62,16 @@ public class ClassRepository {
 
     return rs;
   }
+
+  public void addClass(String className, int teacherID) throws SQLException {
+    logger.info("at addClass in ClassRepository");
+    String query = "INSERT INTO class (className, teacherID) VALUES (?, ?)";
+
+    PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
+
+        pstmt.setString(1, className);
+        pstmt.setInt(2, teacherID);
+        pstmt.executeUpdate();
+  }
     
 }

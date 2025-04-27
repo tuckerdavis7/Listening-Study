@@ -2,12 +2,12 @@ package com.example.handlers;
 
 import java.io.IOException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.example.services.ModeratorService;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class ModeratorHandler extends BaseHandler implements HttpHandler {
     private static final Logger logger = LoggerFactory.getLogger(ModeratorHandler.class);
@@ -35,7 +35,7 @@ public class ModeratorHandler extends BaseHandler implements HttpHandler {
         switch (method) {
             case "GET":
                 if (exchange.getRequestURI().getPath().equals("/api/moderator/dashboard")) {
-                    logger.info("at GET in ModeratorHandler");
+                    //logger.info("at GET in ModeratorHandler");
                     response = moderatorService.getAllClasses(exchange);
                     super.sendResponse(exchange, response, "Regular");
                     break;
@@ -49,13 +49,14 @@ public class ModeratorHandler extends BaseHandler implements HttpHandler {
                     super.sendResponse(exchange, response, "Regular");
                 }
 
-            /*case "PATCH":
-                if (exchange.getRequestURI().getPath().equals("/api/administrator/users")) {
-                    response = administratorService.updateDesignation(exchange);
+            case "POST":
+                if (exchange.getRequestURI().getPath().equals("/api/moderator/dashboard")) {
+                    logger.info("at POST in ModeratorHandler");
+                    response = moderatorService.addClass(exchange);
                     super.sendResponse(exchange, response, "Regular");
                     break;
                 }
-                else if (exchange.getRequestURI().getPath().equals(("/api/administrator/reports"))) {
+                /*else if (exchange.getRequestURI().getPath().equals(("/api/administrator/reports"))) {
                     response = administratorService.updateReportStatus(exchange);
                     super.sendResponse(exchange, response, "Regular");
                     break;

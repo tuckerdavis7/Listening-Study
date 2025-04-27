@@ -61,9 +61,27 @@ $(document).ready(function () {
             }
         });
 
-    $('#confirmClassBtn').on('click', function () {
-        bootstrapAlert('success', "Class Added");
-        $('#addClassModal').modal('hide');
+    $('#confirmClassBtn').on('click', function (event) {
+        event.preventDefault();
+        let valid = validateFormData();
+
+        if (valid) {
+            //gather form data
+            let classData = $('#addClassForm').serializeArray().reduce(function (acc, item) {
+                acc[item.name] = item.value;
+                return acc;
+            }, {});
+        
+            //check if serialization maps incorrect key value pairs
+            if (classData.name && classData.value) {
+                classData[classData.name] = classData.value;
+                delete classData.name;
+                delete classData.value;
+            }
+
+            console.log(classData);
+            addClass(classData);
+        }
     });
 })
 
@@ -80,4 +98,43 @@ function getClasses() {
         }
     });
 
+}
+
+function addClass(classData) {
+    $.ajax({
+        data: JSON.stringify(classData),
+        url: 'http://localhost:8080/api/moderator/dashboard',
+        method: 'POST',
+        contentType: 'application/json',
+        success: function (data) {
+            console.log("class added");
+            bootstrapAlert('success', "Class Added");
+            $('#addClassModal').modal('hide');
+        },
+        error: function (xhr, status, error) {
+            console.error("Class could not be created: ", error);
+            bootstrapAlert('danger', 'Class could not be created: ' + error);
+        }
+    });
+}
+
+function validateFormData() {
+    let allAreFilled = true;
+    document.getElementById('addClassModal').querySelectorAll("[required]").forEach(function (i) {
+        if (!allAreFilled) {
+            return;
+        }
+
+        if (!i.value) {
+            allAreFilled = false;
+            return;
+        }
+
+    })
+    if (!allAreFilled) {
+        bootstrapAlert('danger', 'Fill all fields.');
+        return false;
+    }
+
+    return true;
 }

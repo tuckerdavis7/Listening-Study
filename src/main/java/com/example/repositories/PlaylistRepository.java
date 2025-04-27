@@ -49,6 +49,15 @@ public class PlaylistRepository {
         pstmt.executeUpdate();
     }
 
+    public void renamePlaylist(Object playlistID, Object newPlaylistName) throws SQLException {
+        String query = "UPDATE playlist SET playlistName = ? WHERE ID = ?";
+
+        PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
+        pstmt.setString(1, (String) newPlaylistName);
+        pstmt.setInt(2, (Integer) playlistID);
+        pstmt.executeUpdate();
+    }
+
     public ResultSet getPlaylistID(int teacherID, int classID) throws SQLException {
         String query = "SELECT ID FROM playlist WHERE teacherID = ? and classID = ?";
 

@@ -57,36 +57,23 @@
         </div>
     </div>
 
-    <div class="modal fade" id="editPlaylistModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal fade" id="renamePlaylistModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Edit Playlist</h5>
+                    <h5 class="modal-title">Rename Playlist</h5>
                     <button type="button" class="btn-close modal-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form id="editPlaylistForm">
+                <form id="renamePlaylistForm">
                     <div class="modal-body">
                         <div class="mb-3">
-                            <label for="songName" class="form-label">Name:</label>
-                            <input type="text" class="form-control" id="songName" name="name">
-                        </div>
-                        <div class="mb-3">
-                            <label for="musicClass" class="form-label">Music Class:</label>
-                            <select class="form-select" id="musicClass" name="musicClass">
-                                <option value="" selected disabled>Select a class</option>
-                                <option value="Classical 101">Classical 101</option>
-                                <option value="Jazz 101">Jazz 101</option>
-                                <option value="Rock 101">Rock 101</option>
-                                <option value="Pop 101">Pop 101</option>
-                                <option value="Electronic 101">Electronic 101</option>
-                                <option value="Hip-Hop 101">Hip-Hop 101</option>
-                                <option value="Folk 101">Folk 101</option>
-                            </select>
-                        </div>
+                            <label for="newPlaylistName" class="form-label">New Name:</label>
+                            <input type="text" class="form-control" id="newPlaylistName" name="newPlaylistName" required>
+                        </div>                        
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                        <button type="submit" class="btn btn-primary">Save Name</button>
                     </div>
                 </form>
             </div>

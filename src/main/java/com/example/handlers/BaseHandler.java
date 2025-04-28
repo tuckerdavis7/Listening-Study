@@ -98,8 +98,23 @@ public class BaseHandler {
      * @return The extracted role (student, teacher, moderator, administrator) or null if not found
      */
     protected String extractRoleFromUrl(HttpExchange exchange) {
-        String path = exchange.getRequestURI().getPath();
+        String referer = exchange.getRequestHeaders().getFirst("Referer");
+        String path = "";
         
+        if (referer != null) {
+            try {
+                java.net.URL url = new java.net.URL(referer);
+                path = url.getPath();
+            } 
+            catch (Exception e) {
+                // Fallback to the request path if referer parsing fails
+                path = exchange.getRequestURI().getPath();
+            }
+        } 
+        else {
+            path = exchange.getRequestURI().getPath();
+        }
+                
         // Split the path by "/" and check each segment
         String[] segments = path.split("/");
         
@@ -107,9 +122,9 @@ public class BaseHandler {
             String segment = segments[i].trim();
             if (!segment.isEmpty()) {
                 // Check if the segment is one of our defined roles
-                if (segment.equals("student") || 
-                    segment.equals("teacher") || 
-                    segment.equals("moderator") || 
+                if (segment.equals("student") ||
+                    segment.equals("teacher") ||
+                    segment.equals("moderator") ||
                     segment.equals("administrator")) {
                     return segment;
                 }

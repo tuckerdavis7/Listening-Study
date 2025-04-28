@@ -15,6 +15,10 @@ public class TeacherLibraryHandler extends BaseHandler implements HttpHandler{
     }
 
     public void handle(HttpExchange exchange) throws IOException {
+        if (!super.isRequestAuthorized(exchange)) {
+            return;
+        }
+
         String response = "";
         String method = exchange.getRequestMethod();
         

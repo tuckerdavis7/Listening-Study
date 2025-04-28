@@ -1,6 +1,8 @@
 const pathArr = location.href.split('/');
 const userType = pathArr[pathArr.length - 2];
 
+var playlistData = {};
+
 $(document).ready(function() {
     $.ajax({
         url: `http://localhost:8080/api/setquiz`,
@@ -9,6 +11,10 @@ $(document).ready(function() {
         success: function(data) {
             console.log(data); 
             renderSelectElement(data.data);      
+            data.data.forEach(function (element) {
+                playlistData[element.playlistName] = element.ID;
+            });
+            console.log(playlistData);
         },
         error: function(xhr, status, error) {
             bootstrapAlert('danger', 'Error while updating designation: ' + error);

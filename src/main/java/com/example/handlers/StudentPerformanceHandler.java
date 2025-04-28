@@ -27,6 +27,10 @@ public class StudentPerformanceHandler extends BaseHandler implements HttpHandle
      */
     @Override
     public void handle(HttpExchange exchange) throws IOException {
+        if (!super.isRequestAuthorized(exchange)) {
+            return;
+        }
+
         String response = "";
         String method = exchange.getRequestMethod();
 

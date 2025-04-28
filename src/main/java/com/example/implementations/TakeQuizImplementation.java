@@ -1,12 +1,7 @@
 package com.example.implementations;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Random;
-
+import org.apache.commons.math3.distribution.BetaDistribution;
+import java.util.*;
 /**
  * Implementation class for taking processing on the take quiz screen.
  */
@@ -19,70 +14,50 @@ public class TakeQuizImplementation {
      * @param numQuestions Number of questions specified from the quiz settings
      * @return List Song details with weight included for frontend
      */
-    public List<Map<String, Object>> getWeightedRandomShuffle(ArrayList<Map<String, Object>> playlistSongList, int numQuestions) {
+    public List<Map<String, Object>> getThompsonSample(ArrayList<Map<String, Object>> playlistSongList, int numQuestions) {
         List<Map<String, Object>> selectedQuestions = new ArrayList<>();
         Set<Integer> selectedSongIDs = new HashSet<>();
 
         Random rand = new Random();
 
-        while (selectedQuestions.size() < numQuestions && !playlistSongList.isEmpty()) {
-            double totalWeight = 0.0;
-            for (Map<String, Object> song : playlistSongList) {
-                if (!selectedSongIDs.contains(((Number)song.get("songID")).intValue())) {
-                    int songID = ((Number) song.get("songID")).intValue();
-                    if(!selectedSongIDs.contains(songID)) {
-                        double weight = extractWeight(song.get("weight"));
-                        totalWeight += (weight > 0) ? weight : 0.01;
-                    }
-                }
-            }
+        while(selectedQuestions.size() < numQuestions && !playlistSongList.isEmpty()) {
+            String selectedSongID = null;
+            double maxSample = -1;
+            Map<String, Object> selectedSong = null;
 
-            if (totalWeight == 0) {
-                break;
-            }
-        
-
-            double randomValue = rand.nextDouble() * totalWeight;
-            double cumulativeWeight = 0.0;
-
-            for (Map<String, Object> song : playlistSongList) {
+            for (Map<String,Object> song : playlistSongList) {
                 int songID = ((Number) song.get("songID")).intValue();
-                if (selectedSongIDs.contains(songID)) {
+                int timesCorrect = ((Number) song.getOrDefault("timesCorrect", 0)).intValue();
+                int timesQuizzed = ((Number) song.getOrDefault("timesQuizzed", 0)).intValue();
+
+                boolean alreadyAsked = selectedSongIDs.contains(songID);
+                double successRate = (timesQuizzed == 0) ? 0.0 : (timesCorrect / (double) timesQuizzed);
+
+                if(alreadyAsked && successRate >= 0.7) {
                     continue;
                 }
 
-                double weight = extractWeight(song.get("weight"));
-                cumulativeWeight += (weight > 0) ? weight : 0.01;
+                double alpha = 1 + (timesQuizzed - timesCorrect);
+                double beta = 1 + timesCorrect;
+                BetaDistribution betaDist = new BetaDistribution(alpha, beta);
+                double sample = betaDist.sample();
 
-                cumulativeWeight += extractWeight(song.get("weight"));
-                if (randomValue <= cumulativeWeight) {
-                    selectedQuestions.add(song);
-                    selectedSongIDs.add(songID);
-                    break;
+                if(sample > maxSample) {
+                    maxSample = sample;
+                    selectedSongID = String.valueOf(songID);
+                    selectedSong = song;
                 }
+            }
+
+            if(selectedSong != null) {
+                selectedQuestions.add(selectedSong);
+                int selectedID = ((Number) selectedSong.get("songID")).intValue();
+                selectedSongIDs.add(selectedID);
+            }
+            else {
+                break;
             }
         }
         return selectedQuestions;
-    }
-
-    /**
-     * Helper function to get the weight from each map object
-     *
-     * @param value List of songs frmo the playlist
-     * @return double weight value
-     */
-    private double extractWeight(Object value) {
-        if (value instanceof Number) {
-            return ((Number) value).doubleValue();
-        }
-        else if (value instanceof String) {
-            try {
-                return Double.parseDouble((String) value);
-            }
-            catch (NumberFormatException e){
-                throw new IllegalArgumentException("Invalid weight format: " + value);
-            }
-        }
-        throw new IllegalArgumentException("Weight must be an Double or a String for a number: " + value);
     }
 }

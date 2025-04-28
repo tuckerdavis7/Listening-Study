@@ -62,13 +62,16 @@ public class ModeratorHandler extends BaseHandler implements HttpHandler {
                     break;
                 }
                 else if (exchange.getRequestURI().getPath().equals("/api/moderator/teacherlist")) {
-                    logger.info("at POST2 in ModeratorHandler");
                     response = moderatorService.addTeacher(exchange);
                     super.sendResponse(exchange, response, "Regular");
                     break;
                 }
+                else if (exchange.getRequestURI().getPath().equals("/api/moderator/classname")) {
+                    response = moderatorService.changeClassname(exchange);
+                    super.sendResponse(exchange, response, "Regular");
+                    break;
+                }
                 else if (exchange.getRequestURI().getPath().equals("/api/moderator/classlist")) {
-                    logger.info("at POST3 in ModeratorHandler");
                     response = moderatorService.addStudent(exchange);
                     super.sendResponse(exchange, response, "Regular");
                     break;
@@ -77,13 +80,11 @@ public class ModeratorHandler extends BaseHandler implements HttpHandler {
 
             case "PATCH":
                 if (exchange.getRequestURI().getPath().equals("/api/moderator/teacherlist")) {
-                    logger.info("at PATCH1 in ModeratorHandler");
                     response = moderatorService.removeTeacher(exchange);
                     super.sendResponse(exchange, response, "Regular");
                     break;
                 }
                 else if (exchange.getRequestURI().getPath().equals("/api/moderator/classlist")) {
-                    logger.info("at PATCH2 in ModeratorHandler");
                     response = moderatorService.removeStudent(exchange);
                     super.sendResponse(exchange, response, "Regular");
                     break;

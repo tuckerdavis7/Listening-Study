@@ -83,6 +83,15 @@ public class ClassRepository {
     pstmt.executeUpdate();
   }
 
+  public void renameClass(Object classID, Object newClassname) throws SQLException {
+    String query = "UPDATE class SET className = ? WHERE ID = ?";
+
+    PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
+    pstmt.setString(1, (String) newClassname);
+    pstmt.setInt(2, (Integer) classID);
+    pstmt.executeUpdate();
+  }
+
   public void addTeacherToClass(int classID, String teacherEmail) throws SQLException {
     logger.info("at addTeacherToClass in ClassRepository");
     String query = """

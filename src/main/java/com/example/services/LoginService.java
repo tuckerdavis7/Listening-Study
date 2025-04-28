@@ -26,6 +26,28 @@ public class LoginService extends BaseService {
     UserRepository userRepository = new UserRepository();
     SessionRepository sessionRepository = new SessionRepository();
 
+    public String checkExistingSession(HttpExchange exchange) throws IOException {
+        Map<String, Object> loginMap = new HashMap<>();
+        String responseString = "";
+        String sessionID = CookieUtil.getCookieSessionID(exchange);
+
+        if (sessionID != null) {
+            try {
+                ResultSet result = sessionRepository.getUserRoleBySessionID(sessionID);
+                if (result.next()) {
+                    loginMap.put("role", result.getString("role"));
+                }
+            }
+            catch (Exception e) {
+                responseString = "Internal Server Error";
+                logger.error("Error in checkExistingSession of LoginService: ");
+                e.printStackTrace();
+            }
+        }
+        responseString = super.formatJSON(loginMap, "success");
+        return responseString;
+    }
+
     /**
      * Takes the email and password of a user and compares it to the details in the database
      *
@@ -69,6 +91,12 @@ public class LoginService extends BaseService {
         return responseString;
     }
 
+    /**
+     * Logs out the user by deleting their session from the database and expiring the session cookie.
+     *
+     * @param exchange The data from the API request
+     * @return An empty response string
+     */
     public String userLogout(HttpExchange exchange) {
         String response = "";
         String sessionID = CookieUtil.getCookieSessionID(exchange);
@@ -78,7 +106,7 @@ public class LoginService extends BaseService {
                 sessionRepository.deleteSession(sessionID);
             }
             catch (SQLException e) {
-                logger.error("Error in session cookie of LoginHandler: ");
+                logger.error("Error in userLogout of LoginService: ");
             }
             exchange.getResponseHeaders().add("Set-Cookie", "SESSIONID=deleted; Path=/; Max-Age=0");
         }

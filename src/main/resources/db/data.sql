@@ -98,13 +98,12 @@ SELECT email, first_name, last_name, 1, user_id FROM users WHERE role = 'adminis
 INSERT INTO moderator (Email, Firstname, LastName, isActive, user_id) 
 SELECT email, first_name, last_name, 1, user_id FROM users WHERE role = 'moderator';
 
-INSERT INTO student (Email, Firstname, LastName, isActive, classID, user_id) 
+INSERT INTO student (Email, Firstname, LastName, isActive, user_id) 
 SELECT 
     u.email, 
     u.first_name, 
     u.last_name, 
     1, 
-    c.ID,
     u.user_id
 FROM 
     users u

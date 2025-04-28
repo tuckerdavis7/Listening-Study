@@ -61,7 +61,7 @@ public class ClassRepository {
     ResultSet rs = pstmt.executeQuery();
 
     return rs;
-  }
+  } 
 
   public void addClass(String className, int teacherID) throws SQLException {
     logger.info("at addClass in ClassRepository");
@@ -80,6 +80,15 @@ public class ClassRepository {
 
     PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
     pstmt.setInt(1, classID);
+    pstmt.executeUpdate();
+  }
+
+  public void renameClass(Object classID, Object newClassname) throws SQLException {
+    String query = "UPDATE class SET className = ? WHERE ID = ?";
+
+    PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
+    pstmt.setString(1, (String) newClassname);
+    pstmt.setInt(2, (Integer) classID);
     pstmt.executeUpdate();
   }
 

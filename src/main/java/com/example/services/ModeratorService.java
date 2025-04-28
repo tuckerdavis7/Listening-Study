@@ -2,6 +2,7 @@ package com.example.services;
 
 import java.io.IOException;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -260,6 +261,24 @@ public class ModeratorService extends BaseService {
             responseString = "Internal Server Error";
             logger.error("Error in addTeacher of ModeratorService:");
             e.printStackTrace();
+        }
+
+        return responseString;
+    }
+
+    // Rename Class
+    public String changeClassname(HttpExchange exchange) throws IOException { 
+        String responseString = "";
+        Map<String, Object> classParams = super.getQueryParameters(exchange);
+        Object classID = classParams.get("classID");
+        Object newClassname = classParams.get("newName");
+        
+        
+        try {
+            classRepository.renameClass(classID, newClassname);            
+        } catch (SQLException e) {
+            responseString = "Internal Server Error";
+            logger.error("Error in renamePlaylist of TeacherLibraryService:");
         }
 
         return responseString;

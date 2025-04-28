@@ -5,6 +5,20 @@ $(document).ready(function () {
 
     classColumns = [
         {
+            class: "wrenchColumn",
+            data: null,
+            render: function(data, type, row, meta) {
+                var dropdown = '<div class="dropdown show">' +
+                    '<a class="btn-sm btn btn-info" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fa fa-wrench" aria-hidden="true"></span></a>' +
+                    '<div class="dropdown-menu aria-labelledby="dropdownMenuLink">' +
+                    '<a class="dropdown-item" id="renameClass" data-rowindex ="' + meta.row + '" data-bs-toggle="modal" data-bs-target="#renameClassModal">Rename Class</a>' + 
+                    '</div></div>';
+                return dropdown;
+            },
+            orderable: false,
+            width: "1 em"
+        },
+        {
             class: "viewColumn",
             data: null,
             render: function(data, type, row, meta) {
@@ -88,6 +102,49 @@ $(document).ready(function () {
             addClass(classData);
         }
     });
+
+    let rowRename;
+    let classRowData;
+    $(document).on('click', '#renameClass', function() {
+        const row = $(this).closest('tr');
+        rowRename = row;
+        classRowData = classTable.row(rowRename).data();
+        $('#renameClassModal').modal('show');
+    });
+
+    $('#renameClassModal').on('show.bs.modal', function (event) {
+        let button = $(event.relatedTarget);
+        let row = classTable.row(button.data('rowindex')).data();
+
+        $('#newClassname').val(row.className);
+    });
+
+    $('#renameClassForm').submit(function(event) {
+        event.preventDefault(); 
+    
+        const newClassname = $('#newClassname').val();
+        const classId = classRowData.classID; 
+    
+        $.ajax({
+            url: `http://localhost:8080/api/moderator/classname?classID=${classId}&newName=${encodeURIComponent(newClassname)}`,
+            type: 'POST',
+            xhrFields: {
+                withCredentials: true,
+            },
+            success: function(response) {
+                console.log("Rename success:", response);
+                $('#renameClassModal').modal('hide');
+    
+                let data = classTable.row(rowRename).data();
+                data.className = newClassname;
+                classTable.row(rowRename).data(data).invalidate().draw(false);
+            },
+            error: function(xhr, status, error) {
+                console.error("Error renaming playlist:", error);
+            }
+        });
+    });
+    
 })
 
 function getClasses() {

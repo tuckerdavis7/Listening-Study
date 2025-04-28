@@ -89,6 +89,12 @@ public class ModeratorHandler extends BaseHandler implements HttpHandler {
                     break;
                 }
                 break;
+
+            case "DELETE":
+                logger.info("at DELETE in ModeratorHandler");
+                response = moderatorService.deleteClass(exchange);
+                super.sendResponse(exchange, response, "Regular");
+                break;
             
             default:
                 super.sendResponse(exchange, "Method Not Allowed", "Regular");

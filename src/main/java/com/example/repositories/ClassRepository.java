@@ -108,5 +108,15 @@ public class ClassRepository {
 
     return rs;
   }
-    
+
+  public void deleteClass(int classID) throws SQLException {
+    logger.info("at deleteClass in ClassRepository");
+    String query = "DELETE FROM class WHERE ID = ?";
+
+    PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
+    pstmt.setInt(1, classID);
+    pstmt.executeUpdate();
+  }
+
 }
+

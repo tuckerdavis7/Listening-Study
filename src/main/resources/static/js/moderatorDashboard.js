@@ -25,7 +25,7 @@ $(document).ready(function () {
         { data: "studentCount", class: "charColumn", width: "3 rem"},
         { data: "playlistCount", class: "charColumn", width: "1 rem"},
         { data: "null", class: "text-center", defaultContent: `
-            <button class ="btn btn-danger remove-btn">Remove</button>
+            <button class ="btn btn-danger remove-btn">Delete</button>
         `},
     ];
 
@@ -48,16 +48,22 @@ $(document).ready(function () {
     
         $('#classTable tbody').on('click', '.remove-btn', function() {
             const row = $(this).closest('tr');
-            rowRemove = row;
-    
+            const rowIndex = classTable.row(row).index();
+
+            $('#removeConfirmation').data('rowindex', rowIndex)
             $('#removeConfirmation').modal('show');
         });
     
         $('#removeConfirmationButton').on('click', function() {
-            if(rowRemove) {
-                classTable.row(rowRemove).remove().draw();
-                $('#removeConfirmation').modal('hide');
-            }
+            let rowIndex = $('#removeConfirmation').data('rowindex');
+            let row = classTable.row(rowIndex).data();
+
+            let deleteForm = {
+                "classID": row.classID
+            };
+
+            console.log(deleteForm);
+            deleteClass(deleteForm);
         });
 
     $('#confirmClassBtn').on('click', function (event) {
@@ -90,7 +96,7 @@ function getClasses() {
         method: 'GET',
         dataType: 'json',
         success: function (data) {
-            classData = initializeDataTableWithFilters('#classTable', data.data, classColumns, [1, 'asc'], 10);
+            classTable = initializeDataTableWithFilters('#classTable', data.data, classColumns, [1, 'asc'], 10);
         },
         error: function (xhr, status, error) {
             console.error("Error fetching data from the API:", error);
@@ -109,10 +115,33 @@ function addClass(classData) {
             console.log("class added");
             bootstrapAlert('success', "Class Added");
             $('#addClassModal').modal('hide');
+
+            classTable.destroy();
+            getClasses();
         },
         error: function (xhr, status, error) {
             console.error("Class could not be created: ", error);
             bootstrapAlert('danger', 'Class could not be created: ' + error);
+        }
+    });
+}
+
+function deleteClass(deleteForm) {
+    $.ajax({
+        data: JSON.stringify(deleteForm),
+        url: 'http://localhost:8080/api/moderator/dashboard',
+        type: 'DELETE',
+        contentType: 'application/json',
+        success: function() {
+            bootstrapAlert('success', 'Deleted class successfully.');
+            $('#removeConfirmation').modal('hide');
+
+            //refresh table data
+            classTable.destroy();
+            getClasses();
+        },
+        error: function(xhr, status, error) {
+            bootstrapAlert('danger', 'Error while deleting class: ' + error);
         }
     });
 }

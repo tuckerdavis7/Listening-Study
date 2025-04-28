@@ -288,5 +288,33 @@ public class ModeratorService extends BaseService {
 
         return responseString;
     }
+
+    public String deleteClass(HttpExchange exchange) throws IOException {
+        logger.info("at deleteClass in ModeratorService");
+        Map<String, Object> parameters = super.getParameters(exchange);
+        int classID = ((Number)parameters.get("classID")).intValue();
+        String responseString = "";
+
+        try {
+            studentClassRepository.removeAllStudentsFromClass(classID);
+            responseString = super.formatJSON("success");
+        }
+        catch (Exception e) {
+            responseString = "Internal Server Error";
+            logger.error("Error in deleteClass1 of ModeratorService:");
+            e.printStackTrace();
+        }
+        try {
+            classRepository.deleteClass(classID);
+            responseString = super.formatJSON("success");
+        }
+        catch (Exception e) {
+            responseString = "Internal Server Error";
+            logger.error("Error in deleteClass2 of ModeratorService:");
+            e.printStackTrace();
+        }
+
+        return responseString;
+    }
       
 }

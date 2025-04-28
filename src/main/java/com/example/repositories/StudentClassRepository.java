@@ -27,5 +27,14 @@ public class StudentClassRepository {
         pstmt.setInt(2, classID);
         pstmt.executeUpdate();
     }
+
+    public void removeAllStudentsFromClass(int classID) throws SQLException {
+        System.out.println("at removeStudentFromClass in StudentClassRepository");
+        String query = "DELETE FROM studentclass WHERE classID = ?";
+
+        PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
+        pstmt.setInt(1, classID);
+        pstmt.executeUpdate();
+    }
     
 }

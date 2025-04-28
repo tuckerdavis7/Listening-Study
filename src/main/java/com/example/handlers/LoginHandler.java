@@ -31,6 +31,11 @@ public class LoginHandler extends BaseHandler implements HttpHandler {
         String method = exchange.getRequestMethod();
 
         switch (method) {
+            case "GET":
+                response = loginService.checkExistingSession(exchange);
+                super.sendResponse(exchange, response, "Regular");
+                break;
+                
             case "POST":
                 if (exchange.getRequestURI().getPath().equals("/api/login/verify")) {
                     response = loginService.authenticateLogin(exchange);

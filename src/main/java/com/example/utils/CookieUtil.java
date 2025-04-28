@@ -14,7 +14,7 @@ public class CookieUtil {
      */
     private static String getCookie(HttpExchange exchange, String name) {
         List<String> cookies = exchange.getRequestHeaders().get("Cookie");
-        if (cookies == null) return null;
+        if (cookies == null || cookies.isEmpty()) return null;
 
         for (String header : cookies) {
             for (String cookie : header.split(";")) {
@@ -35,7 +35,7 @@ public class CookieUtil {
      */
     public static String getCookieSessionID(HttpExchange exchange) {
         String sessionId = getCookie(exchange, "SESSIONID");
-        return (sessionId != null) ? sessionId : "not found";
+        return sessionId;
     }
 
     /**

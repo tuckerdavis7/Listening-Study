@@ -5,6 +5,13 @@ import java.util.List;
 import com.sun.net.httpserver.HttpExchange;
 
 public class CookieUtil {
+    /**
+     * Retrieves the value of a specific cookie from the HTTP exchange.
+     *
+     * @param exchange The HTTP exchange containing the request data
+     * @param name The name of the cookie to retrieve
+     * @return The value of the cookie if found; otherwise, null
+     */
     private static String getCookie(HttpExchange exchange, String name) {
         List<String> cookies = exchange.getRequestHeaders().get("Cookie");
         if (cookies == null) return null;
@@ -20,8 +27,15 @@ public class CookieUtil {
         return null;
     }
 
+    /**
+     * Retrieves the value of the "SESSIONID" cookie from the HTTP exchange.
+     *
+     * @param exchange The HTTP exchange containing the request data
+     * @return The session ID if present; otherwise, "not found"
+     */
     public static String getCookieSessionID(HttpExchange exchange) {
-        return getCookie(exchange, "SESSIONID");
+        String sessionId = getCookie(exchange, "SESSIONID");
+        return (sessionId != null) ? sessionId : "not found";
     }
 
     /**

@@ -1,6 +1,9 @@
+const pathArr = location.href.split('/');
+const userType = pathArr[pathArr.length - 2];
+
 $(document).ready(function() {
     $.ajax({
-        url: 'http://localhost:8080/api/setquiz?classID=1',
+        url: `http://localhost:8080/api/setquiz`,
         type: 'GET',
         dataType: 'json',
         success: function(data) {

@@ -28,5 +28,16 @@ public class StudentRepository {
 
         return rs;
     }
+
+    public ResultSet getStudentByUserID(int userID) throws SQLException {
+        System.out.println("At getStudentIDByUserID in StudentRepository");
+        String query = "SELECT * FROM student WHERE user_id = ?";
+
+        PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
+        pstmt.setInt(1, userID);
+        ResultSet rs = pstmt.executeQuery();
+
+        return rs;
+    }
     
 }

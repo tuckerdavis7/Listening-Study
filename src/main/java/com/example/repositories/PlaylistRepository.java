@@ -3,6 +3,7 @@ package com.example.repositories;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import com.example.configurations.DatabaseConfiguration;
 
@@ -17,11 +18,14 @@ public class PlaylistRepository {
      * @throws SQLException When the query does not run properly
      * @return ResultSet containing query results
      */
-    public ResultSet getPlaylistByClassID(Object classID) throws SQLException {
-        String query = "SELECT * FROM playlist WHERE classID = ?";
+    public ResultSet getPlaylistByClassID(ArrayList<Integer> classIDs) throws SQLException {
+        String placeholders = String.join(", ", java.util.Collections.nCopies(classIDs.size(), "?"));
+        String query = "SELECT * FROM playlist WHERE classID IN ("+ placeholders + ")";
 
         PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
-        pstmt.setInt(1, (Integer) classID);
+        for (int i = 0; i < classIDs.size(); i++) {
+            pstmt.setInt(i + 1, classIDs.get(i));
+        }
         ResultSet rs = pstmt.executeQuery();
 
         return rs;

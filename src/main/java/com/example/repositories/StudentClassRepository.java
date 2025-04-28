@@ -1,6 +1,7 @@
 package com.example.repositories;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.example.configurations.DatabaseConfiguration;
@@ -37,4 +38,14 @@ public class StudentClassRepository {
         pstmt.executeUpdate();
     }
     
+    public ResultSet getClassIDByStudentID(int studentID) throws SQLException {
+        System.out.println("at getClassIDByStudentID in StudentClassRepository");
+        String query = "SELECT * FROM studentclass WHERE studentID = ?";
+
+        PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
+        pstmt.setInt(1, studentID);
+        ResultSet rs = pstmt.executeQuery();
+
+        return rs;
+    }
 }

@@ -11,6 +11,10 @@ import org.slf4j.LoggerFactory;
 
 import com.example.repositories.PlaylistRepository;
 import com.example.repositories.QuizSettingsRepository;
+import com.example.repositories.SessionRepository;
+import com.example.repositories.StudentClassRepository;
+import com.example.repositories.StudentRepository;
+import com.example.utils.CookieUtil;
 import com.sun.net.httpserver.HttpExchange;
 
 /**
@@ -20,6 +24,9 @@ public class SetQuizService extends BaseService {
     private static final Logger logger = LoggerFactory.getLogger(SetQuizService.class);
     PlaylistRepository playlistRepository = new PlaylistRepository();
     QuizSettingsRepository quizSettingsRepository = new QuizSettingsRepository();
+    SessionRepository sessionRepository = new SessionRepository();
+    StudentRepository studentRepository = new StudentRepository();
+    StudentClassRepository studentClassRepository = new StudentClassRepository();
 
     /**
      * Gathers playlist data based on classID
@@ -29,11 +36,35 @@ public class SetQuizService extends BaseService {
      * @return String JSON formatted string of data for frontend
      */
     public String getPlaylists(HttpExchange exchange) throws IOException {
-        Map<String, Object> playlistParams = super.getQueryParameters(exchange);
-        Object classID = playlistParams.get("classID");
+        /*Map<String, Object> playlistParams = super.getQueryParameters(exchange);
+        Object classID = playlistParams.get("classID");*/
+
         String responseString = "";
         try {
-            ResultSet result = playlistRepository.getPlaylistByClassID(classID);
+            String sessionID = CookieUtil.getCookieSessionID(exchange);
+            int userID = sessionRepository.getUserIDBySessionID(sessionID);
+            int studentID = -1;
+            ArrayList<Integer> classIDs = new ArrayList<>();
+
+            /*if(userID == null) {
+                responseString = super.formatJSON("Invalid or expired session", "error");
+                return responseString;
+            }*/
+
+            ResultSet rs = studentRepository.getStudentByUserID(userID);
+            if (rs.next()) {
+                studentID = rs.getInt("ID");
+                System.out.println("StudentID: " + studentID);
+            }
+
+            ResultSet rs1 = studentClassRepository.getClassIDByStudentID(studentID);
+            while (rs1.next()) {
+                int temp = rs1.getInt("classID");
+                classIDs.add(temp);
+                //System.out.println("StudentID: " + studentID);
+            }
+
+            ResultSet result = playlistRepository.getPlaylistByClassID(classIDs);
             ArrayList<Map<String, Object>> playlistList = new ArrayList<>();
             
             while (result.next()) {

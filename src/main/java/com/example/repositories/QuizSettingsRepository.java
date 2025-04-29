@@ -20,14 +20,15 @@ public class QuizSettingsRepository {
      * @param numQuestions The chosen number of questions for the current quiz settings
      * @throws SQLException When the query does not run properly
      */
-    public void addQuizSettings(int playlistID, String playbackMethod, int playbackDuration, int numQuestions) throws SQLException {
-        String query = "INSERT INTO quizSettings (user_ID, playbackMethod, playbackDuration, numQuestions) VALUES (?, ?, ?, ?)";
+    public void addQuizSettings(int user_ID, String playbackMethod, int playbackDuration, int numQuestions, int playlistID) throws SQLException {
+        String query = "INSERT INTO quizSettings (user_ID, playbackMethod, playbackDuration, numQuestions, playlistID) VALUES (?, ?, ?, ?)";
         PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
 
-        pstmt.setInt(1, playlistID);
+        pstmt.setInt(1, user_ID);
         pstmt.setString(2, playbackMethod);
         pstmt.setInt(3, playbackDuration);
         pstmt.setInt(4, numQuestions);
+        pstmt.setInt(4, playlistID);
         pstmt.executeUpdate();
     }
 

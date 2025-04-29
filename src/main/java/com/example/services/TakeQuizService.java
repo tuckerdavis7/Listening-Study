@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import com.example.repositories.PlaylistSongRepository;
 import com.example.repositories.QuizSettingsRepository;
 import com.example.repositories.StudentPerformanceRepository;
+import com.example.repositories.StudentRepository;
 import com.sun.net.httpserver.HttpExchange;
 
 import com.example.implementations.TakeQuizImplementation;
@@ -25,6 +26,7 @@ public class TakeQuizService extends BaseService {
     QuizSettingsRepository quizSettingsRepository = new QuizSettingsRepository();
     PlaylistSongRepository playlistSongRepository = new PlaylistSongRepository();
     StudentPerformanceRepository studentPerformanceRepository = new StudentPerformanceRepository();
+    StudentRepository studentRepository = new StudentRepository();
     TakeQuizImplementation takeQuizImplementation = new TakeQuizImplementation();
 
     /**
@@ -35,17 +37,17 @@ public class TakeQuizService extends BaseService {
      * @return String JSON formatted string of data for frontend
      */
     public String getQuizSettings(HttpExchange exchange) throws IOException {
-        Map<String, Object> configParams = super.getQueryParameters(exchange);
-        Object playlistID = configParams.get("playlistID"); //needs different id later
+        int userID = super.getSessionUserID(exchange);
+        //Object playlistID = configParams.get("playlistID"); //needs different id later
         String responseString = "";
         ArrayList<Map<String, Object>> quizSettingsList = new ArrayList<>();
 
         try {
-            ResultSet result = quizSettingsRepository.getQuizSettingsByID(playlistID);
+            ResultSet result = quizSettingsRepository.getQuizSettingsByID(userID);
             
             while (result.next()) {
                 Map<String, Object> quizSettingsMap = new HashMap<>();
-                quizSettingsMap.put("playlistID", result.getInt("playlistID"));
+                quizSettingsMap.put("userID", result.getInt("user_id"));
                 quizSettingsMap.put("playbackMethod", result.getString("playbackMethod"));
                 quizSettingsMap.put("playbackDuration", result.getInt("playbackDuration"));
                 quizSettingsMap.put("numQuestions", result.getString("numQuestions"));
@@ -73,11 +75,26 @@ public class TakeQuizService extends BaseService {
      */
     public String getSongs(HttpExchange exchange) throws IOException {
         Map<String, Object> songParams = super.getQueryParameters(exchange);
+        int userID = super.getSessionUserID(exchange);
         int playlistID = ((Number)songParams.get("playlistID")).intValue();
-        int studentID = ((Number)songParams.get("studentID")).intValue();
         ArrayList<Map<String, Object>> playlistSongList = new ArrayList<>();
         int numQuestions = 0;
+        int studentID = -1;
         String responseString = "";
+
+        try {
+            ResultSet result = studentRepository.getStudentByUserID(userID);
+            
+            if (result.next()) {
+                studentID = result.getInt("ID");
+            }
+        }
+        catch (Exception e) {
+            responseString = "Internal Server Error";
+            e.printStackTrace();
+            logger.error("Error in getSongs1 of TakeQuizService");
+            return responseString;
+        }
 
         try {
             ResultSet result = playlistSongRepository.getSongs(playlistID);
@@ -100,7 +117,7 @@ public class TakeQuizService extends BaseService {
         } 
         catch (Exception e) {
             responseString = "Internal Server Error";
-            logger.error("Error in getSongs of TakeQuizService:");
+            logger.error("Error in getSongs2 of TakeQuizService:");
             e.printStackTrace();
             return responseString;
         }
@@ -115,7 +132,7 @@ public class TakeQuizService extends BaseService {
         }
         catch (Exception e) {
             responseString = "Internal Server Error";
-            logger.error("Error in getSongs of TakeQuizService:");
+            logger.error("Error in getSongs3 of TakeQuizService:");
             e.printStackTrace();
         }
 
@@ -141,7 +158,7 @@ public class TakeQuizService extends BaseService {
         } 
         catch (Exception e) {
             responseString = "Internal Server Error";
-            logger.error("Error in getSongs (3) of TakeQuizService:");
+            logger.error("Error in getSongs4 of TakeQuizService:");
             e.printStackTrace();
         }
 

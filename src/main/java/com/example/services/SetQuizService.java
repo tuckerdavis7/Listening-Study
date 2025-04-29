@@ -96,6 +96,7 @@ public class SetQuizService extends BaseService {
     public String setQuizParameters(HttpExchange exchange) throws IOException {
         Map<String, Object> quizData = super.getParameters(exchange);
         int userID = super.getSessionUserID(exchange); 
+        int playlistID = Integer.parseInt((String) quizData.get("playlistID"));
                
         String playbackMethod = (String)quizData.get("playbackMethod");
         int playbackDuration = Integer.parseInt((String)quizData.get("playbackDuration"));
@@ -103,7 +104,7 @@ public class SetQuizService extends BaseService {
         
         String responseString = "";
         try {
-            quizSettingsRepository.addQuizSettings(userID, playbackMethod, playbackDuration, numQuestions);
+            quizSettingsRepository.addQuizSettings(userID, playbackMethod, playbackDuration, numQuestions, playlistID);
             responseString = super.formatJSON("success");
         }
         catch (Exception e) {

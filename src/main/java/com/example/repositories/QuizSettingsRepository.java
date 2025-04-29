@@ -39,11 +39,11 @@ public class QuizSettingsRepository {
      * @throws SQLException When the query does not run properly
      * @return ResultSet containing query results
      */
-    public ResultSet getQuizSettingsByID(Object user_ID) throws SQLException {
+    public ResultSet getQuizSettingsByID(int userID) throws SQLException {
         String query = "SELECT * FROM quizSettings WHERE user_id = ? and deleted = ?";
 
         PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
-        pstmt.setInt(1, (Integer) user_ID);
+        pstmt.setInt(1, userID);
         pstmt.setInt(2, 0);
         ResultSet rs = pstmt.executeQuery();
 

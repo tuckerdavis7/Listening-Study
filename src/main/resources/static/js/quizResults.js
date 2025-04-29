@@ -1,5 +1,5 @@
 
-let quizSettingsID = 22;
+// let quizSettingsID = 22;
 
 $(document).ready(async function() {
     let wrongAnswers = await getWrongAnswers();
@@ -44,7 +44,8 @@ $(document).ready(async function() {
 async function getWrongAnswers() {
     return new Promise((resolve, reject) => {
         $.ajax({
-            url: `http://localhost:8080/api/quizResults?quizSettingsID=${quizSettingsID}`,
+            url: `http://localhost:8080/api/quizResults?quizSettingsID`,
+            // url: `http://localhost:8080/api/quizResults?quizSettingsID=${quizSettingsID}`,
             type: 'GET',
             dataType: 'json',
             success: function(data) {

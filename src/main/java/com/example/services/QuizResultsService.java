@@ -175,14 +175,14 @@ public class QuizResultsService extends BaseService {
      * @return String JSON formatted string of data for frontend
      */
     public String getQuizResults(HttpExchange exchange) throws IOException {
-        Map<String, Object> configParams = super.getQueryParameters(exchange);
-        Object quizSettingsID = configParams.get("quizSettingsID");
+        // Map<String, Object> configParams = super.getQueryParameters(exchange);
+        // Object quizSettingsID = configParams.get("quizSettingsID");
 
         String responseString = "";
         ArrayList<Map<String, Object>> quizResultsList = new ArrayList<>();
 
         try {
-            ResultSet result = quizResultsRepository.getQuizResultsByID(quizSettingsID);
+            ResultSet result = quizResultsRepository.getQuizResults();
             
             while (result.next()) {
                 Map<String, Object> quizResultsMap = new HashMap<>();
@@ -203,7 +203,8 @@ public class QuizResultsService extends BaseService {
 
         try {
             Map<String, Object> numQuestionsMap = new HashMap<String,Object>();
-            ResultSet rs = quizSettingsRepository.getNumQuestionsByID(quizSettingsID);
+            // ResultSet rs = quizSettingsRepository.getNumQuestionsByID(quizSettingsID);
+            ResultSet rs = quizSettingsRepository.getNumQuestions();
 
             if (rs.next()) {
                 numQuestionsMap.put("numQuestions", rs.getInt("numQuestions"));

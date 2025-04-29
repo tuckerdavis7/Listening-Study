@@ -34,11 +34,11 @@ $(document).ready(function () {
             orderable: false,
             width: "1 em"
         },
-        { data: "classID", class: "charColumn", width: "2 rem"},
+        { data: "classID", class: "charColumn", width: "1 rem"},
         { data: "className", class: "charColumn", width: "3 rem"},
         { data: "studentCount", class: "charColumn", width: "3 rem"},
         { data: "playlistCount", class: "charColumn", width: "1 rem"},
-        { data: "null", class: "text-center", defaultContent: `
+        { data: "null", class: "text-center", orderable: false, defaultContent: `
             <button class ="btn btn-danger remove-btn">Delete</button>
         `},
     ];
@@ -153,7 +153,7 @@ function getClasses() {
         method: 'GET',
         dataType: 'json',
         success: function (data) {
-            classTable = initializeDataTableWithFilters('#classTable', data.data, classColumns, [1, 'asc'], 10);
+            classTable = initializeDataTableWithFilters('#classTable', data.data, classColumns, [2, 'asc'], 10, [0,1,6]);
         },
         error: function (xhr, status, error) {
             console.error("Error fetching data from the API:", error);

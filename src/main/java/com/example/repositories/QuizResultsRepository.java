@@ -41,12 +41,22 @@ public class QuizResultsRepository {
      * @throws SQLException When the query does not run properly
      * @return ResultSet containing query results
      */
-    public ResultSet getQuizResultsByID(Object quizSettingsID) throws SQLException {
-        String query = "SELECT * FROM quizResults WHERE quizSettingsID = ? and deleted = ?";
+    // public ResultSet getQuizResultsByID(Object quizSettingsID) throws SQLException {
+    //     String query = "SELECT * FROM quizResults WHERE quizSettingsID = ? and deleted = ?";
+
+    //     PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
+    //     pstmt.setInt(1, (Integer) quizSettingsID);
+    //     pstmt.setInt(2, 0);
+    //     ResultSet rs = pstmt.executeQuery();
+
+    //     return rs;
+    // }
+
+    public ResultSet getQuizResults() throws SQLException {
+        String query = "SELECT * FROM quizResults WHERE deleted = ?";
 
         PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
-        pstmt.setInt(1, (Integer) quizSettingsID);
-        pstmt.setInt(2, 0);
+        pstmt.setInt(1, 0);
         ResultSet rs = pstmt.executeQuery();
 
         return rs;

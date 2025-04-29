@@ -11,7 +11,7 @@
         { data: "firstName", class: "charcolumn", width: "3 rem"},
         { data: "lastName", class: "charcolumn", width: "3 rem"},
         { data: "email", class: "charcolumn", width: "1 rem"},
-        { data: "null", class: "text-center", defaultContent: `
+        { data: "null", class: "text-center", orderable: false, defaultContent: `
             <button class ="btn btn-danger remove-btn">Remove</button>
         `},
     ]
@@ -70,7 +70,7 @@ function getStudents() {
       method: 'GET',
       dataType: 'json',
       success: function (data) {
-          studentTable = initializeDataTableWithFilters('#studentTable', data.data, studentColumns, [1, 'asc'], 10);
+          studentTable = initializeDataTableWithFilters('#studentTable', data.data, studentColumns, [1, 'asc'], 10, [4]);
           console.log(data.data);
       },
       error: function (xhr, status, error) {

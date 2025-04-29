@@ -57,15 +57,24 @@ public class QuizSettingsRepository {
      * @throws SQLException When the query does not run properly
      * @return ResultSet containing query results
      */
-    public ResultSet getNumQuestionsByID(Object quizSettingsID) throws SQLException {
-        String query = "SELECT * FROM quizSettings WHERE ID = ?";
+    // public ResultSet getNumQuestionsByID(Object quizSettingsID) throws SQLException {
+    //     String query = "SELECT * FROM quizSettings WHERE ID = ?";
 
-        PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
-        pstmt.setInt(1, (Integer) quizSettingsID);
-        ResultSet rs = pstmt.executeQuery();
+    //     PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
+    //     pstmt.setInt(1, (Integer) quizSettingsID);
+    //     ResultSet rs = pstmt.executeQuery();
 
-        return rs;
-    }
+    //     return rs;
+    // }
+
+    public ResultSet getNumQuestions() throws SQLException {
+            String query = "SELECT * FROM quizSettings WHERE deleted = 0";
+    
+            PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
+            ResultSet rs = pstmt.executeQuery();
+    
+            return rs;
+        }
 
     /**
      * Sets deleted field in quiz settings table to 1 by quizSettingsID

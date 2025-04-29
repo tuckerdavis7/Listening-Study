@@ -95,16 +95,15 @@ public class SetQuizService extends BaseService {
      */
     public String setQuizParameters(HttpExchange exchange) throws IOException {
         Map<String, Object> quizData = super.getParameters(exchange);
-        //Error here ->
-        int playlistID = Integer.parseInt((String)quizData.get("playlist"));//This needs to be userID from sessions!!!
-        //<- Error here
+        int userID = super.getSessionUserID(exchange); 
+               
         String playbackMethod = (String)quizData.get("playbackMethod");
         int playbackDuration = Integer.parseInt((String)quizData.get("playbackDuration"));
         int numQuestions = Integer.parseInt((String)quizData.get("numQuestions"));
         
         String responseString = "";
         try {
-            quizSettingsRepository.addQuizSettings(playlistID, playbackMethod, playbackDuration, numQuestions);
+            quizSettingsRepository.addQuizSettings(userID, playbackMethod, playbackDuration, numQuestions);
             responseString = super.formatJSON("success");
         }
         catch (Exception e) {

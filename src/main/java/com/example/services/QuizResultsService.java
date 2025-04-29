@@ -16,6 +16,7 @@ import com.example.repositories.QuizResultsRepository;
 import com.example.repositories.QuizSettingsRepository;
 import com.example.repositories.SongRepository;
 import com.example.repositories.StudentPerformanceRepository;
+import com.example.repositories.StudentRepository;
 import com.sun.net.httpserver.HttpExchange;
 
 /**
@@ -27,6 +28,7 @@ public class QuizResultsService extends BaseService {
     private StudentPerformanceRepository studentPerformanceRepository = new StudentPerformanceRepository();
     private QuizResultsRepository quizResultsRepository = new QuizResultsRepository();
     private QuizSettingsRepository quizSettingsRepository = new QuizSettingsRepository();
+    private StudentRepository studentRepository = new StudentRepository();
     private QuizImplementation quizImplementation = new QuizImplementation();
 
     /**
@@ -41,6 +43,23 @@ public class QuizResultsService extends BaseService {
         List<Map<String, Object>> songQuizData = new ArrayList<>();
         String responseString ="";
         int numQuestions = quizData.size();
+        int userID = super.getSessionUserID(exchange);
+        int studentID = -1;
+
+        //Convert user ID to student ID
+        try {
+            ResultSet result = studentRepository.getStudentByUserID(userID);
+            
+            if (result.next()) {
+                studentID = result.getInt("ID");
+            }
+        }
+        catch (Exception e) {
+            responseString = "Internal Server Error";
+            e.printStackTrace();
+            logger.error("Error in getSongs1 of TakeQuizService");
+            return responseString;
+        }
 
         for (int i = 0; i< numQuestions;i++) {
             Map<String, Object> songData = new HashMap<>();
@@ -65,7 +84,7 @@ public class QuizResultsService extends BaseService {
 
             List<Integer> performance = new ArrayList<>();
             try {
-                ResultSet rs = studentPerformanceRepository.getPerformanceData(1, playlistID, songID);             
+                ResultSet rs = studentPerformanceRepository.getPerformanceData(studentID, playlistID, songID);             
                 if (rs.next()) {
                     performance.add(rs.getInt("TimesQuizzed"));
                     performance.add(rs.getInt("TimesCorrect"));
@@ -99,12 +118,11 @@ public class QuizResultsService extends BaseService {
                 timesQuizzed = performance.get(0) + 1;
             }
             
-            List<Double> weightScore = quizImplementation.calculateWeight(timesQuizzed, timesCorrect);
             try {
                 if (quizzedBefore)
-                    studentPerformanceRepository.updatePerformanceData(timesQuizzed, timesCorrect, weightScore.get(0), weightScore.get(1), performance.get(2));
+                    studentPerformanceRepository.updatePerformanceData(timesQuizzed, timesCorrect, performance.get(2));
                 else 
-                    studentPerformanceRepository.addPerformanceData(1, 1, weightScore.get(0), weightScore.get(1), songID, playlistID, timesQuizzed, timesCorrect);
+                    studentPerformanceRepository.addPerformanceData(studentID, songID, playlistID, timesQuizzed, timesCorrect);
             }
             catch (SQLException e) {
                 logger.error("Error in setting quiz results:");

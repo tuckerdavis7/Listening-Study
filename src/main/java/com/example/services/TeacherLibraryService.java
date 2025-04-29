@@ -11,31 +11,65 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.example.repositories.PlaylistRepository;
+import com.example.repositories.SessionRepository;
+import com.example.repositories.StudentRepository;
 import com.example.repositories.TeacherRepository;
+import com.example.utils.CookieUtil;
 import com.sun.net.httpserver.HttpExchange;
 
 public class TeacherLibraryService extends BaseService {
     private static final Logger logger = LoggerFactory.getLogger(TeacherRosterService.class);
     private PlaylistRepository playlistRepository = new PlaylistRepository();
     private TeacherRepository teacherRepository = new TeacherRepository();
+    private StudentRepository studentRepository = new StudentRepository();
+    private SessionRepository sessionRepository = new SessionRepository();
 
     public String getLibrary(HttpExchange exchange) throws IOException {        
-        int userID = super.getSessionUserID(exchange);
+        String sessionID = CookieUtil.getCookieSessionID(exchange);
         int teacherID = -1;
+        int studentID = -1;
         String responseString = "";
-        
+        String userRole = "";
+        int userID = super.getSessionUserID(exchange);
+
         try {
-            ResultSet rs = teacherRepository.getTeacherID(userID);
+            ResultSet rs = sessionRepository.getUserRoleBySessionID(sessionID);
             rs.next();
-            teacherID = rs.getInt("ID"); 
+            userRole = rs.getString("Role");
+        } catch (Exception e){
+            e.printStackTrace();
+            responseString = "Internal Server Error";
+            logger.error("Error in getLibrary of TeacherLibraryService:");            
+            return responseString;
+
+        }
+        
+       
+        try {
+            if ("teacher".equals(userRole)) {
+                ResultSet rs = teacherRepository.getTeacherID(userID);
+                rs.next();
+                teacherID = rs.getInt("ID"); 
+            } else if ("student".equals(userRole)){
+                ResultSet rs = studentRepository.getStudentByUserID(userID);
+                rs.next();
+                studentID = rs.getInt("ID"); 
+            }
         } catch (SQLException e) {
+            e.printStackTrace();
             responseString = "Internal Server Error";
             logger.error("Error in getLibrary of TeacherLibraryService:");            
             return responseString;
         }               
                
         try {
-            ResultSet result = playlistRepository.getPlaylistByTeacherID(teacherID);
+            ResultSet result = null;
+            if (teacherID != -1){
+                result = playlistRepository.getPlaylistByTeacherID(teacherID);
+            } else if (studentID != -1){
+                result = playlistRepository.getPlaylistByStudentID(studentID);
+            }
+
             
             ArrayList<Map<String, Object>> playlistLibrary = new ArrayList<>();
 

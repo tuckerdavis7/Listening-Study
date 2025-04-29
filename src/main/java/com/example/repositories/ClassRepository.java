@@ -61,7 +61,7 @@ public class ClassRepository {
     ResultSet rs = pstmt.executeQuery();
 
     return rs;
-  }
+  } 
 
   public void addClass(String className, int teacherID) throws SQLException {
     logger.info("at addClass in ClassRepository");

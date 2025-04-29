@@ -43,6 +43,19 @@ public class PlaylistRepository {
         return rs;
     }
 
+    public ResultSet getPlaylistByStudentID(Object studentID) throws SQLException {
+        String query = "select p.ID, p.playlistName, p.teacherID, p.classID, c.className from playlist p "
+                         + "left join studentClass sc on sc.classID = p.classID" 
+                         + " left join class c on p.ClassID = c.id"
+                         + " where sc.studentId = ?";                        
+
+        PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
+        pstmt.setInt(1, (Integer) studentID);
+        ResultSet rs = pstmt.executeQuery();
+
+        return rs;
+    }
+
     public void createPlaylist(String playlistName, int teacherID, int classID) throws SQLException {
         String query = "INSERT INTO playlist (playlistName, teacherID, classID) VALUES (?, ?, ?)";
 

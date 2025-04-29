@@ -21,7 +21,7 @@ public class QuizSettingsRepository {
      * @throws SQLException When the query does not run properly
      */
     public void addQuizSettings(int playlistID, String playbackMethod, int playbackDuration, int numQuestions) throws SQLException {
-        String query = "INSERT INTO quizSettings (playlistID, playbackMethod, playbackDuration, numQuestions) VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO quizSettings (user_ID, playbackMethod, playbackDuration, numQuestions) VALUES (?, ?, ?, ?)";
         PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
 
         pstmt.setInt(1, playlistID);
@@ -34,15 +34,15 @@ public class QuizSettingsRepository {
     /**
      * Returns the most recent quiz settings from the chosen playlistID
      *
-     * @param playlistID The ID of the active playlist
+     * @param User_ID The ID of the current user.
      * @throws SQLException When the query does not run properly
      * @return ResultSet containing query results
      */
-    public ResultSet getQuizSettingsByID(Object playlistID) throws SQLException {
-        String query = "SELECT * FROM quizSettings WHERE playlistID = ? and deleted = ?";
+    public ResultSet getQuizSettingsByID(Object user_ID) throws SQLException {
+        String query = "SELECT * FROM quizSettings WHERE user_id = ? and deleted = ?";
 
         PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
-        pstmt.setInt(1, (Integer) playlistID);
+        pstmt.setInt(1, (Integer) user_ID);
         pstmt.setInt(2, 0);
         ResultSet rs = pstmt.executeQuery();
 

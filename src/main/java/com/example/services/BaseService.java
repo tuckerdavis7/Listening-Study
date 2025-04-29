@@ -64,7 +64,7 @@ public class BaseService {
             ResultSet result = sessionRepository.getUserRoleBySessionID(sessionID);
             if (result.next()) {
                 String userRole = result.getString("role");
-                if (userRole.equals(urlRole) || userRole.equals("administrator")) {
+                if (userRole.equals(urlRole)) {
                     return true;
                 }
             }

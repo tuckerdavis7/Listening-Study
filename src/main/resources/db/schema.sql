@@ -137,6 +137,7 @@ CREATE TABLE quizSettings (
     playbackMethod VARCHAR(255),
     playbackDuration INT,
     numQuestions INT,
+    playlistID INT,
     deleted TINYINT(1) default 0
 );
 

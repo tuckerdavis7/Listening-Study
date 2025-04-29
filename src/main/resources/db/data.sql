@@ -196,19 +196,19 @@ INSERT INTO studentPerformance (StudentID, ClassID, SongID, PlaylistID, TimesCor
 (10, 10, 10, 10, 9, 11, 0.18, 81.80),
 (11, 11, 11, 11, 10, 10, 0.00, 100.00);
 
-INSERT INTO quizSettings (user_id, playbackMethod, playbackDuration, numQuestions, deleted) VALUES
-(1, 'Random', 30, 10, 1),
-(1, 'Random', 45, 15, 1),
-(2, 'Random', 20, 8, 1),
-(3, 'MostReplayed', 60, 20, 1),
-(4, 'TeacherTimestamp', 30, 12, 1),
-(5, 'TeacherTimestamp', 40, 15, 1),
-(6, 'MostReplayed', 25, 10, 1),
-(7, 'Random', 35, 12, 1),
-(8, 'TeacherTimestamp', 45, 15, 1),
-(9, 'MostReplayed', 30, 10, 1),
-(10, 'Random', 60, 20, 1),
-(11, 'TeacherTimestamp', 20, 8, 1);
+INSERT INTO quizSettings (user_id, playbackMethod, playbackDuration, numQuestions, playlistID, deleted) VALUES
+(1, 'Random', 30, 10, 1, 1),
+(1, 'Random', 45, 15, 1, 1),
+(2, 'Random', 20, 8, 1, 1),
+(3, 'MostReplayed', 60, 20, 1, 1),
+(4, 'TeacherTimestamp', 30, 12, 1, 1),
+(5, 'TeacherTimestamp', 40, 15, 1, 1),
+(6, 'MostReplayed', 25, 10, 1, 1),
+(7, 'Random', 35, 12, 1, 1),
+(8, 'TeacherTimestamp', 45, 15, 1, 1),
+(9, 'MostReplayed', 30, 10, 1, 1),
+(10, 'Random', 60, 20, 1, 1),
+(11, 'TeacherTimestamp', 20, 8, 1, 1);
 
 INSERT INTO quizResults (quizSettingsID, songID, songName, songComposer, songYear, deleted) VALUES
 (1, 101, 'Bohemian Rhapsody', 'Freddie Mercury', 1975, TRUE),

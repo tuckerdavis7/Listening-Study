@@ -9,6 +9,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.example.repositories.PlaylistRepository;
 import com.example.repositories.PlaylistSongRepository;
 import com.example.repositories.QuizSettingsRepository;
 import com.example.repositories.StudentPerformanceRepository;
@@ -28,6 +29,7 @@ public class TakeQuizService extends BaseService {
     PlaylistSongRepository playlistSongRepository = new PlaylistSongRepository();
     StudentPerformanceRepository studentPerformanceRepository = new StudentPerformanceRepository();
     StudentRepository studentRepository = new StudentRepository();
+    PlaylistRepository playlistRepository = new PlaylistRepository();
     TakeQuizImplementation takeQuizImplementation = new TakeQuizImplementation();
 
     /**
@@ -151,6 +153,24 @@ public class TakeQuizService extends BaseService {
             return responseString;
         }
 
+        //Get playlist name from playlist repository using playlistID
+        try {
+            ResultSet result = playlistRepository.getPlaylistNameByID((Integer)playlistSongList.get(0).get("playlistID"));
+            String playlistName = "Playlist";
+            if (result.next()) {
+                playlistName = result.getString("playlistName");
+            }
+            for (Map<String, Object> song : playlistSongList) {
+                song.put("playlistName", playlistName);
+            }
+        }
+        catch (Exception e) {
+            responseString = "Internal Server Error";
+            logger.error("Error in getSongs4 of TakeQuizService:");
+            e.printStackTrace();
+            return responseString;
+        }
+
         //Append times correct and times quizzed to song data
         try {
             for (Map<String, Object> song : playlistSongList) {
@@ -169,7 +189,7 @@ public class TakeQuizService extends BaseService {
         } 
         catch (Exception e) {
             responseString = "Internal Server Error";
-            logger.error("Error in getSongs4 of TakeQuizService:");
+            logger.error("Error in getSongs5 of TakeQuizService:");
             e.printStackTrace();
         }
 
@@ -185,7 +205,7 @@ public class TakeQuizService extends BaseService {
         }
         catch (Exception e) {
             responseString = "Internal Server Error";
-            logger.error("Error in getSongs5 of TakeQuizService:");
+            logger.error("Error in getSongs6 of TakeQuizService:");
             e.printStackTrace();
         }
 

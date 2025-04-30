@@ -93,15 +93,12 @@ CREATE TABLE song (
 CREATE TABLE studentPerformance (
     ID INT AUTO_INCREMENT PRIMARY KEY,
     StudentID INT NOT NULL,
-    ClassID INT NOT NULL,
-    Weight DECIMAL(3,2),
     Score DECIMAL(5,2),
     SongID INT NOT NULL,
     PlaylistID INT NOT NULL,
     TimesCorrect INT DEFAULT 0,
     TimesQuizzed INT DEFAULT 0,
     FOREIGN KEY (StudentID) REFERENCES student(ID),
-    FOREIGN KEY (ClassID) REFERENCES class(ID),
     FOREIGN KEY (SongID) REFERENCES song(ID)
 );
 
@@ -145,9 +142,11 @@ CREATE TABLE quizResults (
     ID INT AUTO_INCREMENT PRIMARY KEY,
     quizSettingsID INT NOT NULL,
     songID INT NOT NULL,
+    userID INT NOT NULL,
     songName VARCHAR(255) NOT NULL,
     songComposer VARCHAR(255),
     songYear INT,
+    numQuestions INT NOT NULL,
     deleted BOOLEAN DEFAULT FALSE,
     FOREIGN KEY (quizSettingsID) REFERENCES quizSettings(ID) ON DELETE CASCADE
 );

@@ -20,9 +20,7 @@ SET FOREIGN_KEY_CHECKS = 1;
 INSERT INTO metaData (appName, version, lastUpdate, logo) VALUES 
 ('Listening Study', '1.0', '2025-02-19', ''),
 ('Listening Study', '2.0', '2025-03-19', ''),
-('Listening Study', '3.0', '2025-04-04', ''),
-('Listening Study', '4.0', '2025-04-30', '');
-
+('Listening Study', '3.0', '2025-04-04', '');
 
 INSERT INTO users (email, first_name, last_name, deleted, role, password) VALUES
 ('administrator1@example.com', 'John', 'Smith', 0, 'administrator', '$2a$12$69rOPERjWxQ5fnzy4CbRZ.i.0w0MARpuH5hUf37.007eWx44i5bAK'),
@@ -122,21 +120,21 @@ FROM
     student s;
 
 INSERT INTO reportTime (timeOfReport, email, description, resolution, lastUpdatedTime, lastUpdatedBy, status) VALUES
-('2025-03-01 09:30:00', 'moderator1@example.com', 'Weekly performance report', 'See email', '2025-04-01 09:30:00', 'administrator1@example.com', 'Resolved'),
-('2025-03-02 14:15:00', 'moderator2@example.com', 'Student progress assessment', '', '2025-04-01 09:30:00', 'administrator1@example.com', 'Open'),
-('2025-03-05 10:00:00', 'moderator3@example.com', 'Pop quiz results', '', '2025-04-01 09:30:00', 'administrator1@example.com', 'Acknowledged'),
-('2025-03-08 13:45:00', 'moderator4@example.com', 'Monthly evaluation', 'See email', '2025-04-01 09:30:00', 'administrator1@example.com', 'Resolved'),
-('2025-03-10 11:30:00', 'moderator5@example.com', 'Semester midpoint check', 'See email', '2025-04-01 09:30:00', 'administrator1@example.com', 'Resolved'),
-('2025-03-12 15:20:00', 'moderator6@example.com', 'Theory test results', '', '2025-04-01 09:30:00', 'administrator1@example.com', 'Open'),
-('2025-03-15 09:00:00', 'moderator7@example.com', 'Composition project evaluation', '', '2025-04-01 09:30:00', 'administrator1@example.com', 'Acknowledged'),
-('2025-03-18 14:30:00', 'moderator8@example.com', 'Performance recital feedback', 'See email', '2025-04-01 09:30:00', 'administrator1@example.com', 'Resolved'),
-('2025-03-20 10:45:00', 'moderator9@example.com', 'Practical skills assessment', '', '2025-04-01 09:30:00', 'administrator1@example.com', 'Open'),
-('2025-03-22 13:15:00', 'moderator10@example.com', 'Ear training test results', '', '2025-04-01 09:30:00', 'administrator1@example.com', 'Acknowledged'),
-('2025-03-24 11:00:00', 'moderator11@example.com', 'Year-end progress summary', 'See email', '2025-04-01 09:30:00', 'administrator1@example.com', 'Resolved');
+('2025-03-01 09:30:00', 'moderator1@example.com', 'Weekly performance report', 'See email', '2025-03-01 09:30:00', 'administrator1@example.com', 'Resolved'),
+('2025-03-02 14:15:00', 'moderator2@example.com', 'Student progress assessment', '', '2025-03-01 09:30:00', 'administrator1@example.com', 'Open'),
+('2025-03-05 10:00:00', 'moderator3@example.com', 'Pop quiz results', '', '2025-03-01 09:30:00', 'administrator1@example.com', 'Acknowledged'),
+('2025-03-08 13:45:00', 'moderator4@example.com', 'Monthly evaluation', 'See email', '2025-03-01 09:30:00', 'administrator1@example.com', 'Resolved'),
+('2025-03-10 11:30:00', 'moderator5@example.com', 'Semester midpoint check', 'See email', '2025-03-01 09:30:00', 'administrator1@example.com', 'Resolved'),
+('2025-03-12 15:20:00', 'moderator6@example.com', 'Theory test results', '', '2025-03-01 09:30:00', 'administrator1@example.com', 'Open'),
+('2025-03-15 09:00:00', 'moderator7@example.com', 'Composition project evaluation', '', '2025-03-01 09:30:00', 'administrator1@example.com', 'Acknowledged'),
+('2025-03-18 14:30:00', 'moderator8@example.com', 'Performance recital feedback', 'See email', '2025-03-01 09:30:00', 'administrator1@example.com', 'Resolved'),
+('2025-03-20 10:45:00', 'moderator9@example.com', 'Practical skills assessment', '', '2025-03-01 09:30:00', 'administrator1@example.com', 'Open'),
+('2025-03-22 13:15:00', 'moderator10@example.com', 'Ear training test results', '', '2025-03-01 09:30:00', 'administrator1@example.com', 'Acknowledged'),
+('2025-03-24 11:00:00', 'moderator11@example.com', 'Year-end progress summary', 'See email', '2025-03-01 09:30:00', 'administrator1@example.com', 'Resolved');
 
 INSERT INTO song (songName, songComposer, songYear, youtubeLink, mrTimestamp) VALUES
 ('Moonlight Sonata', 'Ludwig van Beethoven', 1801, '4Tr0otuiQuU', 20),
-('Für Elise', 'Ludwig van Beethoven', 1810, 'q9bU12gXUyM', 82),
+('Fur Elise', 'Ludwig van Beethoven', 1810, 'q9bU12gXUyM', 82),
 ('Claire de Lune', 'Claude Debussy', 1905, 'CvFH_6DNRCY', -1),
 ('Nocturne Op. 9 No. 2', 'Frédéric Chopin', 1832, '9E6b3swbnWg', 44),
 ('The Four Seasons - Spring', 'Antonio Vivaldi', 1723, 'mFWQgxXM_b8', 15),
@@ -185,18 +183,20 @@ INSERT INTO playlistSongs (playlistID, songID, udTimestamp) VALUES
 (11, 10, -1),
 (11, 11, -1);
 
-INSERT INTO studentPerformance (StudentID, ClassID, SongID, PlaylistID, TimesCorrect, TimesQuizzed, Weight, Score) VALUES
-(1, 1, 1, 1, 8, 10, 0.20, 80.00),
-(2, 2, 2, 2, 7, 10, 0.30, 70.00),
-(3, 3, 3, 3, 9, 12, 0.25, 75.00),
-(4, 4, 4, 4, 5, 8, 0.38, 62.50),
-(5, 5, 5, 5, 10, 10, 0.00, 100.00),
-(6, 6, 6, 6, 6, 10, 0.40, 60.00),
-(7, 7, 7, 7, 8, 10, 0.20, 80.00),
-(8, 8, 8, 8, 7, 9, 0.22, 77.80),
-(9, 9, 9, 9, 4, 10, 0.60, 40.00),
-(10, 10, 10, 10, 9, 11, 0.18, 81.80),
-(11, 11, 11, 11, 10, 10, 0.00, 100.00);
+INSERT INTO studentPerformance (StudentID, SongID, PlaylistID, TimesCorrect, TimesQuizzed, Score) VALUES
+(1, 1, 1, 8, 10, 80.00),
+(2, 2, 2, 7, 10, 70.00),
+(3, 3, 3, 9, 12, 75.00),
+(4, 4, 4, 5, 8, 62.50),
+(5, 5, 5, 10, 10, 100.00),
+(6, 6, 6, 6, 10, 60.00),
+(7, 7, 7, 8, 10, 80.00),
+(8, 8, 8, 7, 9, 77.80),
+(9, 9, 9, 4, 10, 40.00),
+(10, 10, 10, 9, 11, 81.00),
+(11, 11, 11, 10, 10, 100.00),
+(1, 2, 2, 8, 12, 66.67),
+(1, 4, 2, 2, 5, 40.00);
 
 INSERT INTO quizSettings (user_id, playbackMethod, playbackDuration, numQuestions, playlistID, deleted) VALUES
 (1, 'Random', 30, 10, 1, 1),
@@ -212,16 +212,16 @@ INSERT INTO quizSettings (user_id, playbackMethod, playbackDuration, numQuestion
 (10, 'Random', 60, 20, 1, 1),
 (11, 'TeacherTimestamp', 20, 8, 1, 1);
 
-INSERT INTO quizResults (quizSettingsID, songID, songName, songComposer, songYear, deleted) VALUES
-(1, 101, 'Bohemian Rhapsody', 'Freddie Mercury', 1975, TRUE),
-(2, 102, 'Imagine', 'John Lennon', 1971, TRUE),
-(3, 103, 'Billie Jean', 'Michael Jackson', 1982, TRUE),
-(4, 104, 'Like a Rolling Stone', 'Bob Dylan', 1965, TRUE),
-(5, 105, 'Hey Jude', 'Paul McCartney', 1968, TRUE),
-(6, 106, 'Hotel California', 'Don Henley', 1976, TRUE),
-(7, 107, 'Smells Like Teen Spirit', 'Kurt Cobain', 1991, TRUE),
-(8, 108, 'Sweet Child O Mine', 'Slash', 1987, TRUE),
-(9, 109, 'Rolling in the Deep', 'Adele', 2010, TRUE),
-(10, 110, 'Uptown Funk', 'Mark Ronson', 2014, TRUE),
-(11, 111, 'Shape of You', 'Ed Sheeran', 2017, TRUE),
-(12, 112, 'Blinding Lights', 'The Weeknd', 2019, TRUE);
+INSERT INTO quizResults (quizSettingsID, songID, userID, songName, songComposer, songYear, numQuestions, deleted) VALUES
+(1, 101, 35, 'Bohemian Rhapsody', 'Freddie Mercury', 1975, 3, TRUE),
+(2, 102, 36, 'Imagine', 'John Lennon', 1971, 4, TRUE),
+(3, 103, 37, 'Billie Jean', 'Michael Jackson', 1982, 2, TRUE),
+(4, 104, 38, 'Like a Rolling Stone', 'Bob Dylan', 1965, 3, TRUE),
+(5, 105, 39, 'Hey Jude', 'Paul McCartney', 1968, 6, TRUE),
+(6, 106, 35, 'Hotel California', 'Don Henley', 1976, 5, TRUE),
+(7, 107, 36, 'Smells Like Teen Spirit', 'Kurt Cobain', 1991, 7, TRUE),
+(8, 108, 37, 'Sweet Child O Mine', 'Slash', 1987, 2, TRUE),
+(9, 109, 38, 'Rolling in the Deep', 'Adele', 2010, 4, TRUE),
+(10, 110, 39, 'Uptown Funk', 'Mark Ronson', 2014, 5, TRUE),
+(11, 111, 40, 'Shape of You', 'Ed Sheeran', 2017, 2, TRUE),
+(12, 112, 41, 'Blinding Lights', 'The Weeknd', 2019, 2, TRUE);

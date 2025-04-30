@@ -21,8 +21,8 @@ public class QuizResultsRepository {
      * @param songID The ID of the song
      * @throws SQLException When the query does not run properly
      */
-    public void addQuizResults(int quizSettingsID, String songName, String songComposer, String songYear, int songID) throws SQLException {
-        String query = "INSERT INTO quizResults (quizSettingsID, songName, songComposer, songYear, songID, deleted) VALUES (?, ?, ?, ?, ?, ?)";
+    public void addQuizResults(int quizSettingsID, String songName, String songComposer, String songYear, int songID, int userID, int numQuestions) throws SQLException {
+        String query = "INSERT INTO quizResults (quizSettingsID, songName, songComposer, songYear, songID, userID, numQuestions, deleted) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
 
         pstmt.setInt(1, quizSettingsID);
@@ -30,7 +30,9 @@ public class QuizResultsRepository {
         pstmt.setString(3, songComposer);
         pstmt.setString(4, songYear);
         pstmt.setInt(5, songID);
-        pstmt.setInt(6, 0);
+        pstmt.setInt(6, userID);
+        pstmt.setInt(7, numQuestions);
+        pstmt.setInt(8, 0);
         pstmt.executeUpdate();
     }
 
@@ -52,11 +54,11 @@ public class QuizResultsRepository {
     //     return rs;
     // }
 
-    public ResultSet getQuizResults() throws SQLException {
-        String query = "SELECT * FROM quizResults WHERE deleted = ?";
+    public ResultSet getQuizResults(int userID) throws SQLException {
+        String query = "SELECT * FROM quizResults WHERE deleted = 0 AND userID = ?";
 
         PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
-        pstmt.setInt(1, 0);
+        pstmt.setInt(1, userID);
         ResultSet rs = pstmt.executeQuery();
 
         return rs;

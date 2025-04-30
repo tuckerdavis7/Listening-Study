@@ -22,14 +22,17 @@ let playlistData = [
     }
 ];
 */
-let playlistID = 1;
-let studentID = 1;
 
-let quizQuestions = [];
+//let quizQuestions = [];
+let quizQuestion = {};
 let quizSettings = {};
 let playbackMethod = "Random";
 let playbackDuration = 60;
+let numQuestions = 0;
 let activeQuizID = 0;
+let activeSongID = 0;
+let activePlaylistID = 0;
+let previousSongIDs = [];
 
 let userAnswers = [];
 let questionNumber = 0;
@@ -37,17 +40,15 @@ let numberCorrect = 0;
 let playerReady = false;
 let secondsTimer = 0;
 let songListens = 0;
-let songDuration = 0;
 let videoId = "";
 let playbackTimestamp = 0;
 
 $(document).ready(async function() {
-    await updateQuizQuestions();
-    await updateQuizSettings();
+    quizSettings = await getQuizSettings();
     playbackMethod = quizSettings[0]['playbackMethod'];
     playbackDuration = quizSettings[0]['playbackDuration'];
     activeQuizID = quizSettings[0]['quizSettingsID'];
-
+    numQuestions = quizSettings[0]['numQuestions'];
 
     document.addEventListener('playerReady', function() {
         playerReady = true;
@@ -87,10 +88,13 @@ $(document).ready(async function() {
         answer['name'] = formData[0]['value'];
         answer['composer'] = formData[1]['value'];
         answer['year'] = formData[2]['value'];
-        answer['songID'] = quizQuestions[questionNumber]['songID'];
-        answer['playlistID'] = quizQuestions[questionNumber]['playlistID'];
-
+        answer['songID'] = activeSongID.toString();
+        answer['playlistID'] = activePlaylistID.toString();
+        answer['numQuestions'] = numQuestions.toString();
         userAnswers.push(answer);
+
+        // AJAX REQUEST TO GRADE SONG AND MODIFY PERFORMANCE TABLE???
+
         nextQuestion();
     });
 });
@@ -122,7 +126,7 @@ async function nextQuestion() {
     $('#songListens').html(3);
     $('#elapsedTime').html('0:00');
 
-    if (questionNumber < quizQuestions.length) {
+    if (questionNumber < numQuestions) {
         $('#questionNumber').text(questionNumber + 1);
         $('#quizForm')[0].reset();
         loadCurrentSong();
@@ -131,35 +135,33 @@ async function nextQuestion() {
         
         let wrongAnswers = await submitAnswers();
         wrongAnswers.forEach(element => {
-            element.quizSettingsID = activeQuizID;
+            element.quizSettingsID = activeQuizID.toString();
         });
 
         await forwardAnswers(wrongAnswers);
-
 
         window.location.href = "./quizResults";
     }
 }
 
 async function loadCurrentSong() {
+    let quizQuestion = await getNextQuestion();
+    console.log(quizQuestion);
+    activeSongID = quizQuestion['songID'];
+    activePlaylistID = quizQuestion['playlistID'];
+    previousSongIDs.push(activeSongID);
+
     if (songListens == 0) {
-        videoId = quizQuestions[questionNumber]['youtubeLink'];
-        if (playbackMethod == "MostReplayed")
-            playbackTimestamp = quizQuestions[questionNumber]['mrTimestamp']
-        else if (playbackMethod == "UserDefined")
-            playbackTimestamp = quizQuestions[questionNumber]['udTimestamp'];
-        else
-            playbackTimestamp = 0;
+        videoId = quizQuestion['youtubeLink'];
+        playbackTimestamp = quizQuestion['timestamp'];
     }
     
-    songDuration = await getVideoDuration();
+    let songDuration = await getVideoDuration();
     await setNewSong(videoId, playbackTimestamp, playbackDuration);
 
     if (songListens == 0) {
         const newSongWait = setTimeout(async function () {
-            if (playbackMethod == "Random")
-                playbackTimestamp = -1;
-            let fixedTimestamp = await getCorrectTimestamp(playbackTimestamp);
+            let fixedTimestamp = await getCorrectTimestamp(playbackTimestamp, songDuration);
             if (fixedTimestamp != playbackTimestamp) {
                 playbackTimestamp = fixedTimestamp;
                 await setNewSong(videoId, fixedTimestamp, playbackDuration);
@@ -168,37 +170,42 @@ async function loadCurrentSong() {
     }
 }
 
-async function updateQuizQuestions() {
+async function getNextQuestion() {
     try {
         const response = await $.ajax({
-            type: "GET",
-            url: `http://localhost:8080/api/takequiz/songs?playlistID=${playlistID}&studentID=${studentID}`,
+            type: "POST",
+            url: `http://localhost:8080/api/takequiz/songs`,
+            contentType: 'application/json',
             dataType: 'json',
+            data: JSON.stringify({ "previous": previousSongIDs }),
         });
-        quizQuestions = response.data;
+        return response.data;
     }
     catch (error) {
-        console.log("Error fetching data from the API:", error);
+        console.error("Error sending data to the API:", error);
     }
-    
+    return {}
 }
 
-async function updateQuizSettings() {
+
+
+async function getQuizSettings() {
     try {
         const response = await $.ajax({
             type: "GET",
-            url: `http://localhost:8080/api/takequiz/settings?playlistID=${playlistID}`,
+            url: `http://localhost:8080/api/takequiz/settings`,
             dataType: 'json'
         });
-        quizSettings = response.data;
+        return response.data;
     }
     catch (error) {
         console.log("Error fetching data from the API:", error)
     }
+    return {};
 }
 
-async function getCorrectTimestamp(timestamp) {
-    let newTimestamp = -1;
+async function getCorrectTimestamp(timestamp, songDuration) {
+    let newTimestamp = 0;
     try {
         const response = await $.ajax({
             type: "GET",

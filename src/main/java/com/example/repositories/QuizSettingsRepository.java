@@ -67,10 +67,11 @@ public class QuizSettingsRepository {
     //     return rs;
     // }
 
-    public ResultSet getNumQuestions() throws SQLException {
-            String query = "SELECT * FROM quizSettings WHERE deleted = 0";
+    public ResultSet getQuizSettings(int userID) throws SQLException {
+            String query = "SELECT * FROM quizSettings WHERE deleted = 0 AND user_id = ?";
     
             PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
+            pstmt.setInt(1, userID);
             ResultSet rs = pstmt.executeQuery();
     
             return rs;

@@ -1,19 +1,21 @@
 
-// let quizSettingsID = 22;
 
 $(document).ready(async function() {
-    let wrongAnswers = await getWrongAnswers();
-    console.log(wrongAnswers);
+    let quizSettings = await getQuizSettings();
+    let quizSettingsID = quizSettings.quizSettingsID;
+    let numQuestions = quizSettings.numQuestions;
+    let activePlaylistID = quizSettings.playlistID;
+    let activePlaylistName = quizSettings.playlistName;
+    let playbackDuration = quizSettings.playbackDuration;
+    let playbackMethod = quizSettings.playbackMethod;
+
+    let wrongAnswers = await getWrongAnswers(quizSettingsID);
     let songIDs = getSongIDs(wrongAnswers);
     let correctAnswers = await getCorrectAnswers(songIDs);
-    let numQuestions = 3;
-    console.log(numQuestions);
-    console.log(wrongAnswers);
-    console.log(correctAnswers);
 
     let container = $('#wrongAnswersContainer');
 
-    for (let i = 0; i < wrongAnswers.length - 1; i++) {
+    for (let i = 0; i < wrongAnswers.length; i++) {
         let subcontainer = $('<div class="card m-4 shadow answerCard"></div>');
         container.append(subcontainer);
         
@@ -27,12 +29,12 @@ $(document).ready(async function() {
         subcontainer.append(`<p class="card-text"><u>Year</u>: ${correctAnswers[i].year}`);
     }
 
-    let numberCorrect = numQuestions - (wrongAnswers.length - 1);
-    console.log(numberCorrect);
+    let numberCorrect = numQuestions - wrongAnswers.length;
     let scorePercentage = (numberCorrect / numQuestions) * 100;
     $('#userScore').html(numberCorrect);
     $('#totalQuestions').html(numQuestions);
     $('#scorePercentage').html(scorePercentage.toFixed(2));
+    $('#playlistName').html(activePlaylistName);
 
     if (scorePercentage == 100) {
         console.log("good job")
@@ -40,19 +42,34 @@ $(document).ready(async function() {
     }
 });
 
-
-async function getWrongAnswers() {
+async function getQuizSettings() {
     return new Promise((resolve, reject) => {
         $.ajax({
-            url: `http://localhost:8080/api/quizResults?quizSettingsID`,
-            // url: `http://localhost:8080/api/quizResults?quizSettingsID=${quizSettingsID}`,
+            url: `http://localhost:8080/api/quizResults/settings`,
             type: 'GET',
             dataType: 'json',
             success: function(data) {
                 resolve(data.data);
             },
             error: function(xhr, status, error) {
-                bootstrapAlert('danger', 'Error1 while updating designation: ' + error);
+                bootstrapAlert('danger', 'Error getting quiz settings: ' + error);
+                reject(error);
+            }
+        });
+    });
+}
+
+async function getWrongAnswers(quizSettingsID) {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: `http://localhost:8080/api/quizResults/wrongAnswers?quizSettingsID=${quizSettingsID}`,
+            type: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                resolve(data.data);
+            },
+            error: function(xhr, status, error) {
+                bootstrapAlert('danger', 'Error getting wrong answers: ' + error);
                 reject(error);
             }
         });
@@ -61,17 +78,14 @@ async function getWrongAnswers() {
 
 function getSongIDs(wrongAnswers) {
     let songIDs = [];
-    for (let i = 0; i < wrongAnswers.length - 1; i++) {
+    for (let i = 0; i < wrongAnswers.length; i++) {
         songIDs.push({ songID: wrongAnswers[i].songID });
-    }    
-    console.log(songIDs);
+    }
     return songIDs;
     
 }
 
 async function getCorrectAnswers(songIDs) {
-    console.log(songIDs);
-    console.log("songIDs");
     return new Promise((resolve, reject) => {
         $.ajax({
             method: "POST",
@@ -83,7 +97,7 @@ async function getCorrectAnswers(songIDs) {
                 resolve(data.data);
             },
             error: function(xhr, status, error) {
-                bootstrapAlert('danger', 'Error2 while updating designation: ' + error);
+                bootstrapAlert('danger', 'Error getting correct answers: ' + error);
                 reject(error);
             }
         });

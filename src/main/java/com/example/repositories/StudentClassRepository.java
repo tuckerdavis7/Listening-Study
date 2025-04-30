@@ -9,7 +9,6 @@ import com.example.configurations.DatabaseConfiguration;
 public class StudentClassRepository {
 
     public void addStudentToClass(int studentID, int classID) throws SQLException {
-        System.out.println("at addStudentToClass in StudentClassRepository");
         String query = "INSERT INTO studentclass (studentID, classID) VALUES (?, ?)";
 
         PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
@@ -20,7 +19,6 @@ public class StudentClassRepository {
     }
 
     public void removeStudentFromClass(int studentID, int classID) throws SQLException {
-        System.out.println("at removeStudentFromClass in StudentClassRepository");
         String query = "DELETE FROM studentclass WHERE studentID = ? AND classID = ?";
 
         PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
@@ -30,7 +28,6 @@ public class StudentClassRepository {
     }
 
     public void removeAllStudentsFromClass(int classID) throws SQLException {
-        System.out.println("at removeStudentFromClass in StudentClassRepository");
         String query = "DELETE FROM studentclass WHERE classID = ?";
 
         PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
@@ -39,7 +36,6 @@ public class StudentClassRepository {
     }
     
     public ResultSet getClassIDByStudentID(int studentID) throws SQLException {
-        System.out.println("at getClassIDByStudentID in StudentClassRepository");
         String query = "SELECT * FROM studentclass WHERE studentID = ?";
 
         PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);

@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.example.implementations.QuizImplementation;
+import com.example.repositories.PlaylistRepository;
 import com.example.repositories.QuizResultsRepository;
 import com.example.repositories.QuizSettingsRepository;
 import com.example.repositories.SongRepository;
@@ -29,6 +30,7 @@ public class QuizResultsService extends BaseService {
     private QuizResultsRepository quizResultsRepository = new QuizResultsRepository();
     private QuizSettingsRepository quizSettingsRepository = new QuizSettingsRepository();
     private StudentRepository studentRepository = new StudentRepository();
+    private PlaylistRepository playlistRepository = new PlaylistRepository();
     private QuizImplementation quizImplementation = new QuizImplementation();
 
     /**
@@ -41,6 +43,7 @@ public class QuizResultsService extends BaseService {
     public String setQuizResults(HttpExchange exchange) throws IOException {
         List<Map<String, Object>> quizData = super.getParametersList(exchange);
         List<Map<String, Object>> songQuizData = new ArrayList<>();
+
         String responseString ="";
         int numQuestions = quizData.size();
         int userID = super.getSessionUserID(exchange);
@@ -57,7 +60,7 @@ public class QuizResultsService extends BaseService {
         catch (Exception e) {
             responseString = "Internal Server Error";
             e.printStackTrace();
-            logger.error("Error in getSongs1 of TakeQuizService");
+            logger.error("Error in setQuizResults1 of QuizResultsService");
             return responseString;
         }
 
@@ -66,9 +69,9 @@ public class QuizResultsService extends BaseService {
             int playlistID = 0;
             int songID = 0;
             try {
-                ResultSet rs = songRepository.getSongData(((Number)quizData.get(i).get("songID")).intValue());
-                playlistID = ((Number)quizData.get(i).get("playlistID")).intValue();
-                songID = ((Number)quizData.get(i).get("songID")).intValue();
+                songID = Integer.parseInt((String)quizData.get(i).get("songID"));
+                ResultSet rs = songRepository.getSongData(songID);
+                playlistID = Integer.parseInt((String)quizData.get(i).get("playlistID"));
                 if (rs.next()) {
                     songData.put("name", rs.getString("songName"));
                     songData.put("composer", rs.getString("songComposer"));
@@ -77,8 +80,10 @@ public class QuizResultsService extends BaseService {
             }
             catch (SQLException e)
             {
-                logger.error("Error in getting song data:");
+                responseString = "Internal Server Error";
                 e.printStackTrace();
+                logger.error("Error in setQuizResults2 (" + Integer.toString(i) + ") of QuizResultsService");
+                return responseString;
        
             }
 
@@ -93,8 +98,10 @@ public class QuizResultsService extends BaseService {
             }
             catch (SQLException e)
             {
-                logger.error("Error in getting performance data:");
+                responseString = "Internal Server Error";
                 e.printStackTrace();
+                logger.error("Error in setQuizResults3 of QuizResultsService");
+                return responseString;
             }
             
             boolean quizzedBefore = performance.size() != 0;
@@ -109,7 +116,7 @@ public class QuizResultsService extends BaseService {
             }
             else {
                 quizData.get(i).remove("playlistID");
-                quizData.get(i).replace("songID", ((Number)(quizData.get(i).get("songID"))).intValue());
+                quizData.get(i).replace("songID", songID);
                 songQuizData.add(quizData.get(i));
             }
 
@@ -120,14 +127,15 @@ public class QuizResultsService extends BaseService {
             
             try {
                 if (quizzedBefore)
-                    studentPerformanceRepository.updatePerformanceData(timesQuizzed, timesCorrect, performance.get(2));
+                    studentPerformanceRepository.updatePerformanceData(timesQuizzed, timesCorrect, (double)timesCorrect/timesQuizzed * 100, performance.get(2));
                 else 
-                    studentPerformanceRepository.addPerformanceData(studentID, songID, playlistID, timesQuizzed, timesCorrect);
+                    studentPerformanceRepository.addPerformanceData(studentID, songID, playlistID, timesQuizzed, timesCorrect, (double)timesCorrect/timesQuizzed * 100);
             }
             catch (SQLException e) {
-                logger.error("Error in setting quiz results:");
-                e.printStackTrace();
                 responseString = "Internal Server Error";
+                e.printStackTrace();
+                logger.error("Error in setQuizResults4 of QuizResultsService");
+                return responseString;
             }
         }        
         responseString = super.formatJSON(songQuizData, "success");
@@ -144,17 +152,19 @@ public class QuizResultsService extends BaseService {
      */
     public String forwardQuizResults(HttpExchange exchange) throws IOException {
         List<Map<String, Object>> quizData = super.getParametersList(exchange);
-
+        int userID = super.getSessionUserID(exchange);
+        
         String responseString = "";
         for (int i = 0; i < quizData.size(); i++) {
-            int quizSettingsID = ((Number)quizData.get(i).get("quizSettingsID")).intValue();
+            int quizSettingsID = Integer.parseInt((String)quizData.get(i).get("quizSettingsID"));
             String songName = (String)(quizData.get(i).get("name"));
             String songComposer = (String)(quizData.get(i).get("composer"));
             String songYear = (String)(quizData.get(i).get("year"));
-            int songID = ((Number)quizData.get(i).get("songID")).intValue();
-        
+            int songID = ((Double)quizData.get(i).get("songID")).intValue();
+            int numQuestions = Integer.parseInt((String)quizData.get(i).get("numQuestions"));
+            
             try {
-                quizResultsRepository.addQuizResults(quizSettingsID, songName, songComposer, songYear, songID);
+                quizResultsRepository.addQuizResults(quizSettingsID, songName, songComposer, songYear, songID, userID, numQuestions);
             }
             catch (Exception e) {
                 logger.error("Error in forwarding quiz results:");
@@ -177,12 +187,13 @@ public class QuizResultsService extends BaseService {
     public String getQuizResults(HttpExchange exchange) throws IOException {
         // Map<String, Object> configParams = super.getQueryParameters(exchange);
         // Object quizSettingsID = configParams.get("quizSettingsID");
+        int userID = super.getSessionUserID(exchange);
 
         String responseString = "";
         ArrayList<Map<String, Object>> quizResultsList = new ArrayList<>();
 
         try {
-            ResultSet result = quizResultsRepository.getQuizResults();
+            ResultSet result = quizResultsRepository.getQuizResults(userID);
             
             while (result.next()) {
                 Map<String, Object> quizResultsMap = new HashMap<>();
@@ -193,30 +204,52 @@ public class QuizResultsService extends BaseService {
                 
                 quizResultsList.add(quizResultsMap);
             }
-            logger.info(quizResultsList.toString());
-        }
-        catch (Exception e) {
-            responseString = "Internal Server Error";
-            logger.error("Error in getQuizResults1 of QuizResultsService:");
-            e.printStackTrace();
-        }
-
-        try {
-            Map<String, Object> numQuestionsMap = new HashMap<String,Object>();
-            // ResultSet rs = quizSettingsRepository.getNumQuestionsByID(quizSettingsID);
-            ResultSet rs = quizSettingsRepository.getNumQuestions();
-
-            if (rs.next()) {
-                numQuestionsMap.put("numQuestions", rs.getInt("numQuestions"));
-            }
-            quizResultsList.add(numQuestionsMap);
-            logger.info(quizResultsList.toString());
-
             responseString = super.formatJSON(quizResultsList, "success");
         }
         catch (Exception e) {
             responseString = "Internal Server Error";
-            logger.error("Error in getQuizResults2 of QuizResultsService:");
+            logger.error("Error in getQuizResults1 of QuizResultsService");
+            e.printStackTrace();
+        }
+
+        return responseString;
+    }
+
+    public String getQuizSettings(HttpExchange exchange) throws IOException {
+        int userID = super.getSessionUserID(exchange);
+        String responseString = "";
+        Map<String, Object> quizSettingsMap = new HashMap<String,Object>();
+        try {
+            
+            ResultSet rs = quizSettingsRepository.getQuizSettings(userID);
+
+            if (rs.next()) {
+                quizSettingsMap.put("quizSettingsID", rs.getInt("ID"));
+                quizSettingsMap.put("numQuestions", rs.getInt("numQuestions"));
+                quizSettingsMap.put("playlistID", rs.getInt("playlistID"));
+                quizSettingsMap.put("playbackMethod", rs.getString("playbackMethod"));
+                quizSettingsMap.put("playbackDuration", rs.getString("playbackDuration"));
+            }
+        }
+        catch (Exception e) {
+            responseString = "Internal Server Error";
+            logger.error("Error in getQuizSettings1 of QuizResultsService");
+            e.printStackTrace();
+        }
+
+        
+        try {
+            ResultSet rs = playlistRepository.getPlaylistNameByID((Integer)quizSettingsMap.get("playlistID"));
+
+            if (rs.next()) {
+                quizSettingsMap.put("playlistName", rs.getString("playlistName"));
+            }
+            
+            responseString = super.formatJSON(quizSettingsMap, "success");
+        }
+        catch (Exception e) {
+            responseString = "Internal Server Error";
+            logger.error("Error in getQuizSettings2 of QuizResultsService");
             e.printStackTrace();
         }
 
@@ -253,7 +286,7 @@ public class QuizResultsService extends BaseService {
             }
             catch (Exception e) {
                 responseString = "Internal Server Error";
-                logger.error("Error in getCorrectAnswers1 of QuizResultsService:");
+                logger.error("Error in getCorrectAnswers1 of QuizResultsService");
                 e.printStackTrace();
             }
 
@@ -271,7 +304,7 @@ public class QuizResultsService extends BaseService {
             }
             catch (Exception e) {
                 responseString = "Internal Server Error";
-                logger.error("Error in getCorrectAnswers3 of QuizResultsService:");
+                logger.error("Error in getCorrectAnswers3 of QuizResultsService");
                 e.printStackTrace();
             }
 

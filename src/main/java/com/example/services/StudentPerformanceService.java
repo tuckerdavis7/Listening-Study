@@ -39,8 +39,6 @@ public class StudentPerformanceService extends BaseService {
                 Map<String, Object> performanceMap = new HashMap<>();
                 performanceMap.put("ID", result.getInt("ID"));
                 performanceMap.put("studentID", result.getInt("StudentID"));
-                performanceMap.put("classID", result.getInt("ClassID"));
-                performanceMap.put("weight", result.getDouble("Weight"));
                 performanceMap.put("score", result.getDouble("Score"));
                 performanceMap.put("SongID", result.getInt("SongID"));
                 performanceMap.put("timesCorrect", result.getInt("TimesCorrect"));
@@ -50,7 +48,6 @@ public class StudentPerformanceService extends BaseService {
                 performanceMap.put("year", result.getString("songYear"));
                 performanceMap.put("url", result.getString("youtubeLink"));
                 performanceMap.put("playlistName", result.getString("playlistName"));
-                performanceMap.put("className", result.getString("className"));
                 
                 performanceList.add(performanceMap);
             }

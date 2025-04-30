@@ -8,7 +8,6 @@ import com.example.configurations.DatabaseConfiguration;
 
 public class StudentRepository {
     public ResultSet getStudentRoster(int classID) throws SQLException {
-        System.out.println("At getStudentRoster in StudentRepository");
         String query = "SELECT studentID, studentEmail, studentFirstname, studentLastname FROM view_class WHERE classID = ?";
 
         PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
@@ -19,7 +18,6 @@ public class StudentRepository {
     }
 
     public ResultSet getStudentByEmail(String studentEmail) throws SQLException {
-        System.out.println("At getStudentByEmail in StudentRepository");
         String query = "SELECT * FROM student WHERE Email = ?";
 
         PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
@@ -30,7 +28,6 @@ public class StudentRepository {
     }
 
     public ResultSet getStudentByUserID(int userID) throws SQLException {
-        System.out.println("At getStudentIDByUserID in StudentRepository");
         String query = "SELECT * FROM student WHERE user_id = ?";
 
         PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);

@@ -19,10 +19,9 @@ public class StudentPerformanceRepository {
      * @return ResultSet containing query results
      */
    public ResultSet getPerformanceByID(Object studentID) throws SQLException {
-      String query = "SELECT sp.*, s.songName, s.songComposer, s.songYear, s.youtubeLink, c.className, p.playlistName " +
+      String query = "SELECT sp.*, s.songName, s.songComposer, s.songYear, s.youtubeLink, p.playlistName " +
       "FROM studentPerformance sp " +
       "JOIN song s ON sp.SongID = s.ID " +
-      "JOIN class c ON sp.ClassID = c.ID " +
       "JOIN playlist p ON sp.PlaylistID = p.ID " +
       "WHERE sp.StudentID = ?";
 
@@ -47,6 +46,18 @@ public class StudentPerformanceRepository {
       PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
       pstmt.setInt(1, (Integer) songID);
       pstmt.setInt(2, (Integer) studentID);
+      ResultSet rs = pstmt.executeQuery();
+
+      return rs;
+   }
+
+   public ResultSet getTimesQuizzedAndCorrect(int songID, int studentID, int playlistID) throws SQLException {
+      String query = "SELECT TimesQuizzed, TimesCorrect FROM studentperformance WHERE songID = ? AND studentID = ? AND playlistID = ?";
+
+      PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
+      pstmt.setInt(1, songID);
+      pstmt.setInt(2, studentID);
+      pstmt.setInt(3, playlistID);
       ResultSet rs = pstmt.executeQuery();
 
       return rs;
@@ -85,35 +96,32 @@ public class StudentPerformanceRepository {
      * @param ID The ID of performance
      * @throws SQLException When the query does not run properly
      */
-   public void updatePerformanceData(int timesQuizzed, int timesCorrect, double weight, double score, int ID) throws SQLException {
+   public void updatePerformanceData(int timesQuizzed, int timesCorrect, double score, int studentPerformanceID) throws SQLException {
       String query = "UPDATE studentPerformance " +
-                     "SET weight = ?, score = ?, timesQuizzed = ?, timesCorrect = ? " +
+                     "SET TimesQuizzed = ?, TimesCorrect = ?, Score = ? " +
                      "WHERE ID = ?";
 
       PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
-      pstmt.setDouble(1, weight);
-      pstmt.setDouble(2, score);
-      pstmt.setInt(3, timesQuizzed);
-      pstmt.setInt(4, timesCorrect);
-      pstmt.setInt(5, ID);
+      pstmt.setInt(1, timesQuizzed);
+      pstmt.setInt(2, timesCorrect);
+      pstmt.setDouble(3, score);
+      pstmt.setInt(4, studentPerformanceID);
 
       pstmt.executeUpdate();
 
    }
 
-   public void addPerformanceData(int studentID, int classID, Double weight, Double score, int songID, int playlistID, int timesQuizzed, int timesCorrect) throws SQLException {
-      String query = "INSERT INTO studentPerformance (StudentID, ClassID, Weight, Score, SongID, PlaylistID, TimesCorrect, TimesQuizzed) " +
-                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+   public void addPerformanceData(int studentID, int songID, int playlistID, int timesQuizzed, int timesCorrect, double score) throws SQLException {
+      String query = "INSERT INTO studentPerformance (StudentID, SongID, PlaylistID, TimesCorrect, TimesQuizzed, Score) " +
+                     "VALUES (?, ?, ?, ?, ?, ?)";
 
       PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
       pstmt.setInt(1, studentID);
-      pstmt.setInt(2, classID);
-      pstmt.setDouble(3, weight);
-      pstmt.setDouble(4, score);
-      pstmt.setInt(5, songID);
-      pstmt.setInt(6, playlistID);
-      pstmt.setInt(7, timesQuizzed);
-      pstmt.setInt(8, timesCorrect);
+      pstmt.setInt(2, songID);
+      pstmt.setInt(3, playlistID);
+      pstmt.setInt(4, timesQuizzed);
+      pstmt.setInt(5, timesCorrect);
+      pstmt.setDouble(6, score);
 
       pstmt.executeUpdate();
    }

@@ -3,7 +3,6 @@ package com.example.services;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,6 +13,8 @@ import com.example.repositories.PlaylistSongRepository;
 import com.example.repositories.QuizSettingsRepository;
 import com.example.repositories.StudentPerformanceRepository;
 import com.example.repositories.StudentRepository;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.net.httpserver.HttpExchange;
 
 import com.example.implementations.TakeQuizImplementation;
@@ -73,15 +74,23 @@ public class TakeQuizService extends BaseService {
      * @throws IOException If data processing fails
      * @return String JSON formatted string of data for frontend
      */
-    public String getSongs(HttpExchange exchange) throws IOException {
-        Map<String, Object> songParams = super.getQueryParameters(exchange);
+    public String nextQuestionSong(HttpExchange exchange) throws IOException {
+        Map<String, Object> params = super.getParameters(exchange);
         int userID = super.getSessionUserID(exchange);
-        int playlistID = ((Number)songParams.get("playlistID")).intValue();
+        
+        ObjectMapper mapper = new ObjectMapper();
+        ArrayList<Integer> alreadySelectedIDs = mapper.convertValue(
+            params.get("previous"),
+            new TypeReference<ArrayList<Integer>>() {}
+        );
+
         ArrayList<Map<String, Object>> playlistSongList = new ArrayList<>();
-        int numQuestions = 0;
         int studentID = -1;
+        int playlistID = -1;
+        String playbackMethod = "";
         String responseString = "";
 
+        //Convert user ID to student ID
         try {
             ResultSet result = studentRepository.getStudentByUserID(userID);
             
@@ -96,6 +105,23 @@ public class TakeQuizService extends BaseService {
             return responseString;
         }
 
+        //Get playlist ID from user's active quiz settings
+        try {
+            ResultSet result = quizSettingsRepository.getQuizSettingsByID(userID);
+
+            if (result.next()) {
+                playlistID = result.getInt("playlistID");
+                playbackMethod = result.getString("playbackMethod");
+            }
+        }
+        catch (Exception e) {
+            responseString = "Internal Server Error";
+            e.printStackTrace();
+            logger.error("Error in getSongs2 of TakeQuizService");
+            return responseString;
+        }
+
+        // Get all songs from playlist
         try {
             ResultSet result = playlistSongRepository.getSongs(playlistID);
 
@@ -103,62 +129,63 @@ public class TakeQuizService extends BaseService {
                 Map<String, Object> playlistSongMap = new HashMap<>();
                 playlistSongMap.put("playlistID", result.getInt("playlistID"));
                 playlistSongMap.put("songID", result.getInt("songID"));
-                playlistSongMap.put("udTimestamp", result.getInt("udTimestamp"));
                 playlistSongMap.put("songName", result.getString("songName"));
                 playlistSongMap.put("songComposer", result.getString("songComposer"));
                 playlistSongMap.put("songYear", result.getInt("songYear"));
                 playlistSongMap.put("youtubeLink", result.getString("youtubeLink"));
-                playlistSongMap.put("mrTimestamp", result.getInt("mrTimestamp"));
-                playlistSongMap.put("weight", 1.0);
+
+                if (playbackMethod.equals("MostReplayed"))
+                    playlistSongMap.put("timestamp", result.getInt("mrTimestamp"));
+                else if (playbackMethod.equals("TeacherTimestamp"))
+                    playlistSongMap.put("timestamp", result.getInt("udTimestamp"));
+                else
+                    playlistSongMap.put("timestamp", -1);
                 
                 playlistSongList.add(playlistSongMap);
             }
-            
         } 
-        catch (Exception e) {
-            responseString = "Internal Server Error";
-            logger.error("Error in getSongs2 of TakeQuizService:");
-            e.printStackTrace();
-            return responseString;
-        }
-
-        try {
-            ResultSet result = quizSettingsRepository.getQuizSettingsByID(playlistID);
-
-            if (result.next()) {
-                numQuestions = result.getInt("numQuestions");
-            }
-
-        }
         catch (Exception e) {
             responseString = "Internal Server Error";
             logger.error("Error in getSongs3 of TakeQuizService:");
             e.printStackTrace();
+            return responseString;
         }
 
+        //Append times correct and times quizzed to song data
         try {
             for (Map<String, Object> song : playlistSongList) {
                 int songID = ((Number)song.get("songID")).intValue();
-                ResultSet result = studentPerformanceRepository.getSongWeight(songID, studentID);
-
+                ResultSet result = studentPerformanceRepository.getTimesQuizzedAndCorrect(songID, studentID, playlistID);
+                int timesCorrect = 0;
+                int timesQuizzed = 0;
                 if (result.next()) {
-                    double weight = result.getDouble("Weight");
-                    song.put("weight", weight >= 0 ? weight : 1.0);
+                    timesCorrect = result.getInt("TimesCorrect");
+                    timesQuizzed = result.getInt("TimesQuizzed");
                 }
+                song.put("timesCorrect", timesCorrect);
+                song.put("timesQuizzed", timesQuizzed);
+                
             }
-
-            if (playlistSongList.isEmpty()) {
-                responseString = super.formatJSON("error", "No songs found.");
-            }
-            else {
-                List<Map<String, Object>> selectedSongs = takeQuizImplementation.getThompsonSample(playlistSongList, numQuestions);
-                responseString = super.formatJSON(selectedSongs, "success");
-            }
-
         } 
         catch (Exception e) {
             responseString = "Internal Server Error";
             logger.error("Error in getSongs4 of TakeQuizService:");
+            e.printStackTrace();
+        }
+
+        //Select song using Thompson Sampling model
+        try {
+            if (playlistSongList.isEmpty()) {
+                responseString = super.formatJSON("error", "No songs found.");
+            }
+            else {
+                Map<String, Object> selectedSong = takeQuizImplementation.getThompsonSelection(playlistSongList, alreadySelectedIDs);
+                responseString = super.formatJSON(selectedSong, "success");
+            }
+        }
+        catch (Exception e) {
+            responseString = "Internal Server Error";
+            logger.error("Error in getSongs5 of TakeQuizService:");
             e.printStackTrace();
         }
 

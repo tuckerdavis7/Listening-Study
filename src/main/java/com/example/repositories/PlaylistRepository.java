@@ -110,5 +110,15 @@ public class PlaylistRepository {
         ResultSet rs = pstmt.executeQuery();
         return rs;
     }
+
+    public ResultSet getPlaylistNameByID(int playlistID) throws SQLException {
+        String query = "SELECT playlistName FROM playlist WHERE ID = ?";
+
+        PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
+        pstmt.setInt(1, playlistID);
+        ResultSet rs = pstmt.executeQuery();
+
+        return rs;
+    }
     
 }

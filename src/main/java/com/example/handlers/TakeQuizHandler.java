@@ -41,15 +41,19 @@ public class TakeQuizHandler extends BaseHandler implements HttpHandler {
                     super.sendResponse(exchange, response, "Regular");
                     break;
                 } 
-                else if (exchange.getRequestURI().getPath().equals("/api/takequiz/songs")) {
-                    response = takeQuizService.getSongs(exchange);
+                /*else if (exchange.getRequestURI().getPath().equals("/api/takequiz/songs")) {
+                    response = takeQuizService.nextQuestionSong(exchange);
                     super.sendResponse(exchange, response, "Regular");
                     break;
-                }
+                }*/
                 else {
                     super.sendResponse(exchange, "Method Not Allowed", "Regular");
                     break;
-                }        
+                }
+            case "POST":
+                response = takeQuizService.nextQuestionSong(exchange);
+                super.sendResponse(exchange, response, "Regular");
+                break;    
             
             default:
                 super.sendResponse(exchange, "Method Not Allowed", "Regular");

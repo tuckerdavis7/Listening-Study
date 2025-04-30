@@ -60,6 +60,18 @@ public class TakeQuizImplementation {
                 selectedSong = song;
                 selectedSong.put("belief", sample);
             }
+
+        }
+
+        //select playbackMethod based on minSample
+        if (minSample > 0.9) {
+            selectedSong.put("playbackMethod", "Random");
+        }
+        else if (minSample < 0.5) {
+            selectedSong.put("playbackMethod", "MostReplayed");
+        }
+        else {
+            selectedSong.put("playbackMethod", "Preferred");
         }
 
         return selectedSong;

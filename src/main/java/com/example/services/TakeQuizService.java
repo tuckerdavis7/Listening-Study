@@ -9,6 +9,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.example.implementations.TakeQuizImplementation;
 import com.example.repositories.PlaylistRepository;
 import com.example.repositories.PlaylistSongRepository;
 import com.example.repositories.QuizSettingsRepository;
@@ -17,8 +18,6 @@ import com.example.repositories.StudentRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.net.httpserver.HttpExchange;
-
-import com.example.implementations.TakeQuizImplementation;
 
 /**
  * Service class for taking API requests, processing, and sending queries for the take quiz screen.
@@ -134,14 +133,9 @@ public class TakeQuizService extends BaseService {
                 playlistSongMap.put("songName", result.getString("songName"));
                 playlistSongMap.put("songComposer", result.getString("songComposer"));
                 playlistSongMap.put("songYear", result.getInt("songYear"));
-                playlistSongMap.put("youtubeLink", result.getString("youtubeLink"));
-
-                if (playbackMethod.equals("MostReplayed"))
-                    playlistSongMap.put("timestamp", result.getInt("mrTimestamp"));
-                else if (playbackMethod.equals("TeacherTimestamp"))
-                    playlistSongMap.put("timestamp", result.getInt("udTimestamp"));
-                else
-                    playlistSongMap.put("timestamp", -1);
+                playlistSongMap.put("youtubeLink", result.getString("youtubeLink"));           
+                playlistSongMap.put("mrTimestamp", result.getInt("mrTimestamp"));
+                playlistSongMap.put("udTimestamp", result.getInt("udTimestamp"));
                 
                 playlistSongList.add(playlistSongMap);
             }
@@ -200,6 +194,26 @@ public class TakeQuizService extends BaseService {
             }
             else {
                 Map<String, Object> selectedSong = takeQuizImplementation.getThompsonSelection(playlistSongList, alreadySelectedIDs);
+                if (((String)selectedSong.get("playbackMethod")).equals("Random")) {
+                    selectedSong.put("timestamp", -1);
+                }
+                else if (((String)selectedSong.get("playbackMethod")).equals("MostReplayed")) {
+                    selectedSong.put("timestamp", selectedSong.get("mrTimestamp"));
+                }
+                else { // Preferred
+                    if (playbackMethod.equals("MostReplayed")) {
+                        selectedSong.put("timestamp", selectedSong.get("mrTimestamp"));
+                    }
+                    else if (playbackMethod.equals("TeacherTimestamp")) {
+                        selectedSong.put("timestamp", selectedSong.get("udTimestamp"));
+                    }
+                    else { // Preferred is Random
+                        selectedSong.put("timestamp", -1);
+                    }
+                }
+                selectedSong.remove("udTimestamp");
+                selectedSong.remove("mrTimestamp");
+
                 responseString = super.formatJSON(selectedSong, "success");
             }
         }

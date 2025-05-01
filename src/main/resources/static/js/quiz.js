@@ -147,6 +147,7 @@ async function nextQuestion() {
 async function loadCurrentSong() {
     let quizQuestion = await getNextQuestion();
     console.log(quizQuestion);
+    $('#playlistName').html(quizQuestion['playlistName']);
     activeSongID = quizQuestion['songID'];
     activePlaylistID = quizQuestion['playlistID'];
     previousSongIDs.push(activeSongID);

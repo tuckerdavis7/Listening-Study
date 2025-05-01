@@ -9,6 +9,8 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.example.implementations.TakeQuizImplementation;
+import com.example.repositories.PlaylistRepository;
 import com.example.repositories.PlaylistSongRepository;
 import com.example.repositories.QuizSettingsRepository;
 import com.example.repositories.StudentPerformanceRepository;
@@ -16,8 +18,6 @@ import com.example.repositories.StudentRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.net.httpserver.HttpExchange;
-
-import com.example.implementations.TakeQuizImplementation;
 
 /**
  * Service class for taking API requests, processing, and sending queries for the take quiz screen.
@@ -28,6 +28,7 @@ public class TakeQuizService extends BaseService {
     PlaylistSongRepository playlistSongRepository = new PlaylistSongRepository();
     StudentPerformanceRepository studentPerformanceRepository = new StudentPerformanceRepository();
     StudentRepository studentRepository = new StudentRepository();
+    PlaylistRepository playlistRepository = new PlaylistRepository();
     TakeQuizImplementation takeQuizImplementation = new TakeQuizImplementation();
 
     /**
@@ -132,14 +133,9 @@ public class TakeQuizService extends BaseService {
                 playlistSongMap.put("songName", result.getString("songName"));
                 playlistSongMap.put("songComposer", result.getString("songComposer"));
                 playlistSongMap.put("songYear", result.getInt("songYear"));
-                playlistSongMap.put("youtubeLink", result.getString("youtubeLink"));
-
-                if (playbackMethod.equals("MostReplayed"))
-                    playlistSongMap.put("timestamp", result.getInt("mrTimestamp"));
-                else if (playbackMethod.equals("TeacherTimestamp"))
-                    playlistSongMap.put("timestamp", result.getInt("udTimestamp"));
-                else
-                    playlistSongMap.put("timestamp", -1);
+                playlistSongMap.put("youtubeLink", result.getString("youtubeLink"));           
+                playlistSongMap.put("mrTimestamp", result.getInt("mrTimestamp"));
+                playlistSongMap.put("udTimestamp", result.getInt("udTimestamp"));
                 
                 playlistSongList.add(playlistSongMap);
             }
@@ -147,6 +143,24 @@ public class TakeQuizService extends BaseService {
         catch (Exception e) {
             responseString = "Internal Server Error";
             logger.error("Error in getSongs3 of TakeQuizService:");
+            e.printStackTrace();
+            return responseString;
+        }
+
+        //Get playlist name from playlist repository using playlistID
+        try {
+            ResultSet result = playlistRepository.getPlaylistNameByID((Integer)playlistSongList.get(0).get("playlistID"));
+            String playlistName = "Playlist";
+            if (result.next()) {
+                playlistName = result.getString("playlistName");
+            }
+            for (Map<String, Object> song : playlistSongList) {
+                song.put("playlistName", playlistName);
+            }
+        }
+        catch (Exception e) {
+            responseString = "Internal Server Error";
+            logger.error("Error in getSongs4 of TakeQuizService:");
             e.printStackTrace();
             return responseString;
         }
@@ -169,7 +183,7 @@ public class TakeQuizService extends BaseService {
         } 
         catch (Exception e) {
             responseString = "Internal Server Error";
-            logger.error("Error in getSongs4 of TakeQuizService:");
+            logger.error("Error in getSongs5 of TakeQuizService:");
             e.printStackTrace();
         }
 
@@ -180,12 +194,32 @@ public class TakeQuizService extends BaseService {
             }
             else {
                 Map<String, Object> selectedSong = takeQuizImplementation.getThompsonSelection(playlistSongList, alreadySelectedIDs);
+                if (((String)selectedSong.get("playbackMethod")).equals("Random")) {
+                    selectedSong.put("timestamp", -1);
+                }
+                else if (((String)selectedSong.get("playbackMethod")).equals("MostReplayed")) {
+                    selectedSong.put("timestamp", selectedSong.get("mrTimestamp"));
+                }
+                else { // Preferred
+                    if (playbackMethod.equals("MostReplayed")) {
+                        selectedSong.put("timestamp", selectedSong.get("mrTimestamp"));
+                    }
+                    else if (playbackMethod.equals("TeacherTimestamp")) {
+                        selectedSong.put("timestamp", selectedSong.get("udTimestamp"));
+                    }
+                    else { // Preferred is Random
+                        selectedSong.put("timestamp", -1);
+                    }
+                }
+                selectedSong.remove("udTimestamp");
+                selectedSong.remove("mrTimestamp");
+
                 responseString = super.formatJSON(selectedSong, "success");
             }
         }
         catch (Exception e) {
             responseString = "Internal Server Error";
-            logger.error("Error in getSongs5 of TakeQuizService:");
+            logger.error("Error in getSongs6 of TakeQuizService:");
             e.printStackTrace();
         }
 

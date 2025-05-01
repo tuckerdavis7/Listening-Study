@@ -14,13 +14,21 @@ import com.example.repositories.ClassRepository;
 import com.example.repositories.TeacherRepository;
 import com.sun.net.httpserver.HttpExchange;
 
-
+/**
+ * Teacher Classlist service for the viewing classlist.
+ */
 public class TeacherClasslistService extends BaseService {
     private static final Logger logger = LoggerFactory.getLogger(TeacherClasslistService.class);
     private ClassRepository classlistRepository = new ClassRepository();
     private TeacherRepository teacherRepository = new TeacherRepository();
-
-
+    
+     /**
+     * Gathers the classes from the DB
+     *
+     * @param exchange The data from the API request
+     * @throws IOException If data processing fails
+     * @return String JSON formatted string of data for frontend
+     */
     public String getClasslist(HttpExchange exchange) throws IOException {
         int userID = super.getSessionUserID(exchange);
         int teacherID = -1;

@@ -9,12 +9,15 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.example.repositories.ClassRepository;
 import com.example.repositories.ReportRepository;
 import com.example.repositories.TeacherRepository;
 import com.example.repositories.UserRepository;
-import com.example.repositories.ClassRepository;
 import com.sun.net.httpserver.HttpExchange;
 
+/**
+ * Aministrator Service class that contains methods to be used for the admin user.
+ */
 public class AdministratorService extends BaseService {
     private static final Logger logger = LoggerFactory.getLogger(AdministratorService.class);
     UserRepository userRepository = new UserRepository();

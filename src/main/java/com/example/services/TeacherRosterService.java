@@ -12,11 +12,20 @@ import org.slf4j.LoggerFactory;
 import com.example.repositories.StudentRepository;
 import com.sun.net.httpserver.HttpExchange;
 
-
+/**
+ * Teacher roster service for the students in a class.
+ */
 public class TeacherRosterService extends BaseService {
     private static final Logger logger = LoggerFactory.getLogger(TeacherRosterService.class);
     private StudentRepository studentRepository = new StudentRepository();
 
+    /**
+     * Gathers the students in a class from the DB
+     *
+     * @param exchange The data from the API request
+     * @throws IOException If data processing fails
+     * @return String JSON formatted string of data for frontend
+     */
     public String getClassRoster(HttpExchange exchange) throws IOException {
         Map<String, Object> classData = super.getQueryParameters(exchange);
         int classID = ((Number)classData.get("classID")).intValue();       

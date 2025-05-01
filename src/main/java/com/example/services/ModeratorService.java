@@ -17,6 +17,9 @@ import com.example.repositories.TeacherRepository;
 import com.example.repositories.UserRepository;
 import com.sun.net.httpserver.HttpExchange;
 
+/**
+ * Moderator Service class for moderator processing related to classes, students, and teachers.
+ */
 public class ModeratorService extends BaseService {
     private static final Logger logger = LoggerFactory.getLogger(ModeratorService.class);
     ClassRepository classRepository = new ClassRepository();
@@ -83,7 +86,13 @@ public class ModeratorService extends BaseService {
         return responseString;
     }
 
-    //ModeratorService
+      /**
+     * Adds a new class.
+     *
+     * @param exchange The data from the API request
+     * @throws IOException If data processing fails
+     * @return String JSON formatted string of success or error message
+     */
     public String addClass(HttpExchange exchange) throws IOException {
         logger.info("at addClass in ModeratorService");
         Map<String, Object> addClassData = super.getParameters(exchange);
@@ -125,7 +134,13 @@ public class ModeratorService extends BaseService {
         return responseString;
     }
 
-    //classlist
+      /**
+     * Gets the class list of students.
+     *
+     * @param exchange The data from the API request
+     * @throws IOException If data processing fails
+     * @return String JSON formatted string of success or error message
+     */
     public String getClassStudents(HttpExchange exchange) throws IOException {
         logger.info("at getClassStudents in ModeratorRosterService");
         Map<String, Object> classData = super.getQueryParameters(exchange);
@@ -154,7 +169,13 @@ public class ModeratorService extends BaseService {
         return responseString;
     }
 
-    //classlist
+      /**
+     * Add a student into a class.
+     *
+     * @param exchange The data from the API request
+     * @throws IOException If data processing fails
+     * @return String JSON formatted string of success or error message
+     */
     public String addStudent(HttpExchange exchange) throws IOException {
         logger.info("at addStudent in ModeratorService");
         Map<String, Object> parameters = super.getParameters(exchange);
@@ -193,7 +214,13 @@ public class ModeratorService extends BaseService {
         return responseString;
     }
 
-    //teacherlist
+    /**
+     * Get teacher data from a class.
+     *
+     * @param exchange The data from the API request
+     * @throws IOException If data processing fails
+     * @return String JSON formatted string of success or error message
+     */
     public String getClassTeachers(HttpExchange exchange) throws IOException {
         logger.info("at getClassTeachers in ModeratorTeacherlistService");
         Map<String, Object> classData = super.getQueryParameters(exchange);
@@ -222,7 +249,13 @@ public class ModeratorService extends BaseService {
         return responseString;
     }
 
-    //teacherlist
+    /**
+     * Remove Teacher from a class
+     *
+     * @param exchange The data from the API request
+     * @throws IOException If data processing fails
+     * @return String JSON formatted string of success or error message
+     */
     public String removeTeacher(HttpExchange exchange) throws IOException {
         logger.info("at removeTeacher in ModeratorService");
         Map<String, Object> parameters = super.getParameters(exchange);
@@ -244,7 +277,13 @@ public class ModeratorService extends BaseService {
         return responseString;
     }
 
-    //teacherlist
+    /**
+     * Add a teacher to a class.
+     *
+     * @param exchange The data from the API request
+     * @throws IOException If data processing fails
+     * @return String JSON formatted string of success or error message
+     */
     public String addTeacher(HttpExchange exchange) throws IOException {
         logger.info("at addTeacher in ModeratorService");
         Map<String, Object> parameters = super.getParameters(exchange);
@@ -266,7 +305,13 @@ public class ModeratorService extends BaseService {
         return responseString;
     }
 
-    // Rename Class
+    /**
+     * Change the name of a class.
+     *
+     * @param exchange The data from the API request
+     * @throws IOException If data processing fails
+     * @return String JSON formatted string of success or error message
+     */
     public String changeClassname(HttpExchange exchange) throws IOException { 
         String responseString = "";
         Map<String, Object> classParams = super.getQueryParameters(exchange);
@@ -284,7 +329,13 @@ public class ModeratorService extends BaseService {
         return responseString;
     }
 
-    //roster
+    /**
+     * Remove a student from the roster
+     *
+     * @param exchange The data from the API request
+     * @throws IOException If data processing fails
+     * @return String JSON formatted string of success or error message
+     */
     public String removeStudent(HttpExchange exchange) throws IOException {
         logger.info("at removeStudent in ModeratorService");
         Map<String, Object> parameters = super.getParameters(exchange);
@@ -308,6 +359,13 @@ public class ModeratorService extends BaseService {
         return responseString;
     }
 
+    /**
+     * Delete a class.
+     *
+     * @param exchange The data from the API request
+     * @throws IOException If data processing fails
+     * @return String JSON formatted string of success or error message
+     */
     public String deleteClass(HttpExchange exchange) throws IOException {
         logger.info("at deleteClass in ModeratorService");
         Map<String, Object> parameters = super.getParameters(exchange);

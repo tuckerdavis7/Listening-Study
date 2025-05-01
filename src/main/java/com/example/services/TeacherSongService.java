@@ -142,6 +142,13 @@ public class TeacherSongService extends BaseService {
         return responseString;
     }
 
+    /**
+     * Edits data in a song (name, composer, or year)
+     *
+     * @param exchange The data from the API request
+     * @throws IOException If data processing fails
+     * @return String JSON formatted string of data for frontend
+     */
     public String editSong(HttpExchange exchange) throws IOException {
         Map<String, Object> songData = super.getParameters(exchange);
         int songID = ((Number)songData.get("songID")).intValue();
@@ -177,6 +184,13 @@ public class TeacherSongService extends BaseService {
         return responseString;
     }
 
+    /**
+     * Deletes a song from a playlist
+     *
+     * @param exchange The data from the API request
+     * @throws IOException If data processing fails
+     * @return String JSON formatted string of data for frontend
+     */
     public String deleteSong(HttpExchange exchange) throws IOException {
         Map<String, Object> songData = super.getParameters(exchange);
         int songID = ((Number)songData.get("songID")).intValue();

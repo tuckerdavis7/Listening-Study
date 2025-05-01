@@ -17,6 +17,9 @@ import com.example.repositories.TeacherRepository;
 import com.example.utils.CookieUtil;
 import com.sun.net.httpserver.HttpExchange;
 
+/**
+ * Teacher library service for the viewing a teachers playlist library.
+ */
 public class TeacherLibraryService extends BaseService {
     private static final Logger logger = LoggerFactory.getLogger(TeacherRosterService.class);
     private PlaylistRepository playlistRepository = new PlaylistRepository();
@@ -24,6 +27,14 @@ public class TeacherLibraryService extends BaseService {
     private StudentRepository studentRepository = new StudentRepository();
     private SessionRepository sessionRepository = new SessionRepository();
 
+    
+     /**
+     * Gathers the playlists and their associated class from the DB
+     *
+     * @param exchange The data from the API request
+     * @throws IOException If data processing fails
+     * @return String JSON formatted string of data for frontend
+     */
     public String getLibrary(HttpExchange exchange) throws IOException {        
         String sessionID = CookieUtil.getCookieSessionID(exchange);
         int teacherID = -1;
@@ -91,13 +102,20 @@ public class TeacherLibraryService extends BaseService {
         return responseString;
     }
 
+    
+     /**
+     * Renames a selected playlist.
+     *
+     * @param exchange The data from the API request
+     * @throws IOException If data processing fails
+     * @return String JSON formatted string of data for frontend
+     */
     public String renamePlaylist(HttpExchange exchange) throws IOException { 
         String responseString = "";
         Map<String, Object> playlistParams = super.getQueryParameters(exchange);
         Object playlistID = playlistParams.get("playlistID");
         Object newPlaylistName = playlistParams.get("newName");
-        
-        
+                
         try {
             playlistRepository.renamePlaylist(playlistID, newPlaylistName);            
         } catch (SQLException e) {

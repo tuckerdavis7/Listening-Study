@@ -9,10 +9,16 @@ import com.example.services.ModeratorService;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
+/**
+ * Handler class for processing API requests related to moderator data.
+ */
 public class ModeratorHandler extends BaseHandler implements HttpHandler {
     private static final Logger logger = LoggerFactory.getLogger(ModeratorHandler.class);
     private ModeratorService moderatorService;
 
+    /**
+     * Class constructor to intialize moderator service file
+     */
     public ModeratorHandler() {
         this.moderatorService = new ModeratorService();
     }

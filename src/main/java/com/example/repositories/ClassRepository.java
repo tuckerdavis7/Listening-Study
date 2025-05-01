@@ -10,6 +10,9 @@ import org.slf4j.LoggerFactory;
 
 import com.example.configurations.DatabaseConfiguration;
 
+/**
+ * Repository class to execute queries on the class table.
+ */
 public class ClassRepository {
   private static final Logger logger = LoggerFactory.getLogger(ClassRepository.class);
 

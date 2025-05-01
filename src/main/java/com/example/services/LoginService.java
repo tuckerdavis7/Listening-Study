@@ -26,6 +26,13 @@ public class LoginService extends BaseService {
     UserRepository userRepository = new UserRepository();
     SessionRepository sessionRepository = new SessionRepository();
 
+    /**
+     * Checks if a session exists and makes one if it does not.
+     *
+     * @param exchange The data from the API request
+     * @throws IOException If data processing fails
+     * @return String JSON formatted string of data for frontend
+     */
     public String checkExistingSession(HttpExchange exchange) throws IOException {
         Map<String, Object> loginMap = new HashMap<>();
         String responseString = "";

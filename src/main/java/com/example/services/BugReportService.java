@@ -13,6 +13,9 @@ import com.example.repositories.ReportRepository;
 import com.example.repositories.UserRepository;
 import com.sun.net.httpserver.HttpExchange;
 
+/**
+ * Bug Repors Service class that contains methods to be used for the bug reports functionality.
+ */
 public class BugReportService extends BaseService {
     private static final Logger logger = LoggerFactory.getLogger(BugReportService.class);
     ReportRepository reportRepository = new ReportRepository();

@@ -4,6 +4,9 @@ import java.util.List;
 
 import com.sun.net.httpserver.HttpExchange;
 
+/**
+ * Configuration class for cookies.
+ */
 public class CookieUtil {
     /**
      * Retrieves the value of a specific cookie from the HTTP exchange.

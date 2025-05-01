@@ -121,17 +121,17 @@ FROM
     student s;
 
 INSERT INTO reportTime (timeOfReport, email, description, resolution, lastUpdatedTime, lastUpdatedBy, status) VALUES
-('2025-03-01 09:30:00', 'moderator1@example.com', 'Weekly performance report', 'See email', '2025-03-01 09:30:00', 'administrator1@example.com', 'Resolved'),
-('2025-03-02 14:15:00', 'moderator2@example.com', 'Student progress assessment', '', '2025-03-01 09:30:00', 'administrator1@example.com', 'Open'),
-('2025-03-05 10:00:00', 'moderator3@example.com', 'Pop quiz results', '', '2025-03-01 09:30:00', 'administrator1@example.com', 'Acknowledged'),
-('2025-03-08 13:45:00', 'moderator4@example.com', 'Monthly evaluation', 'See email', '2025-03-01 09:30:00', 'administrator1@example.com', 'Resolved'),
-('2025-03-10 11:30:00', 'moderator5@example.com', 'Semester midpoint check', 'See email', '2025-03-01 09:30:00', 'administrator1@example.com', 'Resolved'),
-('2025-03-12 15:20:00', 'moderator6@example.com', 'Theory test results', '', '2025-03-01 09:30:00', 'administrator1@example.com', 'Open'),
-('2025-03-15 09:00:00', 'moderator7@example.com', 'Composition project evaluation', '', '2025-03-01 09:30:00', 'administrator1@example.com', 'Acknowledged'),
-('2025-03-18 14:30:00', 'moderator8@example.com', 'Performance recital feedback', 'See email', '2025-03-01 09:30:00', 'administrator1@example.com', 'Resolved'),
-('2025-03-20 10:45:00', 'moderator9@example.com', 'Practical skills assessment', '', '2025-03-01 09:30:00', 'administrator1@example.com', 'Open'),
-('2025-03-22 13:15:00', 'moderator10@example.com', 'Ear training test results', '', '2025-03-01 09:30:00', 'administrator1@example.com', 'Acknowledged'),
-('2025-03-24 11:00:00', 'moderator11@example.com', 'Year-end progress summary', 'See email', '2025-03-01 09:30:00', 'administrator1@example.com', 'Resolved');
+('2025-03-01 09:30:00', 'moderator1@example.com', 'Login issue', 'See email', '2025-03-01 09:30:00', 'administrator1@example.com', 'Resolved'),
+('2025-03-02 14:15:00', 'moderator2@example.com', 'Cannot access correct teacher page', '', '2025-03-01 09:30:00', 'administrator1@example.com', 'Open'),
+('2025-03-05 10:00:00', 'moderator3@example.com', 'Issue when logging in.', '', '2025-03-01 09:30:00', 'administrator1@example.com', 'Acknowledged'),
+('2025-03-08 13:45:00', 'moderator4@example.com', 'Quiz results will not populate', 'See email', '2025-03-01 09:30:00', 'administrator1@example.com', 'Resolved'),
+('2025-03-10 11:30:00', 'moderator5@example.com', 'Adding a teacher to a class', 'See email', '2025-03-01 09:30:00', 'administrator1@example.com', 'Resolved'),
+('2025-03-12 15:20:00', 'moderator6@example.com', 'Students cannot access quiz for class', '', '2025-03-01 09:30:00', 'administrator1@example.com', 'Open'),
+('2025-03-15 09:00:00', 'moderator7@example.com', 'Application is not working', '', '2025-03-01 09:30:00', 'administrator1@example.com', 'Acknowledged'),
+('2025-03-18 14:30:00', 'moderator8@example.com', 'Internal server error on student dashboard page', 'See email', '2025-03-01 09:30:00', 'administrator1@example.com', 'Resolved'),
+('2025-03-20 10:45:00', 'moderator9@example.com', 'Having issues loggin in', '', '2025-03-01 09:30:00', 'administrator1@example.com', 'Open'),
+('2025-03-22 13:15:00', 'moderator10@example.com', 'Add the ability to edit on class page', '', '2025-03-01 09:30:00', 'administrator1@example.com', 'Acknowledged'),
+('2025-03-24 11:00:00', 'moderator11@example.com', 'Unauthorized access to a page I should have access to', 'See email', '2025-03-01 09:30:00', 'administrator1@example.com', 'Resolved');
 
 INSERT INTO song (songName, songComposer, songYear, youtubeLink, mrTimestamp) VALUES
 ('Moonlight Sonata', 'Ludwig van Beethoven', 1801, '4Tr0otuiQuU', 20),

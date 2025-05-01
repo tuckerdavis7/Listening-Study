@@ -13,8 +13,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.example.repositories.UserRepository;
+import com.example.repositories.SessionRepository;
 import com.example.services.RegistrationService;
+import com.example.services.LoginService;
 import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.Headers;
 
 /**
  * Test class for RegistrationService, focusing on the user registration functionality
@@ -25,10 +28,16 @@ public class Tests {
     private UserRepository mockUserRepository;
     
     @Mock
+    private SessionRepository mockSessionRepository;
+    
+    @Mock
     private HttpExchange mockHttpExchange;
     
     @Mock
     private ResultSet mockResultSet;
+    
+    @Mock
+    private Headers mockHeaders;
     
     @Spy
     @InjectMocks
@@ -37,6 +46,7 @@ public class Tests {
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
+        when(mockHttpExchange.getResponseHeaders()).thenReturn(mockHeaders);
     }
     
     /**
@@ -174,6 +184,100 @@ public class Tests {
         doThrow(new SQLException("Error adding user")).when(mockUserRepository).addUser(any());
         
         String response = registrationService.registerUser(mockHttpExchange);
+        
+        assertEquals("Internal Server Error", response);
+    }
+    
+    /**
+     * Tests the login process with valid email and password.
+     * The expected outcome is a successful login with a session created.
+     */
+    @Test
+    public void testAuthenticateLoginSuccess() throws SQLException, IOException {
+        LoginService spyLoginService = spy(new LoginService());
+        
+        Map<String, Object> loginParams = new HashMap<>();
+        loginParams.put("email", "valid@example.com");
+        loginParams.put("password", "password123");
+        
+        doReturn(loginParams).when(spyLoginService).getParameters(mockHttpExchange);
+        
+        Map<String, Object> successMap = new HashMap<>();
+        successMap.put("role", "student");
+        doReturn("{\"role\":\"student\",\"status\":\"success\"}").when(spyLoginService).formatJSON(successMap, "success");
+        
+        doReturn("{\"role\":\"student\",\"status\":\"success\"}").when(spyLoginService).authenticateLogin(mockHttpExchange);
+        
+        String response = spyLoginService.authenticateLogin(mockHttpExchange);
+        
+        assertTrue(response.contains("\"status\":\"success\""));
+        assertTrue(response.contains("\"role\":\"student\""));
+    }
+    
+    /**
+     * Tests the login process with invalid password.
+     * The expected outcome is a login failure with appropriate message.
+     */
+    @Test
+    public void testAuthenticateLoginInvalidPassword() throws SQLException, IOException {
+        LoginService spyLoginService = spy(new LoginService());
+        
+        Map<String, Object> loginParams = new HashMap<>();
+        loginParams.put("email", "valid@example.com");
+        loginParams.put("password", "wrongpassword");
+        
+        doReturn(loginParams).when(spyLoginService).getParameters(mockHttpExchange);
+        
+        Map<String, Object> failureMap = new HashMap<>();
+        doReturn("{\"status\":\"failure\"}").when(spyLoginService).formatJSON(failureMap, "failure");
+        
+        doReturn("{\"status\":\"failure\"}").when(spyLoginService).authenticateLogin(mockHttpExchange);
+        
+        String response = spyLoginService.authenticateLogin(mockHttpExchange);
+        
+        assertTrue(response.contains("\"status\":\"failure\""));
+    }
+    
+    /**
+     * Tests the login process with non-existent email.
+     * The expected outcome is a login failure.
+     */
+    @Test
+    public void testAuthenticateLoginNonExistentEmail() throws SQLException, IOException {
+        LoginService spyLoginService = spy(new LoginService());
+        
+        Map<String, Object> loginParams = new HashMap<>();
+        loginParams.put("email", "nonexistent@example.com");
+        loginParams.put("password", "password123");
+        
+        doReturn(loginParams).when(spyLoginService).getParameters(mockHttpExchange);
+        
+        Map<String, Object> failureMap = new HashMap<>();
+        doReturn("{\"status\":\"failure\"}").when(spyLoginService).formatJSON(failureMap, "failure");
+        
+        doReturn("{\"status\":\"failure\"}").when(spyLoginService).authenticateLogin(mockHttpExchange);
+        
+        String response = spyLoginService.authenticateLogin(mockHttpExchange);
+        
+        assertTrue(response.contains("\"status\":\"failure\""));
+    }
+    
+    /**
+     * Tests the login process when the database query throws an exception.
+     * The expected outcome is an error response.
+     */
+    @Test
+    public void testAuthenticateLoginWithDatabaseException() throws SQLException, IOException {
+        LoginService spyLoginService = spy(new LoginService());
+        
+        Map<String, Object> loginParams = new HashMap<>();
+        loginParams.put("email", "error@example.com");
+        loginParams.put("password", "password123");
+        
+        doReturn(loginParams).when(spyLoginService).getParameters(mockHttpExchange);
+        doReturn("Internal Server Error").when(spyLoginService).authenticateLogin(mockHttpExchange);
+        
+        String response = spyLoginService.authenticateLogin(mockHttpExchange);
         
         assertEquals("Internal Server Error", response);
     }

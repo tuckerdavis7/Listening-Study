@@ -83,7 +83,7 @@ public class BaseService {
      * @throws IOException If formatting operations fail
      * @return List of JSON objects to be used
      */
-    protected List<Map<String, Object>> getParametersList(HttpExchange exchange) throws IOException {
+    public List<Map<String, Object>> getParametersList(HttpExchange exchange) throws IOException {
         String requestBody = readRequestBody(exchange);
         return gson.fromJson(requestBody, new TypeToken<List<Map<String, Object>>>(){}.getType());
     }
@@ -95,7 +95,7 @@ public class BaseService {
      * @throws IOException If formatting operations fail
      * @return Map of singular JSON object to be used
      */
-    protected Map<String, Object> getParameters(HttpExchange exchange) throws IOException {
+    public Map<String, Object> getParameters(HttpExchange exchange) throws IOException {
         String requestBody = readRequestBody(exchange);
         return gson.fromJson(requestBody, new TypeToken<Map<String, Object>>(){}.getType());
     }
@@ -107,7 +107,7 @@ public class BaseService {
      * @throws IOException If formatting operations fail
      * @return Map of singular JSON object to be used
      */
-    protected Map<String, Object> getQueryParameters(HttpExchange exchange) {
+    public Map<String, Object> getQueryParameters(HttpExchange exchange) {
         Map<String, Object> parameters = new HashMap<>();
         
         String query = exchange.getRequestURI().getQuery();
@@ -165,7 +165,7 @@ public class BaseService {
      * @throws IOException If the method is unable to process and return the format
      * @return String formatted response body
      */
-    protected String formatJSON(Object data, String status) throws IOException {
+    public String formatJSON(Object data, String status) throws IOException {
         String responseString = "";
         Map<String, Object> responseMap = Map.of("status", status, "data", data);
         ObjectMapper objectMapper = new ObjectMapper();
@@ -181,7 +181,7 @@ public class BaseService {
      * @throws IOException If the method is unable to process and return the status
      * @return String formatted status
      */
-    protected String formatJSON(String status) throws IOException {
+    public String formatJSON(String status) throws IOException {
         String responseString = "";
         Map<String, Object> map = new HashMap<>();
         ObjectMapper objectMapper = new ObjectMapper();
@@ -199,7 +199,7 @@ public class BaseService {
      * @throws IOException If the method is unable to process and return the status
      * @return String formatted status
      */
-    protected String formatJSON(String status, String message) throws IOException {
+    public String formatJSON(String status, String message) throws IOException {
         String responseString = "";
         Map<String, Object> map = new HashMap<>();
         ObjectMapper objectMapper = new ObjectMapper();

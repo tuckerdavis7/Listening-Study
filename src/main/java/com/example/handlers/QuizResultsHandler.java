@@ -50,12 +50,7 @@ public class QuizResultsHandler extends BaseHandler implements  HttpHandler {
 
             case "POST":
                 if (exchange.getRequestURI().getPath().equals("/api/quizResults/submit")) {
-                    response = quizResultsService.setQuizResults(exchange);
-                    super.sendResponse(exchange, response, "Regular");
-                    break;
-                }
-                else if (exchange.getRequestURI().getPath().equals("/api/quizResults/forward")) {
-                    response = quizResultsService.forwardQuizResults(exchange);
+                    response = quizResultsService.submitAnswer(exchange);
                     super.sendResponse(exchange, response, "Regular");
                     break;
                 }

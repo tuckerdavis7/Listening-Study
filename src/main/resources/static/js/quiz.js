@@ -34,7 +34,6 @@ let activeSongID = 0;
 let activePlaylistID = 0;
 let previousSongIDs = [];
 
-let userAnswers = [];
 let questionNumber = 0;
 let numberCorrect = 0;
 let playerReady = false;
@@ -69,7 +68,7 @@ $(document).ready(async function() {
     });
 
 
-    $("#quizForm").submit(function(event) {
+    $("#quizForm").submit(async function(event) {
         event.preventDefault();
         let formData = $(this).serializeArray();
         let isFormValid = true;
@@ -91,9 +90,9 @@ $(document).ready(async function() {
         answer['songID'] = activeSongID.toString();
         answer['playlistID'] = activePlaylistID.toString();
         answer['numQuestions'] = numQuestions.toString();
-        userAnswers.push(answer);
+        answer['quizSettingsID'] = activeQuizID.toString();
 
-        // AJAX REQUEST TO GRADE SONG AND MODIFY PERFORMANCE TABLE???
+        await submitAnswer(answer);
 
         nextQuestion();
     });
@@ -132,14 +131,6 @@ async function nextQuestion() {
         loadCurrentSong();
     }
     else {
-        
-        let wrongAnswers = await submitAnswers();
-        wrongAnswers.forEach(element => {
-            element.quizSettingsID = activeQuizID.toString();
-        });
-
-        await forwardAnswers(wrongAnswers);
-
         window.location.href = "./quizResults";
     }
 }
@@ -148,6 +139,8 @@ async function loadCurrentSong() {
     let quizQuestion = await getNextQuestion();
     console.log(quizQuestion);
     $('#playlistName').html(quizQuestion['playlistName']);
+    let beliefScore = (quizQuestion['belief']*100).toFixed(2);
+    $('#beliefScore').html(beliefScore);
     activeSongID = quizQuestion['songID'];
     activePlaylistID = quizQuestion['playlistID'];
     previousSongIDs.push(activeSongID);
@@ -187,8 +180,6 @@ async function getNextQuestion() {
     }
     return {}
 }
-
-
 
 async function getQuizSettings() {
     try {
@@ -242,36 +233,17 @@ async function setNewSong(videoId, timestamp, playbackDuration) {
     document.dispatchEvent(setNewSong);
 }
 
-async function submitAnswers() {
+async function submitAnswer(answer) {
     try {
         const response = await $.ajax({
             method: "POST",
             url: "http://localhost:8080/api/quizResults/submit",
             contentType: 'application/json',
             dataType: 'json',
-            data: JSON.stringify(userAnswers)
+            data: JSON.stringify(answer)
         });
-        return response.data;
     }
     catch (error) {
         console.log("Error fetching data from the API:", error);
-        return null;
-    }
-}
-
-async function forwardAnswers(wrongAnswers) {
-    try {
-        const response = await $.ajax({
-            method: "POST",
-            url: "http://localhost:8080/api/quizResults/forward",
-            contentType: 'application/json',
-            dataType: 'json',
-            data: JSON.stringify(wrongAnswers)
-        });
-        return response.data;
-    }
-    catch (error) {
-        console.log("Error fetching data from the API:", error);
-        return null;
     }
 }

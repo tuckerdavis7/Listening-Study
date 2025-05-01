@@ -13,12 +13,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.example.repositories.UserRepository;
-import com.example.repositories.SessionRepository;
-import com.example.repositories.StudentPerformanceRepository;
-import com.example.services.RegistrationService;
-import com.example.services.LoginService;
-import com.example.services.StudentPerformanceService;
+import com.example.repositories.*;
+import com.example.services.*;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.Headers;
 

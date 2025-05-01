@@ -99,16 +99,13 @@ public class QuizResultsService extends BaseService {
         int timesQuizzed = 1;
         if (quizzedBefore) {
             timesCorrect = performanceMap.get("timesCorrect");
-            timesQuizzed = performanceMap.get("timesQuizzed");
+            timesQuizzed = performanceMap.get("timesQuizzed") + 1;
         }
 
         if (quizImplementation.checkAnswers(quizData, songData)) { // if answer is correct
             timesCorrect += 1;
         }
         else { // if answer is wrong
-            //quizData.remove("playlistID");
-            //quizData.replace("songID", songID);
-            //songQuizData.add(quizData.get(i));
 
             try {
                 String songName = (String)quizData.get("name");
@@ -231,6 +228,7 @@ public class QuizResultsService extends BaseService {
     public String getCorrectAnswers(HttpExchange exchange) throws IOException {
         List<Map<String, Object>> songIDs = super.getParametersList(exchange);
         List<Map<String, Object>> songData = new ArrayList<>();
+        int userID = super.getSessionUserID(exchange);
 
         String responseString = "";
         
@@ -256,7 +254,7 @@ public class QuizResultsService extends BaseService {
             }
 
             try {
-                quizResultsRepository.setDeletedByID(((Number)songIDobj).intValue());
+                quizResultsRepository.setDeletedByID(userID);
             }
             catch (Exception e) {
                 responseString = "Internal Server Error";
@@ -265,7 +263,7 @@ public class QuizResultsService extends BaseService {
             }
 
             try {
-                quizSettingsRepository.setDeletedByID(((Number)songIDobj).intValue());
+                quizSettingsRepository.setDeletedByID(userID);
             }
             catch (Exception e) {
                 responseString = "Internal Server Error";

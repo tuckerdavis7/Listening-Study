@@ -9,13 +9,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.example.repositories.UserRepository;
-import com.example.repositories.SessionRepository;
-import com.example.services.RegistrationService;
-import com.example.services.LoginService;
+import com.example.repositories.*;
+import com.example.services.*;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.Headers;
 
@@ -31,6 +30,9 @@ public class Tests {
     private SessionRepository mockSessionRepository;
     
     @Mock
+    private StudentPerformanceRepository mockStudentPerformanceRepository;
+    
+    @Mock
     private HttpExchange mockHttpExchange;
     
     @Mock
@@ -42,6 +44,13 @@ public class Tests {
     @Spy
     @InjectMocks
     private RegistrationService registrationService;
+    
+    @Spy
+    private LoginService loginService;
+    
+    @Spy
+    @InjectMocks
+    private StudentPerformanceService studentPerformanceService;
     
     @BeforeEach
     public void setUp() {
@@ -280,5 +289,103 @@ public class Tests {
         String response = spyLoginService.authenticateLogin(mockHttpExchange);
         
         assertEquals("Internal Server Error", response);
+    }
+    
+    /**
+     * Tests the retrieval of student performance data with results.
+     * The expected outcome is a successful response with performance data.
+     */
+    @Test
+    public void testGetSongPerformancesWithResults() throws SQLException, IOException {
+        Map<String, Object> performanceParams = new HashMap<>();
+        performanceParams.put("studentID", 1);
+        
+        doReturn(performanceParams).when(studentPerformanceService).getQueryParameters(mockHttpExchange);
+        
+        when(mockStudentPerformanceRepository.getPerformanceByID(1)).thenReturn(mockResultSet);
+        
+        // Mock ResultSet to return data on the first call, then no more data
+        when(mockResultSet.next()).thenReturn(true).thenReturn(false);
+        when(mockResultSet.getInt("ID")).thenReturn(1);
+        when(mockResultSet.getInt("StudentID")).thenReturn(1);
+        when(mockResultSet.getDouble("Score")).thenReturn(85.5);
+        when(mockResultSet.getInt("SongID")).thenReturn(100);
+        when(mockResultSet.getInt("TimesCorrect")).thenReturn(8);
+        when(mockResultSet.getInt("TimesQuizzed")).thenReturn(10);
+        when(mockResultSet.getString("songName")).thenReturn("Test Song");
+        when(mockResultSet.getString("songComposer")).thenReturn("Test Composer");
+        when(mockResultSet.getString("songYear")).thenReturn("2023");
+        when(mockResultSet.getString("youtubeLink")).thenReturn("https://youtube.com/test");
+        when(mockResultSet.getString("playlistName")).thenReturn("Test Playlist");
+        
+        ArrayList<Map<String, Object>> expectedPerformanceList = new ArrayList<>();
+        Map<String, Object> expectedPerformanceMap = new HashMap<>();
+        expectedPerformanceMap.put("ID", 1);
+        expectedPerformanceMap.put("studentID", 1);
+        expectedPerformanceMap.put("score", 85.5);
+        expectedPerformanceMap.put("SongID", 100);
+        expectedPerformanceMap.put("timesCorrect", 8);
+        expectedPerformanceMap.put("timesQuizzed", 10);
+        expectedPerformanceMap.put("songName", "Test Song");
+        expectedPerformanceMap.put("composer", "Test Composer");
+        expectedPerformanceMap.put("year", "2023");
+        expectedPerformanceMap.put("url", "https://youtube.com/test");
+        expectedPerformanceMap.put("playlistName", "Test Playlist");
+        expectedPerformanceList.add(expectedPerformanceMap);
+        
+        doReturn("{\"data\":[{\"ID\":1,\"studentID\":1,\"score\":85.5,\"SongID\":100,\"timesCorrect\":8,\"timesQuizzed\":10,\"songName\":\"Test Song\",\"composer\":\"Test Composer\",\"year\":\"2023\",\"url\":\"https://youtube.com/test\",\"playlistName\":\"Test Playlist\"}],\"status\":\"success\"}")
+            .when(studentPerformanceService).formatJSON(any(), eq("success"));
+        
+        String response = studentPerformanceService.getSongPerformances(mockHttpExchange);
+        
+        assertTrue(response.contains("\"status\":\"success\""));
+        assertTrue(response.contains("\"songName\":\"Test Song\""));
+        verify(mockStudentPerformanceRepository, times(1)).getPerformanceByID(1);
+    }
+    
+    /**
+     * Tests the retrieval of student performance data when no results are found.
+     * The expected outcome is an empty result list with success status.
+     */
+    @Test
+    public void testGetSongPerformancesWithNoResults() throws SQLException, IOException {
+        Map<String, Object> performanceParams = new HashMap<>();
+        performanceParams.put("studentID", 1);
+        
+        doReturn(performanceParams).when(studentPerformanceService).getQueryParameters(mockHttpExchange);
+        
+        when(mockStudentPerformanceRepository.getPerformanceByID(1)).thenReturn(mockResultSet);
+        
+        // Mock ResultSet to return no data
+        when(mockResultSet.next()).thenReturn(false);
+        
+        ArrayList<Map<String, Object>> emptyPerformanceList = new ArrayList<>();
+        doReturn("{\"data\":[],\"status\":\"success\"}")
+            .when(studentPerformanceService).formatJSON(eq(emptyPerformanceList), eq("success"));
+        
+        String response = studentPerformanceService.getSongPerformances(mockHttpExchange);
+        
+        assertTrue(response.contains("\"status\":\"success\""));
+        assertTrue(response.contains("\"data\":[]"));
+        verify(mockStudentPerformanceRepository, times(1)).getPerformanceByID(1);
+    }
+    
+    /**
+     * Tests the retrieval of student performance data when a database exception occurs.
+     * The expected outcome is an error response.
+     */
+    @Test
+    public void testGetSongPerformancesWithDatabaseException() throws SQLException, IOException {
+        Map<String, Object> performanceParams = new HashMap<>();
+        performanceParams.put("studentID", 1);
+        
+        doReturn(performanceParams).when(studentPerformanceService).getQueryParameters(mockHttpExchange);
+        
+        when(mockStudentPerformanceRepository.getPerformanceByID(1)).thenThrow(new SQLException("Database connection error"));
+        
+        String response = studentPerformanceService.getSongPerformances(mockHttpExchange);
+        
+        assertEquals("Internal Server Error", response);
+        verify(mockStudentPerformanceRepository, times(1)).getPerformanceByID(1);
     }
 }

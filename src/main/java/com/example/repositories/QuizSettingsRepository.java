@@ -80,14 +80,14 @@ public class QuizSettingsRepository {
     /**
      * Sets deleted field in quiz settings table to 1 by quizSettingsID
      *
-     * @param quizSettingsID The ID of the active quiz
+     * @param userID The ID of the active user
      * @throws SQLException When the query does not run properly
      */
-    public void setDeletedByID(int quizSettingsID) throws SQLException {
-        String query = "UPDATE quizSettings set deleted = 1 where ID = ?";
+    public void setDeletedByID(int userID) throws SQLException {
+        String query = "UPDATE quizSettings SET deleted = 1 WHERE deleted = 0 AND user_id = ?";
 
         PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
-        pstmt.setInt(1, (Integer) quizSettingsID);
+        pstmt.setInt(1, userID);
         pstmt.executeUpdate();
     }
 

@@ -70,11 +70,11 @@ public class QuizResultsRepository {
      * @param quizSettingsID The ID of the active quiz
      * @throws SQLException When the query does not run properly
      */
-    public void setDeletedByID(int quizSettingsID) throws SQLException {
-        String query = "UPDATE quizResults set deleted = 1 where quizSettingsID = ?";
+    public void setDeletedByID(int userID) throws SQLException {
+        String query = "UPDATE quizResults SET deleted = 1 WHERE deleted = 0 AND userID = ?";
 
         PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
-        pstmt.setInt(1, (Integer) quizSettingsID);
+        pstmt.setInt(1, userID);
         pstmt.executeUpdate();
     }
 

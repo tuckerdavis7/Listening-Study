@@ -13,14 +13,13 @@ public class SessionRepository {
      *
      * @throws SQLException When the query does not run properly
      */
-    public void createSession(String sessionID, int userID, String userRole, Timestamp expiresAt) throws SQLException {
-        String query = "INSERT INTO sessions (session_id, user_id, role, expires_at) VALUES (?, ?, ?, ?)";
+    public void createSession(String sessionID, int userID, String userRole) throws SQLException {
+        String query = "INSERT INTO sessions (session_id, user_id, role) VALUES (?, ?, ?)";
         PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
 
         pstmt.setString(1, sessionID);
         pstmt.setInt(2, userID);
-        pstmt.setString(3, userRole);
-        pstmt.setTimestamp(4, expiresAt);    
+        pstmt.setString(3, userRole);   
         pstmt.executeUpdate();
     }
 
@@ -33,7 +32,7 @@ public class SessionRepository {
     }
 
     public Integer getUserIDBySessionID(String sessionID) throws SQLException {
-        String query = "SELECT user_id FROM sessions WHERE session_id = ? AND expires_at > CURRENT_TIMESTAMP";
+        String query = "SELECT user_id FROM sessions WHERE session_id = ?";
         PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
 
         pstmt.setString(1, sessionID);
@@ -52,7 +51,7 @@ public class SessionRepository {
      * @return ResultSet containing session information if the session is valid and not expired
      */
     public ResultSet getUserRoleBySessionID(String sessionID) throws SQLException {
-        String query = "SELECT role FROM sessions where session_id = ? and expires_at > CURRENT_TIMESTAMP";
+        String query = "SELECT role FROM sessions where session_id = ?";
         PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
 
         pstmt.setString(1, sessionID);

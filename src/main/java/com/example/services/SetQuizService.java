@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import com.example.repositories.PlaylistRepository;
 import com.example.repositories.QuizSettingsRepository;
+import com.example.repositories.QuizResultsRepository;
 import com.example.repositories.SessionRepository;
 import com.example.repositories.StudentClassRepository;
 import com.example.repositories.StudentRepository;
@@ -22,11 +23,12 @@ import com.sun.net.httpserver.HttpExchange;
  */
 public class SetQuizService extends BaseService {
     private static final Logger logger = LoggerFactory.getLogger(SetQuizService.class);
-    PlaylistRepository playlistRepository = new PlaylistRepository();
-    QuizSettingsRepository quizSettingsRepository = new QuizSettingsRepository();
-    SessionRepository sessionRepository = new SessionRepository();
-    StudentRepository studentRepository = new StudentRepository();
-    StudentClassRepository studentClassRepository = new StudentClassRepository();
+    private PlaylistRepository playlistRepository = new PlaylistRepository();
+    private QuizSettingsRepository quizSettingsRepository = new QuizSettingsRepository();
+    private QuizResultsRepository quizResultsRepository = new QuizResultsRepository();
+    private SessionRepository sessionRepository = new SessionRepository();
+    private StudentRepository studentRepository = new StudentRepository();
+    private StudentClassRepository studentClassRepository = new StudentClassRepository();
 
     /**
      * Gathers playlist data based on classID
@@ -104,12 +106,29 @@ public class SetQuizService extends BaseService {
         
         String responseString = "";
         try {
+            quizSettingsRepository.setDeletedByID(userID);
+        }
+        catch (Exception e) {
+            responseString = "Internal Server Error";
+            logger.error("Error in setQuizParameters1 of SetQuizService:");
+            e.printStackTrace();
+        }
+        try {
+            quizResultsRepository.setDeletedByID(userID);
+        }
+        catch (Exception e) {
+            responseString = "Internal Server Error";
+            logger.error("Error in setQuizParameters2 of SetQuizService:");
+            e.printStackTrace();
+        }
+
+        try {
             quizSettingsRepository.addQuizSettings(userID, playbackMethod, playbackDuration, numQuestions, playlistID);
             responseString = super.formatJSON("success");
         }
         catch (Exception e) {
             responseString = "Internal Server Error";
-            logger.error("Error in setQuizParameters of SetQuizService:");
+            logger.error("Error in setQuizParameters3 of SetQuizService:");
             e.printStackTrace();
         }
         return responseString;

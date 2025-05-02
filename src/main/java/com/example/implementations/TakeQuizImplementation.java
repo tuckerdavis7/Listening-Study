@@ -28,19 +28,13 @@ public class TakeQuizImplementation {
                 previousSelectedSongID = -1;
             else
                 previousSelectedSongID = alreadySelectedIDs.get(alreadySelectedIDs.size() - 1);
-            // If the song was just used, don't use it again
-            if (alreadySelectedIDs.contains(songID) && songID == previousSelectedSongID) {
+            // If the song was just used, don't use it again. If playlist has only 1 song, this doesn't apply.
+            if (alreadySelectedIDs.contains(songID) && songID == previousSelectedSongID && playlistSongList.size() != 1) {
                 continue;
             }
 
             int timesCorrect = ((Number) song.getOrDefault("timesCorrect", 0)).intValue();
             int timesQuizzed = ((Number) song.getOrDefault("timesQuizzed", 0)).intValue();
-            double successRate = (timesQuizzed == 0) ? 0.0 : (timesCorrect / (double) timesQuizzed);
-
-            // If the student is doing well and it was already used, skip it unless under threshold
-            if (alreadySelectedIDs.contains(songID) && successRate >= 0.7) {
-                continue;
-            }
 
             // Beta distribution: alpha = successes + 1, beta = failures + 1
             double alpha = 1 + timesCorrect;
@@ -53,8 +47,6 @@ public class TakeQuizImplementation {
             }
 
             double sample = new BetaDistribution(alpha, beta).sample();
-            System.out.println(song.get("songName"));
-            System.out.println(sample);
             if (sample < minSample) {
                 minSample = sample;
                 selectedSong = song;

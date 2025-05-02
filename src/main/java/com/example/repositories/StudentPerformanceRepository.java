@@ -125,4 +125,14 @@ public class StudentPerformanceRepository {
 
       pstmt.executeUpdate();
    }
+
+   public void deletePerformanceData(int playlistID, int songID) throws SQLException {
+      String query = "DELETE FROM studentPerformance WHERE PlaylistID = ? AND SongID = ?";
+
+      PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
+      pstmt.setInt(1, playlistID);
+      pstmt.setInt(2, songID);
+
+      pstmt.executeUpdate();
+   }
 }

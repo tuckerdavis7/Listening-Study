@@ -13,6 +13,7 @@ import com.example.implementations.SongImplementation;
 import com.example.repositories.PlaylistRepository;
 import com.example.repositories.PlaylistSongRepository;
 import com.example.repositories.SongRepository;
+import com.example.repositories.StudentPerformanceRepository;
 import com.sun.net.httpserver.HttpExchange;
 
 /**
@@ -23,6 +24,7 @@ public class TeacherSongService extends BaseService {
     private SongRepository songRepository = new SongRepository();
     private PlaylistSongRepository playlistSongRepository = new PlaylistSongRepository();
     private PlaylistRepository playlistRepository = new PlaylistRepository();
+    private StudentPerformanceRepository studentPerformanceRepository = new StudentPerformanceRepository();
     private SongImplementation songImplementation = new SongImplementation();
 
      /**
@@ -200,11 +202,20 @@ public class TeacherSongService extends BaseService {
         //Delete song in playlist songs table
         try {
             playlistSongRepository.deletePlaylistSong(playlistID, songID);
+        }
+        catch (Exception e) {
+            responseString = "Internal Server Error";
+            logger.error("Error in deleteSong1 of TeacherSongService");
+        }
+
+        //Delete instances of song in student performance table
+        try {
+            studentPerformanceRepository.deletePerformanceData(playlistID, songID);
             responseString = super.formatJSON("success");
         }
         catch (Exception e) {
             responseString = "Internal Server Error";
-            logger.error("Error in deleteSong of TeacherSongService");
+            logger.error("Error in deleteSong2 of TeacherSongService");
         }
 
         return responseString;

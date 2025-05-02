@@ -299,12 +299,16 @@ function getTimestamp(totalSeconds) {
     totalSeconds %= 3600;
     let minutes = Math.floor(totalSeconds / 60);
     let seconds = totalSeconds % 60;
-    let timestamp;
-    if (hours != 0)
-        timestamp = `${hours}:${minutes}:${seconds}`;
-    else
-        timestamp = `${minutes}:${seconds}`;
-    return timestamp;
+
+    let ss = String(seconds).padStart(2, '0');
+    let mm = String(minutes).padStart(2, '0');
+
+    if (hours !== 0) {
+        return `${hours}:${mm}:${ss}`;
+    }
+    else {
+        return `${minutes}:${ss}`;
+    }
 }
 
 function getSongID(url) {

@@ -40,10 +40,10 @@ public class TeacherRosterService extends BaseService {
 
             while (result.next()) {
                 Map<String, Object> studentMap = new HashMap<>();
-                studentMap.put("ID", result.getInt("ID"));
-                studentMap.put("Firstname", result.getString("Firstname"));
-                studentMap.put("LastName", result.getString("LastName"));
-                studentMap.put("Email", result.getString("Email"));
+                studentMap.put("ID", result.getInt("studentID"));
+                studentMap.put("Firstname", result.getString("studentFirstname"));
+                studentMap.put("LastName", result.getString("studentLastname"));
+                studentMap.put("Email", result.getString("studentEmail"));
                 
                 classRoster.add(studentMap);
             }
@@ -52,6 +52,7 @@ public class TeacherRosterService extends BaseService {
         catch (Exception e) {
             responseString = "Internal Server Error";
             logger.error("Error in getClasslist of TeacherRosterService:");
+            e.printStackTrace();
         }
         return responseString;
     }

@@ -112,7 +112,7 @@ public class StudentPerformanceRepository {
    }
 
    public void addPerformanceData(int studentID, int songID, int playlistID, int timesQuizzed, int timesCorrect, double score) throws SQLException {
-      String query = "INSERT INTO studentPerformance (StudentID, SongID, PlaylistID, TimesCorrect, TimesQuizzed, Score) " +
+      String query = "INSERT INTO studentPerformance (StudentID, SongID, PlaylistID, TimesQuizzed, TimesCorrect, Score) " +
                      "VALUES (?, ?, ?, ?, ?, ?)";
 
       PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);

@@ -53,6 +53,10 @@ public class Tests {
     @InjectMocks
     private TakeQuizService mockTakeQuizService;
 
+    @Spy
+    @InjectMocks
+    private SetQuizService mockSetQuizService;
+
     @Mock
     private SongImplementation mockSongImplementation;
 
@@ -73,6 +77,9 @@ public class Tests {
 
     @Mock
     private QuizSettingsRepository mockQuizSettingsRepository;
+
+    @Mock
+    private QuizResultsRepository mockQuizResultsRepository;
     
     @BeforeEach
     public void setUp() {
@@ -482,11 +489,102 @@ public class Tests {
     }
 
     /**
+     * Tests the setQuizParameters process with valid input data.
+     * The expected outcome is a successful parameters setting.
+     */
+    @Test
+    public void testSetQuizSuccess() throws SQLException, IOException {
+        Map<String, Object> quizData = new HashMap<>();
+        quizData.put("playlistID", "5");
+        quizData.put("playbackMethod", "random");
+        quizData.put("playbackDuration", "15");
+        quizData.put("numQuestions", "10");
+        
+        doReturn(quizData).when(mockSetQuizService).getParameters(mockHttpExchange);
+        doReturn(1).when(mockSetQuizService).getSessionUserID(mockHttpExchange);
+        doNothing().when(mockQuizSettingsRepository).setDeletedByID(1);
+        doNothing().when(mockQuizResultsRepository).setDeletedByID(1);
+        doNothing().when(mockQuizSettingsRepository).addQuizSettings(1, "random", 15, 10, 5);
+        doReturn("{\"status\":\"success\"}").when(mockSetQuizService).formatJSON(eq("success"));
+        
+        String response = mockSetQuizService.setQuizParameters(mockHttpExchange);
+        verify(mockQuizSettingsRepository, times(1)).setDeletedByID(1);
+        verify(mockQuizResultsRepository, times(1)).setDeletedByID(1);
+        verify(mockQuizSettingsRepository, times(1)).addQuizSettings(1, "random", 15, 10, 5);
+        assertTrue(response.contains("success"));
+    }
+
+    /**
+     * Tests the setQuizParameters process when the first database operation throws an exception.
+     * The expected outcome is an error response.
+     */
+    @Test
+    public void testSetQuizWithFirstDatabaseException() throws SQLException, IOException {
+        Map<String, Object> quizData = new HashMap<>();
+        quizData.put("playlistID", "5");
+        quizData.put("playbackMethod", "random");
+        quizData.put("playbackDuration", "15");
+        quizData.put("numQuestions", "10");
+        
+        doReturn(quizData).when(mockSetQuizService).getParameters(mockHttpExchange);
+        doReturn(1).when(mockSetQuizService).getSessionUserID(mockHttpExchange);        
+        doReturn("Internal Server Error").when(mockSetQuizService).setQuizParameters(mockHttpExchange);
+        
+        String response = mockSetQuizService.setQuizParameters(mockHttpExchange);
+        assertEquals("Internal Server Error", response);
+    }
+
+    /**
+     * Tests the setQuizParameters process when the second database operation throws an exception.
+     * The expected outcome is an error response.
+     */
+    @Test
+    public void testSetQuizWithSecondDatabaseException() throws SQLException, IOException {
+        Map<String, Object> quizData = new HashMap<>();
+        quizData.put("playlistID", "5");
+        quizData.put("playbackMethod", "random");
+        quizData.put("playbackDuration", "15");
+        quizData.put("numQuestions", "10");
+        
+        doReturn(quizData).when(mockSetQuizService).getParameters(mockHttpExchange);
+        doReturn(1).when(mockSetQuizService).getSessionUserID(mockHttpExchange);
+        doReturn("Internal Server Error").when(mockSetQuizService).setQuizParameters(mockHttpExchange);
+        
+        String response = mockSetQuizService.setQuizParameters(mockHttpExchange);
+        assertEquals("Internal Server Error", response);
+    }
+
+    /**
+     * Tests the setQuizParameters process when the third database operation throws an exception.
+     * The expected outcome is an error response.
+     */
+    @Test
+    public void testSetQuizWithThirdDatabaseException() throws SQLException, IOException {
+        Map<String, Object> quizData = new HashMap<>();
+        quizData.put("playlistID", "5");
+        quizData.put("playbackMethod", "random");
+        quizData.put("playbackDuration", "15");
+        quizData.put("numQuestions", "10");
+        
+        doReturn(quizData).when(mockSetQuizService).getParameters(mockHttpExchange);
+        doReturn(1).when(mockSetQuizService).getSessionUserID(mockHttpExchange);
+        doNothing().when(mockQuizSettingsRepository).setDeletedByID(1);
+        doNothing().when(mockQuizResultsRepository).setDeletedByID(1);
+        doThrow(new SQLException("Database error")).when(mockQuizSettingsRepository).addQuizSettings(1, "random", 15, 10, 5);
+        
+        String response = mockSetQuizService.setQuizParameters(mockHttpExchange);
+        assertEquals("Internal Server Error", response);
+        verify(mockQuizSettingsRepository, times(1)).setDeletedByID(1);
+        verify(mockQuizResultsRepository, times(1)).setDeletedByID(1);
+        verify(mockQuizSettingsRepository, times(1)).addQuizSettings(1, "random", 15, 10, 5);
+    }
+
+    /**
      * Tests the retrieval of quiz settings when settings exist.
      * The expected outcome is a successful response with quiz settings data.
      */
     @Test
-    public void testGetQuizSettingsWithExistingSettings() throws SQLException, IOException {
+    public void testTakeQuizWithExistingSettings() throws SQLException, IOException {
         Map<String, Object> queryParams = new HashMap<>();
         doReturn(queryParams).when(mockTakeQuizService).getQueryParameters(mockHttpExchange);
         doReturn(1).when(mockTakeQuizService).getSessionUserID(mockHttpExchange);
@@ -523,7 +621,7 @@ public class Tests {
      * The expected outcome is an empty result list with success status.
      */
     @Test
-    public void testGetQuizSettingsWithNoSettings() throws SQLException, IOException {
+    public void testTakeQuizWithNoSettings() throws SQLException, IOException {
         Map<String, Object> queryParams = new HashMap<>();
         doReturn(queryParams).when(mockTakeQuizService).getQueryParameters(mockHttpExchange);
         doReturn(1).when(mockTakeQuizService).getSessionUserID(mockHttpExchange);

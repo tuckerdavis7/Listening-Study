@@ -1,14 +1,3 @@
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.argThat;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.*;
-import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.*;
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,11 +7,47 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.example.implementations.*;
-import com.example.repositories.*;
-import com.example.services.*;
-import com.sun.net.httpserver.HttpExchange;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.ArgumentMatchers.eq;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
+
+import com.example.implementations.SongImplementation;
+import com.example.implementations.TakeQuizImplementation;
+import com.example.repositories.PlaylistRepository;
+import com.example.repositories.PlaylistSongRepository;
+import com.example.repositories.QuizResultsRepository;
+import com.example.repositories.QuizSettingsRepository;
+import com.example.repositories.SessionRepository;
+import com.example.repositories.SongRepository;
+import com.example.repositories.StudentPerformanceRepository;
+import com.example.repositories.StudentRepository;
+import com.example.repositories.UserRepository;
+import com.example.services.LoginService;
+import com.example.services.RegistrationService;
+import com.example.services.SetQuizService;
+import com.example.services.StudentPerformanceService;
+import com.example.services.TakeQuizService;
+import com.example.services.TeacherSongService;
 import com.sun.net.httpserver.Headers;
+import com.sun.net.httpserver.HttpExchange;
 public class Tests {
     
     @Mock
@@ -61,6 +86,9 @@ public class Tests {
     private SongImplementation mockSongImplementation;
 
     @Mock
+    private TakeQuizImplementation mockTakeQuizImplementation;
+
+    @Mock
     private UserRepository mockUserRepository;
     
     @Mock
@@ -80,6 +108,13 @@ public class Tests {
 
     @Mock
     private QuizResultsRepository mockQuizResultsRepository;
+    
+    @Mock
+    private StudentRepository mockStudentRepository;    
+    
+    @Mock
+    private PlaylistRepository mockPlaylistRepository;
+    
     
     @BeforeEach
     public void setUp() {
@@ -652,4 +687,86 @@ public class Tests {
         assertEquals("Internal Server Error", response);
         verify(mockQuizSettingsRepository, times(1)).getQuizSettingsByID(1);
     }
+
+        /**
+     * Tests that nextQuestionSong returns an error when no prior quiz results exist for any song.
+     * Expected result: Songs have 0 timesQuizzed and getThompsonSelection falls back to default.
+     * This tests for Alter Questions and Adjust Question weight use cases.
+     */
+    @Test
+    public void testNextQuestionSongWithNoPreviousResults() throws Exception {
+        Map<String, Object> params = new HashMap<>();
+        params.put("previous", new ArrayList<Integer>());
+        doReturn(params).when(mockTakeQuizService).getParameters(mockHttpExchange);
+        doReturn(1).when(mockTakeQuizService).getSessionUserID(mockHttpExchange);
+
+        when(mockStudentRepository.getStudentByUserID(1)).thenReturn(mockResultSet);
+        when(mockResultSet.next()).thenReturn(true);
+        when(mockResultSet.getInt("ID")).thenReturn(10);
+
+        ResultSet mockQuizResultSet = mock(ResultSet.class);
+        when(mockQuizResultSet.next()).thenReturn(true);
+        when(mockQuizResultSet.getInt("playlistID")).thenReturn(5);
+        when(mockQuizResultSet.getString("playbackMethod")).thenReturn("Preferred");
+        when(mockQuizSettingsRepository.getQuizSettingsByID(1)).thenReturn(mockQuizResultSet);
+
+        ResultSet mockSongResultSet = mock(ResultSet.class);
+        when(mockSongResultSet.next()).thenReturn(true, false);
+        when(mockSongResultSet.getInt("playlistID")).thenReturn(5);
+        when(mockSongResultSet.getInt("songID")).thenReturn(100);
+        when(mockSongResultSet.getString("songName")).thenReturn("Song A");
+        when(mockSongResultSet.getString("songComposer")).thenReturn("Composer A");
+        when(mockSongResultSet.getInt("songYear")).thenReturn(2020);
+        when(mockSongResultSet.getString("youtubeLink")).thenReturn("https://youtu.be/example");
+        when(mockSongResultSet.getInt("mrTimestamp")).thenReturn(45);
+        when(mockSongResultSet.getInt("udTimestamp")).thenReturn(60);
+        when(mockPlaylistSongRepository.getSongs(5)).thenReturn(mockSongResultSet);
+
+        ResultSet mockPlaylistNameResultSet = mock(ResultSet.class);
+        when(mockPlaylistNameResultSet.next()).thenReturn(true);
+        when(mockPlaylistNameResultSet.getString("playlistName")).thenReturn("Test Playlist");
+        when(mockPlaylistRepository.getPlaylistNameByID(5)).thenReturn(mockPlaylistNameResultSet);
+
+        ResultSet mockPerfResultSet = mock(ResultSet.class);
+        when(mockPerfResultSet.next()).thenReturn(false);
+        when(mockStudentPerformanceRepository.getTimesQuizzedAndCorrect(100, 10, 5)).thenReturn(mockPerfResultSet);
+
+        Map<String, Object> selectedSong = new HashMap<>();
+        selectedSong.put("songID", 100);
+        selectedSong.put("songName", "Song A");
+        selectedSong.put("playbackMethod", "Random");
+        selectedSong.put("timestamp", -1);
+        doReturn("{\"data\":{\"songID\":100,\"songName\":\"Song A\",\"timestamp\":-1,\"playbackMethod\":\"Random\"},\"status\":\"success\"}")
+            .when(mockTakeQuizService).formatJSON(any(), eq("success"));
+        doReturn(selectedSong).when(mockTakeQuizImplementation).getThompsonSelection(any(), any());
+
+        String response = mockTakeQuizService.nextQuestionSong(mockHttpExchange);
+        assertTrue(response.contains("\"status\":\"success\""));
+        assertTrue(response.contains("\"playbackMethod\":\"Random\""));
+    }
+
+    /**
+     * Tests that nextQuestionSong returns an error when no quiz settings exist for the student.
+     * Expected result: The method should return "Internal Server Error".
+     * This tests for Alter Questions and Adjust Question weight use cases.
+     */
+    @Test
+    public void testNextQuestionSongWithNoQuizSettings() throws Exception {
+        Map<String, Object> params = new HashMap<>();
+        params.put("previous", new ArrayList<Integer>());
+        doReturn(params).when(mockTakeQuizService).getParameters(mockHttpExchange);
+        doReturn(1).when(mockTakeQuizService).getSessionUserID(mockHttpExchange);
+
+        when(mockStudentRepository.getStudentByUserID(1)).thenReturn(mockResultSet);
+        when(mockResultSet.next()).thenReturn(true);
+        when(mockResultSet.getInt("ID")).thenReturn(10);
+
+        ResultSet emptyQuizSettings = mock(ResultSet.class);
+        when(emptyQuizSettings.next()).thenReturn(false);
+        when(mockQuizSettingsRepository.getQuizSettingsByID(1)).thenReturn(emptyQuizSettings);
+
+        String response = mockTakeQuizService.nextQuestionSong(mockHttpExchange);
+        assertEquals("Internal Server Error", response);
+    }
+
 }

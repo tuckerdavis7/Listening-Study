@@ -42,7 +42,6 @@ public class ModeratorService extends BaseService {
      * @return String JSON formatted string of data for frontend
      */
     public String getAllClasses(HttpExchange exchange) throws IOException {
-        //logger.info("at getAllClasses in ModeratorService");
         String responseString = "";
         try {
             ResultSet result = classRepository.getAllClasses();
@@ -100,7 +99,6 @@ public class ModeratorService extends BaseService {
      * @return String JSON formatted string of success or error message
      */
     public String addClass(HttpExchange exchange) throws IOException {
-        logger.info("at addClass in ModeratorService");
         Map<String, Object> addClassData = super.getParameters(exchange);
 
         String className = (String)addClassData.get("className");
@@ -114,11 +112,6 @@ public class ModeratorService extends BaseService {
 
             if(result.next()) {
                 teacherID = result.getInt("ID");
-            }
-            else {
-                logger.error("Teacher not found for email: " + teacherEmail);
-                responseString = "Teacher not found!";
-                return responseString;
             }
         }
         catch (Exception e){
@@ -148,7 +141,7 @@ public class ModeratorService extends BaseService {
      * @return String JSON formatted string of success or error message
      */
     public String getClassStudents(HttpExchange exchange) throws IOException {
-        logger.info("at getClassStudents in ModeratorRosterService");
+        //logger.info("at getClassStudents in ModeratorRosterService");
         Map<String, Object> classData = super.getQueryParameters(exchange);
         int classID = ((Number)classData.get("classID")).intValue();
         String responseString = "";
@@ -169,7 +162,7 @@ public class ModeratorService extends BaseService {
         }
         catch (Exception e) {
             responseString = "Internal Server Error";
-            logger.error("Error in getAllClasses of ModeratorRosterService:");
+            logger.error("Error in getClassStudents of ModeratorRosterService:");
             e.printStackTrace();
         }
         return responseString;
@@ -183,7 +176,7 @@ public class ModeratorService extends BaseService {
      * @return String JSON formatted string of success or error message
      */
     public String addStudent(HttpExchange exchange) throws IOException {
-        logger.info("at addStudent in ModeratorService");
+        //logger.info("at addStudent in ModeratorService");
         Map<String, Object> parameters = super.getParameters(exchange);
         String studentEmail = (String)parameters.get("email");
         System.out.println("studentEmail: " + studentEmail);
@@ -228,7 +221,7 @@ public class ModeratorService extends BaseService {
      * @return String JSON formatted string of success or error message
      */
     public String getClassTeachers(HttpExchange exchange) throws IOException {
-        logger.info("at getClassTeachers in ModeratorTeacherlistService");
+        //logger.info("at getClassTeachers in ModeratorTeacherlistService");
         Map<String, Object> classData = super.getQueryParameters(exchange);
         int classID = ((Number)classData.get("classID")).intValue();
         String responseString = "";

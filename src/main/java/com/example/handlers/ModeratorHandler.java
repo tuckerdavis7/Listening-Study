@@ -41,19 +41,16 @@ public class ModeratorHandler extends BaseHandler implements HttpHandler {
         switch (method) {
             case "GET":
                 if (exchange.getRequestURI().getPath().equals("/api/moderator/dashboard")) {
-                    logger.info("at GET1 in ModeratorHandler");
                     response = moderatorService.getAllClasses(exchange);
                     super.sendResponse(exchange, response, "Regular");
                     break;
                 }
                 else if (exchange.getRequestURI().getPath().equals("/api/moderator/teacherlist")) {
-                    logger.info("at GET2 in ModeratorHandler");
                     response = moderatorService.getClassTeachers(exchange);
                     super.sendResponse(exchange, response, "Regular");
                     break;
                 }
                 else if (exchange.getRequestURI().getPath().equals("/api/moderator/classlist")) {
-                    logger.info("at GET3 in ModeratorHandler");
                     response = moderatorService.getClassStudents(exchange);
                     super.sendResponse(exchange, response, "Regular");
                     break;
@@ -62,7 +59,6 @@ public class ModeratorHandler extends BaseHandler implements HttpHandler {
 
             case "POST":
                 if (exchange.getRequestURI().getPath().equals("/api/moderator/dashboard")) {
-                    logger.info("at POST1 in ModeratorHandler");
                     response = moderatorService.addClass(exchange);
                     super.sendResponse(exchange, response, "Regular");
                     break;
@@ -98,7 +94,6 @@ public class ModeratorHandler extends BaseHandler implements HttpHandler {
                 break;
 
             case "DELETE":
-                logger.info("at DELETE in ModeratorHandler");
                 response = moderatorService.deleteClass(exchange);
                 super.sendResponse(exchange, response, "Regular");
                 break;

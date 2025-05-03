@@ -49,6 +49,10 @@ public class Tests {
     @InjectMocks
     private TeacherSongService mockTeacherSongService;
 
+    @Spy
+    @InjectMocks
+    private TakeQuizService mockTakeQuizService;
+
     @Mock
     private SongImplementation mockSongImplementation;
 
@@ -66,6 +70,9 @@ public class Tests {
 
     @Mock
     private PlaylistSongRepository mockPlaylistSongRepository;
+
+    @Mock
+    private QuizSettingsRepository mockQuizSettingsRepository;
     
     @BeforeEach
     public void setUp() {
@@ -472,5 +479,79 @@ public class Tests {
         
         String response = mockTeacherSongService.addSong(mockHttpExchange);
         assertEquals("Internal Server Error", response);
+    }
+
+    /**
+     * Tests the retrieval of quiz settings when settings exist.
+     * The expected outcome is a successful response with quiz settings data.
+     */
+    @Test
+    public void testGetQuizSettingsWithExistingSettings() throws SQLException, IOException {
+        Map<String, Object> queryParams = new HashMap<>();
+        doReturn(queryParams).when(mockTakeQuizService).getQueryParameters(mockHttpExchange);
+        doReturn(1).when(mockTakeQuizService).getSessionUserID(mockHttpExchange);
+        when(mockQuizSettingsRepository.getQuizSettingsByID(1)).thenReturn(mockResultSet);
+        
+        when(mockResultSet.next()).thenReturn(true).thenReturn(false);
+        when(mockResultSet.getInt("ID")).thenReturn(1);
+        when(mockResultSet.getInt("user_id")).thenReturn(1);
+        when(mockResultSet.getString("playbackMethod")).thenReturn("random");
+        when(mockResultSet.getInt("playbackDuration")).thenReturn(15);
+        when(mockResultSet.getInt("numQuestions")).thenReturn(10);
+        when(mockResultSet.getInt("playlistID")).thenReturn(5);
+        
+        ArrayList<Map<String, Object>> settingsList = new ArrayList<>();
+        Map<String, Object> settingsMap = new HashMap<>();
+        settingsMap.put("ID", 1);
+        settingsMap.put("user_id", 1);
+        settingsMap.put("playbackMethod", "random");
+        settingsMap.put("playbackDuration", 15);
+        settingsMap.put("numQuestions", 10);
+        settingsMap.put("playlistID", 5);
+        settingsList.add(settingsMap);
+        
+        doReturn("{\"data\":[{\"ID\":1,\"user_id\":1,\"playbackMethod\":\"random\",\"playbackDuration\":15,\"numQuestions\":10,\"playlistID\":5}],\"status\":\"success\"}")
+            .when(mockTakeQuizService).formatJSON(settingsList, "success");
+        
+        String response = mockTakeQuizService.getQuizSettings(mockHttpExchange);
+        assertTrue(response.contains("success"));        
+        verify(mockQuizSettingsRepository, times(1)).getQuizSettingsByID(1);
+    }
+
+    /**
+     * Tests the retrieval of quiz settings when no settings exist.
+     * The expected outcome is an empty result list with success status.
+     */
+    @Test
+    public void testGetQuizSettingsWithNoSettings() throws SQLException, IOException {
+        Map<String, Object> queryParams = new HashMap<>();
+        doReturn(queryParams).when(mockTakeQuizService).getQueryParameters(mockHttpExchange);
+        doReturn(1).when(mockTakeQuizService).getSessionUserID(mockHttpExchange);
+        when(mockQuizSettingsRepository.getQuizSettingsByID(1)).thenReturn(mockResultSet);        
+        when(mockResultSet.next()).thenReturn(false);
+
+        ArrayList<Map<String, Object>> emptySettingsList = new ArrayList<>();
+        doReturn("{\"data\":[],\"status\":\"success\"}")
+            .when(mockTakeQuizService).formatJSON(emptySettingsList, "success");
+        
+        String response = mockTakeQuizService.getQuizSettings(mockHttpExchange);        
+        assertTrue(response.contains("success"));
+        verify(mockQuizSettingsRepository, times(1)).getQuizSettingsByID(1);
+    }
+
+    /**
+     * Tests the retrieval of quiz settings when a database exception occurs.
+     * The expected outcome is an error response.
+     */
+    @Test
+    public void testGetQuizSettingsWithDatabaseException() throws SQLException, IOException {
+        Map<String, Object> queryParams = new HashMap<>();
+        doReturn(queryParams).when(mockTakeQuizService).getQueryParameters(mockHttpExchange);
+        doReturn(1).when(mockTakeQuizService).getSessionUserID(mockHttpExchange);
+        when(mockQuizSettingsRepository.getQuizSettingsByID(1)).thenThrow(new SQLException("Database connection error"));
+        
+        String response = mockTakeQuizService.getQuizSettings(mockHttpExchange);
+        assertEquals("Internal Server Error", response);
+        verify(mockQuizSettingsRepository, times(1)).getQuizSettingsByID(1);
     }
 }

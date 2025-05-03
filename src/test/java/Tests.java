@@ -1,3 +1,8 @@
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,24 +18,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.example.implementations.*;
 import com.example.repositories.*;
 import com.example.services.*;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.Headers;
-
-/**
- * Test class for RegistrationService, focusing on the user registration functionality
- * including validation of unique email addresses.
- */
 public class Tests {
-    @Mock
-    private UserRepository mockUserRepository;
-    
-    @Mock
-    private SessionRepository mockSessionRepository;
-    
-    @Mock
-    private StudentPerformanceRepository mockStudentPerformanceRepository;
     
     @Mock
     private HttpExchange mockHttpExchange;
@@ -43,14 +36,36 @@ public class Tests {
     
     @Spy
     @InjectMocks
-    private RegistrationService registrationService;
+    private RegistrationService mockRegistrationService;
     
     @Spy
-    private LoginService loginService;
+    private LoginService mockLoginService;
     
     @Spy
     @InjectMocks
-    private StudentPerformanceService studentPerformanceService;
+    private StudentPerformanceService mockStudentPerformanceService;
+
+    @Spy
+    @InjectMocks
+    private TeacherSongService mockTeacherSongService;
+
+    @Mock
+    private SongImplementation mockSongImplementation;
+
+    @Mock
+    private UserRepository mockUserRepository;
+    
+    @Mock
+    private SessionRepository mockSessionRepository;
+    
+    @Mock
+    private StudentPerformanceRepository mockStudentPerformanceRepository;
+
+    @Mock
+    private SongRepository mockSongRepository;
+
+    @Mock
+    private PlaylistSongRepository mockPlaylistSongRepository;
     
     @BeforeEach
     public void setUp() {
@@ -76,16 +91,13 @@ public class Tests {
         registrationParams.put("lastName", "Doe");
         registrationParams.put("accountType", "student");
         
-        doReturn(registrationParams).when(registrationService).getParameters(mockHttpExchange);
-        
+        doReturn(registrationParams).when(mockRegistrationService).getParameters(mockHttpExchange);
         when(mockUserRepository.getUserCountByEmail("unique@example.com")).thenReturn(mockResultSet);
         when(mockResultSet.next()).thenReturn(true);
         when(mockResultSet.getInt(1)).thenReturn(0);
+        doReturn("{\"status\":\"success\"}").when(mockRegistrationService).formatJSON(eq("success"));
         
-        doReturn("{\"status\":\"success\"}").when(registrationService).formatJSON(eq("success"));
-        
-        String response = registrationService.registerUser(mockHttpExchange);
-        
+        String response = mockRegistrationService.registerUser(mockHttpExchange);
         verify(mockUserRepository, times(1)).addUser(argThat(map -> 
             map.get("email").equals("unique@example.com") && 
             map.get("firstName").equals("John") &&
@@ -115,18 +127,14 @@ public class Tests {
         registrationParams.put("lastName", "Smith");
         registrationParams.put("accountType", "teacher");
         
-        doReturn(registrationParams).when(registrationService).getParameters(mockHttpExchange);
-        
+        doReturn(registrationParams).when(mockRegistrationService).getParameters(mockHttpExchange);
         when(mockUserRepository.getUserCountByEmail("duplicate@example.com")).thenReturn(mockResultSet);
         when(mockResultSet.next()).thenReturn(true);
         when(mockResultSet.getInt(1)).thenReturn(1);
+        doReturn("{\"status\":\"failure\",\"message\":\"Account with email already exists\"}").when(mockRegistrationService).formatJSON(eq("failure"), eq("Account with email already exists"));
         
-        doReturn("{\"status\":\"failure\",\"message\":\"Account with email already exists\"}").when(registrationService).formatJSON(eq("failure"), eq("Account with email already exists"));
-        
-        String response = registrationService.registerUser(mockHttpExchange);
-        
+        String response = mockRegistrationService.registerUser(mockHttpExchange);
         verify(mockUserRepository, never()).addUser(any());
-        
         assertTrue(response.contains("\"status\":\"failure\""));
         assertTrue(response.contains("\"message\":\"Account with email already exists\""));
     }
@@ -149,20 +157,12 @@ public class Tests {
         registrationParams.put("lastName", "User");
         registrationParams.put("accountType", "student");
         
-        doReturn(registrationParams).when(registrationService).getParameters(mockHttpExchange);
-        
-        // Configure the mock to throw an exception when getUserCountByEmail is called
+        doReturn(registrationParams).when(mockRegistrationService).getParameters(mockHttpExchange);
         when(mockUserRepository.getUserCountByEmail(anyString())).thenThrow(new SQLException("Database connection error"));
-        
-        // We don't need to mock addUser for this test as it should never be called
-        // but just to be safe, let's ensure that if it is called, we return immediately
         doThrow(new RuntimeException("addUser should not be called")).when(mockUserRepository).addUser(any());
+        doReturn("Internal Server Error").when(mockRegistrationService).registerUser(any());
         
-        // Ensure that formatJSON is not returning "success"
-        doReturn("Internal Server Error").when(registrationService).registerUser(any());
-        
-        String response = registrationService.registerUser(mockHttpExchange);
-        
+        String response = mockRegistrationService.registerUser(mockHttpExchange);
         assertEquals("Internal Server Error", response);
     }
     
@@ -184,16 +184,13 @@ public class Tests {
         registrationParams.put("lastName", "User");
         registrationParams.put("accountType", "student");
         
-        doReturn(registrationParams).when(registrationService).getParameters(mockHttpExchange);
-        
+        doReturn(registrationParams).when(mockRegistrationService).getParameters(mockHttpExchange);
         when(mockUserRepository.getUserCountByEmail("error@example.com")).thenReturn(mockResultSet);
         when(mockResultSet.next()).thenReturn(true);
         when(mockResultSet.getInt(1)).thenReturn(0);
-        
         doThrow(new SQLException("Error adding user")).when(mockUserRepository).addUser(any());
         
-        String response = registrationService.registerUser(mockHttpExchange);
-        
+        String response = mockRegistrationService.registerUser(mockHttpExchange);
         assertEquals("Internal Server Error", response);
     }
     
@@ -202,23 +199,18 @@ public class Tests {
      * The expected outcome is a successful login with a session created.
      */
     @Test
-    public void testAuthenticateLoginSuccess() throws SQLException, IOException {
-        LoginService spyLoginService = spy(new LoginService());
-        
+    public void testAuthenticateLoginSuccess() throws SQLException, IOException {        
         Map<String, Object> loginParams = new HashMap<>();
         loginParams.put("email", "valid@example.com");
         loginParams.put("password", "password123");
-        
-        doReturn(loginParams).when(spyLoginService).getParameters(mockHttpExchange);
+        doReturn(loginParams).when(mockLoginService).getParameters(mockHttpExchange);
         
         Map<String, Object> successMap = new HashMap<>();
         successMap.put("role", "student");
-        doReturn("{\"role\":\"student\",\"status\":\"success\"}").when(spyLoginService).formatJSON(successMap, "success");
+        doReturn("{\"role\":\"student\",\"status\":\"success\"}").when(mockLoginService).formatJSON(successMap, "success");
+        doReturn("{\"role\":\"student\",\"status\":\"success\"}").when(mockLoginService).authenticateLogin(mockHttpExchange);
         
-        doReturn("{\"role\":\"student\",\"status\":\"success\"}").when(spyLoginService).authenticateLogin(mockHttpExchange);
-        
-        String response = spyLoginService.authenticateLogin(mockHttpExchange);
-        
+        String response = mockLoginService.authenticateLogin(mockHttpExchange);
         assertTrue(response.contains("\"status\":\"success\""));
         assertTrue(response.contains("\"role\":\"student\""));
     }
@@ -228,22 +220,17 @@ public class Tests {
      * The expected outcome is a login failure with appropriate message.
      */
     @Test
-    public void testAuthenticateLoginInvalidPassword() throws SQLException, IOException {
-        LoginService spyLoginService = spy(new LoginService());
-        
+    public void testAuthenticateLoginInvalidPassword() throws SQLException, IOException {        
         Map<String, Object> loginParams = new HashMap<>();
         loginParams.put("email", "valid@example.com");
         loginParams.put("password", "wrongpassword");
-        
-        doReturn(loginParams).when(spyLoginService).getParameters(mockHttpExchange);
+        doReturn(loginParams).when(mockLoginService).getParameters(mockHttpExchange);
         
         Map<String, Object> failureMap = new HashMap<>();
-        doReturn("{\"status\":\"failure\"}").when(spyLoginService).formatJSON(failureMap, "failure");
+        doReturn("{\"status\":\"failure\"}").when(mockLoginService).formatJSON(failureMap, "failure");
+        doReturn("{\"status\":\"failure\"}").when(mockLoginService).authenticateLogin(mockHttpExchange);
         
-        doReturn("{\"status\":\"failure\"}").when(spyLoginService).authenticateLogin(mockHttpExchange);
-        
-        String response = spyLoginService.authenticateLogin(mockHttpExchange);
-        
+        String response = mockLoginService.authenticateLogin(mockHttpExchange);
         assertTrue(response.contains("\"status\":\"failure\""));
     }
     
@@ -252,22 +239,17 @@ public class Tests {
      * The expected outcome is a login failure.
      */
     @Test
-    public void testAuthenticateLoginNonExistentEmail() throws SQLException, IOException {
-        LoginService spyLoginService = spy(new LoginService());
-        
+    public void testAuthenticateLoginNonExistentEmail() throws SQLException, IOException {        
         Map<String, Object> loginParams = new HashMap<>();
         loginParams.put("email", "nonexistent@example.com");
         loginParams.put("password", "password123");
-        
-        doReturn(loginParams).when(spyLoginService).getParameters(mockHttpExchange);
+        doReturn(loginParams).when(mockLoginService).getParameters(mockHttpExchange);
         
         Map<String, Object> failureMap = new HashMap<>();
-        doReturn("{\"status\":\"failure\"}").when(spyLoginService).formatJSON(failureMap, "failure");
+        doReturn("{\"status\":\"failure\"}").when(mockLoginService).formatJSON(failureMap, "failure");
+        doReturn("{\"status\":\"failure\"}").when(mockLoginService).authenticateLogin(mockHttpExchange);
         
-        doReturn("{\"status\":\"failure\"}").when(spyLoginService).authenticateLogin(mockHttpExchange);
-        
-        String response = spyLoginService.authenticateLogin(mockHttpExchange);
-        
+        String response = mockLoginService.authenticateLogin(mockHttpExchange);
         assertTrue(response.contains("\"status\":\"failure\""));
     }
     
@@ -276,17 +258,15 @@ public class Tests {
      * The expected outcome is an error response.
      */
     @Test
-    public void testAuthenticateLoginWithDatabaseException() throws SQLException, IOException {
-        LoginService spyLoginService = spy(new LoginService());
-        
+    public void testAuthenticateLoginWithDatabaseException() throws SQLException, IOException {        
         Map<String, Object> loginParams = new HashMap<>();
         loginParams.put("email", "error@example.com");
         loginParams.put("password", "password123");
         
-        doReturn(loginParams).when(spyLoginService).getParameters(mockHttpExchange);
-        doReturn("Internal Server Error").when(spyLoginService).authenticateLogin(mockHttpExchange);
+        doReturn(loginParams).when(mockLoginService).getParameters(mockHttpExchange);
+        doReturn("Internal Server Error").when(mockLoginService).authenticateLogin(mockHttpExchange);
         
-        String response = spyLoginService.authenticateLogin(mockHttpExchange);
+        String response = mockLoginService.authenticateLogin(mockHttpExchange);
         
         assertEquals("Internal Server Error", response);
     }
@@ -299,12 +279,9 @@ public class Tests {
     public void testGetSongPerformancesWithResults() throws SQLException, IOException {
         Map<String, Object> performanceParams = new HashMap<>();
         performanceParams.put("studentID", 1);
-        
-        doReturn(performanceParams).when(studentPerformanceService).getQueryParameters(mockHttpExchange);
-        
+
+        doReturn(performanceParams).when(mockStudentPerformanceService).getQueryParameters(mockHttpExchange);
         when(mockStudentPerformanceRepository.getPerformanceByID(1)).thenReturn(mockResultSet);
-        
-        // Mock ResultSet to return data on the first call, then no more data
         when(mockResultSet.next()).thenReturn(true).thenReturn(false);
         when(mockResultSet.getInt("ID")).thenReturn(1);
         when(mockResultSet.getInt("StudentID")).thenReturn(1);
@@ -334,10 +311,9 @@ public class Tests {
         expectedPerformanceList.add(expectedPerformanceMap);
         
         doReturn("{\"data\":[{\"ID\":1,\"studentID\":1,\"score\":85.5,\"SongID\":100,\"timesCorrect\":8,\"timesQuizzed\":10,\"songName\":\"Test Song\",\"composer\":\"Test Composer\",\"year\":\"2023\",\"url\":\"https://youtube.com/test\",\"playlistName\":\"Test Playlist\"}],\"status\":\"success\"}")
-            .when(studentPerformanceService).formatJSON(any(), eq("success"));
+            .when(mockStudentPerformanceService).formatJSON(any(), eq("success"));
         
-        String response = studentPerformanceService.getSongPerformances(mockHttpExchange);
-        
+        String response = mockStudentPerformanceService.getSongPerformances(mockHttpExchange);
         assertTrue(response.contains("\"status\":\"success\""));
         assertTrue(response.contains("\"songName\":\"Test Song\""));
         verify(mockStudentPerformanceRepository, times(1)).getPerformanceByID(1);
@@ -351,19 +327,15 @@ public class Tests {
     public void testGetSongPerformancesWithNoResults() throws SQLException, IOException {
         Map<String, Object> performanceParams = new HashMap<>();
         performanceParams.put("studentID", 1);
-        
-        doReturn(performanceParams).when(studentPerformanceService).getQueryParameters(mockHttpExchange);
-        
+        doReturn(performanceParams).when(mockStudentPerformanceService).getQueryParameters(mockHttpExchange);
         when(mockStudentPerformanceRepository.getPerformanceByID(1)).thenReturn(mockResultSet);
-        
-        // Mock ResultSet to return no data
         when(mockResultSet.next()).thenReturn(false);
         
         ArrayList<Map<String, Object>> emptyPerformanceList = new ArrayList<>();
         doReturn("{\"data\":[],\"status\":\"success\"}")
-            .when(studentPerformanceService).formatJSON(eq(emptyPerformanceList), eq("success"));
+            .when(mockStudentPerformanceService).formatJSON(eq(emptyPerformanceList), eq("success"));
         
-        String response = studentPerformanceService.getSongPerformances(mockHttpExchange);
+        String response = mockStudentPerformanceService.getSongPerformances(mockHttpExchange);
         
         assertTrue(response.contains("\"status\":\"success\""));
         assertTrue(response.contains("\"data\":[]"));
@@ -379,13 +351,126 @@ public class Tests {
         Map<String, Object> performanceParams = new HashMap<>();
         performanceParams.put("studentID", 1);
         
-        doReturn(performanceParams).when(studentPerformanceService).getQueryParameters(mockHttpExchange);
-        
+        doReturn(performanceParams).when(mockStudentPerformanceService).getQueryParameters(mockHttpExchange);
         when(mockStudentPerformanceRepository.getPerformanceByID(1)).thenThrow(new SQLException("Database connection error"));
         
-        String response = studentPerformanceService.getSongPerformances(mockHttpExchange);
-        
+        String response = mockStudentPerformanceService.getSongPerformances(mockHttpExchange);
         assertEquals("Internal Server Error", response);
         verify(mockStudentPerformanceRepository, times(1)).getPerformanceByID(1);
+    }
+
+    /**
+     * Tests adding a song to a playlist when the song doesn't exist in the song table.
+     * The expected outcome is a successful addition.
+     */
+    @Test
+    public void testAddSongNewSong() throws SQLException, IOException {
+        // Mock input data
+        Map<String, Object> songData = new HashMap<>();
+        songData.put("playlistID", "1");
+        songData.put("name", "Test Song");
+        songData.put("composer", "Test Composer");
+        songData.put("year", "2023");
+        songData.put("url", "https://www.youtube.com/watch?v=abc123");
+        songData.put("timestamp", "01:30");
+        
+        doReturn(songData).when(mockTeacherSongService).getParameters(mockHttpExchange);
+        
+        ResultSet mockEmptyResultSet = mock(ResultSet.class);
+        when(mockEmptyResultSet.next()).thenReturn(false);
+        when(mockSongRepository.getSongID("abc123")).thenReturn(mockEmptyResultSet);
+        
+        ResultSet mockNewSongResultSet = mock(ResultSet.class);
+        when(mockNewSongResultSet.next()).thenReturn(true);
+        when(mockNewSongResultSet.getInt("ID")).thenReturn(100);
+        when(mockSongRepository.getSongID("abc123")).thenReturn(mockEmptyResultSet).thenReturn(mockNewSongResultSet);
+        when(mockSongImplementation.extractVideoId("https://www.youtube.com/watch?v=abc123")).thenReturn("abc123");
+        when(mockSongImplementation.convertTimeToSeconds("01:30")).thenReturn(90);
+        when(mockSongImplementation.getMostReplayedTimestamp("https://www.youtube.com/watch?v=abc123")).thenReturn(60);
+        doReturn("{\"status\":\"success\"}").when(mockTeacherSongService).formatJSON(eq("success"));
+        
+        String response = mockTeacherSongService.addSong(mockHttpExchange);
+        verify(mockSongRepository, times(1)).commitSongData("Test Song", "Test Composer", "2023", "abc123", 60);
+        verify(mockPlaylistSongRepository, times(1)).addToPlaylist(1, 100, 90);
+        assertTrue(response.contains("\"status\":\"success\""));
+    }
+
+    /**
+     * Tests adding a song to a playlist when the song already exists in the song table.
+     * The expected outcome is a successful addition to the playlist only.
+     */
+    @Test
+    public void testAddSongExistingSong() throws SQLException, IOException {
+        Map<String, Object> songData = new HashMap<>();
+        songData.put("playlistID", "1");
+        songData.put("name", "Test Song");
+        songData.put("composer", "Test Composer");
+        songData.put("year", "2023");
+        songData.put("url", "https://www.youtube.com/watch?v=abc123");
+        songData.put("timestamp", "01:30");
+        doReturn(songData).when(mockTeacherSongService).getParameters(mockHttpExchange);
+        
+        ResultSet mockExistingResultSet = mock(ResultSet.class);
+        when(mockExistingResultSet.next()).thenReturn(true);
+        when(mockExistingResultSet.getInt("ID")).thenReturn(100);
+        when(mockSongRepository.getSongID("abc123")).thenReturn(mockExistingResultSet);
+        when(mockSongImplementation.extractVideoId("https://www.youtube.com/watch?v=abc123")).thenReturn("abc123");
+        when(mockSongImplementation.convertTimeToSeconds("01:30")).thenReturn(90);
+        doReturn("{\"status\":\"success\"}").when(mockTeacherSongService).formatJSON(eq("success"));
+        
+        String response = mockTeacherSongService.addSong(mockHttpExchange);
+        verify(mockSongRepository, never()).commitSongData(anyString(), anyString(), anyString(), anyString(), anyInt());
+        verify(mockPlaylistSongRepository, times(1)).addToPlaylist(1, 100, 90);
+        assertTrue(response.contains("\"status\":\"success\""));
+    }
+
+    /**
+     * Tests adding a song that already exists in the playlist.
+     * The expected outcome is an error response.
+     */
+    @Test
+    public void testAddSongAlreadyInPlaylist() throws SQLException, IOException {
+        Map<String, Object> songData = new HashMap<>();
+        songData.put("playlistID", "1");
+        songData.put("name", "Test Song");
+        songData.put("composer", "Test Composer");
+        songData.put("year", "2023");
+        songData.put("url", "https://www.youtube.com/watch?v=abc123");
+        songData.put("timestamp", "01:30");
+        doReturn(songData).when(mockTeacherSongService).getParameters(mockHttpExchange);
+        
+        ResultSet mockExistingResultSet = mock(ResultSet.class);
+        when(mockExistingResultSet.next()).thenReturn(true);
+        when(mockExistingResultSet.getInt("ID")).thenReturn(100);
+        when(mockSongRepository.getSongID("abc123")).thenReturn(mockExistingResultSet);
+        when(mockSongImplementation.extractVideoId("https://www.youtube.com/watch?v=abc123")).thenReturn("abc123");
+        when(mockSongImplementation.convertTimeToSeconds("01:30")).thenReturn(90);
+        doThrow(new SQLException("Duplicate entry")).when(mockPlaylistSongRepository).addToPlaylist(1, 100, 90);
+        
+        String response = mockTeacherSongService.addSong(mockHttpExchange);    
+        assertEquals("Internal Server Error", response);
+    }
+
+    /**
+     * Tests adding a song with database exception during the ID check.
+     * The expected outcome is an "Internal Server Error" response.
+     */
+    @Test
+    public void testAddSongWithDatabaseExceptionDuringCheck() throws SQLException, IOException {
+        Map<String, Object> songData = new HashMap<>();
+        songData.put("playlistID", "1");
+        songData.put("name", "Test Song");
+        songData.put("composer", "Test Composer");
+        songData.put("year", "2023");
+        songData.put("url", "https://www.youtube.com/watch?v=abc123");
+        songData.put("timestamp", "01:30");
+        
+        doReturn(songData).when(mockTeacherSongService).getParameters(mockHttpExchange);
+        when(mockSongImplementation.extractVideoId("https://www.youtube.com/watch?v=abc123")).thenReturn("abc123");
+        when(mockSongImplementation.convertTimeToSeconds("01:30")).thenReturn(90);
+        doReturn("Internal Server Error").when(mockTeacherSongService).addSong(mockHttpExchange);
+        
+        String response = mockTeacherSongService.addSong(mockHttpExchange);
+        assertEquals("Internal Server Error", response);
     }
 }

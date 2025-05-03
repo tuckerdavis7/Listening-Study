@@ -11,7 +11,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.example.repositories.ClassRepository;
+import com.example.repositories.PlaylistRepository;
+import com.example.repositories.PlaylistSongRepository;
 import com.example.repositories.StudentClassRepository;
+import com.example.repositories.StudentPerformanceRepository;
 import com.example.repositories.StudentRepository;
 import com.example.repositories.TeacherRepository;
 import com.example.repositories.UserRepository;
@@ -23,9 +26,12 @@ import com.sun.net.httpserver.HttpExchange;
 public class ModeratorService extends BaseService {
     private static final Logger logger = LoggerFactory.getLogger(ModeratorService.class);
     ClassRepository classRepository = new ClassRepository();
+    PlaylistRepository playlistRepository = new PlaylistRepository();
+    PlaylistSongRepository playlistSongRepository = new PlaylistSongRepository();
     UserRepository userRepository = new UserRepository();
     StudentRepository studentRepository = new StudentRepository();
     StudentClassRepository studentClassRepository = new StudentClassRepository();
+    StudentPerformanceRepository studentPerformanceRepository = new StudentPerformanceRepository();
     TeacherRepository teacherRepository = new TeacherRepository();
 
      /**
@@ -371,14 +377,38 @@ public class ModeratorService extends BaseService {
         Map<String, Object> parameters = super.getParameters(exchange);
         int classID = ((Number)parameters.get("classID")).intValue();
         String responseString = "";
-
+        
+        try {
+            studentPerformanceRepository.deletePerformanceByPlaylistID(classID);
+        } 
+        catch (Exception e) {
+            responseString = "Internal Server Error";
+            logger.error("Error in deleteClass1 of ModeratorService:");
+            e.printStackTrace();
+        }
         try {
             studentClassRepository.removeAllStudentsFromClass(classID);
             responseString = super.formatJSON("success");
         }
         catch (Exception e) {
             responseString = "Internal Server Error";
-            logger.error("Error in deleteClass1 of ModeratorService:");
+            logger.error("Error in deleteClass2 of ModeratorService:");
+            e.printStackTrace();
+        }
+        try {
+            playlistSongRepository.deleteSongsByPlaylistID(classID);
+        } 
+        catch (Exception e) {
+            responseString = "Internal Server Error";
+            logger.error("Error in deleteClass3 of ModeratorService:");
+            e.printStackTrace();
+        }
+        try {
+            playlistRepository.deletePlaylistByClassID(classID);
+        } 
+        catch (Exception e) {
+            responseString = "Internal Server Error";
+            logger.error("Error in deleteClass4 of ModeratorService:");
             e.printStackTrace();
         }
         try {
@@ -387,7 +417,7 @@ public class ModeratorService extends BaseService {
         }
         catch (Exception e) {
             responseString = "Internal Server Error";
-            logger.error("Error in deleteClass2 of ModeratorService:");
+            logger.error("Error in deleteClass5 of ModeratorService:");
             e.printStackTrace();
         }
 

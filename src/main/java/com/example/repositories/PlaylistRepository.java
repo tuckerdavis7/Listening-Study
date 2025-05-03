@@ -120,5 +120,13 @@ public class PlaylistRepository {
 
         return rs;
     }
+
+    public void deletePlaylistByClassID(int classID) throws SQLException {
+        String query = "DELETE FROM playlist WHERE classID = ?";
+
+        PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
+        pstmt.setInt(1, classID);
+        pstmt.executeUpdate();
+    }
     
 }

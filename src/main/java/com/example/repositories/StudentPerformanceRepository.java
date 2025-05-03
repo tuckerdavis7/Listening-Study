@@ -125,4 +125,13 @@ public class StudentPerformanceRepository {
 
       pstmt.executeUpdate();
    }
+
+   public void deletePerformanceByPlaylistID(int classID) throws SQLException {
+      String query = "DELETE FROM studentPerformance sp " + 
+                     "WHERE sp.PlaylistID = (SELECT pl.ID FROM playlist pl, class c WHERE c.ID = ? AND pl.classID = c.ID)";
+
+      PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
+      pstmt.setInt(1, classID);
+      pstmt.executeUpdate();
+   }
 }

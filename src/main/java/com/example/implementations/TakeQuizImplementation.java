@@ -11,11 +11,11 @@ import org.apache.commons.math3.distribution.BetaDistribution;
 public class TakeQuizImplementation {
 
     /**
-     * Gets the list of random weights assigned to songs
+     * Gets the belief of success for songs using Thompson Sampling.
      *
-     * @param playlistSongList List of songs frmo the playlist
-     * @param numQuestions Number of questions specified from the quiz settings
-     * @return List Song details with weight included for frontend
+     * @param playlistSongList List of songs from the playlist
+     * @param alreadySelectedIDs List of song IDs that have already been chosen for the quiz
+     * @return Map of song details with belief included for the frontend and the playback method to be used based on belief
      */
     public Map<String, Object> getThompsonSelection(ArrayList<Map<String, Object>> playlistSongList, ArrayList<Integer> alreadySelectedIDs) {
         double minSample = 1;

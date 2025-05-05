@@ -19,6 +19,8 @@ public class QuizResultsRepository {
      * @param songComposer The composer of the song
      * @param songYear The year of the song
      * @param songID The ID of the song
+     * @param userID The year of the song
+     * @param numQuestions The ID of the song
      * @throws SQLException When the query does not run properly
      */
     public void addQuizResults(int quizSettingsID, String songName, String songComposer, String songYear, int songID, int userID, int numQuestions) throws SQLException {
@@ -40,6 +42,7 @@ public class QuizResultsRepository {
      * Gets Quiz settings by the userID
      *
      * @param userID The ID of the active quiz
+     * @return ResultSet containing quiz results
      * @throws SQLException When the query does not run properly
      */
     public ResultSet getQuizResults(int userID) throws SQLException {

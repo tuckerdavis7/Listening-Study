@@ -29,6 +29,7 @@ public class ApplicationUtil {
     /**
      * Creates a retrievable singleton instance for other files
      *
+     * @return A retrievable instance of property configuration
      */
     //creates retrievable singleton instance from other files
     public static ApplicationUtil getInstance() {

@@ -9,7 +9,9 @@ import com.example.configurations.DatabaseConfiguration;
 public class SessionRepository {
      /**
      * Returns the most recent meta data added
-     *
+     * @param sessionID ID of the session
+     * @param userID The ID of the active user
+     * @param userRole Role of the active user
      * @throws SQLException When the query does not run properly
      */
     public void createSession(String sessionID, int userID, String userRole) throws SQLException {

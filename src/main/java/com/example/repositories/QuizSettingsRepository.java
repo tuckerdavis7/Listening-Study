@@ -54,6 +54,7 @@ public class QuizSettingsRepository {
      * gets quiz settings by the user Id.
      *
      * @param userID The ID of the active user
+     * @return ResultSet containing quiz settings
      * @throws SQLException When the query does not run properly
      */
     public ResultSet getQuizSettings(int userID) throws SQLException {

@@ -45,7 +45,8 @@ public class DatabaseConfiguration {
 
     /**
      * Creates connection access to repository classes
-     *
+     * 
+     * @return Connection to the database
      */
     public static Connection getConnection() {
         return con;

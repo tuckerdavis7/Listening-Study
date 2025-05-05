@@ -13,6 +13,7 @@ public class MetadataRepository {
     /**
      * Returns the most recent meta data added
      *
+     * @return ResultSet containing metadata information
      * @throws SQLException When the query does not run properly
      */
     public ResultSet getApplicationMetadata() throws SQLException {

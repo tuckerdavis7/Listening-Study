@@ -6,6 +6,9 @@ import com.example.services.BugReportService;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
+/**
+ * Handler class for processing API requests related to the bug reports page.
+ */
 public class BugReportHandler extends BaseHandler implements HttpHandler{
     private BugReportService bugReportService;
 

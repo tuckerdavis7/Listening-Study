@@ -15,6 +15,7 @@ public class QuizSettingsRepository {
      * Adds the most recent quiz settings to the table
      *
      * @param playlistID The ID of the active playlist
+     * @param user_ID The ID of the active user
      * @param playbackMethod The current selected playback method for the quiz
      * @param playbackDuration The chosen duration of playback (as a number)
      * @param numQuestions The chosen number of questions for the current quiz settings

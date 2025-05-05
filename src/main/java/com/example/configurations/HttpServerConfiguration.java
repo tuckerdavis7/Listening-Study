@@ -53,8 +53,6 @@ public class HttpServerConfiguration {
      * Creates all of the API endpoints used within the application.
      *
      * @param server is the created server
-     * @return true if the request is authorized; false otherwise
-     * @throws IOException If redirection fails
      */
     private static void createAPIEndpoints(HttpServer server) {
         server.createContext("/", new ThymeleafHandler());

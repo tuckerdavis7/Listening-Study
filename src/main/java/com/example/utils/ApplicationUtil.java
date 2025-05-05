@@ -43,18 +43,38 @@ public class ApplicationUtil {
         return instance;
     }
 
+    /**
+     * Returns the dbusername
+     *
+     * @return String containting dbusername
+     */
     public String getDbUsername() {
         return properties.getProperty("db.username");
     }
 
+    /**
+     * Returns the dbpassword
+     *
+     * @return String containting dbpassword
+     */
     public String getDbPassword() {
         return properties.getProperty("db.password");
     }
 
+    /**
+     * Returns the URL
+     *
+     * @return String containting dbURL
+     */
     public String getDbURL() {
         return properties.getProperty("db.url");
     }
 
+    /**
+     * Returns the server port
+     *
+     * @return String containting the server port
+     */
     public Integer getServerPort() {
         return Integer.parseInt(properties.getProperty("server.port"));
     }

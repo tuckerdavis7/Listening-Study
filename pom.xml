@@ -210,7 +210,6 @@
                 <quiet>true</quiet>
                 <nohelp>true</nohelp>
                 <show>private</show>
-                <stylesheetfile>${basedir}/src/main/javadoc/stylesheet.css</stylesheetfile>
                 <includeDependencySources>false</includeDependencySources>
                 <author>false</author>
                 <version>false</version>

@@ -43,8 +43,8 @@ public class SnippetService extends BaseService {
      * Checks the boundary of the song snippet and playback duration
      *
      * @param songDuration length of the song
-     * @param playBlackDuration lenght of the song playback
-     * @param timeStamp timestamp the playback starts at
+     * @param playbackDuration lenght of the song playback
+     * @param timestamp timestamp the playback starts at
      * @return result of if the song plays outside of the boundary
      */
     private boolean checkTimeBoundary(int songDuration, int playbackDuration, int timestamp){

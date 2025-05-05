@@ -35,7 +35,7 @@ public class QuizSettingsRepository {
     /**
      * Returns the most recent quiz settings from the chosen playlistID
      *
-     * @param User_ID The ID of the current user.
+     * @param userID The ID of the current user.
      * @throws SQLException When the query does not run properly
      * @return ResultSet containing query results
      */
@@ -48,25 +48,14 @@ public class QuizSettingsRepository {
         ResultSet rs = pstmt.executeQuery();
 
         return rs;
-    }
+    }   
 
     /**
-     * Returns the number of questions from the chosen quizSettingsID
+     * gets quiz settings by the user Id.
      *
-     * @param quizSettingsID The ID of the active quiz
+     * @param userID The ID of the active user
      * @throws SQLException When the query does not run properly
-     * @return ResultSet containing query results
      */
-    // public ResultSet getNumQuestionsByID(Object quizSettingsID) throws SQLException {
-    //     String query = "SELECT * FROM quizSettings WHERE ID = ?";
-
-    //     PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
-    //     pstmt.setInt(1, (Integer) quizSettingsID);
-    //     ResultSet rs = pstmt.executeQuery();
-
-    //     return rs;
-    // }
-
     public ResultSet getQuizSettings(int userID) throws SQLException {
             String query = "SELECT * FROM quizSettings WHERE deleted = 0 AND user_id = ?";
     

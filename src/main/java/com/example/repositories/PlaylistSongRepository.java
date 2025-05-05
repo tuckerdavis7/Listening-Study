@@ -15,7 +15,7 @@ public class PlaylistSongRepository {
     /**
      * Returns the songIDs from a specific playlist.
      *
-     * @param playlistID The ID of the active playlist
+     * @param playListID The ID of the active playlist
      * @throws SQLException When the query does not run properly
      * @return List of all songIDs in the tabls
      */
@@ -36,7 +36,7 @@ public class PlaylistSongRepository {
     /**
      * Returns the timeStamps to be used by the quiz
      *
-     * @param playlistID The ID of the active playlist
+     * @param playListID The ID of the active playlist
      * @param playbackMethod The playbackmethod type random, teacherdefined, or most viewed
      * @throws SQLException When the query does not run properly
      * @return timestamp, returns empty if random for 1, most viewed for 2, and userdefined for 3
@@ -79,7 +79,7 @@ public class PlaylistSongRepository {
     /**
      * Adds a SongID and its user-defined timestamp to a playlist
      *
-     * @param playlistID The ID of the playlist being inserted into
+     * @param playListID The ID of the playlist being inserted into
      * @param songID The ID of the song getting added to the playlist
      * @param userDefinedTimestamp The timestamp defined by the teacher added to the table.
      * @throws SQLException When the query does not run properly

@@ -35,25 +35,13 @@ public class QuizResultsRepository {
         pstmt.setInt(8, 0);
         pstmt.executeUpdate();
     }
-
-    /**
-     * Returns the quiz results by quizSettingsID from the quiz results table
+   
+     /**
+     * Gets Quiz settings by the userID
      *
-     * @param quizSettingsID The ID of the active quiz
+     * @param userID The ID of the active quiz
      * @throws SQLException When the query does not run properly
-     * @return ResultSet containing query results
      */
-    // public ResultSet getQuizResultsByID(Object quizSettingsID) throws SQLException {
-    //     String query = "SELECT * FROM quizResults WHERE quizSettingsID = ? and deleted = ?";
-
-    //     PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
-    //     pstmt.setInt(1, (Integer) quizSettingsID);
-    //     pstmt.setInt(2, 0);
-    //     ResultSet rs = pstmt.executeQuery();
-
-    //     return rs;
-    // }
-
     public ResultSet getQuizResults(int userID) throws SQLException {
         String query = "SELECT * FROM quizResults WHERE deleted = 0 AND userID = ?";
 
@@ -65,9 +53,9 @@ public class QuizResultsRepository {
     }
 
     /**
-     * Sets deleted field in quiz results table to 1 by quizSettingsID
+     * Sets deleted field in quiz results table to 1 by userID
      *
-     * @param quizSettingsID The ID of the active quiz
+     * @param userID The ID of the active quiz
      * @throws SQLException When the query does not run properly
      */
     public void setDeletedByID(int userID) throws SQLException {

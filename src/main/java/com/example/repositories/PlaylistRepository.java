@@ -14,7 +14,7 @@ public class PlaylistRepository {
     /**
      * Returns the playlist by Class ID
      *
-     * @param ClassID The ID of the active classID
+     * @param classIDs The ID of the active classID
      * @throws SQLException When the query does not run properly
      * @return ResultSet containing query results
      */

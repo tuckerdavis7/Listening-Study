@@ -27,8 +27,7 @@ public class SongImplementation {
      /**
      * Generates a timestamp based on the most viewed part of the song
      *
-     * @param URL link to the youtube song
-     * @throws exception if the heatmap is not found
+     * @param url link to the youtube song
      * @return refractored timestamp
      */
     public int getMostReplayedTimestamp(String url) {
@@ -78,8 +77,7 @@ public class SongImplementation {
     /**
      * Retrieves the duration of the video
      *
-     * @param Driver webdriver controls browser for video information retrieval
-     * @throws exception if it cannot get the video duration
+     * @param driver webdriver controls browser for video information retrieval
      * @return video duration as int
      */
     private int getVideoDuration(WebDriver driver) {

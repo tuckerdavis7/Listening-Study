@@ -15,7 +15,7 @@ public class UserRepository {
     /**
      * Adds the user to the user table
      *
-     * @param Map user that contains the user and its data
+     * @param user map that contains the user and its data
      * @throws SQLException When the query does not run properly
      */
     public void addUser(Map<String, Object> user) throws SQLException {
@@ -34,7 +34,7 @@ public class UserRepository {
     /**
      * deletes user from the user table
      *
-     * @param Map user that contains the user and its data
+     * @param user map that contains the user and its data
      * @throws SQLException When the query does not run properly
      */
     public void deleteUser(Map<String, Object> user) throws SQLException {
@@ -113,7 +113,7 @@ public class UserRepository {
     /**
      * updates a moderator or teacher role
      *
-     * @param map of the user data
+     * @param user map of the user data
      * @throws SQLException When the query does not run properly
      */
     public void updateModeratorOrTeacherDesignation(Map<String, Object> user) throws SQLException {

@@ -14,7 +14,7 @@ public class StudentPerformanceRepository {
     /**
      * gets the student performance by ID
      *
-     * @param StudentID The ID of the student
+     * @param studentID The ID of the student
      * @throws SQLException When the query does not run properly
      * @return ResultSet containing query results
      */
@@ -35,8 +35,8 @@ public class StudentPerformanceRepository {
     /**
      * returns the weight of the question by song and studentID
      *
-     * @param StudentID The ID of the student
-     * @param SongID The ID of the song
+     * @param studentID The ID of the student
+     * @param songID The ID of the song
      * @throws SQLException When the query does not run properly
      * @return ResultSet containing query results
      */
@@ -51,6 +51,15 @@ public class StudentPerformanceRepository {
       return rs;
    }
 
+   /**
+     * Gets the times quizzied and correct
+     *
+     * @param songID The ID of the song
+     * @param playlistID ID of the playlist
+     * @param studentID ID of the student
+     * @throws SQLException When the query does not run properly
+     * @return ResultSet containing query results
+     */
    public ResultSet getTimesQuizzedAndCorrect(int songID, int studentID, int playlistID) throws SQLException {
       String query = "SELECT TimesQuizzed, TimesCorrect FROM studentperformance WHERE songID = ? AND studentID = ? AND playlistID = ?";
 
@@ -66,9 +75,9 @@ public class StudentPerformanceRepository {
     /**
      * returns the performance data if a song on a playlist
      *
-     * @param StudentID The ID of the student
-     * @param PlaylistID The ID of the student
-     * @param SongID The ID of the song
+     * @param studentID The ID of the student
+     * @param playlistID The ID of the student
+     * @param songID The ID of the song
      * @throws SQLException When the query does not run properly
      * @return ResultSet containing query results
      */
@@ -90,10 +99,9 @@ public class StudentPerformanceRepository {
      * updates the performance data of a song
      *
      * @param timesQuizzed number of times a question was quizzed
-     * @param timescorrect number of times a student got a question correct
-     * @param weight the weight of a song
-     * @param rate the rate of a song
-     * @param ID The ID of performance
+     * @param timesCorrect number of times a student got a question correct
+     * @param score the score of a song
+     * @param studentPerformanceID The ID of performance
      * @throws SQLException When the query does not run properly
      */
    public void updatePerformanceData(int timesQuizzed, int timesCorrect, double score, int studentPerformanceID) throws SQLException {
@@ -111,6 +119,17 @@ public class StudentPerformanceRepository {
 
    }
 
+      /**
+     * Adds Performance data to the performance table
+     *
+     * @param studentID The ID of the student
+     * @param songID The ID of the song
+     * @param playlistID ID of the playlist
+     * @param timesCorrect number of times a student got a question correct
+     * @param timesQuizzed number of times a student was quizzed on a question
+     * @param score the score of a song
+     * @throws SQLException When the query does not run properly
+     */
    public void addPerformanceData(int studentID, int songID, int playlistID, int timesQuizzed, int timesCorrect, double score) throws SQLException {
       String query = "INSERT INTO studentPerformance (StudentID, SongID, PlaylistID, TimesQuizzed, TimesCorrect, Score) " +
                      "VALUES (?, ?, ?, ?, ?, ?)";
@@ -126,6 +145,13 @@ public class StudentPerformanceRepository {
       pstmt.executeUpdate();
    }
 
+      /**
+     * Deletes performance data
+     *
+     * @param songID The ID of the song
+     * @param playlistID ID of the playlist
+     * @throws SQLException When the query does not run properly
+     */
    public void deletePerformanceData(int playlistID, int songID) throws SQLException {
       String query = "DELETE FROM studentPerformance WHERE PlaylistID = ? AND SongID = ?";
 
@@ -136,6 +162,12 @@ public class StudentPerformanceRepository {
       pstmt.executeUpdate();
    }
 
+   /**
+     * Deletes performance data by the classID
+     *
+     * @param classID The ID of the class
+     * @throws SQLException When the query does not run properly
+     */
    public void deletePerformanceByPlaylistID(int classID) throws SQLException {
       String query = "DELETE FROM studentPerformance sp " + 
                      "WHERE sp.PlaylistID = (SELECT pl.ID FROM playlist pl, class c WHERE c.ID = ? AND pl.classID = c.ID)";

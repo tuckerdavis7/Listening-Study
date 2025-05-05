@@ -18,7 +18,7 @@ public class SongRepository {
      * @param songComposer The Composer of the song to be added to the table.
      * @param songYear The year the song was released to be added to the table
      * @param youtubeLink The link to the song on youtube to be added to the table
-     * @param mrTimeStamp The most replayed timestamp to be added to the table
+     * @param mrTimestamp The most replayed timestamp to be added to the table
      * @throws SQLException When the query does not run properly
      */
     public void commitSongData(String songName,  String songComposer, String songYear, String youtubeLink, int mrTimestamp) throws SQLException {
@@ -54,7 +54,7 @@ public class SongRepository {
     /**
      * Returns the songData by songID
      *
-     * @param SongID The ID of the song
+     * @param songID The ID of the song
      * @throws SQLException When the query does not run properly
      * @return ResultSet containing query results
      */

@@ -1,16 +1,10 @@
 package com.example.services;
 
-import com.example.repositories.SessionRepository;
-import com.example.utils.CookieUtil;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
 import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.sql.ResultSet;
-import java.io.InputStream;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +12,11 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.example.repositories.SessionRepository;
+import com.example.utils.CookieUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.sun.net.httpserver.HttpExchange;
 
 /**
@@ -104,7 +103,6 @@ public class BaseService {
      * Takes in parameters from URL (GET requests) body from request and returns a single JSON object
      *
      * @param exchange The data from the API request
-     * @throws IOException If formatting operations fail
      * @return Map of singular JSON object to be used
      */
     public Map<String, Object> getQueryParameters(HttpExchange exchange) {

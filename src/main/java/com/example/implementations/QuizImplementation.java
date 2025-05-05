@@ -10,7 +10,7 @@ public class QuizImplementation {
      * Checks the answers to see if the student got the question correct
      *
      * @param quizData Map student inputted data for question
-     * @param Songdata map is actually answer of song question
+     * @param songData map is actually answer of song question
      * @return true or false if the answer matches the question
      */
     public boolean checkAnswers(Map<String, Object> quizData, Map<String, Object> songData) {

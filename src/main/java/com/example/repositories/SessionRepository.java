@@ -3,7 +3,6 @@ package com.example.repositories;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 
 import com.example.configurations.DatabaseConfiguration;
 

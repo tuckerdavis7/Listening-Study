@@ -21,7 +21,7 @@ INSERT INTO metaData (appName, version, lastUpdate, logo) VALUES
 ('Listening Study', '1.0', '2025-02-19', ''),
 ('Listening Study', '2.0', '2025-03-19', ''),
 ('Listening Study', '3.0', '2025-04-04', ''),
-('Listening Study', '4.0', '2025-04-30', '');
+('Listening Study', '4.0', '2025-05-05', '');
 
 INSERT INTO users (email, first_name, last_name, deleted, role, password) VALUES
 ('administrator1@example.com', 'John', 'Smith', 0, 'administrator', '$2a$12$69rOPERjWxQ5fnzy4CbRZ.i.0w0MARpuH5hUf37.007eWx44i5bAK'),

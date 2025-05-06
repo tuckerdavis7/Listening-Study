@@ -39,7 +39,8 @@ public class PlaylistSongRepository {
      * @param playListID The ID of the active playlist
      * @param playbackMethod The playbackmethod type random, teacherdefined, or most viewed
      * @throws SQLException When the query does not run properly
-     * @return timestamp, returns empty if random for 1, most viewed for 2, and userdefined for 3
+     * @return List of timestamps based on playback method: empty for random (1), 
+     *         timestamp for most viewed (2), and userDefinedtimestamp for user defined (3)
      */
     public List<Integer> getSongTimestamps(int playListID, int playbackMethod) throws SQLException {        
         List<Integer> timeStamps = new ArrayList<>();
@@ -81,16 +82,16 @@ public class PlaylistSongRepository {
      *
      * @param playListID The ID of the playlist being inserted into
      * @param songID The ID of the song getting added to the playlist
-     * @param userDefinedTimestamp The timestamp defined by the teacher added to the table.
+     * @param udTimeStamp The timestamp defined by the teacher added to the table
      * @throws SQLException When the query does not run properly
      */
-    public void addToPlaylist(int playListID, int songID, int userDefinedTimestamp) throws SQLException {
+    public void addToPlaylist(int playListID, int songID, int udTimeStamp) throws SQLException {
         String query = "INSERT INTO playlistsongs (playlistID, songID, udTimeStamp) VALUES (?, ?, ?)";
         PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
 
         pstmt.setInt(1, playListID);
         pstmt.setInt(2, songID);
-        pstmt.setInt(3, userDefinedTimestamp);        
+        pstmt.setInt(3, udTimeStamp);        
         pstmt.executeUpdate();
    
     }
@@ -131,6 +132,14 @@ public class PlaylistSongRepository {
         return rs;
     }
 
+    /**
+     * Updates the user-defined timestamp for a song in a playlist
+     *
+     * @param playlistID The ID of the playlist containing the song
+     * @param songID The ID of the song to update
+     * @param udTimestamp The new user-defined timestamp value
+     * @throws SQLException When the query does not run properly
+     */
     public void updatePlaylistSong(int playlistID, int songID, int udTimestamp) throws SQLException {
         String query = "UPDATE playlistsongs SET udTimestamp = ? WHERE playlistID = ? and songID = ?";
         PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
@@ -141,6 +150,13 @@ public class PlaylistSongRepository {
         pstmt.executeUpdate();
     }
 
+    /**
+     * Removes a song from a playlist
+     *
+     * @param playlistID The ID of the playlist containing the song
+     * @param songID The ID of the song to remove
+     * @throws SQLException When the query does not run properly
+     */
     public void deletePlaylistSong(int playlistID, int songID) throws SQLException {
         String query = "DELETE FROM playlistsongs WHERE playlistID = ? and songID = ?";
         PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
@@ -150,6 +166,12 @@ public class PlaylistSongRepository {
         pstmt.executeUpdate();
     }
 
+    /**
+     * Deletes all songs from playlists associated with a specific class
+     *
+     * @param classID The ID of the class whose playlists' songs should be deleted
+     * @throws SQLException When the query does not run properly
+     */
     public void deleteSongsByPlaylistID(int classID) throws SQLException {
         String query = "DELETE FROM playlistsongs ps " + 
                        "WHERE ps.playlistID = (SELECT pl.ID FROM playlist pl, class c WHERE c.ID = ? AND pl.classID = c.ID)";

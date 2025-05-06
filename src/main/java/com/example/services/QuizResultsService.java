@@ -33,6 +33,14 @@ public class QuizResultsService extends BaseService {
     private PlaylistRepository playlistRepository = new PlaylistRepository();
     private QuizImplementation quizImplementation = new QuizImplementation();
 
+    /**
+     * Processes a submitted answer for a quiz question and updates the student performance data.
+     * If the answer is incorrect, adds the result to the quiz results database.
+     *
+     * @param exchange The HTTP exchange containing quiz answer data
+     * @return String JSON formatted response indicating success or error
+     * @throws IOException If there is an error processing the request data
+     */
     public String submitAnswer(HttpExchange exchange) throws IOException {
         Map<String, Object> quizData = super.getParameters(exchange);
         String responseString = "";
@@ -140,15 +148,13 @@ public class QuizResultsService extends BaseService {
     }
 
     /**
-     * Returns quiz results to the quiz results page
+     * Returns quiz results to the quiz results page for the current user
      *
-     * @param exchange The data from the API request
+     * @param exchange The HTTP exchange containing request data
+     * @return String JSON formatted string of quiz results data for frontend
      * @throws IOException If data processing fails
-     * @return String JSON formatted string of data for frontend
      */
     public String getQuizResults(HttpExchange exchange) throws IOException {
-        // Map<String, Object> configParams = super.getQueryParameters(exchange);
-        // Object quizSettingsID = configParams.get("quizSettingsID");
         int userID = super.getSessionUserID(exchange);
 
         String responseString = "";
@@ -177,6 +183,13 @@ public class QuizResultsService extends BaseService {
         return responseString;
     }
 
+    /**
+     * Retrieves the quiz settings for the current user
+     *
+     * @param exchange The HTTP exchange containing request data
+     * @return String JSON formatted string of quiz settings data for frontend
+     * @throws IOException If data processing fails
+     */
     public String getQuizSettings(HttpExchange exchange) throws IOException {
         int userID = super.getSessionUserID(exchange);
         String responseString = "";
@@ -219,11 +232,12 @@ public class QuizResultsService extends BaseService {
     }
 
     /**
-     * Returns the correct answers from the taken quiz on the quiz results page
+     * Returns the correct answers for songs from a taken quiz and marks the quiz results 
+     * and settings as deleted in the database
      *
-     * @param exchange The data from the API request
+     * @param exchange The HTTP exchange containing list of song IDs
+     * @return String JSON formatted string of correct song data for frontend
      * @throws IOException If data processing fails
-     * @return String JSON formatted string of data for frontend
      */
     public String getCorrectAnswers(HttpExchange exchange) throws IOException {
         List<Map<String, Object>> songIDs = super.getParametersList(exchange);
@@ -270,13 +284,8 @@ public class QuizResultsService extends BaseService {
                 logger.error("Error in getCorrectAnswers3 of QuizResultsService");
                 e.printStackTrace();
             }
-
         }
 
         return responseString;
     }
-
-
-
-    
 }

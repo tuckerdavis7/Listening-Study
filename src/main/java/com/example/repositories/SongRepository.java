@@ -10,18 +10,18 @@ import com.example.configurations.DatabaseConfiguration;
  * Repository class to execute queries on the song table.
  */
 public class SongRepository {
-      
-     /**
-     * Adds song and its data to the song table.
+    
+    /**
+     * Adds a new song and its data to the song table.
      *
-     * @param songName The Name of the song to be added to the table
-     * @param songComposer The Composer of the song to be added to the table.
-     * @param songYear The year the song was released to be added to the table
-     * @param youtubeLink The link to the song on youtube to be added to the table
-     * @param mrTimestamp The most replayed timestamp to be added to the table
+     * @param songName The name of the song
+     * @param songComposer The composer of the song
+     * @param songYear The year the song was released
+     * @param youtubeLink The YouTube link of the song
+     * @param mrTimestamp The most replayed timestamp of the song
      * @throws SQLException When the query does not run properly
      */
-    public void commitSongData(String songName,  String songComposer, String songYear, String youtubeLink, int mrTimestamp) throws SQLException {
+    public void commitSongData(String songName, String songComposer, String songYear, String youtubeLink, int mrTimestamp) throws SQLException {
         String query = "INSERT INTO song (songName, songComposer, songYear, youtubeLink, mrTimestamp) VALUES (?, ?, ?, ?, ?)";
         PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
 
@@ -31,51 +31,52 @@ public class SongRepository {
         pstmt.setString(4, youtubeLink);
         pstmt.setInt(5, mrTimestamp);        
         pstmt.executeUpdate();
-   
     }
 
-     /**
-     * Returns songID based on the youtubelink
+    /**
+     * Retrieves the song ID based on the YouTube link.
      *
-     * @param youtubeLink the youtube link of a song
+     * @param youtubeLink The YouTube link of the song
+     * @return ResultSet containing the song ID if found
      * @throws SQLException When the query does not run properly
-     * @return ResultSet containing query results
      */
     public ResultSet getSongID(String youtubeLink) throws SQLException {        
-        String query = "SELECT ID FROM song WHERE youtubeLink =?";
+        String query = "SELECT ID FROM song WHERE youtubeLink = ?";
         PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
         
         pstmt.setString(1, youtubeLink);
         ResultSet rs = pstmt.executeQuery();
-
         return rs;   
     }
     
     /**
-     * Returns the songData by songID
+     * Retrieves all song data based on the song ID.
      *
      * @param songID The ID of the song
+     * @return ResultSet containing the song's data
      * @throws SQLException When the query does not run properly
-     * @return ResultSet containing query results
      */
     public ResultSet getSongData(int songID) throws SQLException {
-        //List<String> songData = new ArrayList<>();        
-        String query = "SELECT * FROM song WHERE ID =?";
-
+        String query = "SELECT * FROM song WHERE ID = ?";
         PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
+
         pstmt.setInt(1, songID);
         ResultSet rs = pstmt.executeQuery();
-
-        //songData.add(rs.getString("songName"));
-       // songData.add(rs.getString("songComposer"));
-       // songData.add(rs.getString("songYear"));
-        //songData.add(rs.getString("youtubeLink"));
-        //songData.add(rs.getString("mrTimestamp"));
-       
-       return rs;   
+        return rs;   
     }
 
-    public void updateSongData(String songName,  String songComposer, String songYear, String youtubeLink, int mrTimestamp, int songID) throws SQLException {
+    /**
+     * Updates an existing song entry in the song table.
+     *
+     * @param songName The new name of the song
+     * @param songComposer The new composer of the song
+     * @param songYear The new year of the song
+     * @param youtubeLink The updated YouTube link
+     * @param mrTimestamp The updated most replayed timestamp
+     * @param songID The ID of the song to be updated
+     * @throws SQLException When the update query fails
+     */
+    public void updateSongData(String songName, String songComposer, String songYear, String youtubeLink, int mrTimestamp, int songID) throws SQLException {
         String query = "UPDATE song SET songName = ?, songComposer = ?, songYear = ?, youtubeLink = ?, mrTimestamp = ? WHERE ID = ?";
         PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
 
@@ -87,5 +88,4 @@ public class SongRepository {
         pstmt.setInt(6, songID);
         pstmt.executeUpdate();
     }    
-    
 }

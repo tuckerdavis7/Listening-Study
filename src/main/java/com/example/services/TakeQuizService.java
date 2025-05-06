@@ -40,7 +40,6 @@ public class TakeQuizService extends BaseService {
      */
     public String getQuizSettings(HttpExchange exchange) throws IOException {
         int userID = super.getSessionUserID(exchange);
-        //Object playlistID = configParams.get("playlistID"); //needs different id later
         String responseString = "";
         ArrayList<Map<String, Object>> quizSettingsList = new ArrayList<>();
 

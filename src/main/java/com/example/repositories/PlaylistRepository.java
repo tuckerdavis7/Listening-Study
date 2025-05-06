@@ -12,11 +12,11 @@ import com.example.configurations.DatabaseConfiguration;
  */
 public class PlaylistRepository {
     /**
-     * Returns the playlist by Class ID
+     * Returns the playlist by Class ID.
      *
-     * @param classIDs The ID of the active classID
-     * @throws SQLException When the query does not run properly
-     * @return ResultSet containing query results
+     * @param classIDs The list of active class IDs to search for
+     * @return ResultSet containing query results of playlists associated with the provided class IDs
+     * @throws SQLException When the database query does not execute properly
      */
     public ResultSet getPlaylistByClassID(ArrayList<Integer> classIDs) throws SQLException {
         String placeholders = String.join(", ", java.util.Collections.nCopies(classIDs.size(), "?"));
@@ -31,6 +31,13 @@ public class PlaylistRepository {
         return rs;
     }
 
+    /**
+     * Retrieves playlists associated with a specific teacher.
+     *
+     * @param teacherID The ID of the teacher
+     * @return ResultSet containing playlists created by the specified teacher
+     * @throws SQLException When the database query does not execute properly
+     */
     public ResultSet getPlaylistByTeacherID(Object teacherID) throws SQLException {
         String query = "select p.ID, p.playlistName, c.className, c.teacherID from playlist p "
                          + "left join class c on p.classID = c.ID" 
@@ -43,6 +50,13 @@ public class PlaylistRepository {
         return rs;
     }
 
+    /**
+     * Retrieves playlists accessible to a specific student based on their classes.
+     *
+     * @param studentID The ID of the student
+     * @return ResultSet containing playlists available to the specified student
+     * @throws SQLException When the database query does not execute properly
+     */
     public ResultSet getPlaylistByStudentID(Object studentID) throws SQLException {
         String query = "select p.ID, p.playlistName, p.teacherID, p.classID, c.className from playlist p "
                          + "left join studentClass sc on sc.classID = p.classID" 
@@ -56,6 +70,14 @@ public class PlaylistRepository {
         return rs;
     }
 
+    /**
+     * Creates a new playlist in the database.
+     *
+     * @param playlistName The name of the playlist to create
+     * @param teacherID The ID of the teacher creating the playlist
+     * @param classID The ID of the class this playlist belongs to
+     * @throws SQLException When the database insertion does not execute properly
+     */
     public void createPlaylist(String playlistName, int teacherID, int classID) throws SQLException {
         String query = "INSERT INTO playlist (playlistName, teacherID, classID) VALUES (?, ?, ?)";
 
@@ -66,6 +88,13 @@ public class PlaylistRepository {
         pstmt.executeUpdate();
     }
 
+    /**
+     * Updates the name of an existing playlist.
+     *
+     * @param playlistID The ID of the playlist to rename
+     * @param newPlaylistName The new name for the playlist
+     * @throws SQLException When the database update does not execute properly
+     */
     public void renamePlaylist(Object playlistID, Object newPlaylistName) throws SQLException {
         String query = "UPDATE playlist SET playlistName = ? WHERE ID = ?";
 
@@ -75,6 +104,14 @@ public class PlaylistRepository {
         pstmt.executeUpdate();
     }
 
+    /**
+     * Retrieves the playlist ID for a specific teacher and class combination.
+     *
+     * @param teacherID The ID of the teacher
+     * @param classID The ID of the class
+     * @return ResultSet containing the ID of matching playlist(s)
+     * @throws SQLException When the database query does not execute properly
+     */
     public ResultSet getPlaylistID(int teacherID, int classID) throws SQLException {
         String query = "SELECT ID FROM playlist WHERE teacherID = ? and classID = ?";
 
@@ -86,6 +123,14 @@ public class PlaylistRepository {
         return rs;
     }
 
+    /**
+     * Retrieves all playlist IDs accessible to a specific user, whether as a student or teacher.
+     * Uses a UNION query to combine results from both roles.
+     *
+     * @param userID The ID of the user
+     * @return ResultSet containing all playlist IDs the user has access to
+     * @throws SQLException When the database query does not execute properly
+     */
     public ResultSet getPlaylistIDsForUser(int userID) throws SQLException {
         String query = "(" + 
                         "    SELECT DISTINCT p.ID AS playlist_id" +
@@ -111,6 +156,13 @@ public class PlaylistRepository {
         return rs;
     }
 
+    /**
+     * Retrieves the name of a playlist by its ID.
+     *
+     * @param playlistID The ID of the playlist
+     * @return ResultSet containing the name of the specified playlist
+     * @throws SQLException When the database query does not execute properly
+     */
     public ResultSet getPlaylistNameByID(int playlistID) throws SQLException {
         String query = "SELECT playlistName FROM playlist WHERE ID = ?";
 
@@ -121,6 +173,12 @@ public class PlaylistRepository {
         return rs;
     }
 
+    /**
+     * Deletes all playlists associated with a specific class.
+     *
+     * @param classID The ID of the class whose playlists should be deleted
+     * @throws SQLException When the database deletion does not execute properly
+     */
     public void deletePlaylistByClassID(int classID) throws SQLException {
         String query = "DELETE FROM playlist WHERE classID = ?";
 

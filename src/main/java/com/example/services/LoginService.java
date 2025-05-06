@@ -79,10 +79,7 @@ public class LoginService extends BaseService {
 
                     //initialize session for user
                     String sessionID = UUID.randomUUID().toString();
-                    //Timestamp expiresAt = Timestamp.from(Instant.now().plus(Duration.ofMinutes(3)));
-
                     sessionRepository.createSession(sessionID, result.getInt("user_id"), loginMap.get("role").toString());
-
                     exchange.getResponseHeaders().add("Set-Cookie", "SESSIONID=" + sessionID + "; HttpOnly; Path=/");
                 }
             }

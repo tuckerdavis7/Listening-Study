@@ -19,7 +19,6 @@ public class StudentPerformanceService extends BaseService {
     private static final Logger logger = LoggerFactory.getLogger(StudentPerformanceService.class);
     StudentPerformanceRepository studentPerformanceRepository = new StudentPerformanceRepository();
 
-    
     /**
      * Gets the performance of songs for a student
      *

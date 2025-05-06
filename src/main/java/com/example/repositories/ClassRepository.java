@@ -16,6 +16,13 @@ import com.example.configurations.DatabaseConfiguration;
 public class ClassRepository {
   private static final Logger logger = LoggerFactory.getLogger(ClassRepository.class);
 
+  /**
+   * Retrieves classes for a specific teacher.
+   *
+   * @param teacherID the ID of the teacher
+   * @return ResultSet containing the classes taught by the specified teacher
+   * @throws SQLException if the SQL query encounters an error during execution
+   */
   public ResultSet getClasslist(int teacherID) throws SQLException {
     String query = "SELECT * FROM class_overview WHERE teacher_id = ?";
 
@@ -26,13 +33,19 @@ public class ClassRepository {
     return rs;
   }
 
-    public ResultSet getAllClasses() throws SQLException {
-      String query = "SELECT * FROM class_overview";
-      PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
-      ResultSet rs = pstmt.executeQuery();
+  /**
+   * Retrieves all classes from the database.
+   *
+   * @return ResultSet containing all classes
+   * @throws SQLException if the SQL query encounters an error during execution
+   */
+  public ResultSet getAllClasses() throws SQLException {
+    String query = "SELECT * FROM class_overview";
+    PreparedStatement pstmt = DatabaseConfiguration.getConnection().prepareStatement(query);
+    ResultSet rs = pstmt.executeQuery();
 
-      return rs;
-    }
+    return rs;
+  }
 
 /**
  * Removes a teacher from all classes by setting their teacherID to NULL.
@@ -49,6 +62,13 @@ public class ClassRepository {
     pstmt.executeUpdate();
   }
 
+  /**
+   * Retrieves teachers associated with a specific class.
+   *
+   * @param classID the ID of the class
+   * @return ResultSet containing the teachers and class information
+   * @throws SQLException if the SQL query encounters an error during execution
+   */
   public ResultSet getTeachersByClassID(int classID) throws SQLException {
     logger.info("at getTeachersByClassID in ClassRepository");
     String query = """
@@ -66,6 +86,13 @@ public class ClassRepository {
     return rs;
   } 
 
+  /**
+   * Adds a new class with a specified name and teacher.
+   *
+   * @param className the name of the class to add
+   * @param teacherID the ID of the teacher to assign to the class
+   * @throws SQLException if the SQL query encounters an error during execution
+   */
   public void addClass(String className, int teacherID) throws SQLException {
     logger.info("at addClass in ClassRepository");
     String query = "INSERT INTO class (className, teacherID) VALUES (?, ?)";
@@ -77,6 +104,12 @@ public class ClassRepository {
       pstmt.executeUpdate();
   }
 
+  /**
+   * Removes a teacher from a specific class by setting teacherID to NULL.
+   *
+   * @param classID the ID of the class to remove the teacher from
+   * @throws SQLException if the SQL query encounters an error during execution
+   */
   public void removeTeacherFromClass(int classID) throws SQLException {
     logger.info("at removeTeacherFromClass in ClassRepository");
     String query = "UPDATE class SET teacherID = NULL WHERE ID=?";
@@ -86,6 +119,13 @@ public class ClassRepository {
     pstmt.executeUpdate();
   }
 
+  /**
+   * Updates the name of a class.
+   *
+   * @param classID the ID of the class to rename
+   * @param newClassname the new name for the class
+   * @throws SQLException if the SQL query encounters an error during execution
+   */
   public void renameClass(Object classID, Object newClassname) throws SQLException {
     String query = "UPDATE class SET className = ? WHERE ID = ?";
 
@@ -95,6 +135,13 @@ public class ClassRepository {
     pstmt.executeUpdate();
   }
 
+  /**
+   * Assigns a teacher to a class using the teacher's email.
+   *
+   * @param classID the ID of the class to assign the teacher to
+   * @param teacherEmail the email of the teacher to assign
+   * @throws SQLException if the SQL query encounters an error during execution
+   */
   public void addTeacherToClass(int classID, String teacherEmail) throws SQLException {
     logger.info("at addTeacherToClass in ClassRepository");
     String query = """
@@ -110,6 +157,13 @@ public class ClassRepository {
     pstmt.executeUpdate();
   }
 
+  /**
+   * Retrieves students enrolled in a specific class.
+   *
+   * @param classID the ID of the class
+   * @return ResultSet containing the students in the specified class
+   * @throws SQLException if the SQL query encounters an error during execution
+   */
   public ResultSet getStudentsByClassID(int classID) throws SQLException {
     logger.info("at getTeachersByClassID in ClassRepository");
     String query = "SELECT studentID, studentEmail, studentFirstname, studentLastname FROM view_class WHERE classID = ?";
@@ -121,6 +175,12 @@ public class ClassRepository {
     return rs;
   }
 
+  /**
+   * Deletes a class from the database.
+   *
+   * @param classID the ID of the class to delete
+   * @throws SQLException if the SQL query encounters an error during execution
+   */
   public void deleteClass(int classID) throws SQLException {
     logger.info("at deleteClass in ClassRepository");
     String query = "DELETE FROM class WHERE ID = ?";
@@ -131,4 +191,3 @@ public class ClassRepository {
   }
 
 }
-

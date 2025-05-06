@@ -26,7 +26,6 @@ public class TeacherLibraryService extends BaseService {
     private TeacherRepository teacherRepository = new TeacherRepository();
     private StudentRepository studentRepository = new StudentRepository();
     private SessionRepository sessionRepository = new SessionRepository();
-
     
      /**
      * Gathers the playlists and their associated class from the DB
@@ -52,7 +51,6 @@ public class TeacherLibraryService extends BaseService {
             responseString = "Internal Server Error";
             logger.error("Error in getLibrary of TeacherLibraryService:");            
             return responseString;
-
         }
         
        

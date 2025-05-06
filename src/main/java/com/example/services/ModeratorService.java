@@ -141,7 +141,6 @@ public class ModeratorService extends BaseService {
      * @return String JSON formatted string of success or error message
      */
     public String getClassStudents(HttpExchange exchange) throws IOException {
-        //logger.info("at getClassStudents in ModeratorRosterService");
         Map<String, Object> classData = super.getQueryParameters(exchange);
         int classID = ((Number)classData.get("classID")).intValue();
         String responseString = "";
@@ -176,7 +175,6 @@ public class ModeratorService extends BaseService {
      * @return String JSON formatted string of success or error message
      */
     public String addStudent(HttpExchange exchange) throws IOException {
-        //logger.info("at addStudent in ModeratorService");
         Map<String, Object> parameters = super.getParameters(exchange);
         String studentEmail = (String)parameters.get("email");
         System.out.println("studentEmail: " + studentEmail);
@@ -221,7 +219,6 @@ public class ModeratorService extends BaseService {
      * @return String JSON formatted string of success or error message
      */
     public String getClassTeachers(HttpExchange exchange) throws IOException {
-        //logger.info("at getClassTeachers in ModeratorTeacherlistService");
         Map<String, Object> classData = super.getQueryParameters(exchange);
         int classID = ((Number)classData.get("classID")).intValue();
         String responseString = "";
@@ -256,7 +253,6 @@ public class ModeratorService extends BaseService {
      * @return String JSON formatted string of success or error message
      */
     public String removeTeacher(HttpExchange exchange) throws IOException {
-        logger.info("at removeTeacher in ModeratorService");
         Map<String, Object> parameters = super.getParameters(exchange);
         String tempID = (String)parameters.get("classID");
         int classID = Integer.parseInt(tempID);
@@ -284,7 +280,6 @@ public class ModeratorService extends BaseService {
      * @return String JSON formatted string of success or error message
      */
     public String addTeacher(HttpExchange exchange) throws IOException {
-        logger.info("at addTeacher in ModeratorService");
         Map<String, Object> parameters = super.getParameters(exchange);
         String teacherEmail = (String)parameters.get("email");
         String tempID = ((String)parameters.get("classID"));
@@ -336,7 +331,6 @@ public class ModeratorService extends BaseService {
      * @return String JSON formatted string of success or error message
      */
     public String removeStudent(HttpExchange exchange) throws IOException {
-        logger.info("at removeStudent in ModeratorService");
         Map<String, Object> parameters = super.getParameters(exchange);
         int studentID = ((Number)parameters.get("studentID")).intValue();
         String tempID = (String)parameters.get("classID");
@@ -345,7 +339,6 @@ public class ModeratorService extends BaseService {
         String responseString = "";
 
         try {
-            logger.info("at try of removeStudent in ModeratorService");
             studentClassRepository.removeStudentFromClass(studentID, classID);
             responseString = super.formatJSON("success");
         }
@@ -366,7 +359,6 @@ public class ModeratorService extends BaseService {
      * @return String JSON formatted string of success or error message
      */
     public String deleteClass(HttpExchange exchange) throws IOException {
-        logger.info("at deleteClass in ModeratorService");
         Map<String, Object> parameters = super.getParameters(exchange);
         int classID = ((Number)parameters.get("classID")).intValue();
         String responseString = "";

@@ -21,7 +21,7 @@ public class DatabaseConfiguration {
      * Creates a connection to the database
      *
      * @throws ClassNotFoundException If the database driver can't be found
-     * @throws SQLException If the connection to the database fails
+     * @throws Exception If the connection to the database fails
      */
     public static void connect() throws Exception{
         try {

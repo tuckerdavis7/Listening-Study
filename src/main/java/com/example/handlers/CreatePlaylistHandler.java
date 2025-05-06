@@ -13,7 +13,7 @@ public class CreatePlaylistHandler extends BaseHandler implements HttpHandler {
     private CreatePlaylistService createPlaylistService;
 
     /**
-     * Class constructor to intialize service file
+     * Class constructor to initialize service file
      */
     public CreatePlaylistHandler() {
         this.createPlaylistService = new CreatePlaylistService();

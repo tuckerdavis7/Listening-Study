@@ -13,7 +13,7 @@ public class BugReportHandler extends BaseHandler implements HttpHandler{
     private BugReportService bugReportService;
 
     /**
-     * Class constructor to intialize service file
+     * Class constructor to initialize service file
      */
     public BugReportHandler() {
         this.bugReportService = new BugReportService();

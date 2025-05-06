@@ -13,7 +13,7 @@ public class LoginHandler extends BaseHandler implements HttpHandler {
     private LoginService loginService;
 
     /**
-     * Class constructor to intialize service file
+     * Class constructor to initialize service file
      */
     public LoginHandler() {
         this.loginService = new LoginService();

@@ -13,7 +13,7 @@ public class StudentPerformanceHandler extends BaseHandler implements HttpHandle
     private StudentPerformanceService studentPerformanceService;
 
     /**
-     * Class constructor to intialize service file
+     * Class constructor to initialize service file
      */
     public StudentPerformanceHandler() {
         this.studentPerformanceService = new StudentPerformanceService();

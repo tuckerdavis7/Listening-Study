@@ -13,7 +13,7 @@ public class RegistrationHandler extends BaseHandler implements HttpHandler {
     private RegistrationService registrationService;
 
     /**
-     * Class constructor to intialize service file
+     * Class constructor to initialize service file
      */
     public RegistrationHandler() {
         this.registrationService = new RegistrationService();

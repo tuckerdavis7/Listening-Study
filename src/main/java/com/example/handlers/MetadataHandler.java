@@ -13,7 +13,7 @@ public class MetadataHandler extends BaseHandler implements HttpHandler {
     private MetadataService metadataService;
 
     /**
-     * Class constructor to intialize service file
+     * Class constructor to initialize service file
      */
     public MetadataHandler() {
         this.metadataService = new MetadataService();

@@ -13,7 +13,7 @@ public class SnippetHandler extends BaseHandler implements HttpHandler {
     private SnippetService snippetService;
 
     /**
-     * Class constructor to intialize service file
+     * Class constructor to initialize service file
      */
     public SnippetHandler() {
         this.snippetService = new SnippetService();

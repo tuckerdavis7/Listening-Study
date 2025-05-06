@@ -13,7 +13,7 @@ public class TeacherRosterHandler extends BaseHandler implements HttpHandler {
     private TeacherRosterService teacherRosterService;
 
     /**
-     * Class constructor to intialize service file
+     * Class constructor to initialize service file
      */
     public TeacherRosterHandler() {
         this.teacherRosterService = new TeacherRosterService();

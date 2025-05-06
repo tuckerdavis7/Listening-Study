@@ -13,7 +13,7 @@ public class ModeratorHandler extends BaseHandler implements HttpHandler {
     private ModeratorService moderatorService;
 
     /**
-     * Class constructor to intialize moderator service file
+     * Class constructor to initialize moderator service file
      */
     public ModeratorHandler() {
         this.moderatorService = new ModeratorService();

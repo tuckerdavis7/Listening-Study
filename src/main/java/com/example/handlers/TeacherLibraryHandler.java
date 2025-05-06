@@ -13,7 +13,7 @@ public class TeacherLibraryHandler extends BaseHandler implements HttpHandler{
     private TeacherLibraryService teacherLibraryService;
 
     /**
-     * Class constructor to intialize service library file
+     * Class constructor to initialize service library file
      */
     public TeacherLibraryHandler() {
         this.teacherLibraryService = new TeacherLibraryService();

@@ -20,7 +20,7 @@ public class StaticFileHandler extends BaseHandler implements HttpHandler {
     private final Map<String, String> contentTypeMap;
     
     /**
-     * Class constructor to intialize a map containing acceptable content types
+     * Class constructor to initialize a map containing acceptable content types
      */
     public StaticFileHandler() {
         contentTypeMap = new HashMap<>();

@@ -13,7 +13,7 @@ public class SetQuizHandler extends BaseHandler implements HttpHandler {
     private SetQuizService setQuizService;
 
     /**
-     * Class constructor to intialize service file
+     * Class constructor to initialize service file
      */
     public SetQuizHandler() {
         this.setQuizService = new SetQuizService();

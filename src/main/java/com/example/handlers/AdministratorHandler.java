@@ -13,7 +13,7 @@ public class AdministratorHandler extends BaseHandler implements HttpHandler {
     private AdministratorService administratorService;
 
     /**
-     * Class constructor to intialize service file
+     * Class constructor to initialize service file
      */
     public AdministratorHandler() {
         this.administratorService = new AdministratorService();

@@ -1,18 +1,5 @@
-## Getting Started
+The Listening Study Application is a web-adapted prototype designed for a semester-long project for Slippery Rock University's Computer Science capstone Course, Software Engineering.  This project is a collaboration of four Spring '25 SRU Graduates- Tucker Davis, Benjamin Luzier, Joseph Reiner, and Brenden Stilwell.  The application serves as a study tool for a Music History class offered by SRU.  The scope of the class is to be able to identify songs based on audio snippets that the user listens to.  The user (student) must be able to name the title, composer, and year of the song.  
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+A full write up of the project- including tech stack, installation/run instructions, explanation of user groups, screenshots of every user interface, backend documentation, use case diagrams, sequence diagrams, data-flow diagrams, and algorithm/processing overview can be found in the below document:
 
-## Folder Structure
-
-The workspace contains two folders by default, where:
-
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
-
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
-
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
-
-## Dependency Management
-
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+https://docs.google.com/document/d/1FNjFCx0Ebs3e2NLNv9SSilXl5LewNKxo/edit?usp=sharing&ouid=103630971430649790724&rtpof=true&sd=true
